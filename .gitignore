@@ -9,3 +9,6 @@
 
 # building files
 /client/build/
+
+# mac
+.DS_Store
