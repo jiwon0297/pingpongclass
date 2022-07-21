@@ -14,7 +14,7 @@ public class StudentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="student_id", nullable = false)
+    @Column(nullable = false)
     private int studentId;
 
     @Column(nullable = false, length = 10)
@@ -23,10 +23,10 @@ public class StudentEntity {
     @Column(nullable = false)
     private Byte grade;
 
-    @Column(name="class_num",nullable = false)
+    @Column(nullable = false)
     private Byte class_num;
 
-    @Column(name="student_num", nullable = false)
+    @Column(nullable = false)
     private Byte studentNum;
 
     @Column(length = 40, unique = true)
@@ -41,7 +41,7 @@ public class StudentEntity {
     @Column(nullable = false)
     private int point;
 
-    @Column(name="total_point", nullable = false)
+    @Column(nullable = false)
     private int totalPoint;
 
     @Column(nullable = false, length = 50)

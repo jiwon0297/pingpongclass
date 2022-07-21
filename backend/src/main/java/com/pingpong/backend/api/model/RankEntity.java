@@ -16,8 +16,9 @@ public class RankEntity {
     @Column(nullable = false)
     private int rankId;
 
-    @Column(nullable = false)
-    private int studentId;
+    @OneToOne
+    @JoinColumn(name="student_id", nullable = false)
+    private StudentEntity student;
 
     @Column(nullable = false)
     private int rankNum;

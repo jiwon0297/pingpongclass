@@ -16,9 +16,11 @@ public class ItemStudentEntity {
     @Column(nullable = false)
     private int itemIndex;
 
-    @Column(nullable = false)
-    private int itemId;
+    @ManyToOne
+    @JoinColumn(name="student_id", nullable = false)
+    private StudentEntity student;
 
-    @Column(nullable = false)
-    private int studentId;
+    @ManyToOne
+    @JoinColumn(name="item_id", nullable = false)
+    private ItemEntity item;
 }
