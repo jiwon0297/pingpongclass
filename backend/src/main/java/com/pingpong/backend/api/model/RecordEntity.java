@@ -18,17 +18,11 @@ public class RecordEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recordId;
 
-    @Column(name = "teacher_id",  nullable = false, length=10)
-    private String teacherId;
 
-    @Column(name = "class_id", nullable = false)
-    private int classId;
+    @ManyToOne
+    @JoinColumn(name="class_id", nullable = false)
+    private ClassEntity classEntity;
 
-    @Column(name = "subject_code", nullable = false, columnDefinition = "TINYINT")
-    private int subjectCode;
-
-    @Column(name = "time_id", nullable = false)
-    private int timeId;
 
     @Column(name = "video_id", nullable = false, length = 256)
     private String videoUrl;

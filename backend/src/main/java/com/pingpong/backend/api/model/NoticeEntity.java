@@ -17,8 +17,9 @@ public class NoticeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int noticeId;
 
-    @Column(name ="teacher_id", nullable = false, length=10)
-    private String teacherId;
+    @ManyToOne
+    @JoinColumn(name="teacher_id",nullable=false)
+    private TeacherEntity teachEntity;
 
     @Column(name ="title", nullable = false, length=50)
     private String title;
