@@ -19,12 +19,11 @@ public class TeacherEntity {
     @Column(nullable = false, length=10)
     private String name;
 
-    @Column(length=40)
+    @Column(length=40, unique=true)
     private String email;
 
     @Column(nullable = false, length=256)
     private String password;
 
-    @Column(nullable = false, length = 256)
     private String profile;
 }

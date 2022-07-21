@@ -18,17 +18,9 @@ public class RecordEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recordId;
 
-    @Column( nullable = false, length=10)
-    private String teacherId;
-
-    @Column(nullable = false)
-    private int classId;
-
-    @Column(nullable = false)
-    private byte subjectCode;
-
-    @Column(nullable = false)
-    private int timeId;
+    @ManyToOne
+    @JoinColumn(name="class_id", nullable = false)
+    private ClassEntity classEntity;
 
     @Column(nullable = false, length = 256)
     private String videoUrl;
