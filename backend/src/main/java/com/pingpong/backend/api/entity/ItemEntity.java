@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.model;
+package com.pingpong.backend.api.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,6 @@ public class ItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private int itemId;
 
     @Column(nullable = false, length = 20)

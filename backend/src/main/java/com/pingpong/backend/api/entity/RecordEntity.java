@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.model;
+package com.pingpong.backend.api.entity;
 
 
 import javax.persistence.*;
@@ -18,21 +18,21 @@ public class RecordEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recordId;
 
-    @Column(name = "teacher_id",  nullable = false, length=10)
+    @Column( nullable = false, length=10)
     private String teacherId;
 
-    @Column(name = "class_id", nullable = false)
+    @Column(nullable = false)
     private int classId;
 
-    @Column(name = "subject_code", nullable = false, columnDefinition = "TINYINT")
-    private int subjectCode;
+    @Column(nullable = false)
+    private byte subjectCode;
 
-    @Column(name = "time_id", nullable = false)
+    @Column(nullable = false)
     private int timeId;
 
-    @Column(name = "video_id", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String videoUrl;
 
-    @Column(name = "video_savetime", nullable = false)
+    @Column(nullable = false)
     private Date videoSavetime;
 }

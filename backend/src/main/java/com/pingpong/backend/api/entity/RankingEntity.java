@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.model;
+package com.pingpong.backend.api.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,21 +6,20 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="item_student")
+@Table(name="ranking")
 @Getter
 @Setter
-public class ItemStudentEntity {
+public class RankingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private int itemIndex;
+    private int rankId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="student_id", nullable = false)
     private StudentEntity student;
 
-    @ManyToOne
-    @JoinColumn(name="item_id", nullable = false)
-    private ItemEntity item;
+    @Column(nullable = false)
+    private int rankNum;
 }

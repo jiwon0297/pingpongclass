@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.model;
+package com.pingpong.backend.api.entity;
 
 import javax.persistence.*;
 
@@ -16,4 +16,5 @@ public class ClassStudentEntity {
     @ManyToOne
     @JoinColumn(name="student_id", nullable = false)
     private StudentEntity studententity;
+
 }

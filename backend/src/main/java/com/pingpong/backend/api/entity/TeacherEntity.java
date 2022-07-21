@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.model;
+package com.pingpong.backend.api.entity;
 
 
 import javax.persistence.*;
@@ -13,19 +13,18 @@ import javax.persistence.*;
 @Table(name="teacher")
 public class TeacherEntity {
     @Id
-    @Column(name = "teacher_id",  nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int teacherId;
 
-    @Column(name="name", nullable = false, length=10)
+    @Column(nullable = false, length=10)
     private String name;
 
-    @Column(name ="email", length=40)
+    @Column(length=40)
     private String email;
 
-    @Column(name="password", nullable = false, length=256)
+    @Column(nullable = false, length=256)
     private String password;
 
-    @Column(name="profile", nullable = false, length = 256)
+    @Column(nullable = false, length = 256)
     private String profile;
 }

@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.model;
+package com.pingpong.backend.api.entity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,7 +8,6 @@ import java.util.Date;
 public class LogEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_id")
     private int logId;
 
     @ManyToOne
@@ -19,7 +18,7 @@ public class LogEntity {
     @JoinColumn(name="student_id", nullable = false)
     private StudentEntity studententity;
 
-    @Column(name = "reg_date", nullable = false, columnDefinition = "DATE")
+    @Column(nullable = false, columnDefinition = "DATE")
     private Date regDate;
 
     @Column(nullable = false)
@@ -28,6 +27,6 @@ public class LogEntity {
     @Column(nullable = false)
     private boolean attendance;
 
-    @Column(name = "present_cnt", nullable = false)
+    @Column(nullable = false)
     private int presentCnt;
 }
