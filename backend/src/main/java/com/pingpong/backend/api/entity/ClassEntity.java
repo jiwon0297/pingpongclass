@@ -23,9 +23,6 @@ public class ClassEntity {
     @Column(nullable = false, length = 20)
     private String classTitle;
 
-    @Column(nullable = false, length = 50)
-    private String classDesc;
-
     @Column(nullable = false)
     private byte classDay;
 }
