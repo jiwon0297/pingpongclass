@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.controller;
+package com.pingpong.backend.controller;
 
 import com.pingpong.backend.api.entity.User;
 import com.pingpong.backend.api.repository.UserRepository;
