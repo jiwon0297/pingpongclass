@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.entity;
+package com.pingpong.backend.api.domain;
 
 
 import javax.persistence.*;

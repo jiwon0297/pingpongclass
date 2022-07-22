@@ -1,7 +1,6 @@
 package com.pingpong.backend.api.controller;
 
-import com.pingpong.backend.api.entity.User;
-import com.pingpong.backend.api.repository.UserRepository;
+import com.pingpong.backend.api.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
