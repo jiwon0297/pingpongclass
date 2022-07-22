@@ -3,6 +3,8 @@ package com.pingpong.backend.api.service;
 import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.*;
+import com.pingpong.backend.api.domain.request.NoticeRequest;
+import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.repository.ClassRepository;
 import com.pingpong.backend.api.repository.NoticeRepository;
 import com.pingpong.backend.api.repository.TeacherRepository;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
