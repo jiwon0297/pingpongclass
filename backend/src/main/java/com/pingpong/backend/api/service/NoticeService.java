@@ -47,9 +47,9 @@ public class NoticeService {
         List<NoticeEntity> noticelist = new ArrayList<>();
         if(classId!=-1 && titleSearch!=null){
             ClassEntity classentity = classRepository.getOne(classId);
-            noticelist = noticeRepository.findByClassEntityAndTitleContaining(classentity, "%"+titleSearch+"%", sort);
+            noticelist = noticeRepository.findByClassEntityAndTitleContaining(classentity, titleSearch, sort);
         } else if(classId==-1 && titleSearch!=null){
-            noticelist = noticeRepository.findByTitleContaining("%"+titleSearch+"%", sort);
+            noticelist = noticeRepository.findByTitleContaining(titleSearch, sort);
         } else if(classId!=-1 && titleSearch==null){
             ClassEntity classentity = classRepository.getOne(classId);
             noticelist = noticeRepository.findByClassEntity(classentity, sort);
@@ -74,9 +74,9 @@ public class NoticeService {
         List<NoticeEntity> result = new ArrayList<>();
         if(classId!=-1 && titleSearch!=null){
             ClassEntity classentity = classRepository.getOne(classId);
-            result = noticeRepository.findByClassEntityAndTitleContaining(classentity, "%"+titleSearch+"%", sort);
+            result = noticeRepository.findByClassEntityAndTitleContaining(classentity, titleSearch, sort);
         } else if(classId==-1 && titleSearch!=null){
-            result = noticeRepository.findByTitleContaining("%"+titleSearch+"%", sort);
+            result = noticeRepository.findByTitleContaining(titleSearch, sort);
         } else if(classId!=-1 && titleSearch==null){
             ClassEntity classentity = classRepository.getOne(classId);
             result = noticeRepository.findByClassEntity(classentity, sort);

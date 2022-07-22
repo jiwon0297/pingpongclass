@@ -18,7 +18,7 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @ApiOperation(value = "공지사항 작성", notes = "teacherId, classId, title, content를 이용하여 공지사항을 작성합니다.")
-    @PostMapping("/api")
+    @PostMapping("")
     public int save(@RequestBody final NoticeRequest params){
         return noticeService.save(params);
     }
@@ -31,7 +31,7 @@ public class NoticeController {
 
     @ApiOperation(value = "공지사항 조회 및 검색", notes = "공지사항을 조회하고, 필터에 따라 검색합니다.")
     @GetMapping("/list")
-    public List<NoticeResponse> select(@RequestParam(value="type") int type, @RequestParam(value="userId") int userId, @RequestParam(value="classId") int classId, @RequestParam(value="titleSearch") String titleSearch){
+    public List<NoticeResponse> select(@RequestParam(value="type") int type, @RequestParam(value="userId") int userId, @RequestParam(value="classId") int classId, @RequestParam(value="titleSearch", required = false) String titleSearch){
         List<NoticeResponse> result = new ArrayList<>();
         if(type==1){
             //관리자일 때
