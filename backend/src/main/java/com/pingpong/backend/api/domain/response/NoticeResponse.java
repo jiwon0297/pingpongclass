@@ -1,10 +1,11 @@
 package com.pingpong.backend.api.domain.response;
 
+import com.pingpong.backend.api.domain.ClassEntity;
 import com.pingpong.backend.api.domain.NoticeEntity;
+import com.pingpong.backend.api.domain.TeacherEntity;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-
 @Getter
 public class NoticeResponse {
     private int noticeId;

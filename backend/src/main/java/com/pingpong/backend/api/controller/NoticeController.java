@@ -42,9 +42,9 @@ public class NoticeController {
             else {
                 result = noticeService.findTeacher(userId, classId, titleSearch);
             }
-        //학생일 때
+            //학생일 때
         } else if(type==0){
-
+            result = noticeService.findStudent(userId, classId, titleSearch);
         }
 
         return result;
