@@ -44,7 +44,7 @@ public class NoticeController {
             }
             //학생일 때
         } else if(type==0){
-
+            result = noticeService.findStudent(userId, classId, titleSearch);
         }
 
         return result;

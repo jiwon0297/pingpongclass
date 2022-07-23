@@ -5,9 +5,7 @@ import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.request.NoticeRequest;
 import com.pingpong.backend.api.domain.response.NoticeResponse;
-import com.pingpong.backend.api.repository.ClassRepository;
-import com.pingpong.backend.api.repository.NoticeRepository;
-import com.pingpong.backend.api.repository.TeacherRepository;
+import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,8 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
     private final TeacherRepository teacherRepository;
     private final ClassRepository classRepository;
+    private final StudentRepository studentRepository;
+    private final ClassStudentRepository classStudentRepository;
 
     //공지사항 작성
     @Transactional
@@ -68,6 +68,7 @@ public class NoticeService {
         }
         return result.stream().map(NoticeResponse::new).collect(Collectors.toList());
     }
+
     //공지사항 리스트 조회 및 검색(관리자)
     public List<NoticeResponse> findAll(final int classId, final String titleSearch){
         Sort sort = Sort.by(Sort.Direction.DESC, "noticeId", "regtime");
@@ -85,6 +86,36 @@ public class NoticeService {
         }
         return result.stream().map(NoticeResponse::new).collect(Collectors.toList());
     }
+
+    //공지사항 리스트 조회 및 검색(학생)
+    public List<NoticeResponse> findStudent(final int studentId, final int classId, final String titleSearch){
+        Sort sort = Sort.by(Sort.Direction.DESC, "noticeId", "regtime");
+        StudentEntity studentEntity = studentRepository.getOne(studentId);
+        List<ClassStudentEntity> classstudentlist = classStudentRepository.findByStudentEntity(studentEntity);
+        List<NoticeEntity> noticelist = new ArrayList<>();
+        if(classId!=-1 && titleSearch!=null){
+            ClassEntity classentity = classRepository.getOne(classId);
+            noticelist = noticeRepository.findByClassEntityAndTitleContaining(classentity, titleSearch, sort);
+        } else if(classId==-1 && titleSearch!=null){
+            noticelist = noticeRepository.findByTitleContaining(titleSearch, sort);
+        } else if(classId!=-1 && titleSearch==null){
+            ClassEntity classentity = classRepository.getOne(classId);
+            noticelist = noticeRepository.findByClassEntity(classentity, sort);
+        } else {
+            noticelist = noticeRepository.findAll(sort);
+        }
+
+        List<NoticeEntity> result = new ArrayList<>();
+        for(ClassStudentEntity classsstudententity : classstudentlist) {
+            for (NoticeEntity noticeentity : noticelist) {
+                if (classsstudententity.getClassEntity().equals(noticeentity.getClassEntity())) {
+                    result.add(noticeentity);
+                }
+            }
+        }
+        return result.stream().map(NoticeResponse::new).collect(Collectors.toList());
+    }
+
     //공지사항 페이지네이션
 
     //공지사항 수정
