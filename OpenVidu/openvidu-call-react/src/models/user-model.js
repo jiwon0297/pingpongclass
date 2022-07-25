@@ -1,3 +1,4 @@
+// UserModel: 각 유저마다 어떤 상태인지를 확인하기 위한 유저 기본 클래스(모델)
 class UserModel {
     connectionId;
     audioActive;

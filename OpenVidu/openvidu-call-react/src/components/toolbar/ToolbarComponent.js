@@ -36,40 +36,48 @@ export default class ToolbarComponent extends Component {
         this.toggleChat = this.toggleChat.bind(this);
     }
 
-
+    // micStatusChanged: 마이크 상태변화 토글 함수
     micStatusChanged() {
         this.props.micStatusChanged();
     }
 
+    // camStatusChanged: 캠 상태변화 토글 함수
     camStatusChanged() {
         this.props.camStatusChanged();
     }
 
+    // screenShare: 스크린쉐어 시작 함수
     screenShare() {
         this.props.screenShare();
     }
 
+    // screenShare: 스크린쉐어 중지 함수
     stopScreenShare() {
         this.props.stopScreenShare();
     }
 
+    // toggleFullscreen: 전체화면 토글 버튼
     toggleFullscreen() {
         this.setState({ fullscreen: !this.state.fullscreen });
         this.props.toggleFullscreen();
     }
 
+    // switchCamera: 카메라 변경 함수
     switchCamera() {
         this.props.switchCamera();
     }
 
+    // leaveSession: 세션 이탈 함수
     leaveSession() {
         this.props.leaveSession();
     }
 
+    // toggleChat: 채팅 토글 함수
     toggleChat() {
         this.props.toggleChat();
     }
 
+    // render: 렌더링 함수
     render() {
         const mySessionId = this.props.sessionId;
         const localUser = this.props.user;

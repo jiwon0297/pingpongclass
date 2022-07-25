@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import HighlightOff from '@material-ui/icons/HighlightOff';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
+// StreamComponent: 스트림된 요소들을 컨트롤하는 요소들을 담은 컴포넌트
 export default class StreamComponent extends Component {
     constructor(props) {
         super(props);
@@ -23,21 +24,26 @@ export default class StreamComponent extends Component {
         this.toggleSound = this.toggleSound.bind(this);
     }
 
+    // handleChange: 닉네임 변경할 때 실시간으로 저장되는 이벤트 핸들러
     handleChange(event) {
         this.setState({ nickname: event.target.value });
         event.preventDefault();
     }
 
+    // toggleNicknameForm: 닉네임을 변경할 수 있는 토글 버튼 함수
     toggleNicknameForm() {
         if (this.props.user.isLocal()) {
             this.setState({ showForm: !this.state.showForm });
         }
     }
 
+    // toggleSound: 사운드를 뮤트하거나 풀 수 있는 토글 버튼 함수
     toggleSound() {
         this.setState({ mutedSound: !this.state.mutedSound });
     }
 
+    // handlePressKey: 키를 눌렀을 때 동작하는 이벤트핸들러
+    // 수정 필요 - 수정을 하지 않아도 edit이 추가되는 문제 발생
     handlePressKey(event) {
         if (event.key === 'Enter') {
             console.log(this.state.nickname);
@@ -51,9 +57,11 @@ export default class StreamComponent extends Component {
         }
     }
 
+    // render: 렌더링 담당 함수
     render() {
         return (
             <div className="OT_widget-container">
+                {/* 닉네임창 */}
                 <div className="pointer nickname">
                     {this.state.showForm ? (
                         <FormControl id="nicknameForm">
@@ -86,6 +94,7 @@ export default class StreamComponent extends Component {
                     )}
                 </div>
 
+                {/* 영상 출력 부분 */}
                 {this.props.user !== undefined && this.props.user.getStreamManager() !== undefined ? (
                     <div className="streamComponent">
                         <OvVideoComponent user={this.props.user} mutedSound={this.state.mutedSound} />

@@ -1,9 +1,11 @@
 import $ from 'jquery';
 
+// OpenViduLayout: 화상연결화면의 레이아웃을 담당하는 클래스
 class OpenViduLayout {
   layoutContainer;
   opts ;
 
+  // fixAspectRatio: 요소의 비율을 설정하는 함수
   fixAspectRatio(elem, width) {
     const sub = elem.querySelector('.OT_root');
     if (sub) {
@@ -17,7 +19,8 @@ class OpenViduLayout {
     }
   }
 
- positionElement(elem, x, y, width, height, animate) {
+  // positionElement: 요소의 위치를 결정하는 함수
+  positionElement(elem, x, y, width, height, animate) {
     const targetPosition = {
       left: x + 'px',
       top: y + 'px',
@@ -41,6 +44,7 @@ class OpenViduLayout {
     this.fixAspectRatio(elem, width);
   }
 
+  // getVideoRatio: 비디오 비율을 가져오는 함수
   getVideoRatio(elem) {
     if (!elem) {
       return 3 / 4;
@@ -54,26 +58,31 @@ class OpenViduLayout {
     return 3 / 4;
   }
 
+  // getCSSNumber: CSS번호를 반환하는 함수 ? 어디에 쓰는지 잘 모르겠음
    getCSSNumber(elem, prop) {
     const cssStr = $(elem).css(prop);
     return cssStr ? parseInt(cssStr, 10) : 0;
   }
 
   // Really cheap UUID function
+  // cheapUUID: UUID 생성하는 함수
    cheapUUID() {
     return (Math.random() * 100000000).toFixed(0);
   }
 
+  // getHeight: 요소의 높이를 반환하는 함수
    getHeight(elem) {
     const heightStr = $(elem).css('height');
     return heightStr ? parseInt(heightStr, 10) : 0;
   }
 
+  // getHeight: 요소의 너비를 반환하는 함수
    getWidth(elem) {
     const widthStr = $(elem).css('width');
     return widthStr ? parseInt(widthStr, 10) : 0;
   }
 
+  // getBestDimensions: 요소들을 가장 적절하게 배치하기 위한 위치를 결정해서 반환해주는 함수
    getBestDimensions(minR , maxR , count , WIDTH, HEIGHT, targetHeight) {
     let maxArea, targetCols, targetRows, targetWidth, tWidth, tHeight, tRatio;
 
@@ -119,6 +128,7 @@ class OpenViduLayout {
     };
   }
 
+  // arrange: 실제로 적절한 위치에 요소들을 배열해주는 함수
    arrange(
     children,
     WIDTH,
@@ -251,10 +261,12 @@ class OpenViduLayout {
     }
   }
 
- filterDisplayNone(element) {
+  // filterDisplayNone: display 속성이 None인 요소들을 필터링해주는 함수
+  filterDisplayNone(element) {
     return element.style.display !== 'none';
   }
 
+  // updateLayout: 레이아웃을 업데이트해주는 함수(display가 none인 요소들은 null처리, 그게 아니라면 id에 UUID 부여 후 업데이트)
   updateLayout() {
     if (this.layoutContainer.style.display === 'none') {
       return;
@@ -384,6 +396,7 @@ class OpenViduLayout {
     }
   }
 
+  // initLayoutContainer: 초기 레이아웃
   initLayoutContainer(container, opts) {
     this.opts = {
       maxRatio: opts.maxRatio != null ? opts.maxRatio : 3 / 2,
@@ -400,6 +413,7 @@ class OpenViduLayout {
     this.layoutContainer = typeof container === 'string' ? $(container) : container;
   }
 
+  // setLayoutOptions: 옵션 설정
   setLayoutOptions(options) {
     this.opts = options;
   }
