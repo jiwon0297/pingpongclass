@@ -1,15 +1,16 @@
 package com.pingpong.backend.api.domain;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "student")
 @Table(name="student")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudentEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studentId;
@@ -18,13 +19,13 @@ public class StudentEntity {
     private String name;
 
     @Column(nullable = false)
-    private Byte grade;
+    private int grade;
 
     @Column(nullable = false)
-    private Byte classNum;
+    private int classNum;
 
     @Column(nullable = false)
-    private Byte studentNum;
+    private int studentNum;
 
     @Column(length = 40, unique = true)
     private String email;

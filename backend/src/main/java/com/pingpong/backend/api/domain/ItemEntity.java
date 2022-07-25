@@ -1,5 +1,6 @@
 package com.pingpong.backend.api.domain;
 
+import com.pingpong.backend.api.domain.enums.ItemCategory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,4 +21,13 @@ public class ItemEntity {
 
     @Column(nullable = false)
     private byte rarity;
+
+//    @Column(nullable = false)
+//    private byte category;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
+    private ItemCategory category;
+
+    @Column(nullable = false)
+    private String describe;
 }
