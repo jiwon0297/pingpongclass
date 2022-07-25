@@ -35,7 +35,7 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<?> register(@RequestBody StudentEntity student){
         try{
-            student.setPassword(getRamdomPassword(10));
+            student.updateRandomPassword(getRamdomPassword(10));
             service.register(student);
             return new ResponseEntity<String>("학생정보 입력 성공",HttpStatus.OK);
         } catch(Exception e){
@@ -79,7 +79,7 @@ public class StudentController {
                 spec = spec.and(StudentSpecification.equalGrade(grade));
             }
             if(classNum != null){
-                spec = spec.and(StudentSpecification.equalGrade(classNum));
+                spec = spec.and(StudentSpecification.equalClassNum(classNum));
             }
             if(name != null){
                 spec = spec.and(StudentSpecification.equalName(name));
@@ -97,10 +97,10 @@ public class StudentController {
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
         Optional<StudentEntity> student = service.findByStudentId(studentId);
 
-        if(student==null){
-            return new ResponseEntity<String>("해당 학생이 존재하지 않습니다.",HttpStatus.FORBIDDEN);
-        } else{
+        if(student.isPresent()){
             return new ResponseEntity<Optional<StudentEntity>>(student, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<String>("해당 학생이 존재하지 않습니다.",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -115,6 +115,17 @@ public class StudentController {
         }
     }
 
+//    @PatchMapping
+//    @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
+//    public ResponseEntity<String> modify(@RequestBody StudentEntity student){
+//        try {
+//            service.modify(student);
+//            return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<String>("학생 정보수정 실패", HttpStatus.FORBIDDEN);
+//        }
+//    }
+
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
     public ResponseEntity<String> modify(@RequestBody StudentEntity student){
@@ -126,27 +137,27 @@ public class StudentController {
         }
     }
 
-    @PatchMapping("/email")
-    @ApiOperation(value = "학생 이메일 수정", notes = "이메일 수정")
-    public ResponseEntity<String> modifyEmail (@RequestBody StudentEntity student){
-        try {
-            service.modifyEmail(student.getStudentId(), student.getEmail());
-            return new ResponseEntity<String>("학생 이메일 수정 성공.", HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<String>("학생 이메일 수정  실패", HttpStatus.FORBIDDEN);
-        }
-    }
-
-    @PatchMapping("/introduce")
-    @ApiOperation(value = "학생 자기소개 수정", notes = "자기소개 수정")
-    public ResponseEntity<String> modifyIntroduce (@RequestBody StudentEntity student){
-        try {
-            service.modifyIntroduce(student.getStudentId(), student.getIntroduce());
-            return new ResponseEntity<String>("학생 자기소개 수정 성공.", HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<String>("학생 자기소개 수정  실패", HttpStatus.FORBIDDEN);
-        }
-    }
+//    @PatchMapping("/email")
+//    @ApiOperation(value = "학생 이메일 수정", notes = "이메일 수정")
+//    public ResponseEntity<String> modifyEmail (@RequestBody StudentEntity student){
+//        try {
+//            service.modifyEmail(student.getStudentId(), student.getEmail());
+//            return new ResponseEntity<String>("학생 이메일 수정 성공.", HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<String>("학생 이메일 수정  실패", HttpStatus.FORBIDDEN);
+//        }
+//    }
+//
+//    @PatchMapping("/introduce")
+//    @ApiOperation(value = "학생 자기소개 수정", notes = "자기소개 수정")
+//    public ResponseEntity<String> modifyIntroduce (@RequestBody StudentEntity student){
+//        try {
+//            service.modifyIntroduce(student.getStudentId(), student.getIntroduce());
+//            return new ResponseEntity<String>("학생 자기소개 수정 성공.", HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<String>("학생 자기소개 수정  실패", HttpStatus.FORBIDDEN);
+//        }
+//    }
 
     @DeleteMapping("/{studentId}")
     @ApiOperation(value = "학생 삭제", notes = "학생정보 삭제")
@@ -170,7 +181,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/point/{studentId}")
+    @GetMapping("/points/{studentId}")
     @ApiOperation(value = "히트맵을 위한 스티커 내역", notes = "한 학생의 스티커 내역")
     public ResponseEntity<?> getPoint(@PathVariable int studentId){
         try{
@@ -180,5 +191,17 @@ public class StudentController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+
+    @PatchMapping("/points/{point}")
+    @ApiOperation(value = "학생 스티커 개수 수정", notes = "point만큼 추가하거나 빼거나")
+    public ResponseEntity<?> updatePoint(@RequestParam int studentId, @PathVariable int point){
+        try{
+            service.updatePoint(studentId, point);
+            return new ResponseEntity<String>("퐁퐁 수정 성공" , HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 
 }

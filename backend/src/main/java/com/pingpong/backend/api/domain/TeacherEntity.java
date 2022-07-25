@@ -14,10 +14,10 @@ import javax.persistence.*;
 //@AllArgsConstructor
 //@NoArgsConstructor
 
-@Entity
+@Entity(name = "teacher")
+@Table(name = "teacher")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="teacher")
 public class TeacherEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,4 +42,20 @@ public class TeacherEntity {
         this.password = password;
         this.profile = profile;
     }
+
+    public void updateRandomPassword(String password){
+        this.password = password;
+    }
+
+    public void updateFirstEmail(String email){
+        this.email = email;
+    }
+
+    public void modifyTeacher(TeacherEntity teacher){
+        this.name = teacher.getName();
+        this.email = teacher.getEmail();
+        this.password = teacher.getPassword();
+        this.profile = teacher.getProfile();
+    }
+
 }

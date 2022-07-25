@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.domain.response;
+package com.pingpong.backend.api.domain.request.response;
 
 import com.pingpong.backend.api.domain.RecordEntity;
 import lombok.Getter;

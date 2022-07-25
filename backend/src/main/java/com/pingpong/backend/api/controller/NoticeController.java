@@ -1,7 +1,7 @@
 package com.pingpong.backend.api.controller;
 
 import com.pingpong.backend.api.domain.request.NoticeRequest;
-import com.pingpong.backend.api.domain.response.NoticeResponse;
+import com.pingpong.backend.api.domain.request.response.NoticeResponse;
 import com.pingpong.backend.api.service.NoticeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

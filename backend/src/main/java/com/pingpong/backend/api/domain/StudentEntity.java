@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity(name = "student")
 @Table(name="student")
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudentEntity {
     @Id
@@ -57,4 +56,38 @@ public class StudentEntity {
         this.totalPoint=totalPoint;
         this.introduce=introduce;
     }
+
+    public void updateRandomPassword(String password){
+        this.password = password;
+    }
+
+    public void updatePoint(int point) {
+        this.point += point;
+        this.totalPoint += point;
+    }
+
+    public void modifyStudent(StudentEntity entity){
+        if(entity.getName()!=null){
+            this.name = entity.getName();
+        }
+        if(entity.getGrade()!=0){
+            this.grade = entity.getGrade();
+        }
+        if(entity.getClassNum()!=0){
+            this.classNum = entity.getClassNum();
+        }
+        if(entity.getStudentNum()!=0){
+            this.studentNum = entity.getStudentNum();
+        }
+        if(entity.getEmail()!=null){
+            this.email = entity.getEmail();
+        }
+        if(entity.getPassword()!=null){
+            this.password = entity.getPassword();
+        }
+        if(entity.getIntroduce()!=null){
+            this.introduce = entity.getIntroduce();
+        }
+    }
+
 }

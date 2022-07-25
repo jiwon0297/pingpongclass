@@ -18,6 +18,7 @@ public class StudentServiceImpl implements StudentService{
     private final StudentRepository repository;
 
     @Override
+    @Transactional
     public void register(StudentEntity student) {
         repository.save(student);
     }
@@ -33,26 +34,30 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void modify(StudentEntity student) {
-        repository.save(student);
-    }
-
     @Transactional
-    @Override
-    public void modifyEmail(int studentId, String email) {
-        StudentEntity studentEntity = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-        studentEntity.setEmail(email);
-        repository.save(studentEntity);
+    public void modify(StudentEntity student) {
+        StudentEntity studentEntity = repository.findById(student.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+        studentEntity.modifyStudent(student);
     }
+//
+//    @Override
+//    @Transactional
+//    public void modifyEmail(int studentId, String email) {
+//        StudentEntity studentEntity = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+//        studentEntity.setEmail(email);
+//        repository.save(studentEntity);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void modifyIntroduce(int studentId, String introduce) {
+//        StudentEntity studentEntity = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+//        studentEntity.setIntroduce(introduce);
+//        repository.save(studentEntity);
+//    }
 
     @Override
-    public void modifyIntroduce(int studentId, String introduce) {
-        StudentEntity studentEntity = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-        studentEntity.setIntroduce(introduce);
-        repository.save(studentEntity);
-    }
-
-    @Override
+    @Transactional
     public void delete(int studentId) {
         repository.deleteById(studentId);
     }
@@ -66,4 +71,13 @@ public class StudentServiceImpl implements StudentService{
     public List<LogEntity> getPoint(int studentId) {
         return repository.getPoint(studentId);
     }
+
+    @Override
+    @Transactional
+    public void updatePoint(int studentId, int point) {
+        StudentEntity student = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+        student.updatePoint(point);
+    }
+
+
 }
