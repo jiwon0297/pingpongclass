@@ -1,6 +1,5 @@
 package com.pingpong.backend.api.repository;
 
-<<<<<<< HEAD
 import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 
@@ -29,11 +28,4 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     @Query(value="SELECT regDate, SUM(point) point FROM log WHERE studentId = :studentId GROUP BY reg_date", nativeQuery = true)
     List<LogEntity> getPoint(@Param("studentId") int studentId);
 }
-=======
-import com.pingpong.backend.api.domain.StudentEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-
-public interface StudentRepository extends JpaRepository<StudentEntity, Integer> {
-}
->>>>>>> 093f8fe857537038726bd23b01c13814c986ffa5
