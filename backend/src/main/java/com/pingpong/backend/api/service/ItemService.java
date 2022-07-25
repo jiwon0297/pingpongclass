@@ -14,4 +14,7 @@ public interface ItemService {
 
     //아이템 사용
     void delete(int studentId, int itemId) throws Exception;
+
+    //칭찬스티커 사용
+    int updatePoint(int studentId) throws Exception;
 }

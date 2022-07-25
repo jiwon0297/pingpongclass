@@ -2,10 +2,8 @@ package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
-import com.pingpong.backend.api.domain.ItemEntity;
-import com.pingpong.backend.api.domain.ItemStudentEntity;
-import com.pingpong.backend.api.domain.NoticeEntity;
-import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.domain.*;
+import com.pingpong.backend.api.domain.request.NoticeRequest;
 import com.pingpong.backend.api.domain.response.ItemStudentResponse;
 import com.pingpong.backend.api.repository.ItemRepository;
 import com.pingpong.backend.api.repository.ItemStudentRepository;
@@ -49,5 +47,13 @@ public class ItemServiceImpl implements ItemService{
         ItemEntity item = itemRepository.getOne(itemId);
         ItemStudentEntity entity = itemStudentRepository.findFirstByStudentEntityAndItemEntity(student, item);
         itemStudentRepository.delete(entity);
+    }
+
+    //칭찬스티커 사용
+    @Transactional
+    public int updatePoint(final int studentId){
+        StudentEntity entity = studentRepository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+        entity.updatePoint(entity.getPoint()-5);
+        return entity.getPoint();
     }
 }
