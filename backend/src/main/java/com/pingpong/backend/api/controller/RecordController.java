@@ -1,7 +1,7 @@
 package com.pingpong.backend.api.controller;
 
 import com.pingpong.backend.api.domain.request.RecordRequest;
-import com.pingpong.backend.api.domain.request.response.RecordResponse;
+import com.pingpong.backend.api.domain.response.RecordResponse;
 import com.pingpong.backend.api.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -4,7 +4,7 @@ import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.request.ClassRequest;
-import com.pingpong.backend.api.domain.request.response.ClassResponse;
+import com.pingpong.backend.api.domain.response.ClassResponse;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

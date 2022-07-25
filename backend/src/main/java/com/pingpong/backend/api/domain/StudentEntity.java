@@ -57,6 +57,7 @@ public class StudentEntity {
         this.introduce=introduce;
     }
 
+
     public void updateRandomPassword(String password){
         this.password = password;
     }
@@ -89,5 +90,7 @@ public class StudentEntity {
             this.introduce = entity.getIntroduce();
         }
     }
-
+    public void usePoint(int point){
+        this.point=point;
+    }
 }

@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.domain.request.response;
+package com.pingpong.backend.api.domain.response;
 
 import com.pingpong.backend.api.domain.ClassEntity;
 import com.pingpong.backend.api.domain.NoticeEntity;

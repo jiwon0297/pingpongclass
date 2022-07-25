@@ -4,7 +4,7 @@ import com.pingpong.backend.api.domain.ClassEntity;
 import com.pingpong.backend.api.domain.RecordEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.RecordRequest;
-import com.pingpong.backend.api.domain.request.response.RecordResponse;
+import com.pingpong.backend.api.domain.response.RecordResponse;
 import com.pingpong.backend.api.repository.ClassRepository;
 import com.pingpong.backend.api.repository.RecordRepository;
 import com.pingpong.backend.api.repository.SubjectRepository;
