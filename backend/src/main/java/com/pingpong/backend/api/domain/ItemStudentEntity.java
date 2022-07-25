@@ -17,9 +17,9 @@ public class ItemStudentEntity {
 
     @ManyToOne
     @JoinColumn(name="student_id", nullable = false)
-    private StudentEntity student;
+    private StudentEntity studentEntity;
 
     @ManyToOne
     @JoinColumn(name="item_id", nullable = false)
-    private ItemEntity item;
+    private ItemEntity itemEntity;
 }
