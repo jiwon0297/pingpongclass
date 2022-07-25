@@ -34,9 +34,9 @@ public class StoreController {
     }
 
     @ApiOperation(value = "아이템 사용", notes = "선택한 아이템을 사용합니다.")
-    @DeleteMapping("/{studenIt}/{itemId}")
+    @DeleteMapping("/{studentId}/{itemId}")
     public List<ItemStudentResponse> delete(@PathVariable final int studentId, @PathVariable final int itemId) throws Exception{
-        delete(studentId, itemId);
+        itemService.delete(studentId, itemId);
         return itemService.findItemById(studentId);
     }
 

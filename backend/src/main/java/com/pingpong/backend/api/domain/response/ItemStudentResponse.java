@@ -2,7 +2,9 @@ package com.pingpong.backend.api.domain.response;
 
 import com.pingpong.backend.api.domain.ItemEntity;
 import com.pingpong.backend.api.domain.enums.ItemCategory;
+import lombok.Getter;
 
+@Getter
 public class ItemStudentResponse {
     private int itemId;
     private String name;

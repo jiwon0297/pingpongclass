@@ -17,13 +17,18 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService{
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
     private ItemStudentRepository itemStudentRepository;
 
     //전체 아이템 목록 조회
@@ -48,6 +53,7 @@ public class ItemServiceImpl implements ItemService{
     @Transactional
     public void delete(final int studentId, final int itemId){
         StudentEntity student = studentRepository.getOne(studentId);
+        System.out.println(student.toString());
         ItemEntity item = itemRepository.getOne(itemId);
         ItemStudentEntity entity = itemStudentRepository.findFirstByStudentEntityAndItemEntity(student, item);
         itemStudentRepository.delete(entity);
