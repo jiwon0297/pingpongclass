@@ -48,10 +48,9 @@ public class ClassService {
     //수업 수정
 
     //수업 목록 조회
-    public List<ClassResponse> findbyClassResponses(final String userId){
-        ClassEntity classEntity = classRepository.getById(Integer.parseInt(userId));
+    public List<ClassResponse> findClassesById(final int userId){
         List<ClassResponse> list = new ArrayList<>();
-        if(userId.length()>5) {// 학생일때
+        if(userId<500000) {// 학생일때
 
         }else{
 
