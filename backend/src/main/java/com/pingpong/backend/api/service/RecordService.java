@@ -29,7 +29,7 @@ public class RecordService {
 
     //강의 다시보기 저장
     @Transactional
-    public void saveRecord(final RecordRequest req){
+    public void save(final RecordRequest req){
         ClassEntity classEntity = classRepository.getOne(req.getClassId());
         TeacherEntity teacherEntity = teacherRepository.getOne(req.getTeacherId());
         RecordEntity recordEntity = RecordEntity.builder()
@@ -40,14 +40,14 @@ public class RecordService {
         RecordEntity entity = recordRepository.save(recordEntity);
     }
     //강의다시보기 목록 조회 및 검색(학생)
-    public List<RecordResponse> findRecordsForStudent(final String studentId,  String classTitle){
+    public List<RecordResponse> findRecordsForStudent(final int studentId,  String classTitle){
         List<RecordResponse> list = new ArrayList<>();
         return list;
     }
 
     //강의다시보기 목록
     // (선생님)
-    public List<RecordResponse> findRecordsForTeacher(final String teacherId){
+    public List<RecordResponse> findRecordsForTeacher(final int teacherId){
         List<RecordResponse> list = new ArrayList<>();
         return list;
     }
