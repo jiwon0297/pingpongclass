@@ -148,20 +148,27 @@ export default class ChatComponent extends Component {
             ))}
           </div>
           {/* 메시지 입력창 */}
-          <div id="messageInput">
-            <input
-              placeholder="채팅 메세지를 입력하세요."
-              id="chatInput"
-              value={this.state.message}
-              onChange={this.handleChange}
-              onKeyPress={this.handlePressKey}
-            />
-            <img
-              src={Send}
-              id="sendButton"
-              alt="전송버튼"
-              onClick={this.sendMessage}
-            />
+          <div id="sendto">
+            <div id="selectReceiver">
+              <select>
+                <option>전체에게</option>
+              </select>
+            </div>
+            <div id="messageInput">
+              <textarea
+                placeholder="채팅 메세지를 입력하세요."
+                id="chatInput"
+                value={this.state.message}
+                onChange={this.handleChange}
+                onKeyPress={this.handlePressKey}
+              />
+              <img
+                src={Send}
+                id="sendButton"
+                alt="전송버튼"
+                onClick={this.sendMessage}
+              />
+            </div>
           </div>
         </div>
       </div>

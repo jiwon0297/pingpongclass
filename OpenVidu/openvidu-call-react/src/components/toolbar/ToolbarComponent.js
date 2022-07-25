@@ -22,6 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 const logo = require('../../assets/images/openvidu_logo.png');
 
+// ToolbarComponent: 툴바 관련 컴포넌트
 export default class ToolbarComponent extends Component {
     constructor(props) {
         super(props);

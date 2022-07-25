@@ -12,7 +12,7 @@ class OpenViduLayout {
       // If this is the parent of a subscriber or publisher then we need
       // to force the mutation observer on the publisher or subscriber to
       // trigger to get it to fix it's layout
-      const oldWidth = sub.style.width;
+      const oldWidth = sub.style.width + 50;
       sub.style.width = width + 'px';
       // sub.style.height = height + 'px';
       sub.style.width = oldWidth || '';
@@ -222,6 +222,7 @@ class OpenViduLayout {
     // Iterate through each row and place each child
     for (let i = 0; i < rows.length; i++) {
       row = rows[i];
+      console.log(row.width, "adfadfadfaf");
       // center the row
       const rowMarginLeft = (WIDTH - row.width) / 2;
       x = rowMarginLeft;

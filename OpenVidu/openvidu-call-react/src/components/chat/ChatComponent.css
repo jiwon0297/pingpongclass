@@ -162,30 +162,41 @@ span.triangle {
 
 /* End my messages */
 
+/* 내가 보낼 메시지창 */
+#selectReceiver {
+  position: absolute;
+  left: 3%;
+  bottom: 20%;
+  width: 80%;
+}
+
 #messageInput {
   position: absolute;
   left: 3%;
   bottom: 2%;
   width: 94%;
-  height: 20px;
+  height: 4rem;
   background-color: #696969;
   text-align: center;
   padding: 10px 0px;
   border-radius: 1rem;
 }
 
-#messageInput input {
+#messageInput textarea {
   background-color: #696969;
-  width: 80%;
-  height: 100%;
+  width: 85%;
+  height: 4rem;
+  resize: none;
   border: none;
   outline: none;
   font-size: 14px;
-  margin-left: -6%;
   color: #ffffff;
+  overflow: scroll;
+  word-break: break-all;
+  /* white-space: pre-line; */
 }
 
-#messageInput input::placeholder {
+#messageInput textarea::placeholder {
   color: #ffffff;
 }
 

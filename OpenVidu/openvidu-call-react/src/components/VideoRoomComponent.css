@@ -888,3 +888,8 @@
   margin-top: 40px;
 }
   
+.OT_chat {
+  position: absolute;
+  right: 20%;
+  width: 20%;
+}

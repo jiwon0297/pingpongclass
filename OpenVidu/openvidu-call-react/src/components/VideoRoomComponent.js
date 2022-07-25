@@ -19,9 +19,9 @@ class VideoRoomComponent extends Component {
         // OPENVIDU_SERVER_URL: 오픈비두 서버쪽 URL (포트번호는 변경될 수 있음)
         this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
             ? this.props.openviduServerUrl
-            : 'https://' + window.location.hostname + ':4443';
+            : 'https://i7a403.p.ssafy.io';
         // OPENVIDU_SERVER_SECRET: 서버 비밀번호 - 변경할 필요 없음
-        this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret ? this.props.openviduSecret : 'MY_SECRET';
+        this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret ? this.props.openviduSecret : 'pingpongclass403';
         // hasBeenUpdated: 업데이트 여부 판단하는 변수
         this.hasBeenUpdated = false;
         // layout: 현재 레이아웃
@@ -310,7 +310,8 @@ class VideoRoomComponent extends Component {
             // 새롭게 등장한 구독할 객체를 subscriber에 저장
             const subscriber = this.state.session.subscribe(event.stream, undefined);
             // var subscribers = this.state.subscribers;
-            subscriber.subscribeToStreamCreatedon('streamPlaying', (e) => {
+            console.log("USER DATA: " + event.stream.connection.data);
+            subscriber.on("streamPlaying", (e) => {
                 this.checkSomeoneShareScreen();
                 subscriber.videos[0].video.parentElement.classList.remove('custom-class');
             });
@@ -606,7 +607,7 @@ class VideoRoomComponent extends Component {
                 {/* 다이얼로그 */}
                 <DialogExtensionComponent showDialog={this.state.showExtensionDialog} cancelClicked={this.closeDialogExtension} />
 
-                {/* 유저 카메라 화면 */}
+                {/* 유저 카메라 화면과 채팅화면*/}
                 <div id="layout" className="bounds">
                     {localUser !== undefined && localUser.getStreamManager() !== undefined && (
                         <div className="OT_root OT_publisher custom-class" id="localUser">
@@ -619,7 +620,7 @@ class VideoRoomComponent extends Component {
                         </div>
                     ))}
                     {localUser !== undefined && localUser.getStreamManager() !== undefined && (
-                        <div className="OT_root OT_publisher custom-class" style={chatDisplay}>
+                        <div className="OT_publisher OT_chat custom-class" style={chatDisplay}>
                             <ChatComponent
                                 user={localUser}
                                 chatDisplay={this.state.chatDisplay}
