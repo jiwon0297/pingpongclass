@@ -16,7 +16,7 @@ public class ItemStudentResponse {
         this.name = itemEntity.getName();
         this.rarity = itemEntity.getRarity();
         this.category = itemEntity.getCategory();
-        this.describe = itemEntity.getDescribe();
+        this.describe = itemEntity.getItemDescribe();
         this.cnt = cnt;
     }
 }

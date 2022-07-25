@@ -3,6 +3,7 @@ package com.pingpong.backend.api.controller;
 import com.pingpong.backend.api.domain.ItemEntity;
 import com.pingpong.backend.api.domain.response.ItemStudentResponse;
 import com.pingpong.backend.api.service.ItemService;
+import com.pingpong.backend.api.service.ItemServiceImpl;
 import com.pingpong.backend.api.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class StoreController {
-    private final ItemService itemService;
+    private final ItemServiceImpl itemService;
     private final StudentService studentService;
 
     @ApiOperation(value = "전체 아이템 목록 조회", notes = "학생이 뽑을 수 있는 모든 아이템의 목록을 조회한다.")

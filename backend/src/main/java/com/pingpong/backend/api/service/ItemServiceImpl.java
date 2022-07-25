@@ -8,14 +8,18 @@ import com.pingpong.backend.api.domain.response.ItemStudentResponse;
 import com.pingpong.backend.api.repository.ItemRepository;
 import com.pingpong.backend.api.repository.ItemStudentRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService{
     @Autowired
     private ItemRepository itemRepository;
