@@ -1,8 +1,15 @@
 package com.pingpong.backend.api.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="class_student")
 public class ClassStudentEntity {
     @Id
@@ -11,10 +18,15 @@ public class ClassStudentEntity {
 
     @ManyToOne
     @JoinColumn(name="class_id", nullable = false)
-    private ClassEntity classentity;
+    private ClassEntity classEntity;
 
     @ManyToOne
     @JoinColumn(name="student_id", nullable = false)
-    private StudentEntity studententity;
+    private StudentEntity studentEntity;
 
+    @Builder
+    public ClassStudentEntity(StudentEntity studentEntity, ClassEntity classEntity) {
+        this.classEntity=classEntity;
+        this.studentEntity=studentEntity;
+    }
 }
