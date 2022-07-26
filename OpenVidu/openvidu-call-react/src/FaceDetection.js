@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as faceApi from "face-api.js";
-import LoadingBar from "./components/LoadingBar";
+import LoadingBar from "./components/items/LoadingBar";
 
 export default class FaceDetection extends Component {
   video = React.createRef();
@@ -50,20 +50,20 @@ export default class FaceDetection extends Component {
 
     if (result) {
       const happy = result.expressions.happy;
-      let normal = this.state.normal;
+			let normal = this.state.normal
       let smile = this.state.smile;
       this.setState(() => ({ expressions: happy, face: 0 }));
 
       if (happy > 0.9) {
-        normal = 0;
+				normal = 0
         smile += 1;
         if (smile === 3) {
           this.props.smile(true);
         }
       } else {
         smile = 0;
-        normal += 1;
-        if (normal === 3) {
+				normal += 1;
+				if (normal === 3) {
           this.props.smile(false);
         }
       }
@@ -105,20 +105,16 @@ export default class FaceDetection extends Component {
             position: "absolute",
             top: "10px",
             right: "10px",
-            fontSize: "100px",
+						fontSize: "100px",
           }}
         >
-          {!this.state.smile ? null : this.state.smile > 3 ? (
-            "😁"
-          ) : (
-            <LoadingBar />
-          )}
+          {!this.state.smile ? null : (this.state.smile > 3 ? '😁' : <LoadingBar />)}
         </h1>
         <h1
           style={{
             position: "absolute",
-            top: "10px",
-            right: "10px",
+            top: "80px",
+            left: "300px",
             fontSize: "100px",
           }}
         >

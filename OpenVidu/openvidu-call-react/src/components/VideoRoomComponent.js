@@ -6,6 +6,7 @@ import StreamComponent from "./stream/StreamComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import FaceDetection from "../FaceDetection";
+import EmojiFilter from "./items/EmojiFilter"
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -742,6 +743,7 @@ class VideoRoomComponent extends Component {
                 user={sub}
                 streamId={sub.streamManager.stream.streamId}
               />
+							<EmojiFilter user={sub}/>
             </div>
           ))}
           {localUser !== undefined &&
