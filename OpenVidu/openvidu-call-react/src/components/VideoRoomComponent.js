@@ -6,7 +6,7 @@ import StreamComponent from "./stream/StreamComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import FaceDetection from "../FaceDetection";
-import EmojiFilter from "./items/EmojiFilter"
+import EmojiFilter from "./items/EmojiFilter";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -45,10 +45,10 @@ class VideoRoomComponent extends Component {
     this.remotes = [];
     // localUserAccessAllowed:
     this.localUserAccessAllowed = false;
-		// 스마일 유저값
-		let smile = this.props.smile;
-		// 유저 out of angle
-		let outAngle = this.props.outAngle
+    // 스마일 유저값
+    let smile = this.props.smile;
+    // 유저 out of angle
+    let outAngle = this.props.outAngle;
     // 상태값들 (mySessionId: 접속중인 세션이름, myUserName: 내 이름, session: 세션에 대한 정보, localUser: 내 정보, subscribers: 같이 접속한 사람들, chatDisplay: 채팅창 on 여부, currentVideoDevice: 현재 비디오 출력장치)
     this.state = {
       mySessionId: sessionName,
@@ -59,8 +59,8 @@ class VideoRoomComponent extends Component {
       chatDisplay: "none",
       currentVideoDevice: undefined,
       randPick: undefined,
-			smile: smile,
-			outAngle: outAngle,
+      smile: smile,
+      outAngle: outAngle,
     };
 
     // 메서드 바인딩 과정
@@ -96,10 +96,10 @@ class VideoRoomComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     // checkSize: 화면 크기 체크 함수
     this.checkSize = this.checkSize.bind(this);
-		// smile: 웃는 이모지 체크 함수
+    // smile: 웃는 이모지 체크 함수
     this.smile = this.smile.bind(this);
-		// outAngle: 화상인식 가능 여부 체크 함수
-		this.outAngle = this.outAngle.bind(this);
+    // outAngle: 화상인식 가능 여부 체크 함수
+    this.outAngle = this.outAngle.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -449,12 +449,14 @@ class VideoRoomComponent extends Component {
             user.setIsPicked(data.randPick);
             if (data.randPick === this.state.myUserName) {
               alert(this.state.myUserName + "님이 뽑혔습니다!");
+              // localUser.setFrameColor("Red");
+              // this.setState({ localUser: localUser });
             }
           }
-					if (data.isSmileActive !== undefined) {
+          if (data.isSmileActive !== undefined) {
             user.setSmileActive(data.isSmileActive);
           }
-					if (data.isOutAngleActive !== undefined) {
+          if (data.isOutAngleActive !== undefined) {
             user.setOutAngleActive(data.isOutAngleActive);
           }
         }
@@ -690,25 +692,27 @@ class VideoRoomComponent extends Component {
       this.hasBeenUpdated = false;
     }
   }
-	
-	// smile: 유저 웃는얼굴 체크
-	smile(event) {
-		if (event !== localUser.isSmileActive()) {
-			localUser.setSmileActive(!localUser.isSmileActive());
-			localUser.getStreamManager().publishVideo(localUser.isVideoActive());
-			this.sendSignalUserChanged({ isSmileActive: localUser.isSmileActive() });
-			this.setState({ localUser: localUser });
-		}
+
+  // smile: 유저 웃는얼굴 체크
+  smile(event) {
+    if (event !== localUser.isSmileActive()) {
+      localUser.setSmileActive(!localUser.isSmileActive());
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      this.sendSignalUserChanged({ isSmileActive: localUser.isSmileActive() });
+      this.setState({ localUser: localUser });
+    }
   }
 
-	// outAngle: 유저 화면내에 화상인식 여부
-	outAngle(event) {
-		if (event !== localUser.isOutAngleActive()) {
-			localUser.setOutAngleActive(!localUser.isOutAngleActive());
-			localUser.getStreamManager().publishVideo(localUser.isVideoActive());
-			this.sendSignalUserChanged({ isOutAngleActive: localUser.isOutAngleActive() });
-			this.setState({ localUser: localUser });
-		}
+  // outAngle: 유저 화면내에 화상인식 여부
+  outAngle(event) {
+    if (event !== localUser.isOutAngleActive()) {
+      localUser.setOutAngleActive(!localUser.isOutAngleActive());
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      this.sendSignalUserChanged({
+        isOutAngleActive: localUser.isOutAngleActive(),
+      });
+      this.setState({ localUser: localUser });
+    }
   }
 
   // render: 렌더링을 담당하는 함수
@@ -750,7 +754,7 @@ class VideoRoomComponent extends Component {
                   user={localUser}
                   handleNickname={this.nicknameChanged}
                 />
-								<FaceDetection smile={this.smile} outAngle={this.outAngle}/>
+                <FaceDetection smile={this.smile} outAngle={this.outAngle} />
               </div>
             )}
           {this.state.subscribers.map((sub, i) => (
@@ -763,7 +767,7 @@ class VideoRoomComponent extends Component {
                 user={sub}
                 streamId={sub.streamManager.stream.streamId}
               />
-							<EmojiFilter user={sub}/>
+              <EmojiFilter user={sub} />
             </div>
           ))}
           {localUser !== undefined &&
