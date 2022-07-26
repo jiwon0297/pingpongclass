@@ -10,7 +10,7 @@ public interface TeacherRepository extends JpaRepository<TeacherEntity, Integer>
 
     boolean existsByEmail(String email);
 
-    List<TeacherEntity> findByTeacherId(int teacherId);
+    TeacherEntity findByTeacherId(int teacherId);
 
 }
 
