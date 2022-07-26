@@ -6,7 +6,6 @@ export default class EmojiFilter extends Component {
     this.state = { user: this.props.user };
   }
   render() {
-		console.log(this.state.user)
     return (
       <div style={{ position: "relative", height: "100%" }}>
         <h3
@@ -17,7 +16,17 @@ export default class EmojiFilter extends Component {
             right: "0px",
           }}
         >
-          {(this.state.user.smile ? '😁' : null)}
+          {this.state.user.smile ? "😁" : null}
+        </h3>
+        <h3
+          style={{
+            position: "absolute",
+            fontSize: "130px",
+            bottom: "0px",
+            right: "0px",
+          }}
+        >
+          {this.state.user.outAngle ? "🚫" : null}
         </h3>
       </div>
     );

@@ -10,7 +10,7 @@ export default class LoadingBar extends Component {
 						<div className="color"></div>
 					</div>
 				</div>
-				<p className="description">{'😁'} 3초 후 이모지 사용</p>
+				<p className="description">{this.props.msg}</p>
 			</div>
     );
   }

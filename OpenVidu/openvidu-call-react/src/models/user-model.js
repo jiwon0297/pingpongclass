@@ -13,6 +13,7 @@ class UserModel {
   emoji;
   frameColor;
 	smile;
+	outAngle;
 
   constructor() {
     this.connectionId = "";
@@ -27,6 +28,7 @@ class UserModel {
     this.emoji = "";
     this.frameColor = "";
 		this.smile = false;
+		this.outAngle = false;
   }
 	// 추가 함수
 	isSmileActive() {
@@ -35,6 +37,14 @@ class UserModel {
 
 	setSmileActive(isSmile) {
     this.smile = isSmile;
+  }
+
+	isOutAngleActive() {
+    return this.outAngle;
+  }
+
+	setOutAngleActive(isOutAngle) {
+    this.outAngle = isOutAngle;
   }
 
 	// OpenVidu 기본함수
