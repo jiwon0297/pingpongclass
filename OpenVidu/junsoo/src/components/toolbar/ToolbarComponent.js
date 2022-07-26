@@ -53,6 +53,8 @@ export default class ToolbarComponent extends Component {
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
   // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
   pickRandomStudent() {
+    console.log("프랍스");
+    console.log(this.props);
     this.props.pickRandomStudent();
   }
 

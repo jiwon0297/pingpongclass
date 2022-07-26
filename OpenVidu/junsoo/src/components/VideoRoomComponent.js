@@ -20,7 +20,9 @@ class VideoRoomComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //     ? this.props.openviduServerUrl
     //     : 'https://' + window.location.hostname + ':4443';
-    this.OPENVIDU_SERVER_URL = "https://i7a403.p.ssafy.io";
+    this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
+      ? this.props.openviduServerUrl
+      : "https://i7a403.p.ssafy.io";
     // OPENVIDU_SERVER_SECRET: 서버 비밀번호 - 변경할 필요 없음
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
@@ -50,6 +52,7 @@ class VideoRoomComponent extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
+      randPick: undefined,
     };
 
     // 메서드 바인딩 과정
@@ -150,12 +153,12 @@ class VideoRoomComponent extends Component {
   // connectToSession: 세션 연결을 위한 토큰을 받아서 연결을 처리하는 함수
   connectToSession() {
     if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
+      // console.log("token received: ", this.props.token);
       this.connect(this.props.token);
     } else {
       this.getToken()
         .then((token) => {
-          console.log(token);
+          // console.log(token);
           this.connect(token);
         })
         .catch((error) => {
@@ -181,7 +184,10 @@ class VideoRoomComponent extends Component {
   connect(token) {
     // 유저끼리 데이터 교환
     this.state.session
-      .connect(token, { clientData: this.state.myUserName, test: "테스트" })
+      .connect(token, {
+        clientData: this.state.myUserName,
+        randPick: this.state.randPick,
+      })
       .then(() => {
         this.connectWebCam();
       })
@@ -216,7 +222,7 @@ class VideoRoomComponent extends Component {
       videoSource: videoDevices[0].deviceId,
       publishAudio: localUser.isAudioActive(),
       publishVideo: localUser.isVideoActive(),
-      resolution: "640x480",
+      resolution: "1280x720",
       frameRate: 30,
       insertMode: "APPEND",
     });
@@ -322,21 +328,22 @@ class VideoRoomComponent extends Component {
   // name: 한준수
   // date: 2022/07/25
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
+  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신, 선생님(Moderator) 판별
   pickRandomStudent() {
-    // console.log("툴바");
-    // console.log("유저들");
-    // console.log(this.subscribers);
-    console.log(this);
     if (this.state.subscribers.length > 0) {
-      let randPick =
+      let pickedStudent =
         this.state.subscribers[
           Math.floor(Math.random() * this.state.subscribers.length)
         ];
-      //   console.log("픽 " + Math.floor(Math.random() * subscribers.length));
-      // console.log(this.subscribers);
-      console.log(randPick);
-      alert(randPick.nickname + " 학생이 발표할 차례입니다!");
+      this.setState({ randPick: pickedStudent }, () => {
+        if (this.state.randPick) {
+          alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
+        }
+        this.sendSignalUserChanged({
+          randPick: this.state.randPick.nickname,
+        });
+        this.setState({ localUser: localUser });
+      });
     }
   }
 
@@ -425,6 +432,12 @@ class VideoRoomComponent extends Component {
           }
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
+          }
+          if (data.randPick !== undefined) {
+            user.setIsPicked(data.randPick);
+            if (data.randPick === this.state.myUserName) {
+              alert(this.state.myUserName + "님이 뽑혔습니다!");
+            }
           }
         }
       });
