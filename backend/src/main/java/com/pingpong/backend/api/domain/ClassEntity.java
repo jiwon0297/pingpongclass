@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +41,7 @@ public class ClassEntity {
     @Column(nullable = false)
     private int classDay;
 
+
     @Builder
     public ClassEntity(TeacherEntity teacherEntity, SubjectEntity subjectEntity, TimetableEntity timetableEntity, String classTitle, String classDesc,String classUrl,  int classDay) {
         this.teacherEntity = teacherEntity;
@@ -56,5 +58,9 @@ public class ClassEntity {
         this.classDay = classDay;
         this.classDesc = classDesc;
         this.classTitle = classTitle;
+    }
+
+    public void updateUrl(String classUrl){
+        this.classUrl = classUrl;
     }
 }
