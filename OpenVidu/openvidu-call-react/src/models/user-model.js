@@ -1,77 +1,125 @@
 // UserModel: 각 유저마다 어떤 상태인지를 확인하기 위한 유저 기본 클래스(모델)
 class UserModel {
-    connectionId;
-    audioActive;
-    videoActive;
-    screenShareActive;
-    nickname;
-    streamManager;
-    type; // 'remote' | 'local'
+  connectionId;
+  audioActive;
+  videoActive;
+  screenShareActive;
+  nickname;
+  streamManager;
+  type; // 'remote' | 'local'
+  // 추가 항목들
+  picked;
+  point;
+  emoji;
+  frameColor;
+	smile;
 
-    constructor() {
-        this.connectionId = '';
-        this.audioActive = true;
-        this.videoActive = true;
-        this.screenShareActive = false;
-        this.nickname = '';
-        this.streamManager = null;
-        this.type = 'local';
-    }
+  constructor() {
+    this.connectionId = "";
+    this.audioActive = true;
+    this.videoActive = true;
+    this.screenShareActive = false;
+    this.nickname = "";
+    this.streamManager = null;
+    this.type = "local";
+    this.picked = false;
+    this.point = 0;
+    this.emoji = "";
+    this.frameColor = "";
+		this.smile = false;
+  }
+	// 추가 함수
+	isSmileActive() {
+    return this.smile;
+  }
 
-    isAudioActive() {
-        return this.audioActive;
-    }
+	setSmileActive(isSmile) {
+    this.smile = isSmile;
+  }
 
-    isVideoActive() {
-        return this.videoActive;
-    }
+	// OpenVidu 기본함수
+  isAudioActive() {
+    return this.audioActive;
+  }
 
-    isScreenShareActive() {
-        return this.screenShareActive;
-    }
+  isVideoActive() {
+    return this.videoActive;
+  }
 
-    getConnectionId() {
-        return this.connectionId;
-    }
+  isScreenShareActive() {
+    return this.screenShareActive;
+  }
 
-    getNickname() {
-        return this.nickname;
-    }
+  getPoint() {
+    return this.point;
+  }
+  getEmoji() {
+    return this.emoji;
+  }
+  getFrameColor() {
+    return this.frameColor;
+  }
 
-    getStreamManager() {
-        return this.streamManager;
-    }
+  getConnectionId() {
+    return this.connectionId;
+  }
 
-    isLocal() {
-        return this.type === 'local';
-    }
-    isRemote() {
-        return !this.isLocal();
-    }
-    setAudioActive(isAudioActive) {
-        this.audioActive = isAudioActive;
-    }
-    setVideoActive(isVideoActive) {
-        this.videoActive = isVideoActive;
-    }
-    setScreenShareActive(isScreenShareActive) {
-        this.screenShareActive = isScreenShareActive;
-    }
-    setStreamManager(streamManager) {
-        this.streamManager = streamManager;
-    }
+  getNickname() {
+    return this.nickname;
+  }
 
-    setConnectionId(conecctionId) {
-        this.connectionId = conecctionId;
+  getStreamManager() {
+    return this.streamManager;
+  }
+
+  getIsPicked() {
+    return this.isPicked;
+  }
+
+  isLocal() {
+    return this.type === "local";
+  }
+  isRemote() {
+    return !this.isLocal();
+  }
+  setAudioActive(isAudioActive) {
+    this.audioActive = isAudioActive;
+  }
+  setVideoActive(isVideoActive) {
+    this.videoActive = isVideoActive;
+  }
+  setScreenShareActive(isScreenShareActive) {
+    this.screenShareActive = isScreenShareActive;
+  }
+  setStreamManager(streamManager) {
+    this.streamManager = streamManager;
+  }
+
+  setConnectionId(conecctionId) {
+    this.connectionId = conecctionId;
+  }
+  setNickname(nickname) {
+    this.nickname = nickname;
+  }
+
+  setIsPicked(isPicked) {
+    this.isPicked = isPicked;
+  }
+  setPoint(point) {
+    this.point = point;
+  }
+  setEmoji(emoji) {
+    this.emoji = emoji;
+  }
+  setFrameColor(frameColor) {
+    this.frameColor = frameColor;
+  }
+
+  setType(type) {
+    if ((type === "local") | (type === "remote")) {
+      this.type = type;
     }
-    setNickname(nickname) {
-        this.nickname = nickname;
-    }
-    setType(type) {
-        if (type === 'local' |  type === 'remote') {
-            this.type = type;
-        }
-    }
+  }
 }
 
 export default UserModel;
