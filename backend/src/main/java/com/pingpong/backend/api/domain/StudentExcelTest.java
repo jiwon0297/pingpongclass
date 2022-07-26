@@ -14,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudentExcelTest {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studentId;
 
     @Column(nullable = false, length = 10)
@@ -65,7 +64,7 @@ public class StudentExcelTest {
     }
 
     @Builder
-    public StudentExcelTest(int studentId, String name, int grade, int classNum, int studentNum,String password){
+    public StudentExcelTest(int studentId, String name, int grade, int classNum, int studentNum, String password){
         this.studentId = studentId;
         this.name = name;
         this.grade = grade;

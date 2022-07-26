@@ -1,8 +1,9 @@
 package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.api.domain.StudentExcelTest;
-import com.pingpong.backend.api.domain.response.StudentExcelResponse;
+import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.repository.StudentExcelRepository;
+import com.pingpong.backend.api.repository.TeacherRepository;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -19,11 +20,12 @@ import java.util.Map;
 
 @Service
 @NoArgsConstructor
-public class StudentExcelService {
+public class ExcelService {
 
     @Autowired
     StudentExcelRepository studentExcelRepository;
-
+    @Autowired
+    TeacherRepository teacherRepository;
     @Autowired
     ExcelUtil excelUtil;
 
@@ -48,7 +50,7 @@ public class StudentExcelService {
         return sb.toString();
     }
 
-    public String addExcel(MultipartFile file) throws IOException, InvalidFormatException {
+    public String addStudent(MultipartFile file) throws IOException, InvalidFormatException {
         if(file.isEmpty()){
             return "Excel 파일을 선택해주세요.";
         }
@@ -70,6 +72,33 @@ public class StudentExcelService {
 
         for(StudentExcelTest studentInfo : listStudent){
             studentExcelRepository.save(studentInfo);
+        }
+
+        return "등록되었습니다.";
+    }
+
+    public String addTeacher(MultipartFile file) throws IOException, InvalidFormatException {
+        if(file.isEmpty()){
+            return "Excel 파일을 선택해주세요.";
+        }
+
+        String contentType = FilenameUtils.getExtension(file.getOriginalFilename());
+        if(!contentType.equals("xls") && !contentType.equals("xlsx")){
+            return "Excel 파일만 업로드해주세요.";
+        }
+
+        List<TeacherEntity> listTeacher = new ArrayList<>();
+        List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 4);
+
+        for(Map<String, Object> map : listMap){
+            TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), getRamdomPassword(10),
+                    map.get("2").toString(), Integer.parseInt(map.get("3").toString()));
+
+            listTeacher.add(teacherInfo);
+        }
+
+        for(TeacherEntity teacherInfo : listTeacher){
+            teacherRepository.save(teacherInfo);
         }
 
         return "등록되었습니다.";
