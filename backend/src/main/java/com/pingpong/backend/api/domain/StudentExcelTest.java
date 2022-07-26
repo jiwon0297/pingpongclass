@@ -1,14 +1,18 @@
 package com.pingpong.backend.api.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-@Entity(name = "student")
-@Table(name="student")
+@Entity
+@Table(name="exceltest")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StudentEntity {
+public class StudentExcelTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studentId;
@@ -31,20 +35,23 @@ public class StudentEntity {
     @Column(nullable = false, length=256)
     private String password;
 
-    @Column(nullable = false)
+    @Column(length=256)
     private String profile;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private int point;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private int totalPoint;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String introduce;
 
     @Builder
-    public StudentEntity(String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
+    public StudentExcelTest(int studentId, String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
+        this.studentId = studentId;
         this.name = name;
         this.grade = grade;
         this.classNum=classNum;
@@ -57,40 +64,13 @@ public class StudentEntity {
         this.introduce=introduce;
     }
 
-
-    public void updateRandomPassword(String password){
-        this.password = password;
-    }
-
-    public void updatePoint(int point) {
-        this.point += point;
-        this.totalPoint += point;
-    }
-
-    public void modifyStudent(StudentEntity entity){
-        if(entity.getName()!=null){
-            this.name = entity.getName();
-        }
-        if(entity.getGrade()!=0){
-            this.grade = entity.getGrade();
-        }
-        if(entity.getClassNum()!=0){
-            this.classNum = entity.getClassNum();
-        }
-        if(entity.getStudentNum()!=0){
-            this.studentNum = entity.getStudentNum();
-        }
-        if(entity.getEmail()!=null){
-            this.email = entity.getEmail();
-        }
-        if(entity.getPassword()!=null){
-            this.password = entity.getPassword();
-        }
-        if(entity.getIntroduce()!=null){
-            this.introduce = entity.getIntroduce();
-        }
-    }
-    public void usePoint(int point){
-        this.point=point;
+    @Builder
+    public StudentExcelTest(int studentId, String name, int grade, int classNum, int studentNum,String password){
+        this.studentId = studentId;
+        this.name = name;
+        this.grade = grade;
+        this.classNum=classNum;
+        this.studentNum=studentNum;
+        this.password=password;
     }
 }
