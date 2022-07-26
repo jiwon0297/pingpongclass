@@ -446,6 +446,9 @@ class VideoRoomComponent extends Component {
               alert(this.state.myUserName + "님이 뽑혔습니다!");
             }
           }
+					if (data.isSmileActive !== undefined) {
+            user.setSmileActive(data.isSmileActive);
+          }
         }
       });
       this.setState(
