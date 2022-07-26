@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import * as faceApi from "face-api.js";
-import LoadingBar from "./components/LoadingBar";
+import LoadingBar from "./components/items/LoadingBar";
 
 export default class FaceDetection extends Component {
   video = React.createRef();
-  state = { expressions: 0, face: 0, smile: 0, normal: 0 };
+  state = { expressions: 0, face: 0, inface:0, smile: 0, normal: 0 };
 
   componentDidMount() {
     this.run();
@@ -50,27 +50,31 @@ export default class FaceDetection extends Component {
 
     if (result) {
       const happy = result.expressions.happy;
-      let normal = this.state.normal;
+			let normal = this.state.normal
       let smile = this.state.smile;
       this.setState(() => ({ expressions: happy, face: 0 }));
 
-      if (happy > 0.9) {
-        normal = 0;
+      if (happy > 0.8) {
+				normal = 0
         smile += 1;
         if (smile === 3) {
           this.props.smile(true);
         }
       } else {
         smile = 0;
-        normal += 1;
-        if (normal === 3) {
+				normal += 1;
+				if (normal === 3) {
           this.props.smile(false);
         }
       }
+			this.props.outAngle(false)
       this.setState(() => ({ smile: smile, normal: normal }));
     } else {
       const lv = this.state.face + 1;
       this.setState(() => ({ expressions: 0, face: lv }));
+			if (lv === 6) {
+				this.props.outAngle(true)
+			}
     }
     setTimeout(() => this.onPlay(), 1000);
   };
@@ -96,7 +100,7 @@ export default class FaceDetection extends Component {
             right: "0px",
           }}
         >
-          {this.state.face < 3
+          {this.state.face < 6
             ? "정상적으로 수업에 참여중입니다"
             : "화면 이탈이 감지되었습니다"}
         </h3>
@@ -105,24 +109,20 @@ export default class FaceDetection extends Component {
             position: "absolute",
             top: "10px",
             right: "10px",
-            fontSize: "100px",
+						fontSize: "100px",
           }}
         >
-          {!this.state.smile ? null : this.state.smile > 3 ? (
-            "😁"
-          ) : (
-            <LoadingBar />
-          )}
+          {!this.state.smile ? null : (this.state.smile > 3 ? '😁' : <LoadingBar msg={'😁 3초후 이모지 사용'}/>)}
         </h1>
         <h1
           style={{
             position: "absolute",
-            top: "10px",
+            bottom: "100px",
             right: "10px",
-            fontSize: "100px",
+						fontSize: "100px",
           }}
         >
-          {this.state.face < 3 ? null : "🚫"}
+					{this.state.face < 3 ? null : (this.state.face > 5 ? "🚫" : <LoadingBar msg={'🚫 3초후 자리비움 설정'}/>)}
         </h1>
         <div style={{ width: "0px", height: "0px" }}>
           <video ref={this.video} autoPlay muted onPlay={this.onPlay} />
