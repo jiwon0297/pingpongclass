@@ -63,6 +63,18 @@ export default class StreamComponent extends Component {
     }
   }
 
+  // name: 한준수
+  // date: 2022/07/27
+  // desc: VideoRoomComponent 에서 넘겨주는 Props에 변경이 발생할 때마다 호출되는 함수
+  // Todo: 호출 시 frameColor 값이 변화가 있는지 확인하고, 변화가 있으면 state에 반영한다.
+  componentDidUpdate(prevProps) {
+    if (this.state.frameColor !== prevProps.user.frameColor) {
+      let tempColor = this.props.user.frameColor;
+      this.setState({ frameColor: tempColor });
+      // console.log(tempColor);
+    }
+  }
+
   // render: 렌더링 담당 함수
   render() {
     return (

@@ -17,7 +17,7 @@ import StopScreenShare from "@material-ui/icons/StopScreenShare";
 import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
-import LiveHelp from "@material-ui/icons/LiveHelp";
+import Shuffle from "@material-ui/icons/Shuffle";
 
 import IconButton from "@material-ui/core/IconButton";
 
@@ -46,16 +46,6 @@ export default class ToolbarComponent extends Component {
   // camStatusChanged: 캠 상태변화 토글 함수
   camStatusChanged() {
     this.props.camStatusChanged();
-  }
-
-  // name: 한준수
-  // date: 2022/07/25
-  // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
-  pickRandomStudent() {
-    console.log("프랍스");
-    console.log(this.props);
-    this.props.pickRandomStudent();
   }
 
   // screenShare: 스크린쉐어 시작 함수
@@ -87,6 +77,14 @@ export default class ToolbarComponent extends Component {
   // toggleChat: 채팅 토글 함수
   toggleChat() {
     this.props.toggleChat();
+  }
+
+  // name: 한준수
+  // date: 2022/07/25
+  // desc: 선생님이 랜덤한 학생을 지목하는 기능
+  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
+  pickRandomStudent() {
+    this.props.pickRandomStudent();
   }
 
   // render: 렌더링 함수
@@ -126,7 +124,7 @@ export default class ToolbarComponent extends Component {
               id="navRandButton"
               onClick={this.pickRandomStudent}
             >
-              <LiveHelp />
+              <Shuffle />
             </IconButton>
 
             <IconButton

@@ -339,28 +339,6 @@ class VideoRoomComponent extends Component {
     this.setState({ localUser: localUser });
   }
 
-  // name: 한준수
-  // date: 2022/07/25
-  // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신, 선생님(Moderator) 판별
-  pickRandomStudent() {
-    if (this.state.subscribers.length > 0) {
-      let pickedStudent =
-        this.state.subscribers[
-          Math.floor(Math.random() * this.state.subscribers.length)
-        ];
-      this.setState({ randPick: pickedStudent }, () => {
-        if (this.state.randPick) {
-          alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
-        }
-        this.sendSignalUserChanged({
-          randPick: this.state.randPick.nickname,
-        });
-        this.setState({ localUser: localUser });
-      });
-    }
-  }
-
   // nicknameChanged: 닉네임 설정 변경
   nicknameChanged(nickname) {
     let localUser = this.state.localUser;
@@ -695,6 +673,29 @@ class VideoRoomComponent extends Component {
     }
   }
 
+  // name: 한준수
+  // date: 2022/07/25
+  // desc: 선생님이 랜덤한 학생을 지목하는 기능
+  // todo: 호출 시 현재 참여자 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
+  // hack: 더블 클릭 방지, 거부권 사용 여부, 선생님(Moderator) 판별
+  pickRandomStudent() {
+    if (this.state.subscribers.length > 0) {
+      let pickedStudent =
+        this.state.subscribers[
+          Math.floor(Math.random() * this.state.subscribers.length)
+        ];
+      this.setState({ randPick: pickedStudent }, () => {
+        if (this.state.randPick) {
+          // alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
+          this.sendSignalUserChanged({
+            randPick: this.state.randPick.nickname,
+          });
+          this.setState({ localUser: localUser });
+        }
+      });
+    }
+  }
+
   // smile: 유저 웃는얼굴 체크
   smile(event) {
     if (event !== localUser.isSmileActive()) {
@@ -720,6 +721,19 @@ class VideoRoomComponent extends Component {
   // chatChk: chatDisplay 여부에 따라 bounds의 너비를 다르게 한다
   chatChk() {
     // if (this.state.chatDisplay === "none")
+  }
+
+  // name: 한준수
+  // date: 2022/07/26
+  // desc: frameChanged: 테두리 색깔 설정 변경
+  // todo: String 형식으로 전달받은 값대로 현재 유저의 frameColor 값을 변경하고, 다른 유저들에게도 변경 사실을 전달한다.
+  frameChanged(frameColor) {
+    let localUser = this.state.localUser;
+    localUser.setFrameColor(frameColor);
+    this.setState({ localUser: localUser });
+    this.sendSignalUserChanged({
+      frameColor: this.state.localUser.getFrameColor(),
+    });
   }
 
   // render: 렌더링을 담당하는 함수
@@ -753,7 +767,12 @@ class VideoRoomComponent extends Component {
         />
 
         {/* 유저 카메라 화면 */}
-        <div id="layout" className={(this.state.chatDisplay === "block" ? "chat_on_bounds" : "bounds")}>
+        <div
+          id="layout"
+          className={
+            this.state.chatDisplay === "block" ? "chat_on_bounds" : "bounds"
+          }
+        >
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
@@ -761,7 +780,11 @@ class VideoRoomComponent extends Component {
                   user={localUser}
                   handleNickname={this.nicknameChanged}
                 />
-								<FaceDetection autoPlay={localUser.isScreenShareActive() ? false : true } smile={this.smile} outAngle={this.outAngle}/>
+                <FaceDetection
+                  autoPlay={localUser.isScreenShareActive() ? false : true}
+                  smile={this.smile}
+                  outAngle={this.outAngle}
+                />
               </div>
             )}
           {this.state.subscribers.map((sub, i) => (
@@ -778,7 +801,12 @@ class VideoRoomComponent extends Component {
             </div>
           ))}
         </div>
-        <div className={"chat_component" + (this.state.chatDisplay === "none" ? "chat_display_none" : "") }>
+        <div
+          className={
+            "chat_component" +
+            (this.state.chatDisplay === "none" ? "chat_display_none" : "")
+          }
+        >
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div

@@ -5,6 +5,8 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
+import FaceDetection from "../FaceDetection";
+import EmojiFilter from "./items/EmojiFilter";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -34,7 +36,7 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "SessionA";
+      : "SessionABC";
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user
@@ -43,6 +45,10 @@ class VideoRoomComponent extends Component {
     this.remotes = [];
     // localUserAccessAllowed:
     this.localUserAccessAllowed = false;
+    // 스마일 유저값
+    let smile = this.props.smile;
+    // 유저 out of angle
+    let outAngle = this.props.outAngle;
     // 상태값들 (mySessionId: 접속중인 세션이름, myUserName: 내 이름, session: 세션에 대한 정보, localUser: 내 정보, subscribers: 같이 접속한 사람들, chatDisplay: 채팅창 on 여부, currentVideoDevice: 현재 비디오 출력장치)
     this.state = {
       mySessionId: sessionName,
@@ -53,6 +59,8 @@ class VideoRoomComponent extends Component {
       chatDisplay: "none",
       currentVideoDevice: undefined,
       randPick: undefined,
+      smile: smile,
+      outAngle: outAngle,
     };
 
     // 메서드 바인딩 과정
@@ -88,6 +96,12 @@ class VideoRoomComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     // checkSize: 화면 크기 체크 함수
     this.checkSize = this.checkSize.bind(this);
+    // smile: 웃는 이모지 체크 함수
+    this.smile = this.smile.bind(this);
+    // outAngle: 화상인식 가능 여부 체크 함수
+    this.outAngle = this.outAngle.bind(this);
+    // frameChanged: 테두리 색깔 변경 함수
+    this.frameChanged = this.frameChanged.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -325,28 +339,6 @@ class VideoRoomComponent extends Component {
     this.setState({ localUser: localUser });
   }
 
-  // name: 한준수
-  // date: 2022/07/25
-  // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신, 선생님(Moderator) 판별
-  pickRandomStudent() {
-    if (this.state.subscribers.length > 0) {
-      let pickedStudent =
-        this.state.subscribers[
-          Math.floor(Math.random() * this.state.subscribers.length)
-        ];
-      this.setState({ randPick: pickedStudent }, () => {
-        if (this.state.randPick) {
-          alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
-        }
-        this.sendSignalUserChanged({
-          randPick: this.state.randPick.nickname,
-        });
-        this.setState({ localUser: localUser });
-      });
-    }
-  }
-
   // nicknameChanged: 닉네임 설정 변경
   nicknameChanged(nickname) {
     let localUser = this.state.localUser;
@@ -356,6 +348,7 @@ class VideoRoomComponent extends Component {
       nickname: this.state.localUser.getNickname(),
     });
   }
+
   // deleteSubscriber: 매개변수로 받은 stream을 가진 유저를 구독자 명단에서 제거하는 함수
   deleteSubscriber(stream) {
     const remoteUsers = this.state.subscribers;
@@ -434,10 +427,25 @@ class VideoRoomComponent extends Component {
             user.setScreenShareActive(data.isScreenShareActive);
           }
           if (data.randPick !== undefined) {
-            user.setIsPicked(data.randPick);
             if (data.randPick === this.state.myUserName) {
-              alert(this.state.myUserName + "님이 뽑혔습니다!");
+              // alert(this.state.myUserName + "님이 뽑혔습니다!");
+              let myFrameColor = this.state.localUser.frameColor;
+              this.frameChanged("Red");
+              user.setFrameColor(data.frameColor);
+
+              setTimeout(() => {
+                this.frameChanged(myFrameColor);
+              }, 5 * 1000);
             }
+          }
+          if (data.isSmileActive !== undefined) {
+            user.setSmileActive(data.isSmileActive);
+          }
+          if (data.isOutAngleActive !== undefined) {
+            user.setOutAngleActive(data.isOutAngleActive);
+          }
+          if (data.frameColor !== undefined) {
+            user.setFrameColor(data.frameColor);
           }
         }
       });
@@ -673,6 +681,64 @@ class VideoRoomComponent extends Component {
     }
   }
 
+  // name: 한준수
+  // date: 2022/07/25
+  // desc: 선생님이 랜덤한 학생을 지목하는 기능
+  // todo: 호출 시 현재 참여자 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
+  // hack: 더블 클릭 방지, 거부권 사용 여부, 선생님(Moderator) 판별
+  pickRandomStudent() {
+    if (this.state.subscribers.length > 0) {
+      let pickedStudent =
+        this.state.subscribers[
+          Math.floor(Math.random() * this.state.subscribers.length)
+        ];
+      this.setState({ randPick: pickedStudent }, () => {
+        if (this.state.randPick) {
+          // alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
+          this.sendSignalUserChanged({
+            randPick: this.state.randPick.nickname,
+          });
+          this.setState({ localUser: localUser });
+        }
+      });
+    }
+  }
+
+  // smile: 유저 웃는얼굴 체크
+  smile(event) {
+    if (event !== localUser.isSmileActive()) {
+      localUser.setSmileActive(!localUser.isSmileActive());
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      this.sendSignalUserChanged({ isSmileActive: localUser.isSmileActive() });
+      this.setState({ localUser: localUser });
+    }
+  }
+
+  // outAngle: 유저 화면내에 화상인식 여부
+  outAngle(event) {
+    if (event !== localUser.isOutAngleActive()) {
+      localUser.setOutAngleActive(!localUser.isOutAngleActive());
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      this.sendSignalUserChanged({
+        isOutAngleActive: localUser.isOutAngleActive(),
+      });
+      this.setState({ localUser: localUser });
+    }
+  }
+
+  // name: 한준수
+  // date: 2022/07/26
+  // desc: frameChanged: 테두리 색깔 설정 변경
+  // todo: String 형식으로 전달받은 값대로 현재 유저의 frameColor 값을 변경하고, 다른 유저들에게도 변경 사실을 전달한다.
+  frameChanged(frameColor) {
+    let localUser = this.state.localUser;
+    localUser.setFrameColor(frameColor);
+    this.setState({ localUser: localUser });
+    this.sendSignalUserChanged({
+      frameColor: this.state.localUser.getFrameColor(),
+    });
+  }
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -712,6 +778,7 @@ class VideoRoomComponent extends Component {
                   user={localUser}
                   handleNickname={this.nicknameChanged}
                 />
+                <FaceDetection smile={this.smile} outAngle={this.outAngle} />
               </div>
             )}
           {this.state.subscribers.map((sub, i) => (
@@ -724,6 +791,7 @@ class VideoRoomComponent extends Component {
                 user={sub}
                 streamId={sub.streamManager.stream.streamId}
               />
+              <EmojiFilter user={sub} />
             </div>
           ))}
           {localUser !== undefined &&
