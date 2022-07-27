@@ -15,7 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/ssafy/notice")
 @RequiredArgsConstructor
 public class NoticeController {
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Api(value = "수업 API", tags={"수업"})
 @RestController
-@RequestMapping("/classes")
+@RequestMapping("/ssafy/classes")
 @RequiredArgsConstructor
 public class ClassController {
 

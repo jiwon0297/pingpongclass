@@ -17,7 +17,7 @@ import java.util.List;
 @Api(value = "선생님 API", tags={"선생님"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/teachers")
+@RequestMapping("/ssafy/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
 

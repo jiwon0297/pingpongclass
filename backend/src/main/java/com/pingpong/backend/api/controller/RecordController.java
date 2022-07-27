@@ -13,7 +13,7 @@ import java.util.List;
 
 @Api(value = "강의 다시보기 API", tags={"다시보기"})
 @RestController
-@RequestMapping("/records")
+@RequestMapping("/ssafy/records")
 @RequiredArgsConstructor
 public class RecordController {
 
