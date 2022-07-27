@@ -55,6 +55,10 @@ dependencies {
     //excel
     implementation 'org.apache.poi:poi-ooxml:5.2.2' //.xlsx
     implementation 'org.apache.poi:poi:5.2.2' //.xls
+
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-test'
 }
     tasks.named('test') {
     useJUnitPlatform()
