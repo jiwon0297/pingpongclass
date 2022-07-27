@@ -7,6 +7,7 @@ import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import FaceDetection from "../FaceDetection";
 import EmojiFilter from "./items/EmojiFilter";
+import QuizModal from "./quiz/QuizModal";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -57,6 +58,7 @@ class VideoRoomComponent extends Component {
       localUser: undefined,
       subscribers: [],
       chatDisplay: "none",
+			quizDisplay: false,
       currentVideoDevice: undefined,
       randPick: undefined,
       smile: smile,
@@ -104,6 +106,8 @@ class VideoRoomComponent extends Component {
     this.chatChk = this.chatChk.bind(this);
     // frameChanged: 테두리 색깔 변경 함수
     this.frameChanged = this.frameChanged.bind(this);
+		// toggleQuiz: 퀴즈창 토글 버튼 함수
+		this.toggleQuiz = this.toggleQuiz.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -766,6 +770,12 @@ class VideoRoomComponent extends Component {
     }
   }
 
+	toggleQuiz() {
+		console.log('hi')
+    this.setState({ quizDisplay: !this.state.quizDisplay });
+		this.updateLayout();
+	}
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -788,7 +798,9 @@ class VideoRoomComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+					toggleQuiz={this.toggleQuiz}
         />
+				<QuizModal display={this.state.quizDisplay} toggleQuiz={this.toggleQuiz} header="Quiz Modal"/>
 
         {/* 다이얼로그 */}
         <DialogExtensionComponent
