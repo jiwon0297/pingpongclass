@@ -31,12 +31,12 @@ class VideoRoomComponent extends Component {
       : "pingpongclass403";
     // hasBeenUpdated: 업데이트 여부 판단하는 변수
     this.hasBeenUpdated = false;
-    // layout: 현재 레이아웃
+    // layout: 현재 레이아웃 (openvidu-layout.js와 연결)
     this.layout = new OpenViduLayout();
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "SessionABC";
+      : "SessionA";
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user
@@ -100,6 +100,8 @@ class VideoRoomComponent extends Component {
     this.smile = this.smile.bind(this);
     // outAngle: 화상인식 가능 여부 체크 함수
     this.outAngle = this.outAngle.bind(this);
+    // chatChk: 채팅창이 켜져있는지 여부에 따라 bounds의 너비를 결정하는 함수
+    this.chatChk = this.chatChk.bind(this);
     // frameChanged: 테두리 색깔 변경 함수
     this.frameChanged = this.frameChanged.bind(this);
   }
@@ -348,7 +350,6 @@ class VideoRoomComponent extends Component {
       nickname: this.state.localUser.getNickname(),
     });
   }
-
   // deleteSubscriber: 매개변수로 받은 stream을 가진 유저를 구독자 명단에서 제거하는 함수
   deleteSubscriber(stream) {
     const remoteUsers = this.state.subscribers;
@@ -428,7 +429,6 @@ class VideoRoomComponent extends Component {
           }
           if (data.randPick !== undefined) {
             if (data.randPick === this.state.myUserName) {
-              // 5초 뒤에 다시 돌아오는 처리
               // alert(this.state.myUserName + "님이 뽑혔습니다!");
               let myFrameColor = this.state.localUser.frameColor;
               this.frameChanged("Red");
@@ -626,7 +626,7 @@ class VideoRoomComponent extends Component {
       this.state.subscribers.some((user) => user.isScreenShareActive()) ||
       localUser.isScreenShareActive();
     const openviduLayoutOptions = {
-      maxRatio: 3 / 2,
+      maxRatio: 2 / 3,
       minRatio: 9 / 16,
       fixedRatio: isScreenShared,
       bigClass: "OV_big",
@@ -698,7 +698,6 @@ class VideoRoomComponent extends Component {
           // alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
           this.sendSignalUserChanged({
             randPick: this.state.randPick.nickname,
-            picked: true,
           });
           this.setState({ localUser: localUser });
         }
@@ -726,6 +725,11 @@ class VideoRoomComponent extends Component {
       });
       this.setState({ localUser: localUser });
     }
+  }
+
+  // chatChk: chatDisplay 여부에 따라 bounds의 너비를 다르게 한다
+  chatChk() {
+    // if (this.state.chatDisplay === "none")
   }
 
   // name: 한준수
@@ -772,7 +776,12 @@ class VideoRoomComponent extends Component {
         />
 
         {/* 유저 카메라 화면 */}
-        <div id="layout" className="bounds">
+        <div
+          id="layout"
+          className={
+            this.state.chatDisplay === "block" ? "chat_on_bounds" : "bounds"
+          }
+        >
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
@@ -780,7 +789,11 @@ class VideoRoomComponent extends Component {
                   user={localUser}
                   handleNickname={this.nicknameChanged}
                 />
-                <FaceDetection smile={this.smile} outAngle={this.outAngle} />
+                <FaceDetection
+                  autoPlay={localUser.isScreenShareActive() ? false : true}
+                  smile={this.smile}
+                  outAngle={this.outAngle}
+                />
               </div>
             )}
           {this.state.subscribers.map((sub, i) => (
@@ -796,6 +809,13 @@ class VideoRoomComponent extends Component {
               <EmojiFilter user={sub} />
             </div>
           ))}
+        </div>
+        <div
+          className={
+            "chat_component" +
+            (this.state.chatDisplay === "none" ? "chat_display_none" : "")
+          }
+        >
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div

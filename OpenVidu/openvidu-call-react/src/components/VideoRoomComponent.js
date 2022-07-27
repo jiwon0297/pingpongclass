@@ -102,6 +102,8 @@ class VideoRoomComponent extends Component {
     this.outAngle = this.outAngle.bind(this);
     // chatChk: 채팅창이 켜져있는지 여부에 따라 bounds의 너비를 결정하는 함수
     this.chatChk = this.chatChk.bind(this);
+    // frameChanged: 테두리 색깔 변경 함수
+    this.frameChanged = this.frameChanged.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -434,7 +436,7 @@ class VideoRoomComponent extends Component {
 
               setTimeout(() => {
                 this.frameChanged(myFrameColor);
-              }, 5 * 1000);
+              }, 1.5 * 1000);
             }
           }
           if (data.isSmileActive !== undefined) {

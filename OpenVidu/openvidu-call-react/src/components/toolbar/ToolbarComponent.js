@@ -26,7 +26,7 @@ const logo = require("../../assets/images/openvidu_logo.png");
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false };
+    this.state = { fullscreen: false, randAvailable: true };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.screenShare = this.screenShare.bind(this);
@@ -93,11 +93,9 @@ export default class ToolbarComponent extends Component {
   // desc: 랜덤 지목 버튼을 일정 시간동안 비활성화 시켜주는 함수
   // Todo: 호출 시 해당 버튼을 지정된 시간동안 disabled 해주는 함수
   lockOut(lockOutTime) {
-    let localUser = this.props.user;
-    alert(localUser);
-    this.setState({ randAvailable: true });
+    this.setState({ randAvailable: false });
     setTimeout(() => {
-      this.setState({ randAvailable: false });
+      this.setState({ randAvailable: true });
     }, lockOutTime * 1000);
   }
 
@@ -137,7 +135,7 @@ export default class ToolbarComponent extends Component {
               className="navButton"
               id="navRandButton"
               onClick={this.pickRandomStudent}
-              disabled={this.state.randAvailable}
+              disabled={!this.state.randAvailable}
             >
               {this.state.randAvailable ? (
                 <Shuffle />
