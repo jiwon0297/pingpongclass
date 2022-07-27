@@ -1,15 +1,25 @@
 package com.pingpong.backend.api.domain;
 
+<<<<<<< HEAD
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+=======
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+>>>>>>> 96187332724db5bb82d7f7d187270daa43ccac80
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "student")
 @Table(name="student")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudentEntity {
+    @JsonIgnore
     @Id
     private int studentId;
 
@@ -40,10 +50,21 @@ public class StudentEntity {
 
     @Column(nullable = false)
     @ColumnDefault("0")
+
     private int totalPoint;
 
     @Column(length = 50)
     private String introduce;
+
+    @Column(name = "activated")
+    private boolean activated;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_authority",
+            joinColumns = {@JoinColumn(name = "studentId", referencedColumnName = "studentId")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 
     @Builder
     public StudentEntity(int studentId, String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){

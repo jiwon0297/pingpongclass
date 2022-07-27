@@ -52,13 +52,17 @@ dependencies {
     //JUnit
     testImplementation group: 'junit', name: 'junit', version: '4.13.1'
 
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.0'
+    //JWT
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
     //excel
     implementation 'org.apache.poi:poi-ooxml:5.2.2' //.xlsx
     implementation 'org.apache.poi:poi:5.2.2' //.xls
 
-    //security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security:spring-security-test'
 }
     tasks.named('test') {
     useJUnitPlatform()

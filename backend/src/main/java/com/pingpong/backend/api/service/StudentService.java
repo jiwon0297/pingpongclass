@@ -11,6 +11,8 @@ public interface StudentService {
     //회원가입
     void register(StudentEntity student);
 
+    //로그인
+
     //학생 1명 조회
     Optional<StudentEntity> findByStudentId(int studentId);
 
