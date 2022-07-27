@@ -14,9 +14,9 @@ import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import PictureInPicture from "@material-ui/icons/PictureInPicture";
 import ScreenShare from "@material-ui/icons/ScreenShare";
 import StopScreenShare from "@material-ui/icons/StopScreenShare";
-import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
+import PeopleIcon from '@material-ui/icons/People';
 import Shuffle from "@material-ui/icons/Shuffle";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -35,6 +35,7 @@ export default class ToolbarComponent extends Component {
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
+    this.toggleParticipant = this.toggleParticipant.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
   }
 
@@ -85,6 +86,10 @@ export default class ToolbarComponent extends Component {
   // toggleChat: 채팅 토글 함수
   toggleChat() {
     this.props.toggleChat();
+  }
+  
+  toggleParticipant() {
+    this.props.toggleParticipant();
   }
 
   // render: 렌더링 함수
@@ -184,15 +189,20 @@ export default class ToolbarComponent extends Component {
             >
               <PowerSettingsNew />
             </IconButton>
+
+            <IconButton 
+              color="inherit"
+              onClick={this.toggleParticipant}
+              id="navParticipantButton">
+                <PeopleIcon />
+            </IconButton>
             <IconButton
               color="inherit"
               onClick={this.toggleChat}
               id="navChatButton"
             >
               {this.props.showNotification && <div id="point" className="" />}
-              <Tooltip title="Chat">
                 <QuestionAnswer />
-              </Tooltip>
             </IconButton>
           </div>
         </Toolbar>

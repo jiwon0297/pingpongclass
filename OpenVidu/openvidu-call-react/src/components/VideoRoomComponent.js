@@ -5,6 +5,7 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
+import ParticipantComponent from "./participant/ParticipantComponent";
 import FaceDetection from "../FaceDetection";
 import EmojiFilter from "./items/EmojiFilter";
 
@@ -57,6 +58,7 @@ class VideoRoomComponent extends Component {
       localUser: undefined,
       subscribers: [],
       chatDisplay: "none",
+      participantDisplay: "none",
       currentVideoDevice: undefined,
       randPick: undefined,
       smile: smile,
@@ -92,6 +94,8 @@ class VideoRoomComponent extends Component {
     this.closeDialogExtension = this.closeDialogExtension.bind(this);
     // toggleChat: 채팅 토글 버튼 함수
     this.toggleChat = this.toggleChat.bind(this);
+    // toggleParticipant: 채팅 토글 버튼 함수
+    this.toggleParticipant = this.toggleParticipant.bind(this);
     // checkNotification: 알림 확인 함수
     this.checkNotification = this.checkNotification.bind(this);
     // checkSize: 화면 크기 체크 함수
@@ -100,8 +104,6 @@ class VideoRoomComponent extends Component {
     this.smile = this.smile.bind(this);
     // outAngle: 화상인식 가능 여부 체크 함수
     this.outAngle = this.outAngle.bind(this);
-    // chatChk: 채팅창이 켜져있는지 여부에 따라 bounds의 너비를 결정하는 함수
-    this.chatChk = this.chatChk.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -298,6 +300,10 @@ class VideoRoomComponent extends Component {
         this.updateLayout();
       }
     );
+    console.log(this.state.myUserName);
+    this.state.subscribers.forEach((elem) => {
+      console.log("타입: ", elem.nickname);
+    });
   }
 
   // leaveSession: 세션을 빠져나가는 함수
@@ -650,8 +656,26 @@ class VideoRoomComponent extends Component {
       // notify도 여기서 관리
       this.setState({ chatDisplay: display, messageReceived: false });
     } else {
-      console.log("chat", display);
       this.setState({ chatDisplay: display });
+    }
+    this.updateLayout();
+  }
+
+  // name: 오석호
+  // date: 2022/07/27
+  // desc: Participant를 확인하기 위한 버튼을 토글하는 기능
+  // todo: 버튼을 누르면 this.state.participantDisplay가 현재와 반대 상태가 된다.
+  toggleParticipant(property) {
+    let display = property;
+
+    if (display === undefined) {
+      display = this.state.participantDisplay === "none" ? "block" : "none";
+    }
+    if (display === "block") {
+      // notify도 여기서 관리
+      this.setState({ participantDisplay: display, messageReceived: false });
+    } else {
+      this.setState({ participantDisplay: display });
     }
     this.updateLayout();
   }
@@ -725,11 +749,6 @@ class VideoRoomComponent extends Component {
     }
   }
 
-  // chatChk: chatDisplay 여부에 따라 bounds의 너비를 다르게 한다
-  chatChk() {
-    // if (this.state.chatDisplay === "none")
-  }
-
   // name: 한준수
   // date: 2022/07/26
   // desc: frameChanged: 테두리 색깔 설정 변경
@@ -747,8 +766,8 @@ class VideoRoomComponent extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    var chatDisplay = { display: this.state.chatDisplay };
-
+    const chatDisplay = { display: this.state.chatDisplay };
+    const participantDisplay = { display: this.state.participantDisplay };
     return (
       <div className="container" id="container">
         {/* 상단 툴바 */}
@@ -765,6 +784,7 @@ class VideoRoomComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          toggleParticipant={this.toggleParticipant}
         />
 
         {/* 다이얼로그 */}
@@ -777,7 +797,7 @@ class VideoRoomComponent extends Component {
         <div
           id="layout"
           className={
-            this.state.chatDisplay === "block" ? "chat_on_bounds" : "bounds"
+            this.state.chatDisplay === "block" || this.state.participantDisplay === "block"? "sth_on_bounds" : "bounds"
           }
         >
           {localUser !== undefined &&
@@ -810,24 +830,44 @@ class VideoRoomComponent extends Component {
         </div>
         <div
           className={
-            "chat_component" +
-            (this.state.chatDisplay === "none" ? "chat_display_none" : "")
+            "sth_component " +
+            (this.state.chatDisplay === "none" &&
+            this.state.participantDisplay === "none"
+              ? "display_none"
+              : "")
           }
         >
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div
-                className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
-              >
-                <ChatComponent
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
-                />
-              </div>
-            )}
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className={"OT_root OT_publisher custom-class " + this.state.chatDisplay === "block" &&
+                  this.state.participantDisplay === "block"
+                    ? "double_parti" : "parti"}
+                  style={participantDisplay}
+                >
+                  <ParticipantComponent
+                    user={localUser}
+                    participantDisplay={this.state.participantDisplay}
+                    close={this.toggleParticipant}
+                  />
+                </div>
+              )}
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className={"OT_root OT_publisher custom-class " + this.state.participantDisplay === "block" &&
+                  this.state.chatDisplay === "block"
+                    ? "double_chat" : "chat"}
+                  style={chatDisplay}
+                >
+                  <ChatComponent
+                    user={localUser}
+                    chatDisplay={this.state.chatDisplay}
+                    close={this.toggleChat}
+                    messageReceived={this.checkNotification}
+                  />
+                </div>
+              )}
         </div>
       </div>
     );

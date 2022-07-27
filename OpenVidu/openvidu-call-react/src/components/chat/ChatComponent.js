@@ -26,7 +26,6 @@ export default class ChatComponent extends Component {
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         const data = JSON.parse(event.data);
-        console.log(data);
         const time = new Date();
         let messageList = this.state.messageList;
         messageList.push({
@@ -53,7 +52,6 @@ export default class ChatComponent extends Component {
   // handleChange: 메시지를 입력할 때마다 작동하는 현재 작성 메시지 변경 이벤트 핸들러
   handleChange(event) {
     this.setState({ message: event.target.value });
-    console.log(event.target.value);
   }
 
   // handlePressKey: 키를 누를 때 작동하는 이벤트핸들러
@@ -69,7 +67,6 @@ export default class ChatComponent extends Component {
 
   // sendmessage: 메시지를 보낼 때 작동하는 함수
   sendMessage() {
-    console.log(this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
