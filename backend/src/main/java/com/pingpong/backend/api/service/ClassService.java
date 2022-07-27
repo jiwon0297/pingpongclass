@@ -56,6 +56,9 @@ public class ClassService {
     public void delete(final int classId){
         ClassEntity classEntity = classRepository.findById(classId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         classRepository.delete(classEntity);
+        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(classEntity);
+        for(ClassStudentEntity classStudentEntity: classStudentEntityList)
+            classStudentRepository.delete(classStudentEntity);
     }
 
     //수업 수정
@@ -66,25 +69,15 @@ public class ClassService {
         for(ClassStudentEntity classStudentEntity: classStudentEntityList){
             classStudentRepository.delete(classStudentEntity);
         }
-        //수업 정보 새로 저장
-        TeacherEntity teacherEntity = teacherRepository.getOne(req.getTeacherId());
+        //수업 정보 수정(timetableEntity, subjectEntity, classTitle, classDesc, classDay)
         SubjectEntity subjectEntity = subjectRepository.getOne(req.getSubjectCode());
         TimetableEntity timetableEntity = timetableRepository.getOne(req.getTimetableId());
-        ClassEntity classEntity = ClassEntity.builder()
-                .teacherEntity(teacherEntity)
-                .subjectEntity(subjectEntity)
-                .classTitle(req.getClassTitle())
-                .classDay(req.getClassDay())
-                .timetableEntity(timetableEntity)
-                .classDesc(req.getClassDesc())
-                .classUrl(req.getClassUrl())
-                .build();
-        ClassEntity saveEntity = classRepository.save(classEntity);
-
+        ClassEntity classEntity = classRepository.getOne(classId);
+        classEntity.update(timetableEntity, subjectEntity, classEntity.getClassTitle(), classEntity.getClassDesc(), classEntity.getClassDay());
         List<Integer> studentIdList = req.getStudentIdList();
         for(Integer studentId : studentIdList){
             StudentEntity student = studentRepository.getOne(studentId);
-            ClassStudentEntity classstudent = new ClassStudentEntity(student, saveEntity);
+            ClassStudentEntity classstudent = new ClassStudentEntity(student, classEntity);
             classStudentRepository.save(classstudent);
         }
     }

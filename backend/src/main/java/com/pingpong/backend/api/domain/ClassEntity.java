@@ -55,8 +55,9 @@ public class ClassEntity {
         this.classTitle = classTitle;
     }
 
-    public void update(TimetableEntity timetableEntity, String classTitle, String classDesc, int classDay){
+    public void update(TimetableEntity timetableEntity, SubjectEntity subjectEntity, String classTitle, String classDesc, int classDay){
         this.timetableEntity = timetableEntity;
+        this.subjectEntity = subjectEntity;
         this.classDay = classDay;
         this.classDesc = classDesc;
         this.classTitle = classTitle;
