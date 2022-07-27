@@ -426,11 +426,15 @@ class VideoRoomComponent extends Component {
             user.setScreenShareActive(data.isScreenShareActive);
           }
           if (data.randPick !== undefined) {
-            user.setIsPicked(data.randPick);
             if (data.randPick === this.state.myUserName) {
-              alert(this.state.myUserName + "님이 뽑혔습니다!");
-              // localUser.setFrameColor("Red");
-              // this.setState({ localUser: localUser });
+              // alert(this.state.myUserName + "님이 뽑혔습니다!");
+              let myFrameColor = this.state.localUser.frameColor;
+              this.frameChanged("Red");
+              user.setFrameColor(data.frameColor);
+
+              setTimeout(() => {
+                this.frameChanged(myFrameColor);
+              }, 5 * 1000);
             }
           }
           if (data.isSmileActive !== undefined) {
@@ -438,6 +442,9 @@ class VideoRoomComponent extends Component {
           }
           if (data.isOutAngleActive !== undefined) {
             user.setOutAngleActive(data.isOutAngleActive);
+          }
+          if (data.frameColor !== undefined) {
+            user.setFrameColor(data.frameColor);
           }
         }
       });
