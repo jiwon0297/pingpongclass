@@ -53,12 +53,17 @@ export default class ChatComponent extends Component {
   // handleChange: 메시지를 입력할 때마다 작동하는 현재 작성 메시지 변경 이벤트 핸들러
   handleChange(event) {
     this.setState({ message: event.target.value });
+    console.log(event.target.value);
   }
 
   // handlePressKey: 키를 누를 때 작동하는 이벤트핸들러
   handlePressKey(event) {
-    if (event.key === "Enter" && this.state.message !== "") {
-      this.sendMessage();
+    if (event.key === "Enter") {
+      if (this.state.message !== "" && !event.shiftKey) {
+        event.preventDefault();
+        this.sendMessage();
+      }
+      if (this.state.message === "") event.preventDefault();
     }
   }
 
@@ -149,12 +154,13 @@ export default class ChatComponent extends Component {
           </div>
           {/* 메시지 입력창 */}
           <div id="messageInput">
-            <input
+            <textarea
               placeholder="채팅 메세지를 입력하세요."
               id="chatInput"
-              value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
+              maxLength="200"
+              value={this.state.message}
             />
             <img
               src={Send}

@@ -46,7 +46,7 @@
 
 .message-wrap {
   padding: 0 15px;
-  height: calc(96% - 70px);
+  height: calc(96% - 110px);
   overflow: auto;
 }
 
@@ -167,14 +167,14 @@ span.triangle {
   left: 3%;
   bottom: 2%;
   width: 94%;
-  height: 20px;
+  height: 60px;
   background-color: #696969;
   text-align: center;
   padding: 10px 0px;
   border-radius: 1rem;
 }
 
-#messageInput input {
+#messageInput textarea {
   background-color: #696969;
   width: 80%;
   height: 100%;
@@ -183,9 +183,10 @@ span.triangle {
   font-size: 14px;
   margin-left: -6%;
   color: #ffffff;
+  resize: none;
 }
 
-#messageInput input::placeholder {
+#messageInput textarea::placeholder {
   color: #ffffff;
 }
 
