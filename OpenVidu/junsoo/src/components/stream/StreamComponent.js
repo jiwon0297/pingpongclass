@@ -17,14 +17,12 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 export default class StreamComponent extends Component {
   constructor(props) {
     super(props);
-    // this.state = { user: this.props.user };
     this.state = {
       nickname: this.props.user.getNickname(),
       frameColor: this.props.user.getFrameColor(),
       showForm: false,
       mutedSound: false,
       isFormValid: true,
-      throttle: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);

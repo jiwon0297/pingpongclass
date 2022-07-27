@@ -82,8 +82,8 @@ class UserModel {
     return this.streamManager;
   }
 
-  isPicked() {
-    return this.picked;
+  getIsPicked() {
+    return this.isPicked;
   }
 
   isLocal() {
@@ -112,8 +112,8 @@ class UserModel {
     this.nickname = nickname;
   }
 
-  setPicked(picked) {
-    this.picked = picked;
+  setIsPicked(isPicked) {
+    this.isPicked = isPicked;
   }
   setPoint(point) {
     this.point = point;

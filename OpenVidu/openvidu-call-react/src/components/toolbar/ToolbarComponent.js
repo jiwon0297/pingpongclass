@@ -51,7 +51,8 @@ export default class ToolbarComponent extends Component {
   // name: 한준수
   // date: 2022/07/25
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
+  // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 그 동안 지목 버튼을 비활성화 시킨다.
+  // hack: 거부권 사용 여부 체크
   pickRandomStudent() {
     this.lockOut(1.5);
     this.props.pickRandomStudent();
