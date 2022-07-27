@@ -35,5 +35,6 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
 
     @EntityGraph(attributePaths = "authorities")    //쿼리 수행시, Lazy 조회가 아니고 Eager 조회로 authorities 정보를 같이 가져옴옴
     Optional<StudentEntity> findOneWithAuthoritiesByStudentId(int studentId);
+
 }
 

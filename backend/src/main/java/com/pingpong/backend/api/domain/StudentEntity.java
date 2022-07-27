@@ -1,10 +1,15 @@
 package com.pingpong.backend.api.domain;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+=======
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+>>>>>>> 96187332724db5bb82d7f7d187270daa43ccac80
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,7 +21,6 @@ import java.util.Set;
 public class StudentEntity {
     @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studentId;
 
     @Column(nullable = false, length = 10)
@@ -37,13 +41,16 @@ public class StudentEntity {
     @Column(nullable = false, length=256)
     private String password;
 
-    @Column
+    @Column(length=256)
     private String profile;
 
-    @Column
+    @Column(nullable = false)
+    @ColumnDefault("0")
     private int point;
 
-    @Column
+    @Column(nullable = false)
+    @ColumnDefault("0")
+
     private int totalPoint;
 
     @Column(length = 50)
@@ -60,7 +67,8 @@ public class StudentEntity {
     private Set<Authority> authorities;
 
     @Builder
-    public StudentEntity(String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
+    public StudentEntity(int studentId, String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
+        this.studentId = studentId;
         this.name = name;
         this.grade = grade;
         this.classNum=classNum;
@@ -73,6 +81,15 @@ public class StudentEntity {
         this.introduce=introduce;
     }
 
+    @Builder
+    public StudentEntity(int studentId, String name, int grade, int classNum, int studentNum, String password){
+        this.studentId = studentId;
+        this.name = name;
+        this.grade = grade;
+        this.classNum=classNum;
+        this.studentNum=studentNum;
+        this.password=password;
+    }
 
     public void updateRandomPassword(String password){
         this.password = password;
