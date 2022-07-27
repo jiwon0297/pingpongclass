@@ -21,7 +21,7 @@ public class ClassController {
 
     //수업시작(활성화)를 하면 해당 수업의 url을 저장
     @ApiOperation(value = "실시간 수업 활성화")
-    @PatchMapping("/{class}")
+    @PatchMapping("/open")
     public void openClass(@RequestBody final OpenRequest req){
         classService.saveUrl(req.getClassId(), req.getClassUrl());
     }
@@ -46,20 +46,20 @@ public class ClassController {
         classService.modify(classId, req);
     }
     //수업 삭제
-    @ApiOperation(value = "수업정보 수정")
+    @ApiOperation(value = "수업 삭제")
     @DeleteMapping("/{classId}")
     public void deleteClass(@PathVariable int classId){
         classService.delete(classId);
     }
 
     //오늘 요일에 해당하는 수업 목록 조회
-    @ApiOperation(value = "수업정보 수정")
+    @ApiOperation(value = "오늘의 수업 목록 조회(요일)")
     @GetMapping("/{userId}/today")
     public List<ClassResponse> findTodayClasses(@PathVariable int userId){
         return classService.findTodayClasses(userId);
     }
     //전체 수업 목록 조회
-    @ApiOperation(value = "수업정보 수정")
+    @ApiOperation(value = "전체 수업 목록 조회")
     @GetMapping("/{userId}")
     public List<ClassResponse> findClassById(@PathVariable int userId){
         return classService.findClassesById(userId);
