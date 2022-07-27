@@ -1,15 +1,12 @@
 package com.pingpong.backend.api.domain;
 
-<<<<<<< HEAD
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-=======
-import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
->>>>>>> 96187332724db5bb82d7f7d187270daa43ccac80
 
 import javax.persistence.*;
 import java.util.Set;
