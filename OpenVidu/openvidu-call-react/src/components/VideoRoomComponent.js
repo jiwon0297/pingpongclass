@@ -761,7 +761,7 @@ class VideoRoomComponent extends Component {
                   user={localUser}
                   handleNickname={this.nicknameChanged}
                 />
-                <FaceDetection smile={this.smile} outAngle={this.outAngle} />
+								<FaceDetection autoPlay={localUser.isScreenShareActive() ? false : true } smile={this.smile} outAngle={this.outAngle}/>
               </div>
             )}
           {this.state.subscribers.map((sub, i) => (
