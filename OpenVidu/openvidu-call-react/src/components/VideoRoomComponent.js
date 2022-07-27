@@ -104,6 +104,8 @@ class VideoRoomComponent extends Component {
     this.smile = this.smile.bind(this);
     // outAngle: 화상인식 가능 여부 체크 함수
     this.outAngle = this.outAngle.bind(this);
+    // frameChanged: 테두리 색깔 변경 함수
+    this.frameChanged = this.frameChanged.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -434,13 +436,14 @@ class VideoRoomComponent extends Component {
           if (data.randPick !== undefined) {
             if (data.randPick === this.state.myUserName) {
               // alert(this.state.myUserName + "님이 뽑혔습니다!");
+              this.AlertToChat(this.state.myUserName + "님이 뽑혔습니다!");
               let myFrameColor = this.state.localUser.frameColor;
               this.frameChanged("Red");
               user.setFrameColor(data.frameColor);
 
               setTimeout(() => {
                 this.frameChanged(myFrameColor);
-              }, 5 * 1000);
+              }, 1.5 * 1000);
             }
           }
           if (data.isSmileActive !== undefined) {
@@ -760,6 +763,26 @@ class VideoRoomComponent extends Component {
     this.sendSignalUserChanged({
       frameColor: this.state.localUser.getFrameColor(),
     });
+  }
+
+  // name: 한준수
+  // date: 2022/07/27
+  // desc: AlertToChat: 채팅 창에 메세지를 보내는 기능
+  // todo: String 형식으로 전달받은 값대로 시스템 명의를 사용해서 채팅을 전송한다.
+  AlertToChat(msg) {
+    if (localUser && msg) {
+      let message = msg.replace(/ +(?= )/g, "");
+      if (message !== "" && message !== " ") {
+        const data = {
+          message: message,
+          nickname: "System",
+        };
+        localUser.getStreamManager().stream.session.signal({
+          data: JSON.stringify(data),
+          type: "chat",
+        });
+      }
+    }
   }
 
   // render: 렌더링을 담당하는 함수

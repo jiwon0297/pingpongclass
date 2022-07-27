@@ -26,7 +26,7 @@ const logo = require("../../assets/images/openvidu_logo.png");
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false };
+    this.state = { fullscreen: false, randAvailable: true };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.screenShare = this.screenShare.bind(this);
@@ -46,6 +46,16 @@ export default class ToolbarComponent extends Component {
   // camStatusChanged: 캠 상태변화 토글 함수
   camStatusChanged() {
     this.props.camStatusChanged();
+  }
+
+  // name: 한준수
+  // date: 2022/07/25
+  // desc: 선생님이 랜덤한 학생을 지목하는 기능
+  // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 그 동안 지목 버튼을 비활성화 시킨다.
+  // hack: 거부권 사용 여부 체크
+  pickRandomStudent() {
+    this.lockOut(1.5);
+    this.props.pickRandomStudent();
   }
 
   // screenShare: 스크린쉐어 시작 함수
@@ -80,11 +90,14 @@ export default class ToolbarComponent extends Component {
   }
 
   // name: 한준수
-  // date: 2022/07/25
-  // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
-  pickRandomStudent() {
-    this.props.pickRandomStudent();
+  // date: 2022/07/27
+  // desc: 랜덤 지목 버튼을 일정 시간동안 비활성화 시켜주는 함수
+  // Todo: 호출 시 해당 버튼을 지정된 시간동안 disabled 해주는 함수
+  lockOut(lockOutTime) {
+    this.setState({ randAvailable: false });
+    setTimeout(() => {
+      this.setState({ randAvailable: true });
+    }, lockOutTime * 1000);
   }
 
   // render: 렌더링 함수
@@ -123,8 +136,13 @@ export default class ToolbarComponent extends Component {
               className="navButton"
               id="navRandButton"
               onClick={this.pickRandomStudent}
+              disabled={!this.state.randAvailable}
             >
-              <Shuffle />
+              {this.state.randAvailable ? (
+                <Shuffle />
+              ) : (
+                <Shuffle color="secondary" />
+              )}
             </IconButton>
 
             <IconButton

@@ -38,11 +38,13 @@ export default class ChatComponent extends Component {
         const document = window.document;
         setTimeout(() => {
           const userImg = document.getElementById(
-            "userImg-" + (this.state.messageList.length - 1),
+            "userImg-" + (this.state.messageList.length - 1)
           );
-          const video = document.getElementById("video-" + data.streamId);
-          const avatar = userImg.getContext("2d");
-          avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
+          if (data.streamId) {
+            const video = document.getElementById("video-" + data.streamId);
+            const avatar = userImg.getContext("2d");
+            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
+          }
           this.props.messageReceived();
         }, 50);
         this.setState({ messageList: messageList });
@@ -57,7 +59,7 @@ export default class ChatComponent extends Component {
 
   // handlePressKey: 키를 누를 때 작동하는 이벤트핸들러
   handlePressKey(event) {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && this.state.message !== "") {
       this.sendMessage();
     }
   }
