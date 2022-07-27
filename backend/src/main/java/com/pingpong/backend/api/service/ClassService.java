@@ -4,6 +4,7 @@ import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.request.ClassRequest;
+import com.pingpong.backend.api.domain.request.OpenRequest;
 import com.pingpong.backend.api.domain.response.ClassResponse;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,13 +54,12 @@ public class ClassService {
     }
 
     //수업 삭제
-    //연관관계 테이블 데이터 삭제하는 옵션 추가 해야된다......
     public void delete(final int classId){
         ClassEntity classEntity = classRepository.findById(classId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         classRepository.delete(classEntity);
-        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(classEntity);
-        for(ClassStudentEntity classStudentEntity: classStudentEntityList)
-            classStudentRepository.delete(classStudentEntity);
+//        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(classEntity);
+//        for(ClassStudentEntity classStudentEntity: classStudentEntityList)
+//            classStudentRepository.delete(classStudentEntity);
     }
 
     //수업 수정
@@ -73,7 +74,7 @@ public class ClassService {
         SubjectEntity subjectEntity = subjectRepository.getOne(req.getSubjectCode());
         TimetableEntity timetableEntity = timetableRepository.getOne(req.getTimetableId());
         ClassEntity classEntity = classRepository.getOne(classId);
-        classEntity.update(timetableEntity, subjectEntity, classEntity.getClassTitle(), classEntity.getClassDesc(), classEntity.getClassDay());
+        classEntity.update(timetableEntity, subjectEntity, req.getClassTitle(), req.getClassDesc(), req.getClassDay());
         List<Integer> studentIdList = req.getStudentIdList();
         for(Integer studentId : studentIdList){
             StudentEntity student = studentRepository.getOne(studentId);
@@ -126,15 +127,23 @@ public class ClassService {
         return list;
     }
     //실시간 강의 열기
-    public void saveUrl(int classId, String classUrl){
-        ClassEntity classEntity = classRepository.getOne(classId);
-        classEntity.updateUrl(classUrl);
+    @Transactional
+    public void saveUrl(OpenRequest openRequest){
+        System.out.println("-----"+openRequest.getClassId()+" "+openRequest.getClassUrl()+"-------");
+        ClassEntity classEntity = classRepository.getOne(openRequest.getClassId());
+        System.out.println(classEntity.getClassUrl());
+        classEntity.updateUrl(openRequest.getClassUrl());
+        System.out.println(classEntity.getClassUrl());
     }
 
     //강의 종료
+    @Transactional
     public void deleteUrl(int classId){
+        System.out.println("--------------------"+classId+"------------------");
         ClassEntity classEntity = classRepository.getOne(classId);
+        System.out.println(classEntity.getClassUrl());
         classEntity.updateUrl("");
+        System.out.println(classEntity.getClassUrl());
     }
 
 }

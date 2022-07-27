@@ -41,9 +41,6 @@ public class ClassEntity {
     @Column(nullable = false)
     private int classDay;
 
-    @OneToMany(mappedBy = "classEntity", cascade = {CascadeType.ALL})
-    public List<ClassStudentEntity> classStudentEntityList;
-
     @Builder
     public ClassEntity(TeacherEntity teacherEntity, SubjectEntity subjectEntity, TimetableEntity timetableEntity, String classTitle, String classDesc, String classUrl,  int classDay) {
         this.teacherEntity = teacherEntity;

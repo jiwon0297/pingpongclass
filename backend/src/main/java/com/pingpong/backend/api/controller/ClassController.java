@@ -23,7 +23,7 @@ public class ClassController {
     @ApiOperation(value = "실시간 수업 활성화")
     @PatchMapping("/open")
     public void openClass(@RequestBody final OpenRequest req){
-        classService.saveUrl(req.getClassId(), req.getClassUrl());
+        classService.saveUrl(req);
     }
 
     //수업 종료 후 해당 수업의 url을 삭제
