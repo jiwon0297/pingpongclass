@@ -65,6 +65,13 @@ public class StudentController {
         return sb.toString();
     }
 
+    //FIXME
+//    @ApiOperation(value = "학생 로그인", notes = "JWT")
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(){
+//
+//    }
+
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
     @GetMapping()
     public ResponseEntity<?> findAll(

@@ -1,14 +1,20 @@
 package com.pingpong.backend.api.domain;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "student")
 @Table(name="student")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudentEntity {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studentId;
@@ -31,17 +37,27 @@ public class StudentEntity {
     @Column(nullable = false, length=256)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String profile;
 
-    @Column(nullable = false)
+    @Column
     private int point;
 
-    @Column(nullable = false)
+    @Column
     private int totalPoint;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String introduce;
+
+    @Column(name = "activated")
+    private boolean activated;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_authority",
+            joinColumns = {@JoinColumn(name = "studentId", referencedColumnName = "studentId")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 
     @Builder
     public StudentEntity(String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
