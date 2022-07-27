@@ -31,7 +31,7 @@ class VideoRoomComponent extends Component {
       : "pingpongclass403";
     // hasBeenUpdated: 업데이트 여부 판단하는 변수
     this.hasBeenUpdated = false;
-    // layout: 현재 레이아웃
+    // layout: 현재 레이아웃 (openvidu-layout.js와 연결)
     this.layout = new OpenViduLayout();
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.sessionName
@@ -100,6 +100,8 @@ class VideoRoomComponent extends Component {
     this.smile = this.smile.bind(this);
     // outAngle: 화상인식 가능 여부 체크 함수
     this.outAngle = this.outAngle.bind(this);
+    // chatChk: 채팅창이 켜져있는지 여부에 따라 bounds의 너비를 결정하는 함수
+    this.chatChk = this.chatChk.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -637,7 +639,7 @@ class VideoRoomComponent extends Component {
       this.state.subscribers.some((user) => user.isScreenShareActive()) ||
       localUser.isScreenShareActive();
     const openviduLayoutOptions = {
-      maxRatio: 3 / 2,
+      maxRatio: 2 / 3,
       minRatio: 9 / 16,
       fixedRatio: isScreenShared,
       bigClass: "OV_big",
@@ -715,6 +717,11 @@ class VideoRoomComponent extends Component {
     }
   }
 
+  // chatChk: chatDisplay 여부에 따라 bounds의 너비를 다르게 한다
+  chatChk() {
+    // if (this.state.chatDisplay === "none")
+  }
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -746,7 +753,7 @@ class VideoRoomComponent extends Component {
         />
 
         {/* 유저 카메라 화면 */}
-        <div id="layout" className="bounds">
+        <div id="layout" className={(this.state.chatDisplay === "block" ? "chat_on_bounds" : "bounds")}>
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
@@ -770,6 +777,8 @@ class VideoRoomComponent extends Component {
               <EmojiFilter user={sub} />
             </div>
           ))}
+        </div>
+        <div className={"chat_component" + (this.state.chatDisplay === "none" ? "chat_display_none" : "") }>
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
