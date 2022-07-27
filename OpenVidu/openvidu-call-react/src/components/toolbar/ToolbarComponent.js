@@ -53,6 +53,7 @@ export default class ToolbarComponent extends Component {
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
   // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
   pickRandomStudent() {
+    this.lockOut(1.5);
     this.props.pickRandomStudent();
   }
 
@@ -85,6 +86,19 @@ export default class ToolbarComponent extends Component {
   // toggleChat: 채팅 토글 함수
   toggleChat() {
     this.props.toggleChat();
+  }
+
+  // name: 한준수
+  // date: 2022/07/27
+  // desc: 랜덤 지목 버튼을 일정 시간동안 비활성화 시켜주는 함수
+  // Todo: 호출 시 해당 버튼을 지정된 시간동안 disabled 해주는 함수
+  lockOut(lockOutTime) {
+    let localUser = this.props.user;
+    alert(localUser);
+    this.setState({ randAvailable: true });
+    setTimeout(() => {
+      this.setState({ randAvailable: false });
+    }, lockOutTime * 1000);
   }
 
   // render: 렌더링 함수
@@ -123,8 +137,13 @@ export default class ToolbarComponent extends Component {
               className="navButton"
               id="navRandButton"
               onClick={this.pickRandomStudent}
+              disabled={this.state.randAvailable}
             >
-              <Shuffle />
+              {this.state.randAvailable ? (
+                <Shuffle />
+              ) : (
+                <Shuffle color="secondary" />
+              )}
             </IconButton>
 
             <IconButton

@@ -428,6 +428,7 @@ class VideoRoomComponent extends Component {
           }
           if (data.randPick !== undefined) {
             if (data.randPick === this.state.myUserName) {
+              // 5초 뒤에 다시 돌아오는 처리
               // alert(this.state.myUserName + "님이 뽑혔습니다!");
               let myFrameColor = this.state.localUser.frameColor;
               this.frameChanged("Red");
@@ -435,7 +436,7 @@ class VideoRoomComponent extends Component {
 
               setTimeout(() => {
                 this.frameChanged(myFrameColor);
-              }, 5 * 1000);
+              }, 1.5 * 1000);
             }
           }
           if (data.isSmileActive !== undefined) {
@@ -697,6 +698,7 @@ class VideoRoomComponent extends Component {
           // alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
           this.sendSignalUserChanged({
             randPick: this.state.randPick.nickname,
+            picked: true,
           });
           this.setState({ localUser: localUser });
         }
