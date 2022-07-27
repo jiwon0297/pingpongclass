@@ -47,14 +47,14 @@ public class StudentEntity {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-
     private int totalPoint;
 
     @Column(length = 50)
     private String introduce;
 
     @Column(name = "activated")
-    private boolean activated;
+    @ColumnDefault("1")
+    private int activated;
 
     @ManyToMany
     @JoinTable(
