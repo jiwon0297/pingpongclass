@@ -27,27 +27,6 @@ public class ExcelService {
     private final ExcelUtil excelUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public String getRamdomPassword(int size) {
-        char[] charSet = new char[] {
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                '!', '@', '#', '$', '%', '^', '&' };
-
-        StringBuffer sb = new StringBuffer();
-        SecureRandom sr = new SecureRandom();
-        sr.setSeed(new Date().getTime());
-
-        int idx = 0;
-        int len = charSet.length;
-        for (int i=0; i<size; i++) {
-            idx = sr.nextInt(len);    // 강력한 난수를 발생시키기 위해 SecureRandom을 사용한다.
-            sb.append(charSet[idx]);
-        }
-
-        return sb.toString();
-    }
-
     public String addStudent(MultipartFile file) throws IOException, InvalidFormatException {
         if(file.isEmpty()){
             return "Excel 파일을 선택해주세요.";
@@ -63,7 +42,7 @@ public class ExcelService {
 
         for(Map<String, Object> map : listMap){
             StudentEntity studentInfo = new StudentEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), Integer.parseInt(map.get("2").toString()),
-                    Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), bCryptPasswordEncoder.encode(getRamdomPassword(10)));
+                    Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), bCryptPasswordEncoder.encode("ssafy"+map.get("0").toString()));
 
             listStudent.add(studentInfo);
         }
@@ -89,7 +68,7 @@ public class ExcelService {
         List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 4);
 
         for(Map<String, Object> map : listMap){
-            TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), bCryptPasswordEncoder.encode(getRamdomPassword(10)),
+            TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), bCryptPasswordEncoder.encode("ssafy"+map.get("0").toString()),
                     map.get("2").toString(), Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()));
 
             listTeacher.add(teacherInfo);

@@ -40,6 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public BCryptPasswordEncoder encodePassword() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     public void configure(WebSecurity web) {
@@ -93,6 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/join").permitAll()
                 .antMatchers("/swagger-ui/index.html").permitAll()
+                .antMatchers("/excel/student").permitAll()
+                .antMatchers("/excel/teacher").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
