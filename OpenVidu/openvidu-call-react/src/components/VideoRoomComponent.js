@@ -112,7 +112,7 @@ class VideoRoomComponent extends Component {
   componentDidMount() {
     // openViduLayoutOptions: 화면 레이아웃 설정
     const openViduLayoutOptions = {
-      maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
+      maxRatio: 2 / 3, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
       fixedRatio: false, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
       bigClass: "OV_big", // The class to add to elements that should be sized bigger
@@ -673,12 +673,7 @@ class VideoRoomComponent extends Component {
 
     if (display === undefined) {
       display = this.state.participantDisplay === "none" ? "block" : "none";
-    }
-    if (display === "block") {
-      // notify도 여기서 관리
-      this.setState({ participantDisplay: display, messageReceived: false });
-    } else {
-      this.setState({ participantDisplay: display });
+      this.setState({participantDisplay: display});
     }
     this.updateLayout();
   }
@@ -791,6 +786,7 @@ class VideoRoomComponent extends Component {
     const localUser = this.state.localUser;
     const chatDisplay = { display: this.state.chatDisplay };
     const participantDisplay = { display: this.state.participantDisplay };
+    console.log(this.state.chatDisplay === "block", this.state.participantDisplay === "block")
     return (
       <div className="container" id="container">
         {/* 상단 툴바 */}
@@ -863,9 +859,9 @@ class VideoRoomComponent extends Component {
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
                 <div
-                  className={"OT_root OT_publisher custom-class " + this.state.chatDisplay === "block" &&
+                  className={"OT_root OT_publisher custom-class " + (this.state.chatDisplay === "block" &&
                   this.state.participantDisplay === "block"
-                    ? "double_parti" : "parti"}
+                    ? "double_parti" : "parti")}
                   style={participantDisplay}
                 >
                   <ParticipantComponent
@@ -878,9 +874,9 @@ class VideoRoomComponent extends Component {
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
                 <div
-                  className={"OT_root OT_publisher custom-class " + this.state.participantDisplay === "block" &&
+                  className={"OT_root OT_publisher custom-class " + (this.state.participantDisplay === "block" &&
                   this.state.chatDisplay === "block"
-                    ? "double_chat" : "chat"}
+                    ? "double_chat" : "chat")}
                   style={chatDisplay}
                 >
                   <ChatComponent
