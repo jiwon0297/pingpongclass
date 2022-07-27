@@ -57,7 +57,7 @@ export default class ChatComponent extends Component {
 
   // handlePressKey: 키를 누를 때 작동하는 이벤트핸들러
   handlePressKey(event) {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && this.state.message !== "") {
       this.sendMessage();
     }
   }
