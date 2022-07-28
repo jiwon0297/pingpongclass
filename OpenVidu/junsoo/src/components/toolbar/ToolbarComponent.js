@@ -19,6 +19,7 @@ import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import PeopleIcon from "@material-ui/icons/People";
 import Shuffle from "@material-ui/icons/Shuffle";
 import Quiz from "@material-ui/icons/HelpOutline";
+import AccessTime from "@material-ui/icons/AccessTime";
 
 import IconButton from "@material-ui/core/IconButton";
 
@@ -27,7 +28,11 @@ const logo = require("../../assets/images/openvidu_logo.png");
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false, randAvailable: true };
+    this.state = {
+      fullscreen: false,
+      randAvailable: true,
+      stickerAvailable: true,
+    };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.screenShare = this.screenShare.bind(this);
@@ -39,6 +44,7 @@ export default class ToolbarComponent extends Component {
     this.toggleParticipant = this.toggleParticipant.bind(this);
     this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
+    this.startStickerEvent = this.startStickerEvent.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -50,16 +56,6 @@ export default class ToolbarComponent extends Component {
   camStatusChanged() {
     this.props.camStatusChanged();
   }
-
-  // name: 한준수
-  // date: 2022/07/25
-  // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 3초 동안 지목 버튼을 비활성화 시킨다.
-  pickRandomStudent() {
-    this.lockOut(5);
-    this.props.pickRandomStudent(this.props.subscribers, false);
-  }
-
   // screenShare: 스크린쉐어 시작 함수
   screenShare() {
     this.props.screenShare();
@@ -96,6 +92,15 @@ export default class ToolbarComponent extends Component {
   }
 
   // name: 한준수
+  // date: 2022/07/25
+  // desc: 선생님이 랜덤한 학생을 지목하는 기능
+  // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 3초 동안 지목 버튼을 비활성화 시킨다.
+  pickRandomStudent() {
+    this.lockOut(5);
+    this.props.pickRandomStudent(this.props.subscribers, false);
+  }
+
+  // name: 한준수
   // date: 2022/07/27
   // desc: 랜덤 지목 버튼을 일정 시간동안 비활성화 시켜주는 함수
   // Todo: 호출 시 해당 버튼을 지정된 시간동안 disabled 해주는 함수
@@ -110,6 +115,17 @@ export default class ToolbarComponent extends Component {
     this.props.toggleQuiz();
   }
 
+  // lockOutSticker: 호출 시 칭찬스티커 버튼을 지정된 시간 (30초) 동안 disabled 해주는 함수
+  lockOutSticker(lockOutTime) {
+    this.setState({ stickerAvailable: false });
+    setTimeout(() => {
+      this.setState({ stickerAvailable: true });
+    }, lockOutTime * 1000);
+  }
+  startStickerEvent() {
+    this.props.startStickerEvent();
+    this.lockOutSticker(30);
+  }
   // render: 렌더링 함수
   render() {
     const mySessionId = this.props.sessionId;
@@ -152,6 +168,20 @@ export default class ToolbarComponent extends Component {
                 <Shuffle />
               ) : (
                 <Shuffle color="secondary" />
+              )}
+            </IconButton>
+
+            <IconButton
+              color="inherit"
+              className="navButton"
+              id="navRandButton"
+              onClick={this.startStickerEvent}
+              disabled={!this.state.stickerAvailable}
+            >
+              {this.state.stickerAvailable ? (
+                <AccessTime />
+              ) : (
+                <AccessTime color="secondary" />
               )}
             </IconButton>
 
