@@ -117,15 +117,12 @@ export default class ToolbarComponent extends Component {
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
-          <div id="navSessionInfo">
-            <img id="header_img" alt="OpenVidu Logo" src={logo} />
-
-            {this.props.sessionId && (
-              <div id="titleContent">
-                <span id="session-title">{mySessionId}</span>
-              </div>
-            )}
-          </div>
+          {this.props.sessionId && (
+            <div id="titleContent">
+              {/* <span id="session-title">{mySessionId}</span> */}
+              <span id="session-title">2-3 수요일 6교시 국어</span>
+            </div>
+          )}
 
           <div className="buttonsContent">
             <IconButton
@@ -135,9 +132,34 @@ export default class ToolbarComponent extends Component {
               onClick={this.micStatusChanged}
             >
               {localUser !== undefined && localUser.isAudioActive() ? (
-                <Mic />
+                <div className="buttonStyle">
+                  <Mic />
+                  <p>음소거</p>
+                </div>
               ) : (
-                <MicOff color="secondary" />
+                <div className="buttonStyle">
+                  <MicOff color="secondary" />
+                  <p>음소거 해제</p>
+                </div>
+              )}
+            </IconButton>
+
+            <IconButton
+              color="inherit"
+              className="navButton"
+              id="navCamButton"
+              onClick={this.camStatusChanged}
+            >
+              {localUser !== undefined && localUser.isVideoActive() ? (
+                <div className="buttonStyle">
+                  <Videocam />
+                  <p>비디오 중지</p>
+                </div>
+              ) : (
+                <div className="buttonStyle">
+                  <VideocamOff color="secondary" />
+                  <p>비디오 시작</p>
+                </div>
               )}
             </IconButton>
 
@@ -148,11 +170,14 @@ export default class ToolbarComponent extends Component {
               onClick={this.pickRandomStudent}
               disabled={!this.state.randAvailable}
             >
-              {this.state.randAvailable ? (
-                <Shuffle />
-              ) : (
-                <Shuffle color="secondary" />
-              )}
+              <div className="buttonStyle">
+                {this.state.randAvailable ? (
+                  <Shuffle />
+                ) : (
+                  <Shuffle color="secondary" />
+                )}
+                <p>랜덤 학생 뽑기</p>
+              </div>
             </IconButton>
 
             <IconButton
@@ -161,20 +186,10 @@ export default class ToolbarComponent extends Component {
               id="navRandButton"
               onClick={this.toggleQuiz}
             >
-              <Quiz />
-            </IconButton>
-
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navCamButton"
-              onClick={this.camStatusChanged}
-            >
-              {localUser !== undefined && localUser.isVideoActive() ? (
-                <Videocam />
-              ) : (
-                <VideocamOff color="secondary" />
-              )}
+              <div className="buttonStyle">
+                <Quiz />
+                <p>퀴즈 열기</p>
+              </div>
             </IconButton>
 
             <IconButton
@@ -183,15 +198,24 @@ export default class ToolbarComponent extends Component {
               onClick={this.screenShare}
             >
               {localUser !== undefined && localUser.isScreenShareActive() ? (
-                <PictureInPicture />
+                <div className="buttonStyle">
+                  <PictureInPicture />
+                  <p>화면공유 전환</p>
+                </div>
               ) : (
-                <ScreenShare />
+                <div className="buttonStyle">
+                  <ScreenShare />
+                  <p>화면공유</p>
+                </div>
               )}
             </IconButton>
 
             {localUser !== undefined && localUser.isScreenShareActive() && (
               <IconButton onClick={this.stopScreenShare} id="navScreenButton">
-                <StopScreenShare color="secondary" />
+                <div className="buttonStyle">
+                  <StopScreenShare color="secondary" />
+                  <p>화면공유 중지</p>
+                </div>
               </IconButton>
             )}
 
@@ -200,7 +224,10 @@ export default class ToolbarComponent extends Component {
               className="navButton"
               onClick={this.switchCamera}
             >
-              <SwitchVideoIcon />
+              <div className="buttonStyle">
+                <SwitchVideoIcon />
+                <p>비디오 전환</p>
+              </div>
             </IconButton>
             <IconButton
               color="inherit"
@@ -208,34 +235,53 @@ export default class ToolbarComponent extends Component {
               onClick={this.toggleFullscreen}
             >
               {localUser !== undefined && this.state.fullscreen ? (
-                <FullscreenExit />
+                <div className="buttonStyle">
+                  <FullscreenExit />
+                  <p>전체화면 취소</p>
+                </div>
               ) : (
-                <Fullscreen />
+                <div className="buttonStyle">
+                  <Fullscreen />
+                  <p>전체화면</p>
+                </div>
               )}
             </IconButton>
+
+            <IconButton
+              color="inherit"
+              onClick={this.toggleParticipant}
+              className="navButton"
+              id="navParticipantButton"
+            >
+              <div className="buttonStyle">
+                <PeopleIcon />
+                <p>참여자 목록</p>
+              </div>
+            </IconButton>
+
             <IconButton
               color="secondary"
               className="navButton"
               onClick={this.leaveSession}
               id="navLeaveButton"
             >
-              <PowerSettingsNew />
+              <div className="buttonStyle">
+                <PowerSettingsNew />
+                <p>수업 나가기</p>
+              </div>
             </IconButton>
 
             <IconButton
               color="inherit"
-              onClick={this.toggleParticipant}
-              id="navParticipantButton"
-            >
-              <PeopleIcon />
-            </IconButton>
-            <IconButton
-              color="inherit"
               onClick={this.toggleChat}
+              className="navButton"
               id="navChatButton"
             >
-              {this.props.showNotification && <div id="point" className="" />}
-              <QuestionAnswer />
+              <div className="buttonStyle">
+                {this.props.showNotification && <div id="point" className="" />}
+                <QuestionAnswer />
+                <p>채팅</p>
+              </div>
             </IconButton>
           </div>
         </Toolbar>
