@@ -18,6 +18,7 @@ import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import PeopleIcon from '@material-ui/icons/People';
 import Shuffle from "@material-ui/icons/Shuffle";
+import Quiz from "@material-ui/icons/HelpOutline";
 
 import IconButton from "@material-ui/core/IconButton";
 
@@ -36,6 +37,7 @@ export default class ToolbarComponent extends Component {
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
     this.toggleParticipant = this.toggleParticipant.bind(this);
+	this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
   }
 
@@ -105,6 +107,10 @@ export default class ToolbarComponent extends Component {
     }, lockOutTime * 1000);
   }
 
+	toggleQuiz() {
+		this.props.toggleQuiz();
+	}
+
   // render: 렌더링 함수
   render() {
     const mySessionId = this.props.sessionId;
@@ -148,6 +154,15 @@ export default class ToolbarComponent extends Component {
               ) : (
                 <Shuffle color="secondary" />
               )}
+            </IconButton>
+
+						<IconButton
+              color="inherit"
+              className="navButton"
+              id="navRandButton"
+              onClick={this.toggleQuiz}
+            >
+              <Quiz />
             </IconButton>
 
             <IconButton
