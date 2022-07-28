@@ -8,12 +8,14 @@ class UserModel {
   streamManager;
   type; // 'remote' | 'local'
   // 추가 항목들
-  picked;
-  point;
-  emoji;
-  frameColor;
-  smile;
-  outAngle;
+  picked; // 확정 여부
+  point; // 칭찬스티커
+  emoji; // 사용중인 리액션
+  frameColor; // 테두리 색깔
+  smile; // 현재 웃는 중인지 확인
+  outAngle; // 수업 참여 확인
+  userId; // 대시보드 페이지에서 사용하는 유저 아이디
+  idType; // 학생 2 / 선생님 3 / 관리자 4
 
   constructor() {
     this.connectionId = "";
@@ -29,6 +31,8 @@ class UserModel {
     this.frameColor = "#F8CBD3";
     this.smile = false;
     this.outAngle = false;
+    this.userId = -1;
+    this.idType = -1;
   }
   // 추가 함수
   isSmileActive() {
@@ -68,6 +72,12 @@ class UserModel {
   }
   getFrameColor() {
     return this.frameColor;
+  }
+  getUserId() {
+    return this.userId;
+  }
+  getIdType() {
+    return this.idType;
   }
 
   getConnectionId() {
@@ -123,6 +133,12 @@ class UserModel {
   }
   setFrameColor(frameColor) {
     this.frameColor = frameColor;
+  }
+  setUserId(userId) {
+    this.userId = userId;
+  }
+  setIdType(idType) {
+    this.idType = idType;
   }
 
   setType(type) {

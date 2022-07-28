@@ -1,11 +1,11 @@
-#chatContainer {
+#participantContainer {
   position: absolute;
   z-index: 0;
   width: 100%;
   height: 100%;
 }
 
-#chatToolbar {
+#participantToolbar {
   position: relative;
   height: 30px;
   background-color: #3b4d6b;
@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 
-#chatComponent {
+#participantComponent {
   background-color: #373737;
   position: absolute;
   z-index: 99999;
@@ -208,6 +208,6 @@ span.triangle {
   background-color: #696969;
 }
 
-.chatComponentLight ::-webkit-scrollbar-thumb {
+.participantComponentLight ::-webkit-scrollbar-thumb {
   background-color: #eeeeee !important;
 }

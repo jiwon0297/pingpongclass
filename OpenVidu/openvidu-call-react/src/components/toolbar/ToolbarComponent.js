@@ -16,7 +16,7 @@ import ScreenShare from "@material-ui/icons/ScreenShare";
 import StopScreenShare from "@material-ui/icons/StopScreenShare";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
-import PeopleIcon from '@material-ui/icons/People';
+import PeopleIcon from "@material-ui/icons/People";
 import Shuffle from "@material-ui/icons/Shuffle";
 import Quiz from "@material-ui/icons/HelpOutline";
 
@@ -37,7 +37,7 @@ export default class ToolbarComponent extends Component {
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
     this.toggleParticipant = this.toggleParticipant.bind(this);
-	this.toggleQuiz = this.toggleQuiz.bind(this);
+    this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
   }
 
@@ -54,10 +54,10 @@ export default class ToolbarComponent extends Component {
   // name: 한준수
   // date: 2022/07/25
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 그 동안 지목 버튼을 비활성화 시킨다.
+  // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 3초 동안 지목 버튼을 비활성화 시킨다.
   // hack: 거부권 사용 여부 체크
   pickRandomStudent() {
-    this.lockOut(1.5);
+    this.lockOut(3);
     this.props.pickRandomStudent();
   }
 
@@ -91,7 +91,7 @@ export default class ToolbarComponent extends Component {
   toggleChat() {
     this.props.toggleChat();
   }
-  
+
   toggleParticipant() {
     this.props.toggleParticipant();
   }
@@ -107,9 +107,9 @@ export default class ToolbarComponent extends Component {
     }, lockOutTime * 1000);
   }
 
-	toggleQuiz() {
-		this.props.toggleQuiz();
-	}
+  toggleQuiz() {
+    this.props.toggleQuiz();
+  }
 
   // render: 렌더링 함수
   render() {
@@ -156,7 +156,7 @@ export default class ToolbarComponent extends Component {
               )}
             </IconButton>
 
-						<IconButton
+            <IconButton
               color="inherit"
               className="navButton"
               id="navRandButton"
@@ -223,11 +223,12 @@ export default class ToolbarComponent extends Component {
               <PowerSettingsNew />
             </IconButton>
 
-            <IconButton 
+            <IconButton
               color="inherit"
               onClick={this.toggleParticipant}
-              id="navParticipantButton">
-                <PeopleIcon />
+              id="navParticipantButton"
+            >
+              <PeopleIcon />
             </IconButton>
             <IconButton
               color="inherit"
@@ -235,7 +236,7 @@ export default class ToolbarComponent extends Component {
               id="navChatButton"
             >
               {this.props.showNotification && <div id="point" className="" />}
-                <QuestionAnswer />
+              <QuestionAnswer />
             </IconButton>
           </div>
         </Toolbar>

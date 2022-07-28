@@ -1,14 +1,13 @@
-# pull the official base image
-FROM node:alpine
-# set working direction
+FROM node:16-alpine as builder
+
+# 작업 폴더를 만들고 npm 설치
 WORKDIR /app
-# add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
-# install application dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm i
-# add app
-COPY . ./
-# start app
+COPY package*.json ./
+RUN npm install --silent
+COPY . .
+
+EXPOSE 5442
+
+# 소스를 작업폴더로 복사하고 앱 실행
 CMD ["npm", "start"]
