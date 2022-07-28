@@ -770,9 +770,9 @@ class VideoRoomComponent extends Component {
 
   // name: 한준수
   // date: 2022/07/27
-  // desc: AlertToChat: 채팅 창에 메세지를 보내는 기능
+  // desc: alertToChat: 채팅 창에 메세지를 보내는 기능
   // todo: String 형식으로 전달받은 값대로 시스템 명의를 사용해서 채팅을 전송한다.
-  AlertToChat(msg) {
+  alertToChat(msg) {
     if (localUser && msg) {
       let message = msg.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
@@ -792,6 +792,26 @@ class VideoRoomComponent extends Component {
     console.log("hi");
     this.setState({ quizDisplay: !this.state.quizDisplay });
     this.updateLayout();
+  }
+
+  // name: 한준수
+  // date: 2022/07/28
+  // desc: checkUserType: 해당 아이디의 권한을 체크하는 함수
+  // todo: String 형식으로 전달받은 userId값을 바탕으로 해당 유저의 타입(학생 2, 선생 3, 관리자 4)을 확인해서 localUser에 저장하고 공유하는 함수
+  checkUserType() {
+    if (localUser) {
+      let message = msg.replace(/ +(?= )/g, "");
+      if (message !== "" && message !== " ") {
+        const data = {
+          message: message,
+          nickname: "System",
+        };
+        localUser.getStreamManager().stream.session.signal({
+          data: JSON.stringify(data),
+          type: "chat",
+        });
+      }
+    }
   }
 
   // render: 렌더링을 담당하는 함수
