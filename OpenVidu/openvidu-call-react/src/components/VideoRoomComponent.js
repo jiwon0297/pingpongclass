@@ -678,8 +678,8 @@ class VideoRoomComponent extends Component {
 
     if (display === undefined) {
       display = this.state.participantDisplay === "none" ? "block" : "none";
-      this.setState({participantDisplay: display});
     }
+    this.setState({ participantDisplay: display });
     this.updateLayout();
   }
 
