@@ -9,6 +9,9 @@ import com.pingpong.backend.api.domain.response.ClassResponse;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -57,14 +60,11 @@ public class ClassService {
     public void delete(final int classId){
         ClassEntity classEntity = classRepository.findById(classId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         classRepository.delete(classEntity);
-//        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(classEntity);
-//        for(ClassStudentEntity classStudentEntity: classStudentEntityList)
-//            classStudentRepository.delete(classStudentEntity);
     }
 
     //수업 수정
     public void modify(int classId, ClassRequest req){
-        //해당 수업id에 해당 하는 classStudentEntity List로 뽑아서 싹 삭제
+
         ClassEntity cEntity = classRepository.getOne(classId);
         List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(cEntity);
         for(ClassStudentEntity classStudentEntity: classStudentEntityList){
@@ -84,28 +84,27 @@ public class ClassService {
     }
 
     //수업 목록 전체 조회
-    public List<ClassResponse> findClassesById(final int userId){
+    public Page<ClassResponse> findClassesById(final int userId, Pageable pageable){
         List<ClassResponse> list = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
-            StudentEntity studentEntity = studentRepository.getOne(userId);
+            StudentEntity studentEntity = studentRepository.getById(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
-            for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
-                List<ClassEntity> classEntityList = classRepository.findByClassId(classStudentEntity.getClassEntity().getClassId());
-                for (ClassEntity classEntity : classEntityList)
-                    list.add(new ClassResponse(classEntity));
-            }
+            for(ClassStudentEntity classStudentEntity: classStudentEntityList)
+                list.add(new ClassResponse(classStudentEntity.getClassEntity()));
         }else{ //선생님일때
-            TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
+            TeacherEntity teacherEntity = teacherRepository.getById(userId);
             List<ClassEntity> classEntityList = classRepository.findByTeacherEntity(teacherEntity);
-            for (ClassEntity classEntity: classEntityList)
+            for(ClassEntity classEntity:classEntityList)
                 list.add(new ClassResponse(classEntity));
         }
-        return list;
+        int start = (int)pageable.getOffset();
+        int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
+        return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
     //오늘의 수업 목록 조회(학생/선생님)
-    public List<ClassResponse> findTodayClasses(final int userId){
-        Sort sort = Sort.by(Sort.Direction.DESC,"TimeTableEntity");
+    public Page<ClassResponse> findTodayClasses(final int userId, Pageable pageable){
+        Sort sort = Sort.by(Sort.Direction.DESC,"TimetableEntity");
         LocalDate localDate = LocalDate.now();
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         int dayNumber = dayOfWeek.getValue();
@@ -118,32 +117,28 @@ public class ClassService {
                 for (ClassEntity classEntity : classEntityList)
                     list.add(new ClassResponse(classEntity));
             }
-        }else{ //선생님일때
+        }else { //선생님일때
             TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
             List<ClassEntity> classEntityList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, dayNumber, sort);
             for (ClassEntity classEntity : classEntityList)
                 list.add(new ClassResponse(classEntity));
         }
-        return list;
+        int start = (int)pageable.getOffset();
+        int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
+        return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
     //실시간 강의 열기
     @Transactional
     public void saveUrl(OpenRequest openRequest){
-        System.out.println("-----"+openRequest.getClassId()+" "+openRequest.getClassUrl()+"-------");
         ClassEntity classEntity = classRepository.getOne(openRequest.getClassId());
-        System.out.println(classEntity.getClassUrl());
         classEntity.updateUrl(openRequest.getClassUrl());
-        System.out.println(classEntity.getClassUrl());
     }
 
     //강의 종료
     @Transactional
     public void deleteUrl(int classId){
-        System.out.println("--------------------"+classId+"------------------");
         ClassEntity classEntity = classRepository.getOne(classId);
-        System.out.println(classEntity.getClassUrl());
         classEntity.updateUrl("");
-        System.out.println(classEntity.getClassUrl());
     }
 
 }
