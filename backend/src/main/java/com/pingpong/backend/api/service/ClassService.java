@@ -6,6 +6,7 @@ import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.request.ClassRequest;
 import com.pingpong.backend.api.domain.request.OpenRequest;
 import com.pingpong.backend.api.domain.response.ClassResponse;
+import com.pingpong.backend.api.domain.response.RecordResponse;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,18 +87,17 @@ public class ClassService {
 
     //수업 목록 전체 조회
     public Page<ClassResponse> findClassesById(final int userId, Pageable pageable){
-        List<ClassResponse> list = new ArrayList<>();
+        List<ClassEntity> classEntityList = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getById(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
             for(ClassStudentEntity classStudentEntity: classStudentEntityList)
-                list.add(new ClassResponse(classStudentEntity.getClassEntity()));
+                classEntityList.add(classStudentEntity.getClassEntity());
         }else{ //선생님일때
             TeacherEntity teacherEntity = teacherRepository.getById(userId);
-            List<ClassEntity> classEntityList = classRepository.findByTeacherEntity(teacherEntity);
-            for(ClassEntity classEntity:classEntityList)
-                list.add(new ClassResponse(classEntity));
+            classEntityList = classRepository.findByTeacherEntity(teacherEntity);
         }
+        List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();
         int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
@@ -108,21 +109,18 @@ public class ClassService {
         LocalDate localDate = LocalDate.now();
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         int dayNumber = dayOfWeek.getValue();
-        List<ClassResponse> list = new ArrayList<>();
+        List<ClassEntity> classEntityList = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getOne(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
             for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
-                List<ClassEntity> classEntityList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), dayNumber, sort);
-                for (ClassEntity classEntity : classEntityList)
-                    list.add(new ClassResponse(classEntity));
+                classEntityList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), dayNumber, sort);
             }
         }else { //선생님일때
             TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
-            List<ClassEntity> classEntityList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, dayNumber, sort);
-            for (ClassEntity classEntity : classEntityList)
-                list.add(new ClassResponse(classEntity));
+            classEntityList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, dayNumber, sort);
         }
+        List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();
         int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
