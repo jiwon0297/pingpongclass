@@ -12,8 +12,8 @@ class UserModel {
   point;
   emoji;
   frameColor;
-	smile;
-	outAngle;
+  smile;
+  outAngle;
 
   constructor() {
     this.connectionId = "";
@@ -26,28 +26,28 @@ class UserModel {
     this.picked = false;
     this.point = 0;
     this.emoji = "";
-    this.frameColor = "";
-		this.smile = false;
-		this.outAngle = false;
+    this.frameColor = "#F8CBD3";
+    this.smile = false;
+    this.outAngle = false;
   }
-	// 추가 함수
-	isSmileActive() {
+  // 추가 함수
+  isSmileActive() {
     return this.smile;
   }
 
-	setSmileActive(isSmile) {
+  setSmileActive(isSmile) {
     this.smile = isSmile;
   }
 
-	isOutAngleActive() {
+  isOutAngleActive() {
     return this.outAngle;
   }
 
-	setOutAngleActive(isOutAngle) {
+  setOutAngleActive(isOutAngle) {
     this.outAngle = isOutAngle;
   }
 
-	// OpenVidu 기본함수
+  // OpenVidu 기본함수
   isAudioActive() {
     return this.audioActive;
   }

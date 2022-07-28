@@ -5,6 +5,7 @@ export default class EmojiFilter extends Component {
     super(props);
     this.state = { user: this.props.user };
   }
+	
   render() {
     return (
       <div style={{ position: "relative", height: "100%" }}>

@@ -17,7 +17,8 @@ import StopScreenShare from "@material-ui/icons/StopScreenShare";
 import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
-import LiveHelp from "@material-ui/icons/LiveHelp";
+import Shuffle from "@material-ui/icons/Shuffle";
+import Quiz from "@material-ui/icons/HelpOutline";
 
 import IconButton from "@material-ui/core/IconButton";
 
@@ -26,7 +27,7 @@ const logo = require("../../assets/images/openvidu_logo.png");
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false };
+    this.state = { fullscreen: false, randAvailable: true };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.screenShare = this.screenShare.bind(this);
@@ -35,6 +36,7 @@ export default class ToolbarComponent extends Component {
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
+		this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
   }
 
@@ -51,10 +53,10 @@ export default class ToolbarComponent extends Component {
   // name: 한준수
   // date: 2022/07/25
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 다른 유저들에게 결과 송신
+  // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 그 동안 지목 버튼을 비활성화 시킨다.
+  // hack: 거부권 사용 여부 체크
   pickRandomStudent() {
-    console.log("프랍스");
-    console.log(this.props);
+    this.lockOut(1.5);
     this.props.pickRandomStudent();
   }
 
@@ -88,6 +90,21 @@ export default class ToolbarComponent extends Component {
   toggleChat() {
     this.props.toggleChat();
   }
+
+  // name: 한준수
+  // date: 2022/07/27
+  // desc: 랜덤 지목 버튼을 일정 시간동안 비활성화 시켜주는 함수
+  // Todo: 호출 시 해당 버튼을 지정된 시간동안 disabled 해주는 함수
+  lockOut(lockOutTime) {
+    this.setState({ randAvailable: false });
+    setTimeout(() => {
+      this.setState({ randAvailable: true });
+    }, lockOutTime * 1000);
+  }
+
+	toggleQuiz() {
+		this.props.toggleQuiz();
+	}
 
   // render: 렌더링 함수
   render() {
@@ -125,8 +142,22 @@ export default class ToolbarComponent extends Component {
               className="navButton"
               id="navRandButton"
               onClick={this.pickRandomStudent}
+              disabled={!this.state.randAvailable}
             >
-              <LiveHelp />
+              {this.state.randAvailable ? (
+                <Shuffle />
+              ) : (
+                <Shuffle color="secondary" />
+              )}
+            </IconButton>
+
+						<IconButton
+              color="inherit"
+              className="navButton"
+              id="navRandButton"
+              onClick={this.toggleQuiz}
+            >
+              <Quiz />
             </IconButton>
 
             <IconButton

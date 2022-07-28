@@ -16,7 +16,7 @@
         "react-dom": "16.13.1",
         "react-scripts": "^3.4.3"
     },
-    "name": "openvidu-call-react",
+    "name": "pingpongclass",
     "private": true,
     "scripts": {
         "build": "react-scripts build",
@@ -25,5 +25,5 @@
         "start": "react-scripts start",
         "test": "react-scripts test --env=jsdom"
     },
-    "version": "2.22.0"
+    "version": "0.0.1"
 }
