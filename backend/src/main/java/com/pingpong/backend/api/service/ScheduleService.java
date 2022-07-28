@@ -39,7 +39,7 @@ public class ScheduleService {
         }
 
         //DB 저장
-        for(int i=0; i<size; i++){
+        for(int i=0; i<10; i++){
             rankingRepository.save(new RankingEntity(list.get(i), rank[i]));
         }
 

@@ -5,6 +5,7 @@ import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentSpecification;
 import com.pingpong.backend.api.domain.response.RankResponse;
 import com.pingpong.backend.api.domain.response.StudentResponse;
+import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import io.swagger.annotations.Api;
@@ -28,9 +29,10 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentServiceImpl service;
-
     @Autowired
     private StudentRepository repository;
+    @Autowired
+    private RankingRepository rankingRepository;
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
@@ -106,6 +108,7 @@ public class StudentController {
         StudentEntity student = repository.getOne(studentId);
         if(student!=null){
             int rank = repository.countByTotalPointGreaterThan(student.getTotalPoint())+1;
+            if(rankingRepository.findFirstByStudent(student)!=null) rank = rankingRepository.findFirstByStudent(student).getRankNum();
             return new ResponseEntity<StudentResponse>(new StudentResponse(student, rank), HttpStatus.OK);
         } else{
             return new ResponseEntity<String>("해당 학생이 존재하지 않습니다.",HttpStatus.FORBIDDEN);
