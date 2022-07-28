@@ -11,6 +11,6 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Integer> {
     List<ClassEntity> findByTeacherEntity(TeacherEntity teacherEntity);
     List<ClassEntity> findByClassIdAndClassDay(int classId, int classDay, Sort sort);
     List<ClassEntity> findByTeacherEntityAndClassDay(TeacherEntity teacherEntity, int classDay, Sort sort);
-    List<ClassEntity> findByClassTitleContaining(String classTitle);
+    List<ClassEntity> findByClassIdAndClassTitleContaining(int classId, String classTitle);
 
 }
