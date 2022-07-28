@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface StudentService {
     //회원가입
-    void register(StudentEntity student);
+    StudentEntity register(StudentEntity student);
 
     //로그인
 

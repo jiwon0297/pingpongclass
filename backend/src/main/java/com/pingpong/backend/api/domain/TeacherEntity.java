@@ -1,13 +1,12 @@
 package com.pingpong.backend.api.domain;
 
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 //import lombok.*;
 //@Getter
@@ -18,7 +17,9 @@ import javax.persistence.*;
 @Entity(name = "teacher")
 @Table(name = "teacher")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TeacherEntity {
     @Id
     private int teacherId;
@@ -42,7 +43,19 @@ public class TeacherEntity {
     @ColumnDefault("0")
     private int isAdmin;
 
+    @Column
     private String profile;
+
+    @Column(name = "activated")
+    private boolean activated=true;
+
+    @ManyToMany
+    @JoinTable(
+            name = "teacher_authority",
+            joinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "teacherId")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authorityName")})
+    private Set<Authority> authorities;
+
 
     @Builder
     public TeacherEntity(int teacherId, String name, String email, int isAdmin, String password, String birth, int manageGrade, String profile) {
@@ -79,6 +92,19 @@ public class TeacherEntity {
         this.email = teacher.getEmail();
         this.password = teacher.getPassword();
         this.profile = teacher.getProfile();
+    }
+
+    public static TeacherEntity from(TeacherEntity teacher) {
+        if(teacher == null) return null;
+
+        return TeacherEntity.builder()
+                .teacherId(teacher.getTeacherId())
+                .name(teacher.getName())
+                .password(teacher.getPassword())
+                .authorities(teacher.getAuthorities().stream()
+                        .map(authority -> Authority.builder().authorityName(authority.getAuthorityName()).build())
+                        .collect(Collectors.toSet()))
+                .build();
     }
 
 }

@@ -7,7 +7,6 @@ import com.pingpong.backend.api.repository.TeacherRepository;
 import com.pingpong.backend.api.service.NoticeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class NoticeController {
 
     private final NoticeService noticeService;
-    @Autowired
-    TeacherRepository teacherRepository;
+
+    private final TeacherRepository teacherRepository;
 
     @ApiOperation(value = "공지사항 작성", notes = "teacherId, classId, title, content를 이용하여 공지사항을 작성합니다.")
     @PostMapping("")

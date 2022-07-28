@@ -2,7 +2,7 @@ package com.pingpong.backend.api.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +10,14 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity(name = "student")
 @Table(name="student")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class StudentEntity {
     @JsonIgnore
     @Id
@@ -24,13 +27,13 @@ public class StudentEntity {
     private String name;
 
     @Column(nullable = false)
-    private int grade;
+    private byte grade;
 
     @Column(nullable = false)
-    private int classNum;
+    private byte classNum;
 
     @Column(nullable = false)
-    private int studentNum;
+    private byte studentNum;
 
     @Column(length = 40, unique = true)
     private String email;
@@ -52,18 +55,19 @@ public class StudentEntity {
     @Column(length = 50)
     private String introduce;
 
-    @Column(name = "activated")
+    @Column(nullable = false, name = "activated")
     private boolean activated=true;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "student_authority",
-            joinColumns = {@JoinColumn(name = "studentId", referencedColumnName = "studentId")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+            joinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "studentId")},  //외래키
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authorityName")})   //반대 엔티티의 외래키
     private Set<Authority> authorities;
 
+
     @Builder
-    public StudentEntity(int studentId, String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
+    public StudentEntity(int studentId, String name, byte grade, byte classNum, byte studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
         this.studentId = studentId;
         this.name = name;
         this.grade = grade;
@@ -77,8 +81,7 @@ public class StudentEntity {
         this.introduce=introduce;
     }
 
-    @Builder
-    public StudentEntity(int studentId, String name, int grade, int classNum, int studentNum, String password){
+    public StudentEntity(int studentId, String name, byte grade, byte classNum, byte studentNum, String password){
         this.studentId = studentId;
         this.name = name;
         this.grade = grade;
@@ -87,9 +90,6 @@ public class StudentEntity {
         this.password=password;
     }
 
-    public void updateRandomPassword(String password){
-        this.password = password;
-    }
 
     public void updatePoint(int point) {
         this.point += point;
@@ -121,5 +121,17 @@ public class StudentEntity {
     }
     public void usePoint(int point){
         this.point=point;
+    }
+
+    public static StudentEntity from(StudentEntity student) {
+        if(student == null) return null;
+        return StudentEntity.builder()
+                .studentId(student.getStudentId())
+                .name(student.getName())
+                .password(student.getPassword())
+                .authorities(student.getAuthorities().stream()
+                        .map(authority -> Authority.builder().authorityName(authority.getAuthorityName()).build())
+                        .collect(Collectors.toSet()))
+                .build();
     }
 }

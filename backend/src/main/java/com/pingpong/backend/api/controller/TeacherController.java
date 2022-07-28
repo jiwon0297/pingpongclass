@@ -1,17 +1,17 @@
 package com.pingpong.backend.api.controller;
 
 import com.pingpong.backend.api.domain.TeacherEntity;
+import com.pingpong.backend.api.domain.request.UserRequest;
+import com.pingpong.backend.api.repository.TeacherRepository;
 import com.pingpong.backend.api.service.TeacherServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.SecureRandom;
-import java.util.Date;
 import java.util.List;
 
 @Api(value = "선생님 API", tags={"선생님"})
@@ -20,41 +20,48 @@ import java.util.List;
 @RequestMapping("/ssafy/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
-
-    @Autowired
-    private TeacherServiceImpl service;
+    private final TeacherRepository repository;
+    private final TeacherServiceImpl service;
+    private final PasswordEncoder passwordEncoder;
 
     @ApiOperation(value = "선생님 회원가입", notes = "선생님 정보 삽입, 임시비밀번호 제공")
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody TeacherEntity teacher){
-        try{
-            teacher.updateRandomPassword(getRamdomPassword(10));
-            service.register(teacher);
-            return new ResponseEntity<String>("선생님 회원가입 성공", HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<String>("선생님 회원가입 실패", HttpStatus.FORBIDDEN);
+    public ResponseEntity<?> register(@RequestBody UserRequest.TeacherSignUp teacher){
+        try {
+            Integer maxTeacherId = 0;
+            //관리자체크
+            if (teacher.getIsAdmin() == 0) {        //선생님
+                maxTeacherId = repository.getMaxTeacherId();
+                //아이디 유효성 검사
+                if(maxTeacherId == null || maxTeacherId < 403001 ){
+                    maxTeacherId = 403001;
+                } else if(maxTeacherId > 403999 ){
+                    return new ResponseEntity<String>("선생님 pk 범위 초과",HttpStatus.FORBIDDEN);
+                }
+            } else if (teacher.getIsAdmin() == 1) {  //관리자(행정실)
+                maxTeacherId = repository.getMaxAdminId();
+                //아이디 유효성 검사
+                if(maxTeacherId == null || maxTeacherId < 503001 ){
+                    maxTeacherId = 503001;
+                } else if(maxTeacherId > 503999 ){
+                    return new ResponseEntity<String>("관리자 pk 범위 초과",HttpStatus.FORBIDDEN);
+                }
+            }
+
+            TeacherEntity teacherEntity = TeacherEntity.builder()
+                    .teacherId(maxTeacherId)
+                    .name(teacher.getName())
+                    .password(passwordEncoder.encode("ssafy"+maxTeacherId))
+                    .birth(teacher.getBirth())
+                    .manageGrade(teacher.getManageGrade())
+                    .isAdmin(teacher.getIsAdmin())
+                    .build();
+            service.register(teacherEntity);
+            return new ResponseEntity<String>("선생님(관리자) 회원가입 성공",HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("선생님(관리자) 회원가입 실패",HttpStatus.FORBIDDEN);
         }
-    }
-
-    public String getRamdomPassword(int size) {
-        char[] charSet = new char[] {
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                '!', '@', '#', '$', '%', '^', '&' };
-
-        StringBuffer sb = new StringBuffer();
-        SecureRandom sr = new SecureRandom();
-        sr.setSeed(new Date().getTime());
-
-        int idx = 0;
-        int len = charSet.length;
-        for (int i=0; i<size; i++) {
-            idx = sr.nextInt(len);    // 강력한 난수를 발생시키기 위해 SecureRandom을 사용한다.
-            sb.append(charSet[idx]);
-        }
-
-        return sb.toString();
     }
 
     @ApiOperation(value = "선생님 목록 조회(이름검색까지)", notes = "이름으로 검색하면 이름까지 검색, 아니면 전체 검색")

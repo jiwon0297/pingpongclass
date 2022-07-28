@@ -20,6 +20,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+//InitializingBean implements해서 afterPropertiesSet을 Override한 이유는
+//Bean이 생성이 되고 주입을 받은 후에(ToeknProvider()생성자)
+//afterPropertiesSet에서 secret값을 BaseDecode한 다음에 key변수에 할당하기 위함
 @Component
 public class TokenProvider implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
@@ -34,7 +37,7 @@ public class TokenProvider implements InitializingBean {
 
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {   //하루
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
@@ -45,14 +48,17 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+    //Authentication객체의 권한정보를 이용해서 토큰을 생성하는 메소드
     public String createToken(Authentication authentication) {
+        //권한들
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);   //yml에 설정한 토큰 만료시간 설정
 
+        //JWT토큰 생성해서 리턴
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
@@ -61,6 +67,7 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
+    //토큰에 담겨있는 정보를 이용해 Authentication 객체를 리턴하는 메소드
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
                 .parserBuilder()
@@ -79,7 +86,9 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
+    //토큰 유효성 검사
     public boolean validateToken(String token) {
+        //토큰 파싱하고 발생하는 예외 캐치 -> 문제 있으면 false, 정상이면 true 리턴
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;

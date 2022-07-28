@@ -39,8 +39,8 @@ public class ExcelService {
         List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 5);
 
         for(Map<String, Object> map : listMap){
-            StudentEntity studentInfo = new StudentEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), Integer.parseInt(map.get("2").toString()),
-                    Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), passwordEncoder.encode("ssafy"+map.get("0").toString()));
+            StudentEntity studentInfo = new StudentEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), Byte.parseByte(map.get("2").toString()),
+                    Byte.parseByte(map.get("3").toString()), Byte.parseByte(map.get("4").toString()), passwordEncoder.encode("ssafy"+map.get("0").toString()));
 
             listStudent.add(studentInfo);
         }

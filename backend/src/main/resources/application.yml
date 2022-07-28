@@ -1,19 +1,24 @@
 logging:
   level:
     org:
-      sringframework:
+      springframework:
         boot: DEBUG
         security: DEBUG
       apache:
         tiles: INFO
-      springframework:
         web: DEBUG
       hibernate:
         SQL: debug
+        type:
+          descriptor:
+            sql: trace
     root: INFO
     com:
       samsung:
         security: DEBUG
+
+
+
 server:
   servlet:
     contextPath: /

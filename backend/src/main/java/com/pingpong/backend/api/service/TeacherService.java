@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface TeacherService {
     //회원가입
-    void register(TeacherEntity teacher);
+    TeacherEntity register(TeacherEntity teacher);
 
     //선생님 목록 조회
     List<TeacherEntity> findByName(String name);

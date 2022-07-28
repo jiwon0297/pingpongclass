@@ -3,17 +3,20 @@ package com.pingpong.backend.api.controller;
 import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentSpecification;
+import com.pingpong.backend.api.domain.request.UserRequest;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,36 +26,41 @@ import java.util.Optional;
 @RequestMapping("/ssafy/students")
 @RequiredArgsConstructor
 public class StudentController {
-    @Autowired
-    private StudentServiceImpl service;
+    private final StudentServiceImpl service;
 
-    @Autowired
-    private StudentRepository repository;
+    private final StudentRepository repository;
 
+    private final PasswordEncoder passwordEncoder;
 
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody StudentEntity student){
+    public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
-            //FIXME
-            service.register(student);
+            //학번 검사
+            Integer maxStudentId = repository.getMaxStudentId();
+
+            if(maxStudentId == null || maxStudentId < 2022000001)  maxStudentId = 2022000001;                                        //학번이 범위 미만일 경우 초기값세팅
+            else if(maxStudentId > 2022999999) return new ResponseEntity<String>("학번 범위 초과",HttpStatus.FORBIDDEN);  //학번 범위 초과했을 경우 에러
+            StudentEntity studentEntity = StudentEntity.builder()
+                    .studentId(maxStudentId)
+                    .name(student.getName())
+                    .grade(student.getGrade())
+                    .classNum(student.getClassNum())
+                    .studentNum(student.getStudentNum())
+                    .password(passwordEncoder.encode("ssafy"+maxStudentId))
+                    .build();
+            service.register(studentEntity);
             return new ResponseEntity<String>("학생정보 입력 성공",HttpStatus.OK);
         } catch(Exception e){
+            e.printStackTrace();
             return new ResponseEntity<String>("학생정보 입력 실패",HttpStatus.FORBIDDEN);
         }
     }
 
-
-    //FIXME
-//    @ApiOperation(value = "학생 로그인", notes = "JWT")
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(){
-//
-//    }
-
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
-    @GetMapping()
+    @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
     public ResponseEntity<?> findAll(
             @RequestParam(required = false) Integer grade,
             @RequestParam(required = false) Integer classNum,
@@ -80,6 +88,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 정보 조회", notes = "학번으로 학생 정보 조회")
     @GetMapping("/{studentId}")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
         Optional<StudentEntity> student = service.findByStudentId(studentId);
 
@@ -101,17 +110,6 @@ public class StudentController {
         }
     }
 
-//    @PatchMapping
-//    @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
-//    public ResponseEntity<String> modify(@RequestBody StudentEntity student){
-//        try {
-//            service.modify(student);
-//            return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<String>("학생 정보수정 실패", HttpStatus.FORBIDDEN);
-//        }
-//    }
-
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
     public ResponseEntity<String> modify(@RequestBody StudentEntity student){
@@ -123,30 +121,9 @@ public class StudentController {
         }
     }
 
-//    @PatchMapping("/email")
-//    @ApiOperation(value = "학생 이메일 수정", notes = "이메일 수정")
-//    public ResponseEntity<String> modifyEmail (@RequestBody StudentEntity student){
-//        try {
-//            service.modifyEmail(student.getStudentId(), student.getEmail());
-//            return new ResponseEntity<String>("학생 이메일 수정 성공.", HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<String>("학생 이메일 수정  실패", HttpStatus.FORBIDDEN);
-//        }
-//    }
-//
-//    @PatchMapping("/introduce")
-//    @ApiOperation(value = "학생 자기소개 수정", notes = "자기소개 수정")
-//    public ResponseEntity<String> modifyIntroduce (@RequestBody StudentEntity student){
-//        try {
-//            service.modifyIntroduce(student.getStudentId(), student.getIntroduce());
-//            return new ResponseEntity<String>("학생 자기소개 수정 성공.", HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<String>("학생 자기소개 수정  실패", HttpStatus.FORBIDDEN);
-//        }
-//    }
-
     @DeleteMapping("/{studentId}")
     @ApiOperation(value = "학생 삭제", notes = "학생정보 삭제")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<String> deleteStudent(@PathVariable int studentId){
         try {
             service.delete(studentId);
@@ -158,6 +135,7 @@ public class StudentController {
 
     @GetMapping("/ranking")
     @ApiOperation(value = "학교 랭킹 10위까지", notes = "스티커 많은 순으로 ")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> getRanking(){
         try{
             List<StudentEntity> list = service.getRanking();
@@ -169,6 +147,7 @@ public class StudentController {
 
     @GetMapping("/points/{studentId}")
     @ApiOperation(value = "히트맵을 위한 스티커 내역", notes = "한 학생의 스티커 내역")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> getPoint(@PathVariable int studentId){
         try{
             List<LogEntity> list = service.getPoint(studentId);
@@ -180,6 +159,7 @@ public class StudentController {
 
     @PatchMapping("/points/{point}")
     @ApiOperation(value = "학생 스티커 개수 수정", notes = "point만큼 추가하거나 빼거나")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> updatePoint(@RequestParam int studentId, @PathVariable int point){
         try{
             service.updatePoint(studentId, point);
@@ -189,5 +169,18 @@ public class StudentController {
         }
     }
 
+    //PreAuthorize를 통해 USER, ADMIN 두가지 권한 모두 호출가능한 API
+    @GetMapping("/info")
+    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
+    public ResponseEntity<StudentEntity> getMyUserInfo(HttpServletRequest request) {
+        //username에 해당하는 user객체와 권한정보 가져오기
+        return ResponseEntity.ok(service.getMyUserWithAuthorities());
+    }
 
+    //ADMIN 권한만 호출가능한 API
+    @GetMapping("/info/{studentId}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<StudentEntity> getUserInfo(@PathVariable int studentId) {
+        return ResponseEntity.ok(service.getUserWithAuthorities(studentId));
+    }
 }
