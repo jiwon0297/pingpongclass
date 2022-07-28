@@ -854,6 +854,7 @@ class VideoRoomComponent extends Component {
                 />
                 <FaceDetection
                   autoPlay={localUser.isScreenShareActive() ? false : true}
+									camera={localUser.isVideoActive() ? false : true}
                   smile={this.smile}
                   outAngle={this.outAngle}
                 />
