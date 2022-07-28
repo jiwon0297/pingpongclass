@@ -16,6 +16,7 @@ class UserModel {
   outAngle; // 수업 참여 확인
   userId; // 대시보드 페이지에서 사용하는 유저 아이디
   idType; // 학생 2 / 선생님 3 / 관리자 4
+  attendenceTime; // 접속 시간
 
   constructor() {
     this.connectionId = "";
@@ -33,6 +34,7 @@ class UserModel {
     this.outAngle = false;
     this.userId = -1;
     this.idType = -1;
+    this.attendenceTime = "00:00:00";
   }
   // 추가 함수
   isSmileActive() {
@@ -145,6 +147,10 @@ class UserModel {
     if ((type === "local") | (type === "remote")) {
       this.type = type;
     }
+  }
+
+  setAttendenceTime(attendenceTime) {
+    this.attendenceTime = attendenceTime;
   }
 }
 

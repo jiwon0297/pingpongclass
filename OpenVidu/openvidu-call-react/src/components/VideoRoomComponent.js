@@ -267,6 +267,19 @@ class VideoRoomComponent extends Component {
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
+
+    // name: 오석호
+    // date: 2022/07/28
+    // desc: 입장 시간을 저장해주는 로직
+    const time = new Date();
+    let attTime =
+      String(time.getHours()).padStart(2, "0") +
+      ":" +
+      String(time.getMinutes()).padStart(2, "0") +
+      ":" +
+      String(time.getSeconds()).padStart(2, "0");
+    localUser.setAttendenceTime(attTime);
+
     // 이벤트 등록
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
@@ -394,6 +407,8 @@ class VideoRoomComponent extends Component {
       newUser.setStreamManager(subscriber);
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
+
+      newUser.setAttendenceTime();
       const nickname = event.stream.connection.data.split("%")[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
       this.remotes.push(newUser);
@@ -856,7 +871,7 @@ class VideoRoomComponent extends Component {
                 />
                 <FaceDetection
                   autoPlay={localUser.isScreenShareActive() ? false : true}
-									camera={localUser.isVideoActive() ? false : true}
+                  camera={localUser.isVideoActive() ? false : true}
                   smile={this.smile}
                   outAngle={this.outAngle}
                 />
