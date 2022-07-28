@@ -9,6 +9,7 @@ import ParticipantComponent from "./participant/ParticipantComponent";
 import FaceDetection from "../FaceDetection";
 import EmojiFilter from "./items/EmojiFilter";
 import QuizModal from "./quiz/QuizModal";
+import ShieldModal from "./items/ShieldModal";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -42,7 +43,7 @@ class VideoRoomComponent extends Component {
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user
-      : "OpenVidu_User" + Math.floor(Math.random() * 100);
+      : "익명의 유저 " + Math.floor(Math.random() * 100);
     // remotes:
     this.remotes = [];
     // localUserAccessAllowed:
@@ -61,6 +62,7 @@ class VideoRoomComponent extends Component {
       chatDisplay: "none",
       participantDisplay: "none",
       quizDisplay: false,
+      shieldDisplay: false,
       currentVideoDevice: undefined,
       randPick: undefined,
       smile: smile,
@@ -110,6 +112,10 @@ class VideoRoomComponent extends Component {
     this.frameChanged = this.frameChanged.bind(this);
     // toggleQuiz: 퀴즈창 토글 버튼 함수
     this.toggleQuiz = this.toggleQuiz.bind(this);
+    // toggleShield: 방어권창 토글 버튼 함수
+    this.toggleShield = this.toggleShield.bind(this);
+    // checkUserHasItem: 유저의 아이템 정보 체크 함수
+    this.checkUserHasItem = this.checkUserHasItem.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -327,7 +333,7 @@ class VideoRoomComponent extends Component {
       session: undefined,
       subscribers: [],
       mySessionId: "SessionA",
-      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+      myUserName: "퇴장한 유저",
       localUser: undefined,
     });
     if (this.props.leaveSession) {
@@ -437,6 +443,9 @@ class VideoRoomComponent extends Component {
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
           }
+          if (data.picked !== undefined) {
+            user.setPicked(data.picked);
+          }
           if (data.randPick !== undefined) {
             if (
               data.randPick ===
@@ -444,12 +453,17 @@ class VideoRoomComponent extends Component {
             ) {
               // alert(this.state.myUserName + "님이 뽑혔습니다!");
               this.alertToChat(this.state.myUserName + "님이 뽑혔습니다!");
+              if (!data.picked) {
+                this.toggleShield();
+              }
               let myFrameColor = this.state.localUser.frameColor;
               this.frameChanged("Red");
               user.setFrameColor(data.frameColor);
-
               setTimeout(() => {
                 this.frameChanged(myFrameColor);
+                this.sendSignalUserChanged({
+                  picked: false,
+                });
               }, 1.5 * 1000);
             }
           }
@@ -711,25 +725,32 @@ class VideoRoomComponent extends Component {
   }
 
   // name: 한준수
-  // date: 2022/07/25
+  // date: 2022/07/28
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
   // todo: 호출 시 현재 참여자 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
-  // hack: 더블 클릭 방지, 거부권 사용 여부, 선생님(Moderator) 판별
-  pickRandomStudent() {
-    if (this.state.subscribers.length > 0) {
-      let pickedStudent =
-        this.state.subscribers[
-          Math.floor(Math.random() * this.state.subscribers.length)
-        ];
-      this.setState({ randPick: pickedStudent }, () => {
-        if (this.state.randPick) {
-          // alert(this.state.randPick.nickname + " 학생이 뽑혔습니다!");
-          this.sendSignalUserChanged({
-            randPick: this.state.randPick.streamManager.stream.streamId,
-          });
-          this.setState({ localUser: localUser });
+  // Hack: 선생님 계정 체크
+  pickRandomStudent(list, bool) {
+    if (list.length > 0) {
+      let studentList = [];
+      // 선생님이거나 관리자가 아닌 계정(체크 방식 변경 예정)
+      list.forEach((elem) => {
+        if (elem.idType !== 3 && elem.idType !== 4) {
+          studentList.push(elem);
         }
       });
+      if (studentList.length > 0) {
+        let pickedStudent =
+          studentList[Math.floor(Math.random() * studentList.length)];
+        this.setState({ randPick: pickedStudent }, () => {
+          if (this.state.randPick) {
+            this.sendSignalUserChanged({
+              randPick: this.state.randPick.streamManager.stream.streamId,
+              picked: bool,
+            });
+            this.setState({ localUser: localUser });
+          }
+        });
+      }
     }
   }
 
@@ -794,10 +815,28 @@ class VideoRoomComponent extends Component {
     this.updateLayout();
   }
 
+  toggleShield() {
+    this.setState({ shieldDisplay: !this.state.shieldDisplay });
+    this.updateLayout();
+  }
+
+  // name: 한준수
+  // date: 2022/07/28
+  // desc: checkUserHasItem: 아이템 소지 여부를 체크하는 함수
+  // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저의 아이템 소지여부를 확인해서 localUser에 저장하고 공유하는 함수
+  checkUserHasItem(itemId) {
+    if (itemId !== -1) {
+      // axios 요청으로 아이템 정보 획득
+    } else {
+      // 잘못된 itemId값 입력
+    }
+  }
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
+    const subscribers = this.state.subscribers;
     const chatDisplay = { display: this.state.chatDisplay };
     const participantDisplay = { display: this.state.participantDisplay };
     console.log(
@@ -814,6 +853,7 @@ class VideoRoomComponent extends Component {
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
           pickRandomStudent={this.pickRandomStudent}
+          subscribers={subscribers}
           screenShare={this.screenShare}
           stopScreenShare={this.stopScreenShare}
           toggleFullscreen={this.toggleFullscreen}
@@ -827,6 +867,16 @@ class VideoRoomComponent extends Component {
           display={this.state.quizDisplay}
           toggleQuiz={this.toggleQuiz}
           header="Quiz Modal"
+        />
+        <ShieldModal
+          display={this.state.shieldDisplay}
+          user={localUser}
+          toggleShield={this.toggleShield}
+          alertToChat={this.alertToChat}
+          pickRandomStudent={this.pickRandomStudent}
+          subscribers={subscribers}
+          timeOut={3}
+          header="방어권 사용"
         />
 
         {/* 다이얼로그 */}
@@ -854,6 +904,7 @@ class VideoRoomComponent extends Component {
                 />
                 <FaceDetection
                   autoPlay={localUser.isScreenShareActive() ? false : true}
+                  camera={localUser.isVideoActive() ? false : true}
                   smile={this.smile}
                   outAngle={this.outAngle}
                 />
@@ -895,7 +946,8 @@ class VideoRoomComponent extends Component {
                 style={participantDisplay}
               >
                 <ParticipantComponent
-                  user={localUser}
+                  myinfo={localUser}
+                  subscribers={subscribers}
                   participantDisplay={this.state.participantDisplay}
                   close={this.toggleParticipant}
                 />

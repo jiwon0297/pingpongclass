@@ -13,7 +13,6 @@ export default class ChatComponent extends Component {
     };
     // chatScroll: 현재 스크롤 위치
     this.chatScroll = React.createRef();
-
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.close = this.close.bind(this);
@@ -37,7 +36,7 @@ export default class ChatComponent extends Component {
         const document = window.document;
         setTimeout(() => {
           const userImg = document.getElementById(
-            "userImg-" + (this.state.messageList.length - 1)
+            "userImg-" + (this.state.messageList.length - 1),
           );
           if (data.streamId) {
             const video = document.getElementById("video-" + data.streamId);

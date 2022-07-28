@@ -17,6 +17,7 @@ class UserModel {
   userId; // 대시보드 페이지에서 사용하는 유저 아이디
   idType; // 학생 2 / 선생님 3 / 관리자 4
   attendenceTime; // 접속 시간
+  profile; // 프로필 이미지 정보
 
   constructor() {
     this.connectionId = "";
@@ -35,6 +36,7 @@ class UserModel {
     this.userId = -1;
     this.idType = -1;
     this.attendenceTime = "00:00:00";
+    this.profile = "";
   }
   // 추가 함수
   isSmileActive() {
@@ -75,12 +77,6 @@ class UserModel {
   getFrameColor() {
     return this.frameColor;
   }
-  getUserId() {
-    return this.userId;
-  }
-  getIdType() {
-    return this.idType;
-  }
 
   getConnectionId() {
     return this.connectionId;
@@ -94,8 +90,8 @@ class UserModel {
     return this.streamManager;
   }
 
-  getIsPicked() {
-    return this.isPicked;
+  getPicked() {
+    return this.picked;
   }
 
   isLocal() {
@@ -124,8 +120,8 @@ class UserModel {
     this.nickname = nickname;
   }
 
-  setIsPicked(isPicked) {
-    this.isPicked = isPicked;
+  setPicked(picked) {
+    this.picked = picked;
   }
   setPoint(point) {
     this.point = point;
@@ -135,12 +131,6 @@ class UserModel {
   }
   setFrameColor(frameColor) {
     this.frameColor = frameColor;
-  }
-  setUserId(userId) {
-    this.userId = userId;
-  }
-  setIdType(idType) {
-    this.idType = idType;
   }
 
   setType(type) {
