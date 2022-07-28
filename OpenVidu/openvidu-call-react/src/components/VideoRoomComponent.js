@@ -771,9 +771,9 @@ class VideoRoomComponent extends Component {
 
   // name: 한준수
   // date: 2022/07/27
-  // desc: AlertToChat: 채팅 창에 메세지를 보내는 기능
+  // desc: alertToChat: 채팅 창에 메세지를 보내는 기능
   // todo: String 형식으로 전달받은 값대로 시스템 명의를 사용해서 채팅을 전송한다.
-  AlertToChat(msg) {
+  alertToChat(msg) {
     if (localUser && msg) {
       let message = msg.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
@@ -856,6 +856,7 @@ class VideoRoomComponent extends Component {
                 />
                 <FaceDetection
                   autoPlay={localUser.isScreenShareActive() ? false : true}
+									camera={localUser.isVideoActive() ? false : true}
                   smile={this.smile}
                   outAngle={this.outAngle}
                 />

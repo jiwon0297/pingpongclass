@@ -8,10 +8,10 @@ export default class FaceDetection extends Component {
   state = {
     expressions: 0,
     face: 0,
-    inface: 0,
     smile: 0,
     normal: 0,
     autoPlay: false,
+    camera: true,
   };
 
   componentDidMount() {
@@ -20,8 +20,20 @@ export default class FaceDetection extends Component {
 
   componentDidUpdate() {
     if (this.state.autoPlay !== this.props.autoPlay) {
-      this.setState({ autoPlay: this.props.autoPlay, face: 0, smile: 0 });
-      console.log(this.state.autoPlay);
+      this.setState({
+        autoPlay: this.props.autoPlay,
+        face: 0,
+        smile: 0,
+        normal: 0,
+      });
+    }
+    if (this.state.camera !== this.props.camera) {
+      this.setState({
+        camera: this.props.camera,
+        face: 0,
+        smile: 0,
+        normal: 0,
+      });
     }
   }
 
@@ -47,6 +59,7 @@ export default class FaceDetection extends Component {
   onPlay = async () => {
     if (
       !this.state.autoPlay ||
+      this.state.camera ||
       this.video.current.paused ||
       this.video.current.ended ||
       !faceApi.nets.tinyFaceDetector.params
@@ -87,8 +100,8 @@ export default class FaceDetection extends Component {
       this.setState(() => ({ smile: smile, normal: normal }));
     } else {
       const lv = this.state.face + 1;
-			this.props.smile(false);
-      this.setState(() => ({ smile: 0, normal:0, expressions: 0, face: lv }));
+      this.props.smile(false);
+      this.setState(() => ({ smile: 0, normal: 0, expressions: 0, face: lv }));
       if (lv === 6) {
         this.props.outAngle(true);
       }
@@ -102,41 +115,45 @@ export default class FaceDetection extends Component {
         className="FaceDetection"
         style={{ position: "relative", height: "95%", width: "98%" }}
       >
-        <h1
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            fontSize: "100px",
-          }}
-        >
-          {this.state.smile < 1 ? null : this.state.smile > 3 ? (
-            <img
-              style={{ width: "200px", height: "200px" }}
-              src={Smile}
-              alt={"HI"}
-            ></img>
-          ) : (
-            <LoadingBar msg={"😁 3초후 이모지 사용"} />
-          )}
-        </h1>
-        <h1
-          style={{
-            position: "absolute",
-            bottom: "100px",
-            right: "10px",
-            fontSize: "100px",
-          }}
-        >
-          {this.state.face < 3 ? null : this.state.face > 5 ? (
-            "🚫"
-          ) : (
-            <LoadingBar msg={"🚫 3초후 자리비움 설정"} />
-          )}
-        </h1>
-        <div style={{ width: "0px", height: "0px" }}>
-          <video ref={this.video} autoPlay muted onPlay={this.onPlay} />
-        </div>
+        {!this.props.camera || this.state.autoPlay ? (
+          <div>
+            <h1
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                fontSize: "100px",
+              }}
+            >
+              {this.state.smile < 1 ? null : this.state.smile > 3 ? (
+                <img
+                  style={{ width: "200px", height: "200px" }}
+                  src={Smile}
+                  alt={"HI"}
+                ></img>
+              ) : (
+                <LoadingBar msg={"😁 3초후 이모지 사용"} />
+              )}
+            </h1>
+            <h1
+              style={{
+                position: "absolute",
+                bottom: "100px",
+                right: "10px",
+                fontSize: "100px",
+              }}
+            >
+              {this.state.face < 3 ? null : this.state.face > 5 ? (
+                "🚫"
+              ) : (
+                <LoadingBar msg={"🚫 3초후 자리비움 설정"} />
+              )}
+            </h1>
+						<div style={{ width: "0px", height: "0px" }}>
+							<video ref={this.video} autoPlay muted onPlay={this.onPlay} />
+						</div>
+          </div>
+        ) : null}
       </div>
     );
   }
