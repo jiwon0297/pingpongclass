@@ -10,6 +10,7 @@ import FaceDetection from "../FaceDetection";
 import EmojiFilter from "./items/EmojiFilter";
 import QuizModal from "./quiz/QuizModal";
 import ShieldModal from "./items/ShieldModal";
+import Sticker from "./pointClickEvent/PointSticker";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -68,6 +69,9 @@ class VideoRoomComponent extends Component {
       smile: smile,
       outAngle: outAngle,
       loading: true,
+      totalHeight: 0,
+      totlaWidth: 0,
+      stickers: [],
     };
 
     // 메서드 바인딩 과정
@@ -117,6 +121,8 @@ class VideoRoomComponent extends Component {
     this.toggleShield = this.toggleShield.bind(this);
     // checkUserHasItem: 유저의 아이템 정보 체크 함수
     this.checkUserHasItem = this.checkUserHasItem.bind(this);
+    // startStickerEvent: 칭찬스티커 클릭이벤트를 발생시키는 함수
+    this.startStickerEvent = this.startStickerEvent.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -488,6 +494,9 @@ class VideoRoomComponent extends Component {
           if (data.frameColor !== undefined) {
             user.setFrameColor(data.frameColor);
           }
+          if (data.clickEvent !== undefined) {
+            this.addNewStickers(data.clickEvent);
+          }
         }
       });
       this.setState(
@@ -501,6 +510,10 @@ class VideoRoomComponent extends Component {
 
   // updateLayout: 레이아웃을 업데이트 하는 함수
   updateLayout() {
+    this.setState({
+      totalHeight: this.layout.getHeight(document.getElementById("layout")),
+      totlaWidth: this.layout.getWidth(document.getElementById("layout")),
+    });
     setTimeout(() => {
       this.layout.updateLayout();
     }, 20);
@@ -845,6 +858,64 @@ class VideoRoomComponent extends Component {
     }
   }
 
+  // name: 한준수
+  // date: 2022/07/28
+  // desc: startStickerEvent: 칭찬스티커 클릭이벤트를 발생시키는 함수
+  // todo: subscribers에게 sendSignal을 통해 클릭이벤트를 발생시키는 함수
+  startStickerEvent = () => {
+    this.state.subscribers.forEach((subs) => {
+      this.sendSignalUserChanged({
+        clickEvent: 3,
+      });
+    });
+  };
+  // addNewStickers: 호출 시 int값으로 주어진 multiple개 만큼의 칭찬스티커를 전체 화면에 생성하는 함수
+  addNewStickers = (multiple) => {
+    this.removeAllStickers();
+    for (let i = 1; i <= multiple; i++) {
+      this.addNewSticker(i);
+    }
+    setTimeout(() => {
+      this.removeAllStickers();
+    }, 3 * 1000);
+  };
+
+  // addNewSticker: 호출 시 int값으로 주어진 cur을 키값으로 가지는 칭찬스티커를 전체 화면에 생성하는 함수
+  addNewSticker = (cur) => {
+    let imgSize = 100;
+    let margin = 8;
+    let xStart = margin + 140;
+    let xEnd = this.state.totlaWidth - imgSize * 2;
+    let yStart = margin;
+    let yEnd = this.state.totalHeight - imgSize * 2;
+
+    let newSticker = {
+      key: cur,
+      point: 5,
+      top: this.between(yStart, yEnd),
+      left: this.between(xStart, xEnd),
+    };
+    this.setState({ stickers: [...this.state.stickers, newSticker] });
+  };
+
+  // removeAllStickers: 호출 시 현재 화면에 생성된 모든 칭찬스티커를 제거하는 함수
+  removeAllStickers = (current) => {
+    this.setState({ stickers: [] });
+  };
+
+  // removeSticker: 호출 시 int값으로 주어진 current을 키값으로 가지는 칭찬스티커를 제거하는 함수
+  removeSticker = (current) => {
+    this.setState({
+      stickers: this.state.stickers.filter(
+        (sticker, index) => index !== current,
+      ),
+    });
+  };
+  // between: min과 max 사이의 랜덤한 int값을 반환하는 함수
+  between = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -877,6 +948,16 @@ class VideoRoomComponent extends Component {
             showDialog={this.state.showExtensionDialog}
             cancelClicked={this.closeDialogExtension}
           />
+
+          {/* 칭찬스티커 */}
+          {this.state.stickers.map((stickerKey) => (
+            <Sticker
+              key={stickerKey.key}
+              point={stickerKey.point}
+              top={stickerKey.top}
+              left={stickerKey.left}
+            ></Sticker>
+          ))}
 
           {/* 유저 카메라 화면 */}
           <div
@@ -988,6 +1069,7 @@ class VideoRoomComponent extends Component {
               toggleChat={this.toggleChat}
               toggleParticipant={this.toggleParticipant}
               toggleQuiz={this.toggleQuiz}
+              startStickerEvent={this.startStickerEvent}
             />
           </div>
         </div>
