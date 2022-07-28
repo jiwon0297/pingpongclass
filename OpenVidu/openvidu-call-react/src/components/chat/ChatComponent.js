@@ -26,7 +26,6 @@ export default class ChatComponent extends Component {
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         const data = JSON.parse(event.data);
-        console.log(data);
         const time = new Date();
         let messageList = this.state.messageList;
         messageList.push({
@@ -59,14 +58,17 @@ export default class ChatComponent extends Component {
 
   // handlePressKey: 키를 누를 때 작동하는 이벤트핸들러
   handlePressKey(event) {
-    if (event.key === "Enter" && this.state.message !== "") {
-      this.sendMessage();
+    if (event.key === "Enter") {
+      if (this.state.message !== "" && !event.shiftKey) {
+        event.preventDefault();
+        this.sendMessage();
+      }
+      if (this.state.message === "") event.preventDefault();
     }
   }
 
   // sendmessage: 메시지를 보낼 때 작동하는 함수
   sendMessage() {
-    console.log(this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
@@ -151,12 +153,13 @@ export default class ChatComponent extends Component {
           </div>
           {/* 메시지 입력창 */}
           <div id="messageInput">
-            <input
+            <textarea
               placeholder="채팅 메세지를 입력하세요."
               id="chatInput"
-              value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
+              maxLength="200"
+              value={this.state.message}
             />
             <img
               src={Send}
