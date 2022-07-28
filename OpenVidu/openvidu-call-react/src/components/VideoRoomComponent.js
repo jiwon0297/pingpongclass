@@ -70,7 +70,7 @@ class VideoRoomComponent extends Component {
       outAngle: outAngle,
       loading: true,
       totalHeight: 0,
-      totlaWidth: 0,
+      totalWidth: 0,
       stickers: [],
     };
 
@@ -512,7 +512,7 @@ class VideoRoomComponent extends Component {
   updateLayout() {
     this.setState({
       totalHeight: this.layout.getHeight(document.getElementById("layout")),
-      totlaWidth: this.layout.getWidth(document.getElementById("layout")),
+      totalWidth: this.layout.getWidth(document.getElementById("layout")),
     });
     setTimeout(() => {
       this.layout.updateLayout();
@@ -881,13 +881,16 @@ class VideoRoomComponent extends Component {
   };
 
   // addNewSticker: 호출 시 int값으로 주어진 cur을 키값으로 가지는 칭찬스티커를 전체 화면에 생성하는 함수
+  // name: 오석호
+  // date: 2022/07/29
+  // desc: 로직 일부 수정 - 채팅창이나 참여자 목록을 켰을 때 발생할 수 있는 30% 및 하단 툴바 고려
   addNewSticker = (cur) => {
     let imgSize = 100;
     let margin = 8;
     let xStart = margin + 140;
-    let xEnd = this.state.totlaWidth - imgSize * 2;
+    let xEnd = this.state.totalWidth * 0.7 - imgSize * 2;
     let yStart = margin;
-    let yEnd = this.state.totalHeight - imgSize * 2;
+    let yEnd = this.state.totalHeight - 80 - imgSize * 2;
 
     let newSticker = {
       key: cur,
