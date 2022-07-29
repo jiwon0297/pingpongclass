@@ -14,6 +14,7 @@ class UserModel {
   frameColor; // 테두리 색깔
   smile; // 현재 웃는 중인지 확인
   outAngle; // 수업 참여 확인
+  attendenceTime; // 접속 시간
   profile; // 프로필 이미지 정보
 
   constructor() {
@@ -27,9 +28,10 @@ class UserModel {
     this.picked = false;
     this.point = 0;
     this.emoji = "";
-    this.frameColor = "#F8CBD3";
+    this.frameColor = { type: "style", value: { border: "8px solid #F8CBD3" } }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
     this.smile = false;
     this.outAngle = false;
+    this.attendenceTime = "00:00:00";
     this.profile = "";
   }
   // 추가 함수
@@ -131,6 +133,10 @@ class UserModel {
     if ((type === "local") | (type === "remote")) {
       this.type = type;
     }
+  }
+
+  setAttendenceTime(attendenceTime) {
+    this.attendenceTime = attendenceTime;
   }
 }
 

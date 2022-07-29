@@ -94,3 +94,12 @@
     display: none;
   }
 }
+
+@keyframes cooldown {
+  0% {
+    color: Red;
+  }
+  100% {
+    color: white;
+  }
+}
