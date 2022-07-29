@@ -70,9 +70,6 @@ export default class StreamComponent extends Component {
   componentDidUpdate(prevProps) {
     if (this.state.frameColor !== prevProps.user.frameColor) {
       let tempColor = this.props.user.frameColor;
-      console.log("테두리");
-      console.log(tempColor);
-      console.log(tempColor);
       this.setState({ frameColor: tempColor });
     }
   }

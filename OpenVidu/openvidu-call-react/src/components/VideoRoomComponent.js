@@ -475,7 +475,13 @@ class VideoRoomComponent extends Component {
               if (!data.picked) {
                 this.toggleShield();
               } else {
-                this.tempFrameChange({ type: "color", value: "Red" });
+                // this.tempFrameChange({ type: "color", value: "Red" });
+                this.tempFrameChange({
+                  type: "style",
+                  value: {
+                    animation: "alertFrame 3s linear 1",
+                  },
+                });
               }
             }
           }

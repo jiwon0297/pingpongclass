@@ -39,7 +39,13 @@ class ShieldModal extends Component {
   // desc: 지목받은 학생이 방어권을 사용하지 않을 때 호출되는 함수
   // todo: 호출 시 테두리를 변경하고 그 정보를 전체 참여자에게 공유한다.
   notUseShield = () => {
-    this.props.tempFrameChange({ type: "color", value: "Red" });
+    // this.props.tempFrameChange({ type: "color", value: "Red" });
+    this.props.tempFrameChange({
+      type: "style",
+      value: {
+        animation: "alertFrame 3s linear 1",
+      },
+    });
     this.close();
   };
 
