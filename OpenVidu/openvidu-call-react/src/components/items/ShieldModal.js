@@ -59,7 +59,7 @@ class ShieldModal extends Component {
     }, 1000);
     setTimeout(() => {
       if (this.state.display === true) {
-        this.close();
+        this.notUseShield();
       }
       clearInterval(interval);
     }, this.props.timeOut * 1000);
