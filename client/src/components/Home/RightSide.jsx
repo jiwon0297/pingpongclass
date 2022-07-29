@@ -33,16 +33,17 @@ const totalContainer = css`
   align-items: center;
 
   h2 {
-    color: white;
+    color: #56497c;
     text-align: right;
     font-size: 48px;
     span {
-      color: #e978a0;
+      color: white;
+      background-color: #f48397;
     }
   }
 
   p {
-    color: white;
+    color: #56497c;
     text-align: right;
     font-size: 1.5rem;
     font-weight: 600;
@@ -64,7 +65,12 @@ const totalContainer = css`
 
     .student {
       color: #ffffff;
-      background-color: #e978a0;
+      background-color: #dd7e8f;
+    }
+
+    .teacher {
+      color: #ffffff;
+      background-color: #7c99c6;
     }
     button:first-child {
       margin-right: 1rem;
