@@ -217,10 +217,22 @@ class VideoRoomComponent extends Component {
 
   // connect: 토큰을 매개변수로 받아서 실제 세션에 접속하게 해주는 함수
   connect(token) {
+    // name: 오석호
+    // date: 2022/07/28
+    // desc: 입장 시간을 저장해주는 로직
+    const time = new Date();
+    let attTime =
+      String(time.getHours()).padStart(2, "0") +
+      ":" +
+      String(time.getMinutes()).padStart(2, "0") +
+      ":" +
+      String(time.getSeconds()).padStart(2, "0");
+    localUser.setAttendenceTime(attTime);
     // 유저끼리 데이터 교환
     this.state.session
       .connect(token, {
         clientData: this.state.myUserName,
+        attTime: localUser.attendenceTime,
         randPick: this.state.randPick,
       })
       .then(() => {
@@ -280,18 +292,6 @@ class VideoRoomComponent extends Component {
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
-
-    // name: 오석호
-    // date: 2022/07/28
-    // desc: 입장 시간을 저장해주는 로직
-    const time = new Date();
-    let attTime =
-      String(time.getHours()).padStart(2, "0") +
-      ":" +
-      String(time.getMinutes()).padStart(2, "0") +
-      ":" +
-      String(time.getSeconds()).padStart(2, "0");
-    localUser.setAttendenceTime(attTime);
 
     // 이벤트 등록
     this.subscribeToUserChanged();
@@ -404,7 +404,6 @@ class VideoRoomComponent extends Component {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
 
-      console.log("USER DATA: " + event.stream.connection.data);
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
@@ -417,7 +416,9 @@ class VideoRoomComponent extends Component {
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
 
-      newUser.setAttendenceTime();
+      newUser.setAttendenceTime(
+        JSON.parse(event.stream.connection.data).attTime,
+      );
       const nickname = event.stream.connection.data.split("%")[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
       this.remotes.push(newUser);
