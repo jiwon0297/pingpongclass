@@ -39,6 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+
     private org.springframework.security.core.userdetails.User createStudent(String id, StudentEntity student) {
         if (!student.isActivated()) {
             throw new RuntimeException(id + " -> 활성화되어 있지 않습니다.");

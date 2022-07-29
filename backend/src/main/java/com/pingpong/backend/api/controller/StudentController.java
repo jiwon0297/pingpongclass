@@ -4,6 +4,9 @@ import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentSpecification;
 import com.pingpong.backend.api.domain.request.UserRequest;
+import com.pingpong.backend.api.domain.response.RankResponse;
+import com.pingpong.backend.api.domain.response.StudentResponse;
+import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import io.swagger.annotations.Api;
@@ -18,12 +21,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ssafy/students")
+@RequestMapping("ssafy/students")
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl service;
@@ -32,11 +34,14 @@ public class StudentController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final RankingRepository rankingRepository;
+
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
+
             //학번 검사
             Integer maxStudentId = repository.getMaxStudentId();
 
@@ -51,6 +56,7 @@ public class StudentController {
                     .password(passwordEncoder.encode("ssafy"+maxStudentId))
                     .build();
             service.register(studentEntity);
+
             return new ResponseEntity<String>("학생정보 입력 성공",HttpStatus.OK);
         } catch(Exception e){
             e.printStackTrace();
@@ -90,10 +96,11 @@ public class StudentController {
     @GetMapping("/{studentId}")
     @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
-        Optional<StudentEntity> student = service.findByStudentId(studentId);
-
-        if(student.isPresent()){
-            return new ResponseEntity<Optional<StudentEntity>>(student, HttpStatus.OK);
+        StudentEntity student = repository.getOne(studentId);
+        if(student!=null){
+            int rank = repository.countByTotalPointGreaterThan(student.getTotalPoint())+1;
+            if(rankingRepository.findFirstByStudent(student)!=null) rank = rankingRepository.findFirstByStudent(student).getRankNum();
+            return new ResponseEntity<StudentResponse>(new StudentResponse(student, rank), HttpStatus.OK);
         } else{
             return new ResponseEntity<String>("해당 학생이 존재하지 않습니다.",HttpStatus.FORBIDDEN);
         }
@@ -138,8 +145,8 @@ public class StudentController {
     @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> getRanking(){
         try{
-            List<StudentEntity> list = service.getRanking();
-            return new ResponseEntity<List<StudentEntity>>(list, HttpStatus.OK);
+            List<RankResponse> rankings = service.getRanking();
+            return new ResponseEntity<List<RankResponse>>(rankings, HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }

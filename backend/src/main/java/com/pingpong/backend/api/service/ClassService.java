@@ -4,17 +4,25 @@ import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.request.ClassRequest;
+import com.pingpong.backend.api.domain.request.OpenRequest;
 import com.pingpong.backend.api.domain.response.ClassResponse;
+import com.pingpong.backend.api.domain.response.RecordResponse;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +60,6 @@ public class ClassService {
     }
 
     //수업 삭제
-    //연관관계 테이블 데이터 삭제하는 옵션 추가 해야된다......
     public void delete(final int classId){
         ClassEntity classEntity = classRepository.findById(classId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         classRepository.delete(classEntity);
@@ -60,85 +67,107 @@ public class ClassService {
 
     //수업 수정
     public void modify(int classId, ClassRequest req){
-        //해당 수업id에 해당 하는 classStudentEntity List로 뽑아서 싹 삭제
         ClassEntity cEntity = classRepository.getOne(classId);
-        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(cEntity);
-        for(ClassStudentEntity classStudentEntity: classStudentEntityList){
-            classStudentRepository.delete(classStudentEntity);
+
+        //원래 수업에 듣는 학생 리스트
+        List<ClassStudentEntity> list = classStudentRepository.findByClassEntityOrderByStudentEntityAsc(cEntity);
+        List<Integer> originStudentList = new ArrayList<>();
+        List<Integer> deleteStudent = new ArrayList<>();
+        for(ClassStudentEntity classStudent : list){
+            originStudentList.add(classStudent.getStudentEntity().getStudentId());
+            deleteStudent.add(classStudent.getStudentEntity().getStudentId());
         }
-        //수업 정보 새로 저장
-        TeacherEntity teacherEntity = teacherRepository.getOne(req.getTeacherId());
+
+        //새롭게 수업에 듣는 학생 리스트
+        List<Integer> newStudentList = (ArrayList<Integer>) req.getStudentIdList();
+        List<Integer> updateStudent = new ArrayList<>();
+        for(Integer studentId : newStudentList){
+            updateStudent.add(studentId);
+        }
+        Collections.sort(newStudentList);
+
+        //두 리스트가 동일하지 않을 경우에만
+        if(!newStudentList.equals(originStudentList)) {
+
+            //원래 리스트와 새로운 리스트를 비교해서 새로 추가해야하는 값 남기기
+            updateStudent.removeAll(originStudentList);
+            //원래 리스트와 새로운 리스트를 비교해서 삭제해야하는 값 남기기
+            deleteStudent.removeAll(newStudentList);
+
+            //delete해야하는 값 delete
+            if(deleteStudent.size()!=0){
+                for(Integer studentId : deleteStudent){
+                    StudentEntity student = studentRepository.getOne(studentId);
+                    ClassStudentEntity classStudent = classStudentRepository.findClassStudentEntityByClassEntityAndStudentEntity(cEntity, student);
+                    classStudentRepository.delete(classStudent);
+                }
+            }
+
+            //update해야하는 값 update
+            if(updateStudent.size()!=0){
+                for(Integer studentId : updateStudent){
+                    StudentEntity student = studentRepository.getOne(studentId);
+                    classStudentRepository.save(new ClassStudentEntity(student, cEntity));
+                }
+            }
+        }
+
+        //수업 정보 수정(timetableEntity, subjectEntity, classTitle, classDesc, classDay)
         SubjectEntity subjectEntity = subjectRepository.getOne(req.getSubjectCode());
         TimetableEntity timetableEntity = timetableRepository.getOne(req.getTimetableId());
-        ClassEntity classEntity = ClassEntity.builder()
-                .teacherEntity(teacherEntity)
-                .subjectEntity(subjectEntity)
-                .classTitle(req.getClassTitle())
-                .classDay(req.getClassDay())
-                .timetableEntity(timetableEntity)
-                .classDesc(req.getClassDesc())
-                .classUrl(req.getClassUrl())
-                .build();
-        ClassEntity saveEntity = classRepository.save(classEntity);
-
-        List<Integer> studentIdList = req.getStudentIdList();
-        for(Integer studentId : studentIdList){
-            StudentEntity student = studentRepository.getOne(studentId);
-            ClassStudentEntity classstudent = new ClassStudentEntity(student, saveEntity);
-            classStudentRepository.save(classstudent);
-        }
+        ClassEntity classEntity = classRepository.getOne(classId);
+        classEntity.update(timetableEntity, subjectEntity, req.getClassTitle(), req.getClassDesc(), req.getClassDay());
     }
 
     //수업 목록 전체 조회
-    public List<ClassResponse> findClassesById(final int userId){
-        List<ClassResponse> list = new ArrayList<>();
+    public Page<ClassResponse> findClassesById(final int userId, Pageable pageable){
+        List<ClassEntity> classEntityList = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
-            StudentEntity studentEntity = studentRepository.getOne(userId);
+            StudentEntity studentEntity = studentRepository.getById(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
-            for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
-                List<ClassEntity> classEntityList = classRepository.findByClassId(classStudentEntity.getClassEntity().getClassId());
-                for (ClassEntity classEntity : classEntityList)
-                    list.add(new ClassResponse(classEntity));
-            }
+            for(ClassStudentEntity classStudentEntity: classStudentEntityList)
+                classEntityList.add(classStudentEntity.getClassEntity());
         }else{ //선생님일때
-            TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
-            List<ClassEntity> classEntityList = classRepository.findByTeacherEntity(teacherEntity);
-            for (ClassEntity classEntity: classEntityList)
-                list.add(new ClassResponse(classEntity));
+            TeacherEntity teacherEntity = teacherRepository.getById(userId);
+            classEntityList = classRepository.findByTeacherEntity(teacherEntity);
         }
-        return list;
+        List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
+        int start = (int)pageable.getOffset();
+        int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
+        return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
     //오늘의 수업 목록 조회(학생/선생님)
-    public List<ClassResponse> findTodayClasses(final int userId){
-        Sort sort = Sort.by(Sort.Direction.DESC,"TimeTableEntity");
+    public Page<ClassResponse> findTodayClasses(final int userId, Pageable pageable){
+        Sort sort = Sort.by(Sort.Direction.DESC,"TimetableEntity");
         LocalDate localDate = LocalDate.now();
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         int dayNumber = dayOfWeek.getValue();
-        List<ClassResponse> list = new ArrayList<>();
+        List<ClassEntity> classEntityList = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getOne(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
             for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
-                List<ClassEntity> classEntityList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), dayNumber, sort);
-                for (ClassEntity classEntity : classEntityList)
-                    list.add(new ClassResponse(classEntity));
+                classEntityList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), dayNumber, sort);
             }
-        }else{ //선생님일때
+        }else { //선생님일때
             TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
-            List<ClassEntity> classEntityList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, dayNumber, sort);
-            for (ClassEntity classEntity : classEntityList)
-                list.add(new ClassResponse(classEntity));
+            classEntityList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, dayNumber, sort);
         }
-        return list;
+        List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
+        int start = (int)pageable.getOffset();
+        int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
+        return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
     //실시간 강의 열기
-    public void saveUrl(int classId, String classUrl){
-        ClassEntity classEntity = classRepository.getOne(classId);
-        classEntity.updateUrl(classUrl);
+    @Transactional
+    public void saveUrl(OpenRequest openRequest){
+        ClassEntity classEntity = classRepository.getOne(openRequest.getClassId());
+        classEntity.updateUrl(openRequest.getClassUrl());
     }
 
     //강의 종료
+    @Transactional
     public void deleteUrl(int classId){
         ClassEntity classEntity = classRepository.getOne(classId);
         classEntity.updateUrl("");
