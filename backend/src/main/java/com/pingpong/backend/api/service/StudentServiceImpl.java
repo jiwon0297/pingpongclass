@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService{
     private final StudentRepository repository;
     private final PasswordEncoder passwordEncoder;
-
     private final RankingRepository rankingRepository;
 
 
@@ -46,7 +45,7 @@ public class StudentServiceImpl implements StudentService{
         StudentEntity studentEntity = StudentEntity.builder()
                 .studentId(student.getStudentId())
                 .name(student.getName())
-                .password(passwordEncoder.encode(student.getPassword()))
+                .password(student.getPassword())
                 .grade(student.getGrade())
                 .classNum(student.getClassNum())
                 .studentNum(student.getStudentNum())

@@ -26,6 +26,7 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("students")
+
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl service;
@@ -42,7 +43,6 @@ public class StudentController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
-
             //학번 검사
             Integer maxStudentId = repository.getMaxStudentId();
 
@@ -54,7 +54,7 @@ public class StudentController {
                     .grade(student.getGrade())
                     .classNum(student.getClassNum())
                     .studentNum(student.getStudentNum())
-                    .password(passwordEncoder.encode("ssafy"+maxStudentId))
+                    .password(passwordEncoder.encode("ssafy"+maxStudentId.toString()))
                     .build();
             service.register(studentEntity);
 
