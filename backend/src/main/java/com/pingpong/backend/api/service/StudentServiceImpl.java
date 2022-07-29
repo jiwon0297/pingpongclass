@@ -6,7 +6,6 @@ import com.pingpong.backend.api.domain.Authority;
 import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.RankingEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
-import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.domain.response.RankResponse;
 import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
@@ -48,7 +47,7 @@ public class StudentServiceImpl implements StudentService{
         StudentEntity studentEntity = StudentEntity.builder()
                 .studentId(student.getStudentId())
                 .name(student.getName())
-                .password(passwordEncoder.encode(student.getPassword()))
+                .password(student.getPassword())
                 .grade(student.getGrade())
                 .classNum(student.getClassNum())
                 .studentNum(student.getStudentNum())

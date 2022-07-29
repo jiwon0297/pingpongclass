@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -59,7 +61,8 @@ public class StudentEntity {
     private boolean activated=true;
 
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
+    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinTable(
             name = "student_authority",
             joinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "studentId")},  //외래키
