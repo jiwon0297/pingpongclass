@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
@@ -40,7 +40,7 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "Session0329";
+      : "Session03";
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user
@@ -230,7 +230,7 @@ class VideoRoomComponent extends Component {
         if (this.props.error) {
           this.props.error({
             error: error.error,
-            messgae: error.message,
+            message: error.message,
             code: error.code,
             status: error.status,
           });
@@ -836,7 +836,6 @@ class VideoRoomComponent extends Component {
   }
 
   toggleQuiz() {
-    console.log("hi");
     this.setState({ quizDisplay: !this.state.quizDisplay });
     this.updateLayout();
   }
