@@ -28,11 +28,11 @@ class VideoRoomComponent extends Component {
     //     : 'https://' + window.location.hostname + ':4443';
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://i7a403.p.ssafy.io";
+      : process.env.REACT_APP_OPENVIDU_SERVER_URL;
     // OPENVIDU_SERVER_SECRET: 서버 비밀번호 - 변경할 필요 없음
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
-      : "pingpongclass403";
+      : process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
     // hasBeenUpdated: 업데이트 여부 판단하는 변수
     this.hasBeenUpdated = false;
     // layout: 현재 레이아웃 (openvidu-layout.js와 연결)
