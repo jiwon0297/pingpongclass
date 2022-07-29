@@ -58,6 +58,7 @@ public class StudentEntity {
     @Column(nullable = false, name = "activated")
     private boolean activated=true;
 
+
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "student_authority",
