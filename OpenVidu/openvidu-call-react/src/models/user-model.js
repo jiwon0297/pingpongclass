@@ -14,8 +14,6 @@ class UserModel {
   frameColor; // 테두리 색깔
   smile; // 현재 웃는 중인지 확인
   outAngle; // 수업 참여 확인
-  userId; // 대시보드 페이지에서 사용하는 유저 아이디
-  idType; // 학생 2 / 선생님 3 / 관리자 4
   attendenceTime; // 접속 시간
   profile; // 프로필 이미지 정보
 
@@ -30,11 +28,9 @@ class UserModel {
     this.picked = false;
     this.point = 0;
     this.emoji = "";
-    this.frameColor = "#F8CBD3";
+    this.frameColor = { type: "style", value: { border: "8px solid #F8CBD3" } }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
     this.smile = false;
     this.outAngle = false;
-    this.userId = -1;
-    this.idType = -1;
     this.attendenceTime = "00:00:00";
     this.profile = "";
   }

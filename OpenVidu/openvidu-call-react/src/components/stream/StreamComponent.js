@@ -71,17 +71,13 @@ export default class StreamComponent extends Component {
     if (this.state.frameColor !== prevProps.user.frameColor) {
       let tempColor = this.props.user.frameColor;
       this.setState({ frameColor: tempColor });
-      // console.log(tempColor);
     }
   }
 
   // render: 렌더링 담당 함수
   render() {
     return (
-      <div
-        className="OT_widget-container"
-        style={{ border: "8px solid " + this.state.frameColor }}
-      >
+      <div className="OT_widget-container" style={this.state.frameColor.value}>
         {/* 닉네임창 */}
         <div className="pointer nickname">
           {this.state.showForm ? (

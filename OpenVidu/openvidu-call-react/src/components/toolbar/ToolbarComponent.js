@@ -187,7 +187,10 @@ export default class ToolbarComponent extends Component {
                 {this.state.randAvailable ? (
                   <Shuffle />
                 ) : (
-                  <Shuffle color="secondary" />
+                  <Shuffle
+                    color="secondary"
+                    style={{ animation: "cooldown 5s linear 1" }}
+                  />
                 )}
                 <p>랜덤 학생 뽑기</p>
               </div>
@@ -204,7 +207,10 @@ export default class ToolbarComponent extends Component {
                 {this.state.stickerAvailable ? (
                   <AccessTime />
                 ) : (
-                  <AccessTime color="secondary" />
+                  <AccessTime
+                    color="secondary"
+                    style={{ animation: "cooldown 30s linear 1" }}
+                  />
                 )}
                 <p>집중 스티커</p>
               </div>
