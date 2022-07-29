@@ -62,7 +62,7 @@ public class StudentEntity {
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "student_authority",
-            joinColumns = {@JoinColumn(name = "student_id", referencedColumnName =WWW "studentId")},  //외래키
+            joinColumns = {@JoinColumn(name = "student_id", referencedColumnName ="studentId")},  //외래키
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authorityName")})   //반대 엔티티의 외래키
     private Set<Authority> authorities;
 
