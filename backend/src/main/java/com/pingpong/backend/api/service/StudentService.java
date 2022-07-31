@@ -13,6 +13,7 @@ public interface StudentService {
     StudentEntity register(StudentEntity student);
 
     //로그인
+//    boolean login(UserRequest.Login login);
 
     //학생 1명 조회
     Optional<StudentEntity> findByStudentId(int studentId);
@@ -22,9 +23,6 @@ public interface StudentService {
 
     void modify(StudentEntity student);
 
-//    void modifyEmail(int studentId, String email);
-//
-//    void modifyIntroduce(int studentId, String introduce);
 
     //학생 삭제
     void delete(int studentId);

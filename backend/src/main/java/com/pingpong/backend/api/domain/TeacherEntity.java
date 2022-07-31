@@ -51,6 +51,8 @@ public class TeacherEntity {
     @Column(name = "activated")
     private boolean activated=true;
 
+
+
     @ManyToMany
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinTable(

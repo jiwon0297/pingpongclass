@@ -3,14 +3,15 @@ package com.pingpong.backend.api.service;
 import com.pingpong.backend.api.domain.RankingEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.repository.RankingRepository;
+import com.pingpong.backend.api.repository.RefreshTokenRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class ScheduleService {
 
     private final StudentRepository studentRepository;
     private final RankingRepository rankingRepository;
+
+    private final RefreshTokenRepository refreshTokenRepository;
 
     //매일 8시마다 실행
     @Scheduled(cron="0 0 8 * * *")
@@ -42,6 +45,9 @@ public class ScheduleService {
         for(int i=0; i<10; i++){
             rankingRepository.save(new RankingEntity(list.get(i), rank[i]));
         }
+
+        //만료된 RefreshToken 삭제
+        refreshTokenRepository.deleteByExpireTimeLessThan(LocalDateTime.now());
 
         System.out.println("8:00 RANKING 디비 갱신 완료!");
     }

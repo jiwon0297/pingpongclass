@@ -64,8 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                         /* swagger v3 */
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/ssafy/**",
-                        "/login/**"
+                        "/ssafy/**"
                 );
     }
 
@@ -97,18 +96,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                .and()
-                .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한 설정하겠다
-                .antMatchers("/login/**", "/web-resources/**", "/actuator/**","api/authenticate").permitAll()
-                .antMatchers("/students/**").hasAnyRole("STUDENT", "TEACHER")
-                .antMatchers("/teachers/**").hasAnyRole("TEACHER")
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .anyRequest().authenticated()
-
-////                로그인, 회원가입 API는 토큰이 없는 상태에서 요청이 들어오므로 permitAll설정
-//                .antMatchers("/login").permitAll()
-//                .antMatchers("/join").permitAll()   //해당 api 요청은 인증없이 접근 허용하겠다는 의미
-//                .anyRequest().authenticated()                   //나머지 요청들은 모두 인증되어야 한다
+//                .and()
+//                .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한 설정하겠다
+//                .antMatchers("/ssafy/**","/auth/**", "/web-resources/**", "/actuator/**").permitAll()//해당 api 요청은 인증없이 접근 허용하겠다는 의미
+//                .antMatchers("/students/**","/students").authenticated()
+//                .antMatchers("/teachers/**","/teachers").hasAnyRole("ROLE_TEACHER","ROLE_ADMIN")
+//                .antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+//                .anyRequest().authenticated() //나머지 요청들은 모두 인증되어야 한다
 
                 //JWTFilter를 addFilterBefore로 등록했던 JwtSecurityConfig클래스도 적용
                 .and()

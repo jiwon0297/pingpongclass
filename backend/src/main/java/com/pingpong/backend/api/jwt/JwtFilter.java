@@ -33,6 +33,8 @@ public class JwtFilter extends GenericFilterBean {
      * JWT 토큰의 인증정보를 현재 실행중인 SecurityContext 에 저장하는 역할
      * 메소드 내부에 실제 필터링 로직 작성
      * > 유효성 검증 (토큰 파싱시(잘못된,만료된,지원하지않는..) 유효한지,
+     *
+     *
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

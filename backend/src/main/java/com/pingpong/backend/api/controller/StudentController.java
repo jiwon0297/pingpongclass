@@ -25,7 +25,7 @@ import java.util.List;
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("students")
+@RequestMapping("/students")
 
 @RequiredArgsConstructor
 public class StudentController {
@@ -64,6 +64,22 @@ public class StudentController {
             return new ResponseEntity<String>("학생정보 입력 실패",HttpStatus.FORBIDDEN);
         }
     }
+
+//    @ApiOperation(value = "학생 로그인", notes = "비밀번호, 아이디 일치하면 로그인")
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody UserRequest.Login login){
+//        try{
+//            boolean isAvailable = service.login(login);
+//            if(isAvailable){
+//                return new ResponseEntity<String>("학생 로그인 성공",HttpStatus.OK;
+//            } else{
+//                return new ResponseEntity<String>("해당하는 학생 정보가 없습니다.",HttpStatus.FORBIDDEN);
+//            }
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            return new ResponseEntity<String>("학생 로그인 실패",HttpStatus.FORBIDDEN);
+//        }
+//    }
 
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
     @GetMapping

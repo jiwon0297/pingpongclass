@@ -17,7 +17,7 @@ import java.util.List;
 @Api(value = "선생님 API", tags={"선생님"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ssafy/teachers")
+@RequestMapping("/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherRepository repository;
@@ -61,6 +61,17 @@ public class TeacherController {
         } catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<String>("선생님(관리자) 회원가입 실패",HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @ApiOperation(value = "선생님 삭제", notes = "선생님 삭제")
+    @DeleteMapping("/{teacherId}")
+    public ResponseEntity<?> deleteTeacher(@PathVariable int teacherId){
+        try{
+            service.delete(teacherId);
+            return new ResponseEntity<String>("선생님(관리자) 삭제 성공", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<String>("선생님(관리자) 삭제 실패"+e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 
