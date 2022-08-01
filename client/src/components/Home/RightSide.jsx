@@ -26,40 +26,41 @@ function RightSide() {
 }
 
 const totalContainer = css`
-  width: 60%;
+  width: 55%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   h2 {
-    color: #56497c;
+    color: #332757;
     text-align: right;
-    font-size: 48px;
+    font-size: calc(2em + 1vw);
     span {
       color: white;
-      background-color: #f48397;
+      background-color: #df5b73;
     }
   }
 
   p {
-    color: #56497c;
+    color: #332757;
     text-align: right;
-    font-size: 1.5rem;
+    font-size: calc(0.5em + 1vw);
     font-weight: 600;
   }
 
   .buttons {
-    display: flex;
+    display: inline-block;
     flex-direction: row;
     margin: 2rem 0;
 
     button {
-      width: 160px;
-      height: 50px;
+      width: 13vw;
+      height: 6vh;
       border-radius: 30px;
       border: none;
       font-weight: 600;
+      font-size: calc(0.2em + 1vw);
       cursor: pointer;
     }
 

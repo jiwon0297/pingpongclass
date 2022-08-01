@@ -5,18 +5,21 @@ import MainLogo from '../../images/image1.png';
 function LeftSide() {
   return (
     <div css={totalContainer}>
-      <img src={MainLogo} alt="움직이는 기본로고" />
+      <img src={MainLogo} alt="로고" />
     </div>
   );
 }
 
 const totalContainer = css`
-  width: 60%;
+  margin-left: 4vw;
+  width: 40%;
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
   img {
-    width: 450px;
+    max-width: 100%;
+    min-width: 40%;
+    height: auto;
   }
 `;
 

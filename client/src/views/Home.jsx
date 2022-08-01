@@ -6,16 +6,20 @@ import RightSide from '../components/Home/RightSide';
 function Home() {
   return (
     <div css={totalContainer}>
+      <div className="triangles">
+        <div className="triangle1" />
+        <div className="triangle2" />
+      </div>
       <div className="parent">
         <div className="child">
-          <div style={{ width: '100%' }}>
-            <div style={{ height: '5%' }} className="circles">
+          <div className="container">
+            <div className="circles">
               <div className="circle1" />
               <div className="circle2" />
               <div className="circle3" />
             </div>
-            <hr style={{ border: '0', height: '2px', background: '#000000' }} />
-            <div style={{ display: 'flex' }}>
+            <hr />
+            <div className="sideContainer">
               <LeftSide />
               <RightSide />
             </div>
@@ -26,7 +30,39 @@ function Home() {
   );
 }
 const totalContainer = css`
-  background-image: url('../images/grid_pattern.jpeg');
+  background-color: #ffffff;
+  opacity: 0.8;
+  background-image: linear-gradient(#929292 1px, transparent 1px),
+    linear-gradient(to right, #929292 1px, #ffffff 1px);
+  background-size: 30px 30px;
+  height: 100vh;
+  position: relative;
+
+  .triangles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    div {
+      width: 0px;
+      height: 0px;
+    }
+
+    .triangle1 {
+      border-bottom: 40vh solid #bdcde5;
+      border-left: 0px solid transparent;
+      border-right: 100vw solid transparent;
+      transform: scaleY(-1);
+    }
+
+    .triangle2 {
+      position: absolute;
+      top: 60%;
+      border-bottom: 40vh solid #f8cbd3;
+      border-left: 100vw solid transparent;
+      border-right: 0px solid transparent;
+    }
+  }
 
   .child {
     position: absolute;
@@ -36,8 +72,6 @@ const totalContainer = css`
     top: -0.5vh;
 
     border-radius: 20px;
-    display: flex;
-    flex-direction: row;
 
     background-color: white;
 
@@ -52,23 +86,40 @@ const totalContainer = css`
     top: 8vh;
 
     border-radius: 20px;
-    display: flex;
-    flex-direction: row;
 
     background-color: #fff1bf;
 
     border: 2px solid #001111;
   }
 
-  .circles {
-    margin-top: 0.8rem;
-    margin-bottom: -1rem;
-    margin-left: 1rem;
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+  }
 
+  .sideContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 78vh;
+    vertical-align: center;
+  }
+
+  hr {
+    width: 100%;
+    height: 2px;
+    border: 0;
+    background-color: black;
+  }
+
+  .circles {
+    margin: 10px 0 0 10px;
     div {
       border: 2px solid black;
-      width: 1%;
-      height: 34%;
+      width: 10px;
+      height: 10px;
       border-radius: 75px;
       background-color: #000000;
       float: left;
