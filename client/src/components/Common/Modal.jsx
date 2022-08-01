@@ -2,11 +2,10 @@
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
 import getPositionCSS from '../../utils/getPositionCSS';
-import IosModalBase from './IosModalBase';
 
 // props에는 크기정보가 들어가야함
 
-const IosModal = ({
+const Modal = ({
   children,
   isOpen = true,
   renderCenter = false,
@@ -24,11 +23,11 @@ const IosModal = ({
         css={AbsoluteBox({
           renderCenter,
           pos: { absolutePos },
+          width,
+          height,
         })}
       >
-        <IosModalBase width={width} height={height}>
-          {children}
-        </IosModalBase>
+        {children}
       </div>
     );
   return (
@@ -37,11 +36,11 @@ const IosModal = ({
         css={AbsoluteBox({
           renderCenter,
           pos: { absolutePos },
+          width,
+          height,
         })}
       >
-        <IosModalBase width={width} height={height}>
-          {children}
-        </IosModalBase>
+        {children}
       </div>
     </div>
   );
@@ -54,6 +53,11 @@ const AbsoluteBox = ({ renderCenter, pos, width, height }) => css`
   ${renderCenter ? 'transform:translate(-50%, -50%); top:50%; left:50%;' : ''};
   ${getPositionCSS(pos)};
   padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px rgba(204, 204, 204, 0.5),
+    0px 2px 4px rgba(0, 0, 0, 0.25);
+
+  background-color: white;
 `;
 
 const RelativeBox = ({ pos }) => css`
@@ -61,7 +65,7 @@ const RelativeBox = ({ pos }) => css`
   ${getPositionCSS(pos)};
 `;
 
-IosModal.propTypes = {
+Modal.propTypes = {
   children: PropTypes.node,
   isOpen: PropTypes.bool,
   renderCenter: PropTypes.bool,
@@ -82,7 +86,7 @@ IosModal.propTypes = {
   height: PropTypes.string,
 };
 
-IosModal.defaultProps = {
+Modal.defaultProps = {
   children: null,
   isOpen: true,
   renderCenter: false,
@@ -93,4 +97,4 @@ IosModal.defaultProps = {
   height: '600px',
 };
 
-export default IosModal;
+export default Modal;
