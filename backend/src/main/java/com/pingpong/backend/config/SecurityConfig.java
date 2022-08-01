@@ -65,7 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
                         "/ssafy/**",
-                        "/login/**"
+                        "/login/**",
+                        "/"
                 );
     }
 
@@ -99,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
 
                 .and()
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한 설정하겠다
-                .antMatchers("/login/**", "/web-resources/**", "/actuator/**").permitAll()
+                .antMatchers("/login/**", "/web-resources/**", "/actuator/**","api/authenticate").permitAll()
                 .antMatchers("/students/**").hasAnyRole("STUDENT", "TEACHER")
                 .antMatchers("/teachers/**").hasAnyRole("TEACHER")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
