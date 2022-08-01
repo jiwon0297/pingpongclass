@@ -109,6 +109,6 @@ public class StudentServiceImpl implements StudentService{
     @Transactional(readOnly = true)
     public StudentEntity getMyUserWithAuthorities() {
 //        return StudentEntity.from(SecurityUtil.getCurrentUsername().flatMap(repository::findStudentEntityByStudentId).orElse(null));
-        return StudentEntity.from(repository.findStudentEntityByStudentId(SecurityUtil.getCurrentUsername()).orElse(null));
+        return StudentEntity.from(repository.findStudentEntityByStudentId(Integer.parseInt(SecurityUtil.getCurrentUsername())).orElse(null));
     }
 }

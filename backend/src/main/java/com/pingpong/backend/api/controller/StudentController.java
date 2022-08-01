@@ -40,7 +40,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
             //학번 검사
@@ -83,12 +83,13 @@ public class StudentController {
 
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+//    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> findAll(
             @RequestParam(required = false) Integer grade,
             @RequestParam(required = false) Integer classNum,
             @RequestParam(required = false) String name
     ){
+        System.out.println("학생목록 조회");
         try{
             Specification<StudentEntity> spec = ((root, query, criteriaBuilder) -> null);
 
@@ -194,18 +195,18 @@ public class StudentController {
         }
     }
 
-    //PreAuthorize를 통해 USER, ADMIN 두가지 권한 모두 호출가능한 API
-    @GetMapping("/info")
-    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
-    public ResponseEntity<StudentEntity> getMyUserInfo(HttpServletRequest request) {
-        //username에 해당하는 user객체와 권한정보 가져오기
-        return ResponseEntity.ok(service.getMyUserWithAuthorities());
-    }
-
-    //ADMIN 권한만 호출가능한 API
-    @GetMapping("/info/{studentId}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<StudentEntity> getUserInfo(@PathVariable int studentId) {
-        return ResponseEntity.ok(service.getUserWithAuthorities(studentId));
-    }
+//    //PreAuthorize를 통해 USER, ADMIN 두가지 권한 모두 호출가능한 API
+//    @GetMapping("/info")
+////    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
+//    public ResponseEntity<StudentEntity> getMyUserInfo(HttpServletRequest request) {
+//        //username에 해당하는 user객체와 권한정보 가져오기
+//        return ResponseEntity.ok(service.getMyUserWithAuthorities());
+//    }
+//
+//    //ADMIN 권한만 호출가능한 API
+//    @GetMapping("/info/{studentId}")
+////    @PreAuthorize("hasAnyRole('ADMIN')")
+//    public ResponseEntity<StudentEntity> getUserInfo(@PathVariable int studentId) {
+//        return ResponseEntity.ok(service.getUserWithAuthorities(studentId));
+//    }
 }
