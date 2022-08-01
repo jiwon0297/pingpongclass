@@ -25,9 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService{
     private final StudentRepository repository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final RankingRepository rankingRepository;
 
 
@@ -75,22 +73,6 @@ public class StudentServiceImpl implements StudentService{
         StudentEntity studentEntity = repository.findById(student.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         studentEntity.modifyStudent(student);
     }
-//
-//    @Override
-//    @Transactional
-//    public void modifyEmail(int studentId, String email) {
-//        StudentEntity studentEntity = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-//        studentEntity.setEmail(email);
-//        repository.save(studentEntity);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void modifyIntroduce(int studentId, String introduce) {
-//        StudentEntity studentEntity = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-//        studentEntity.setIntroduce(introduce);
-//        repository.save(studentEntity);
-//    }
 
     @Override
     @Transactional

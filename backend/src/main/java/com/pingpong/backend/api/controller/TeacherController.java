@@ -64,6 +64,17 @@ public class TeacherController {
         }
     }
 
+    @ApiOperation(value = "선생님 삭제", notes = "선생님 삭제")
+    @DeleteMapping("/{teacherId}")
+    public ResponseEntity<?> deleteTeacher(@PathVariable int teacherId){
+        try{
+            service.delete(teacherId);
+            return new ResponseEntity<String>("선생님(관리자) 삭제 성공", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<String>("선생님(관리자) 삭제 실패"+e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
     @ApiOperation(value = "선생님 목록 조회(이름검색까지)", notes = "이름으로 검색하면 이름까지 검색, 아니면 전체 검색")
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(defaultValue = "전체") String name){

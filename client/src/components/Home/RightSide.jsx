@@ -5,8 +5,8 @@ function RightSide() {
   return (
     <div css={totalContainer}>
       <h2>
-        함께 만들어가는 <br />
-        <span className="programName">핑퐁클래스</span>.
+        함께 만들어가는, <br />
+        <span className="programName">핑퐁클래스</span> .
       </h2>
       <p>
         핑퐁클래스는 20년간의 노하우가 담긴
@@ -26,45 +26,52 @@ function RightSide() {
 }
 
 const totalContainer = css`
-  width: 60%;
+  width: 55%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   h2 {
-    color: white;
+    color: #332757;
     text-align: right;
-    font-size: 48px;
+    font-size: calc(1.5em + 2vw);
     span {
-      color: #e978a0;
+      color: white;
+      background-color: #df5b73;
     }
   }
 
   p {
-    color: white;
+    color: #332757;
     text-align: right;
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: calc(0.5em + 1vw);
+    font-weight: 700;
   }
 
   .buttons {
-    display: flex;
+    display: inline-block;
     flex-direction: row;
     margin: 2rem 0;
 
     button {
-      width: 160px;
-      height: 50px;
+      width: 13vw;
+      height: 6vh;
       border-radius: 30px;
       border: none;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: calc(0.2em + 1vw);
       cursor: pointer;
     }
 
     .student {
       color: #ffffff;
-      background-color: #e978a0;
+      background-color: #dd7e8f;
+    }
+
+    .teacher {
+      color: #ffffff;
+      background-color: #7c99c6;
     }
     button:first-child {
       margin-right: 1rem;

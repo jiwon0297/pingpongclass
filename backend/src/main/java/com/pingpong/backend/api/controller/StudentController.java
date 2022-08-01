@@ -25,7 +25,9 @@ import java.util.List;
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("ssafy/students")
+@RequestMapping("/students")
+
+
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl service;
@@ -39,6 +41,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
             //학번 검사
@@ -55,6 +58,7 @@ public class StudentController {
                     .password(passwordEncoder.encode("ssafy"+maxStudentId))
                     .build();
             service.register(studentEntity);
+
             return new ResponseEntity<String>("학생정보 입력 성공",HttpStatus.OK);
         } catch(Exception e){
             e.printStackTrace();
@@ -62,9 +66,10 @@ public class StudentController {
         }
     }
 
+
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
     @GetMapping
-    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
+//    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> findAll(
             @RequestParam(required = false) Integer grade,
             @RequestParam(required = false) Integer classNum,
@@ -117,6 +122,7 @@ public class StudentController {
 
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
+    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
     public ResponseEntity<String> modify(@RequestBody StudentEntity student){
         try {
             service.modify(student);
@@ -164,7 +170,7 @@ public class StudentController {
 
     @PatchMapping("/points/{point}")
     @ApiOperation(value = "학생 스티커 개수 수정", notes = "point만큼 추가하거나 빼거나")
-    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
     public ResponseEntity<?> updatePoint(@RequestParam int studentId, @PathVariable int point){
         try{
             service.updatePoint(studentId, point);
