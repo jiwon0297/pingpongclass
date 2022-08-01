@@ -49,6 +49,8 @@ public class TeacherEntity {
     @Column(name = "activated")
     private boolean activated=true;
 
+
+
     @ManyToMany
     @JoinTable(
             name = "teacher_authority",

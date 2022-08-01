@@ -11,9 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +28,18 @@ public class TeacherServiceImpl implements TeacherService {
     @Transactional
     public TeacherEntity register(TeacherEntity teacher) {
         //teacher계정은 권한이 2개
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_STUDENT")
+        Set<Authority> authorities= new HashSet<>();
+        Authority role = Authority.builder()
                 .authorityName("ROLE_TEACHER")
                 .build();
+
+        authorities.add(role);
+        if(teacher.getIsAdmin() == 1){
+            role = Authority.builder()
+                    .authorityName("ROLE_ADMIN")
+                    .build();
+            authorities.add(role);
+        }
 
         TeacherEntity teacherEntity = TeacherEntity.builder()
                 .teacherId(teacher.getTeacherId())
@@ -38,7 +47,7 @@ public class TeacherServiceImpl implements TeacherService {
                 .password(passwordEncoder.encode(teacher.getPassword()))
                 .birth(teacher.getBirth())
                 .manageGrade(teacher.getManageGrade())
-                .authorities(Collections.singleton(authority))
+                .authorities(authorities)
                 .isAdmin(teacher.getIsAdmin())
                 .activated(true)
                 .build();
@@ -91,4 +100,5 @@ public class TeacherServiceImpl implements TeacherService {
     public void delete(int teacherId) {
         repository.deleteById(teacherId);
     }
+
 }
