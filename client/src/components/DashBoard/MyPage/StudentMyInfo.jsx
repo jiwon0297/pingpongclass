@@ -2,19 +2,6 @@
 import { css } from '@emotion/react';
 import IosModal from '../../Common/IosModal';
 import ProfilImage from '../../../assets/images/profile.png';
-// import Modal from '../components/Common/Modal';
-
-/*
-모달 사용법
-  <IosModal
-        renderCenter={true}
-        isRelative={true}
-        absolutePos={{ top: '0', left: '0' }}
-        relativePos={{ top: '0', left: '0' }}
-        width="1000px"
-        height="300px"s
-  >
-*/
 
 const StudentMyInfo = () => (
   <IosModal renderCenter={true} isRelative={true} width="75%" height="80%">
@@ -97,7 +84,7 @@ const ModalCSS = css`
   .profile {
     text-align: center;
     .profile-logo {
-      width: 15vw;
+      width: 10vw;
       height: auto;
     }
   }
@@ -121,7 +108,7 @@ const ModalCSS = css`
   }
 
   input {
-    height: 5vh;
+    height: 4vh;
     background-color: #f9f7e9;
     border: 0;
   }

@@ -3,20 +3,8 @@ import { css } from '@emotion/react';
 import IosModal from '../../Common/IosModal';
 // import Modal from '../components/Common/Modal';
 
-/*
-모달 사용법
-  <IosModal
-        renderCenter={true}
-        isRelative={true}
-        absolutePos={{ top: '0', left: '0' }}
-        relativePos={{ top: '0', left: '0' }}
-        width="1000px"
-        height="300px"s
-  >
-*/
-
 const InputPassword = () => (
-  <IosModal renderCenter={true} isRelative={true} width="60%" height="50%">
+  <IosModal renderCenter={true} isRelative={true} width="60%" height="60%">
     <div css={ModalCSS}>
       <form>
         <div>
@@ -60,7 +48,7 @@ const ModalCSS = css`
     color: white;
     border: 0;
     border-radius: 6px;
-    margin-left: 7rem;
+    margin-left: 8.5rem;
     font-size: calc(0.5rem + 1vw);
   }
 `;
