@@ -1,6 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+<<<<<<< HEAD
 import MainLogo from '../../images/image1.png';
+=======
+import MovingLogo from '../../assets/images/movingLogo.gif';
+>>>>>>> 566e86fc1ba92ae3e4f9c221216d8249d721dbab
 
 function LeftSide() {
   return (

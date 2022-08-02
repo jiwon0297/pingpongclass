@@ -66,6 +66,7 @@ const totalContainer = css`
 
     .student {
       color: #ffffff;
+<<<<<<< HEAD
       background-color: #dd7e8f;
     }
 
@@ -75,6 +76,10 @@ const totalContainer = css`
     }
     button:first-child {
       margin-right: 1rem;
+=======
+      background-color: #e978a0;
+      margin-left: 1rem;
+>>>>>>> 566e86fc1ba92ae3e4f9c221216d8249d721dbab
     }
   }
 `;
