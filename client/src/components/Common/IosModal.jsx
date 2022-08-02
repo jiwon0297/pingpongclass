@@ -16,7 +16,6 @@ const IosModal = ({
   width,
   height,
 }) => {
-  console.log(width, height, renderCenter);
   if (!isOpen) return <div />;
   if (!isRelative)
     return (

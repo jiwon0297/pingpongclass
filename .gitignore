@@ -1,5 +1,8 @@
 # node_modules
 /client/node_modules
+/backend/
+/OpenVidu/node_modules
+
 
 # environments
 /client/.env

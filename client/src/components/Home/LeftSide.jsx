@@ -36,3 +36,4 @@ const totalContainer = css`
 `;
 
 export default LeftSide;
+
