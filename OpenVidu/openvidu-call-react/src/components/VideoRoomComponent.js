@@ -485,7 +485,7 @@ class VideoRoomComponent extends Component {
                 this.tempFrameChange({
                   type: "style",
                   value: {
-                    animation: "alertFrame 3s linear 1",
+                    animation: "alertFrame 2s linear 1",
                   },
                 });
               }
@@ -503,7 +503,7 @@ class VideoRoomComponent extends Component {
           if (data.clickEvent !== undefined) {
             this.addNewStickers(data.clickEvent);
           }
-					if (data.quizCreated !== undefined) {
+          if (data.quizCreated !== undefined) {
             this.popUpQuiz(data.quizCreated);
           }
           if (data.quizAnswerCreated !== undefined) {
@@ -873,6 +873,7 @@ class VideoRoomComponent extends Component {
       });
     });
   };
+
   // addNewStickers: 호출 시 int값으로 주어진 multiple개 만큼의 칭찬스티커를 전체 화면에 생성하는 함수
   addNewStickers = (multiple) => {
     this.removeAllStickers();
@@ -881,14 +882,14 @@ class VideoRoomComponent extends Component {
     }
     setTimeout(() => {
       this.removeAllStickers();
-    }, 3 * 1000);
+    }, 4 * 1000);
   };
 
   // addNewSticker: 호출 시 int값으로 주어진 cur을 키값으로 가지는 칭찬스티커를 전체 화면에 생성하는 함수
   // name: 오석호
   // date: 2022/07/29
   // desc: 로직 일부 수정 - 채팅창이나 참여자 목록을 켰을 때 발생할 수 있는 30% 및 하단 툴바 고려
-  addNewSticker = (cur) => {
+  addNewSticker = (current) => {
     let imgSize = 100;
     let margin = 8;
     let xStart = margin + 140;
@@ -897,7 +898,7 @@ class VideoRoomComponent extends Component {
     let yEnd = this.state.totalHeight - 80 - imgSize * 2;
 
     let newSticker = {
-      key: cur,
+      key: current,
       point: 5,
       top: this.between(yStart, yEnd),
       left: this.between(xStart, xEnd),
@@ -906,7 +907,7 @@ class VideoRoomComponent extends Component {
   };
 
   // removeAllStickers: 호출 시 현재 화면에 생성된 모든 칭찬스티커를 제거하는 함수
-  removeAllStickers = (current) => {
+  removeAllStickers = () => {
     this.setState({ stickers: [] });
   };
 
@@ -914,7 +915,7 @@ class VideoRoomComponent extends Component {
   removeSticker = (current) => {
     this.setState({
       stickers: this.state.stickers.filter(
-        (sticker, index) => index !== current
+        (sticker) => sticker.key !== current
       ),
     });
   };
@@ -968,6 +969,7 @@ class VideoRoomComponent extends Component {
       this.setState({ quiz: newQuiz, quizDisplayStudent: true });
     }
   };
+
   answerUpdate = (answer) => {
     console.log(answer);
     if (answer === "a1") {
@@ -1041,6 +1043,7 @@ class VideoRoomComponent extends Component {
               key={stickerKey.key}
               point={stickerKey.point}
               top={stickerKey.top}
+              removeSticker={this.removeSticker}
               left={stickerKey.left}
             ></Sticker>
           ))}

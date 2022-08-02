@@ -7,16 +7,19 @@ import "./PointSticker.css";
 const stickerImg =
   "https://item.kakaocdn.net/do/d46eb5180f93b19ab3d2a7275827ac0682f3bd8c9735553d03f6f982e10ebe70";
 const PointSticker = (props) => {
-  const { point, top, left } = props;
+  const { key, point, top, left, removeSticker } = props;
   const [visible, setVisible] = useState(true);
   const css = {
     top: top + "px",
     left: left + "px",
-    display: visible ? "block" : "none",
+    visibility: visible ? "visible" : "hidden",
     disabled: !visible,
+    cursor: "pointer",
+    borderRadius: "50%",
   };
 
   const addPoint = () => {
+    removeSticker(key);
     console.log(point);
     setVisible(false);
   };

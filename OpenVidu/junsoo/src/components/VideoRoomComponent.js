@@ -9,6 +9,7 @@ import ParticipantComponent from "./participant/ParticipantComponent";
 import FaceDetection from "../FaceDetection";
 import EmojiFilter from "./items/EmojiFilter";
 import QuizModal from "./quiz/QuizModal";
+import QuizModalStudent from "./quiz/QuizModalStudent";
 import ShieldModal from "./items/ShieldModal";
 import Sticker from "./pointClickEvent/PointSticker";
 
@@ -40,7 +41,7 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "Session03";
+      : "Session031";
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user
@@ -63,6 +64,7 @@ class VideoRoomComponent extends Component {
       chatDisplay: "none",
       participantDisplay: "none",
       quizDisplay: false,
+      quizDisplayStudent: false,
       shieldDisplay: false,
       currentVideoDevice: undefined,
       randPick: undefined,
@@ -72,6 +74,7 @@ class VideoRoomComponent extends Component {
       totalHeight: 0,
       totalWidth: 0,
       stickers: [],
+      quiz: {},
     };
 
     // 메서드 바인딩 과정
@@ -123,6 +126,8 @@ class VideoRoomComponent extends Component {
     this.checkUserHasItem = this.checkUserHasItem.bind(this);
     // startStickerEvent: 칭찬스티커 클릭이벤트를 발생시키는 함수
     this.startStickerEvent = this.startStickerEvent.bind(this);
+    // answerUpdate: 퀴즈 정답 수신해서 통계에 적용하는 함수
+    this.answerUpdate = this.answerUpdate.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -326,6 +331,7 @@ class VideoRoomComponent extends Component {
             isAudioActive: this.state.localUser.isAudioActive(),
             isVideoActive: this.state.localUser.isVideoActive(),
             nickname: this.state.localUser.getNickname(),
+            point: this.state.localUser.getPoint(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
           });
         }
@@ -479,7 +485,7 @@ class VideoRoomComponent extends Component {
                 this.tempFrameChange({
                   type: "style",
                   value: {
-                    animation: "alertFrame 3s linear 1",
+                    animation: "alertFrame 2s linear 1",
                   },
                 });
               }
@@ -496,6 +502,12 @@ class VideoRoomComponent extends Component {
           }
           if (data.clickEvent !== undefined) {
             this.addNewStickers(data.clickEvent);
+          }
+          if (data.quizCreated !== undefined) {
+            this.popUpQuiz(data.quizCreated);
+          }
+          if (data.quizAnswerCreated !== undefined) {
+            this.answerUpdate(data.quizAnswerCreated);
           }
         }
       });
@@ -833,11 +845,6 @@ class VideoRoomComponent extends Component {
     }
   }
 
-  toggleQuiz() {
-    this.setState({ quizDisplay: !this.state.quizDisplay });
-    this.updateLayout();
-  }
-
   toggleShield() {
     this.setState({ shieldDisplay: !this.state.shieldDisplay });
     this.updateLayout();
@@ -866,6 +873,7 @@ class VideoRoomComponent extends Component {
       });
     });
   };
+
   // addNewStickers: 호출 시 int값으로 주어진 multiple개 만큼의 칭찬스티커를 전체 화면에 생성하는 함수
   addNewStickers = (multiple) => {
     this.removeAllStickers();
@@ -874,14 +882,14 @@ class VideoRoomComponent extends Component {
     }
     setTimeout(() => {
       this.removeAllStickers();
-    }, 3 * 1000);
+    }, 4 * 1000);
   };
 
   // addNewSticker: 호출 시 int값으로 주어진 cur을 키값으로 가지는 칭찬스티커를 전체 화면에 생성하는 함수
   // name: 오석호
   // date: 2022/07/29
   // desc: 로직 일부 수정 - 채팅창이나 참여자 목록을 켰을 때 발생할 수 있는 30% 및 하단 툴바 고려
-  addNewSticker = (cur) => {
+  addNewSticker = (current) => {
     let imgSize = 100;
     let margin = 8;
     let xStart = margin + 140;
@@ -890,7 +898,7 @@ class VideoRoomComponent extends Component {
     let yEnd = this.state.totalHeight - 80 - imgSize * 2;
 
     let newSticker = {
-      key: cur,
+      key: current,
       point: 5,
       top: this.between(yStart, yEnd),
       left: this.between(xStart, xEnd),
@@ -899,7 +907,7 @@ class VideoRoomComponent extends Component {
   };
 
   // removeAllStickers: 호출 시 현재 화면에 생성된 모든 칭찬스티커를 제거하는 함수
-  removeAllStickers = (current) => {
+  removeAllStickers = () => {
     this.setState({ stickers: [] });
   };
 
@@ -907,7 +915,7 @@ class VideoRoomComponent extends Component {
   removeSticker = (current) => {
     this.setState({
       stickers: this.state.stickers.filter(
-        (sticker, index) => index !== current
+        (sticker) => sticker.key !== current
       ),
     });
   };
@@ -937,6 +945,57 @@ class VideoRoomComponent extends Component {
     }, 1.5 * 1000);
   };
 
+  // name: 원재호
+  // date: 2022/08/02
+  // desc: 퀴즈 관련 함수 모아놓음
+  toggleQuiz = (quiz) => {
+    if (quiz) {
+      this.sendSignalUserChanged({ quizCreated: quiz });
+      this.setState({ quiz: quiz });
+    } else {
+      this.setState({ quizDisplay: !this.state.quizDisplay });
+    }
+  };
+
+  toggleQuizStudent = (answer) => {
+    if (answer) {
+      this.sendSignalUserChanged({ quizAnswerCreated: answer });
+    }
+    this.setState({ quizDisplayStudent: !this.state.quizDisplayStudent });
+  };
+
+  popUpQuiz = (newQuiz) => {
+    if (newQuiz) {
+      this.setState({ quiz: newQuiz, quizDisplayStudent: true });
+    }
+  };
+
+  answerUpdate = (answer) => {
+    console.log(answer);
+    if (answer === "a1") {
+      this.setState({
+        ...this.state,
+        quiz: { ...this.state.quiz, answerA1: this.state.quiz.answerA1 + 1 },
+      });
+    } else if (answer === "a2") {
+      this.setState({
+        ...this.state,
+        quiz: { ...this.state.quiz, answerA2: this.state.quiz.answerA2 + 1 },
+      });
+    } else if (answer === "a3") {
+      this.setState({
+        ...this.state,
+        quiz: { ...this.state.quiz, answerA3: this.state.quiz.answerA3 + 1 },
+      });
+    } else if (answer === "a4") {
+      this.setState({
+        ...this.state,
+        quiz: { ...this.state.quiz, answerA4: this.state.quiz.answerA4 + 1 },
+      });
+    }
+    console.log(this.state.quiz);
+  };
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -952,6 +1011,13 @@ class VideoRoomComponent extends Component {
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
             header="Quiz Modal"
+            quiz={this.state.quiz}
+          />
+          <QuizModalStudent
+            display={this.state.quizDisplayStudent}
+            toggleQuizStudent={this.toggleQuizStudent}
+            header="Quiz Modal"
+            quiz={this.state.quiz}
           />
           <ShieldModal
             display={this.state.shieldDisplay}
@@ -977,6 +1043,7 @@ class VideoRoomComponent extends Component {
               key={stickerKey.key}
               point={stickerKey.point}
               top={stickerKey.top}
+              removeSticker={this.removeSticker}
               left={stickerKey.left}
             ></Sticker>
           ))}
