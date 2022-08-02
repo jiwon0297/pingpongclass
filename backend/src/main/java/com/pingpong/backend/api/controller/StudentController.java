@@ -46,7 +46,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
-//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
             //학번 검사
@@ -74,8 +74,12 @@ public class StudentController {
 
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
     @GetMapping
+<<<<<<< HEAD
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 //    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+=======
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+>>>>>>> d4a54c2ec29aa40d0e45476c3fb9be18a49dcc14
     public ResponseEntity<?> findAll(
             @RequestParam(required = false) Integer grade,
             @RequestParam(required = false) Integer classNum,
