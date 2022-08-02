@@ -9,16 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @Api(value = "로그인 인증 API", tags={"JWT로 로그인인증"})
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
     @Autowired
     AuthService authService;
 
 
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody UserRequest.Login login) {
+        System.out.println("-------------------------login 함수");
         return ResponseEntity.ok(authService.login(login));
     }
 
