@@ -30,7 +30,7 @@ import java.util.Set;
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/students")
+@RequestMapping("/ssafy/students")
 
 
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
             //학번 검사
@@ -74,7 +74,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> findAll(
             @RequestParam(required = false) Integer grade,
             @RequestParam(required = false) Integer classNum,
@@ -110,7 +110,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 정보 조회", notes = "학번으로 학생 정보 조회")
     @GetMapping("/{studentId}")
-    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT')")
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
         StudentEntity student = repository.getOne(studentId);
         if(student!=null){
@@ -135,7 +135,7 @@ public class StudentController {
 
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
-    @PreAuthorize("hasAnyRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<String> modify(@RequestBody StudentEntity student){
         try {
             service.modify(student);
@@ -147,7 +147,7 @@ public class StudentController {
 
     @DeleteMapping("/{studentId}")
     @ApiOperation(value = "학생 삭제", notes = "학생정보 삭제")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteStudent(@PathVariable int studentId){
         try {
             service.delete(studentId);
@@ -171,7 +171,7 @@ public class StudentController {
 
     @GetMapping("/points/{studentId}")
     @ApiOperation(value = "히트맵을 위한 스티커 내역", notes = "한 학생의 스티커 내역")
-    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getPoint(@PathVariable int studentId){
         try{
             List<LogEntity> list = service.getPoint(studentId);
@@ -192,19 +192,4 @@ public class StudentController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
-
-//    //PreAuthorize를 통해 USER, ADMIN 두가지 권한 모두 호출가능한 API
-//    @GetMapping("/info")
-////    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
-//    public ResponseEntity<StudentEntity> getMyUserInfo(HttpServletRequest request) {
-//        //username에 해당하는 user객체와 권한정보 가져오기
-//        return ResponseEntity.ok(service.getMyUserWithAuthorities());
-//    }
-//
-//    //ADMIN 권한만 호출가능한 API
-//    @GetMapping("/info/{studentId}")
-////    @PreAuthorize("hasAnyRole('ADMIN')")
-//    public ResponseEntity<StudentEntity> getUserInfo(@PathVariable int studentId) {
-//        return ResponseEntity.ok(service.getUserWithAuthorities(studentId));
-//    }
 }

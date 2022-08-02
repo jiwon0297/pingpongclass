@@ -23,12 +23,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class TokenProvider {
-
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
-
     private final Key key;
 
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -41,7 +39,6 @@ public class TokenProvider {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-        System.out.println("-----------------generateTokenDto(권한가져와서 토큰 만들기) : "+ authorities);
 
         long now = (new Date()).getTime();
 
@@ -86,11 +83,6 @@ public class TokenProvider {
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-
-        System.out.println("---------------getAuthentication 토큰 복호화 중 권한 가져오기");
-        for(GrantedAuthority a : authorities){
-            System.out.println(a.getAuthority());
-        }
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = new User(claims.getSubject(), "", authorities);
