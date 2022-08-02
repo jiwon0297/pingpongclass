@@ -55,6 +55,7 @@ const totalContainer = css`
     display: inline-block;
     flex-direction: row;
     justify-content: center;
+    text-align: right;
     margin: 2rem 0;
 
     button {
@@ -89,4 +90,3 @@ const totalContainer = css`
 `;
 
 export default RightSide;
-
