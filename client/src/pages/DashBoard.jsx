@@ -28,7 +28,6 @@ const totalContainer = css`
   background-size: cover;
   width: 100%;
   height: 100vh;
-  display: flex;
 
   .dashBoardContainer {
     height: 100vh;
