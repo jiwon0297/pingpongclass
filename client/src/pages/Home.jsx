@@ -1,34 +1,28 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useState } from 'react';
+import IosModal from '../components/Common/IosModal';
 import LeftSide from '../components/Home/LeftSide';
 import RightSide from '../components/Home/RightSide';
+import Login from '../components/Home/Login/Login';
 
-function Home() {
+// tap === "main";
+// tap === "Login";
+
+const Home = () => {
+  const [tap, setTap] = useState('main');
+
   return (
     <div css={totalContainer}>
-      <div className="triangles">
-        <div className="triangle1" />
-        <div className="triangle2" />
-      </div>
-      <div className="parent">
-        <div className="child">
-          <div className="container">
-            <div className="circles">
-              <div className="circle1" />
-              <div className="circle2" />
-              <div className="circle3" />
-            </div>
-            <hr />
-            <div className="sideContainer">
-              <LeftSide />
-              <RightSide />
-            </div>
-          </div>
-        </div>
-      </div>
+      <IosModal>
+        <LeftSide />
+        {tap === 'main' && <RightSide setTap={setTap} />}
+        {tap === 'Login' && <Login />}
+      </IosModal>
     </div>
   );
-}
+};
+
 const totalContainer = css`
   background-color: #ffffff;
   opacity: 0.8;
