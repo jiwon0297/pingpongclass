@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @Api(value = "선생님 API", tags={"선생님"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ssafy/teachers")
+@RequestMapping("/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherRepository repository;
@@ -66,6 +67,7 @@ public class TeacherController {
 
     @ApiOperation(value = "선생님 삭제", notes = "선생님 삭제")
     @DeleteMapping("/{teacherId}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> deleteTeacher(@PathVariable int teacherId){
         try{
             service.delete(teacherId);
@@ -77,6 +79,7 @@ public class TeacherController {
 
     @ApiOperation(value = "선생님 목록 조회(이름검색까지)", notes = "이름으로 검색하면 이름까지 검색, 아니면 전체 검색")
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
     public ResponseEntity<?> findAll(@RequestParam(defaultValue = "전체") String name){
         try{
             List<TeacherEntity> list = service.findByName(name);

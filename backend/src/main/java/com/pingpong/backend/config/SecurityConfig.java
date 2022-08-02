@@ -20,14 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적인 보안 설정
     private final TokenProvider tokenProvider;
-//    private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     //주입
     public SecurityConfig(
             TokenProvider tokenProvider,
-//            CorsFilter corsFilter,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
             JwtAccessDeniedHandler jwtAccessDeniedHandler
     ) {
@@ -70,7 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                         "/fonts/**",
                         "/img/**",
                         "/js/**",
-                        "/ssafy/**"
+                        "/ssafy/**",
+                        "/auth/**"
                 );
     }
 
@@ -83,8 +82,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf설정을 disable합니다.
                 .csrf().disable()
-
-//              .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
                 //Exception 핸들링 (직접 만든 클래스로)
                 .exceptionHandling()
@@ -104,10 +101,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
 
                 .and()
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한 설정하겠다
-                .antMatchers("/ssafy/**","/auth/**", "/web-resources/**", "/actuator/**").permitAll()//해당 api 요청은 인증없이 접근 허용하겠다는 의미
-                .antMatchers("/students/**","/students").authenticated()
-                .antMatchers("/teachers/**","/teachers").hasAnyRole("TEACHER","ADMIN")
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
+                .antMatchers("/auth/**", "/web-resources/**", "/actuator/**").permitAll()//해당 api 요청은 인증없이 접근 허용하겠다는 의미
+//                .antMatchers("/students/**","/students").authenticated()
+//                .antMatchers("/teachers/**","/teachers").hasRole("TEACHER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated() //나머지 요청들은 모두 인증되어야 한다
 
                 //JWTFilter를 addFilterBefore로 등록했던 JwtSecurityConfig클래스도 적용

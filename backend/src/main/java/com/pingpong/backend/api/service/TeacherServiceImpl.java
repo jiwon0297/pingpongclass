@@ -30,10 +30,15 @@ public class TeacherServiceImpl implements TeacherService {
         //teacher계정은 권한이 2개
         Set<Authority> authorities= new HashSet<>();
         Authority role = Authority.builder()
+                .authorityName("ROLE_STUDENT")
+                .build();
+        authorities.add(role);
+
+        role = Authority.builder()
                 .authorityName("ROLE_TEACHER")
                 .build();
-
         authorities.add(role);
+
         if(teacher.getIsAdmin() == 1){
             role = Authority.builder()
                     .authorityName("ROLE_ADMIN")
@@ -44,7 +49,7 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherEntity teacherEntity = TeacherEntity.builder()
                 .teacherId(teacher.getTeacherId())
                 .name((teacher.getName()))
-                .password(passwordEncoder.encode(teacher.getPassword()))
+                .password(teacher.getPassword())
                 .birth(teacher.getBirth())
                 .manageGrade(teacher.getManageGrade())
                 .authorities(authorities)
