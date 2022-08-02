@@ -13,19 +13,22 @@ function LeftSide() {
 }
 
 const totalContainer = css`
-  margin-left: 5vw;
+  margin-left: 8vw;
+  margin-top: 2vh;
   width: 45%;
   align-items: center;
   display: flex;
   flex-direction: column;
 
   .main-logo {
+    margin-right: 30vw;
     max-width: 40%;
     min-width: 30%;
     height: auto;
   }
 
   .main-picture {
+    margin-top: 10vh;
     max-width: 100%;
     min-width: 40%;
     height: auto;
