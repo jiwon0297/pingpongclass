@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import BackGround from '../components/DashBoard/BackGround';
+import IosModal from '../components/Common/IosModal';
 
 function DashBoard() {
   return (
@@ -11,13 +12,16 @@ function DashBoard() {
           <h1>navBar</h1>
         </div>
         <div className="userInfo">
-          <div className="infoBar">
-            <h1>infoBar</h1>
-          </div>
-          <h1>userInfo</h1>
-          <div className="infoContent">
-            <h1>infoContent</h1>
-          </div>
+          <IosModal
+            renderCenter={true}
+            isRelative={true}
+            width="50%"
+            height="60%"
+          >
+            <div css={ModalCSS}>
+              <p>이 개가튼 모달</p>
+            </div>
+          </IosModal>
         </div>
       </div>
     </div>
@@ -52,10 +56,6 @@ const totalContainer = css`
     width: 80%;
     margin: 20px;
     background: rgba(130, 101, 136, 0.404);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
   }
 
   .infoBar {
@@ -79,6 +79,14 @@ const totalContainer = css`
     align-items: center;
     justify-content: center;
   }
+`;
+
+const ModalCSS = css`
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default DashBoard;
