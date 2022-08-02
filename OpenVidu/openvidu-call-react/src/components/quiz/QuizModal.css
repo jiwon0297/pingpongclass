@@ -1,21 +1,10 @@
 .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.6);
 }
-.modal button {
-  outline: none;
-  cursor: pointer;
-  border: 0;
-}
 .modal > section {
-  width: 90%;
-  max-width: 450px;
+  width: 100%;
+  min-width: 800px;
   margin: 0 auto;
   border-radius: 0.3rem;
   background-color: #fff;
@@ -30,6 +19,9 @@
   font-weight: 700;
 }
 .modal > section > header button {
+  outline: none;
+  cursor: pointer;
+  border: 0;
   position: absolute;
   top: 15px;
   right: 15px;
@@ -50,11 +42,15 @@
   text-align: right;
 }
 .modal > section > footer button {
+  outline: none;
+  cursor: pointer;
+  border: 0;
   padding: 6px 12px;
   color: #fff;
   background-color: #6c757d;
   border-radius: 5px;
   font-size: 13px;
+  margin-right: 10px;
 }
 .modal.openModal {
   display: flex;

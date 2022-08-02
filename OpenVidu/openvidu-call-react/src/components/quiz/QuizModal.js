@@ -1,22 +1,45 @@
 import React, { Component } from "react";
 import "./QuizModal.css";
+import QuizForm from "./QuizForm";
+import QuizForm2 from "./QuizForm2";
+import QuizListCard from "./QuizListCard";
 
 class QuizModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { display: this.props.display };
-		this.close = this.close.bind(this)
+    this.state = {
+      display: this.props.display,
+      form: true,
+      list: false,
+      quiz: this.props.quiz,
+    };
   }
 
   componentDidUpdate() {
     if (this.state.display !== this.props.display) {
       this.setState({ display: this.props.display });
     }
+		if (this.state.quiz !== this.props.quiz) {
+      this.setState({ quiz: this.props.quiz });
+    }
   }
 
-  close() {
+  close = () => {
     this.props.toggleQuiz();
-  }
+  };
+
+  quizCreate = (quiz) => {
+    this.props.toggleQuiz(quiz);
+    this.setState({ quiz: quiz });
+  };
+
+  quizChange = (e) => {
+    this.setState({ form: e, list: false });
+  };
+
+  toggleList = () => {
+    this.setState({ list: true });
+  };
 
   render() {
     return (
@@ -29,14 +52,31 @@ class QuizModal extends Component {
                 &times;
               </button>
             </header>
-            <div>
-              <h1 style={{ padding: "10px" }}>
-                안녕친구들 나는 대머리 독수리야
-              </h1>
+            <div className="quizSection">
+              {this.state.list ? (
+                <QuizListCard quiz={this.state.quiz} />
+              ) : this.state.form ? (
+                <QuizForm quizCreate={this.quizCreate} />
+              ) : (
+                <QuizForm2 quizCreate={this.quizCreate} />
+              )}
             </div>
             <footer>
+              <button
+                onClick={(e) => this.quizChange(false)}
+                className="current"
+              >
+                OX 퀴즈
+              </button>
+              <button
+                className="current"
+                onClick={(e) => this.quizChange(true)}
+              >
+                4지선다 퀴즈
+              </button>
+              <button onClick={this.toggleList}>퀴즈 목록</button>
               <button className="close" onClick={this.close}>
-                close
+                닫기
               </button>
             </footer>
           </section>
