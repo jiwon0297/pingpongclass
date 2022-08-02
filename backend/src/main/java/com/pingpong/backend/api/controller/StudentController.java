@@ -125,7 +125,8 @@ public class StudentController {
 
     @ApiOperation(value = "학생 정보 조회", notes = "학번으로 학생 정보 조회")
     @GetMapping("/{studentId}")
-    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    //@PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
         StudentEntity student = repository.getOne(studentId);
         if(student!=null){
