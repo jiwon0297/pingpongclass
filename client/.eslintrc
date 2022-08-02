@@ -26,6 +26,7 @@
     "react/react-in-jsx-scope": "off",
     "no-use-before-define": "off",
     "react/button-has-type": "off",
+    "arrow-body-style": "off",
     "react/function-component-definition": [
       1,
       {

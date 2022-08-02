@@ -1,20 +1,28 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import backgroundImg from '../assets/images/homeBackground.png';
 import IosModal from '../components/Common/IosModal';
 import LeftSide from '../components/Home/LeftSide';
 import RightSide from '../components/Home/RightSide';
+import Login from '../components/Home/Login/Login';
 
-function Home() {
+// tap === "main";
+// tap === "Login";
+
+const Home = () => {
+  const [tap, setTap] = useState('main');
+
   return (
     <div css={totalContainer}>
       <IosModal>
         <LeftSide />
-        <RightSide />
+        {tap === 'main' && <RightSide setTap={setTap} />}
+        {tap === 'Login' && <Login />}
       </IosModal>
     </div>
   );
-}
+};
 
 const totalContainer = css`
   background-image: url(${backgroundImg});
