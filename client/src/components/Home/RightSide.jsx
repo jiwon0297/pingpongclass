@@ -31,7 +31,7 @@ const totalContainer = css`
   flex-direction: column;
   justify-content: center;
   align-items: right;
-  padding: 4rem;
+  padding-right: 5rem;
 
   h2 {
     color: #332757;
