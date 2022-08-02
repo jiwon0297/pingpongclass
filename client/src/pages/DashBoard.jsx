@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import dashboardBackground from '../assets/images/dashboardBackground.png';
+import BackGround from '../components/DashBoard/BackGround';
 
 function DashBoard() {
   return (
     <div css={totalContainer}>
+      <BackGround />
       <div className="dashBoardContainer">
         <div className="navBar">
           <h1>navBar</h1>
@@ -24,12 +25,6 @@ function DashBoard() {
 }
 
 const totalContainer = css`
-  background-image: url(${dashboardBackground});
-  background-size: cover;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-
   .dashBoardContainer {
     height: 100vh;
     width: 100%;
