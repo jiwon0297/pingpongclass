@@ -21,11 +21,11 @@ const NoticeBoard = ({ articles }) => {
       </div>
       <div className="tableArea">
         <div className="row titleRow">
-          <div className="col">번호</div>
-          <div className="col">수업명</div>
-          <div className="col classTitle">제목</div>
-          <div className="col">작성자</div>
-          <div className="col">작성일</div>
+          <div className="col noticeId">번호</div>
+          <div className="col classTitle">수업명</div>
+          <div className="col title">제목</div>
+          <div className="col writer">작성자</div>
+          <div className="col regtime">작성일</div>
         </div>
 
         <div className="articleArea">
@@ -68,9 +68,9 @@ const totalContainer = () => css`
   /* table 영역 */
   .tableArea {
     border-spacing: 0;
-    position: absolute;
     width: inherit;
     height: inherit;
+    position: absolute;
     overflow-y: scroll;
   }
 
@@ -79,20 +79,24 @@ const totalContainer = () => css`
   }
 
   .row,
-  .articleButton {
+  .article-btn {
     width: -webkit-fill-available;
     max-width: -webkit-fill-available;
     height: 40px;
     border: none;
   }
 
+  .article-btn {
+    background-color: transparent;
+  }
+
   .col {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 15%;
-    max-width: 10%;
+    max-width: 30%;
     height: 20px;
-    justify-content: stretch;
+    /* justify-content: stretch; */
     padding: 0 20px;
     vertical-align: -webkit-baseline-middle;
   }
@@ -100,16 +104,12 @@ const totalContainer = () => css`
   .titleRow {
     background-color: #c0d2e5;
   }
-  /* 게시글 항목 영역 */
-  .articleArea button {
-    background-color: transparent;
-  }
 
+  /* 게시글 항목 영역 */
   .articleArea {
-    text-overflow: ellipsis;
-    margin: 1rem;
     max-width: inherit;
     height: inherit;
+    padding: 0;
     /* 1줄 */
 
     .articleRow {
@@ -117,23 +117,20 @@ const totalContainer = () => css`
     }
 
     .articleRow:hover,
-    .articleRow:active {
+    .articleRowOn {
       background-color: #dfe9f2;
-    }
-
-    .detailRowHide {
-      display: none;
+      border-bottom: 0.15rem solid black;
     }
 
     .detailRow {
       display: inline-block;
-    }
-
-    .detail {
-      text-overflow: ellipsis;
-      max-width: inherit;
       padding: 2rem;
     }
+
+    .hide {
+      display: none;
+    }
+
     .detailTitle {
       text-overflow: ellipsis;
       max-width: 10rem;
@@ -160,9 +157,9 @@ const totalContainer = () => css`
   }
   .title {
     text-overflow: ellipsis;
-    min-width: 20rem;
-    width: 20rem;
-    max-width: 20rem;
+    min-width: 15rem;
+    width: 28rem;
+    max-width: 28rem;
   }
 `;
 
