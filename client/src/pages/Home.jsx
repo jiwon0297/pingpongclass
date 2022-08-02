@@ -19,24 +19,31 @@ import RightSide from '../components/Home/RightSide';
 */
 
 const Home = () => (
-  <div css={totalContainer}>
+  <div css={TotalContainer}>
     <IosModal
       renderCenter={true}
       isRelative={false}
-      width="1000px"
-      height="500px"
+      width="1500px"
+      height="800px"
     >
-      <LeftSide />
-      <RightSide />
+      <div css={ModalCSS}>
+        <LeftSide />
+        <RightSide />
+      </div>
     </IosModal>
   </div>
 );
 
-const totalContainer = css`
+const TotalContainer = css`
   background-image: url(${backgroundImg});
   background-size: cover;
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ModalCSS = css`
   display: flex;
   flex-direction: row;
 `;
