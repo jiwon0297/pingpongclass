@@ -7,7 +7,7 @@ function LeftSide() {
     <div css={totalContainer}>
       <img src={MainLogo} alt="로고" />
     </div>
-  )
+  );
 }
 
 const totalContainer = css`
