@@ -8,7 +8,6 @@ const NoticeBoardAccordion = ({ notice }) => {
   const toggleNotice = () => {
     setVisibility(!visibility);
     // console.log(visibility);
-    // console.log(key);
   };
   return (
     <div className={visibility ? 'row articleRowOn' : 'row articleRow'}>
@@ -22,14 +21,15 @@ const NoticeBoardAccordion = ({ notice }) => {
         <div className="col regtime">{notice.regtime}</div>
       </button>
       <div className={visibility ? 'row detailRow' : 'row detailRow hide'}>
-        <div className="detailTitle">{notice.title}</div>
-        <div className="detailWriter">{notice.writer}</div>
-        <div className="detailRegtime">{notice.regtime}</div>
+        {/* <div className="detailTitle">제목: {notice.title}</div> */}
+        {/* <div className="detailRegtime">작성일: {notice.regtime}</div> */}
         <div className="detailContent">{notice.content}</div>
-
-        <button className="close-btn" onClick={() => toggleNotice()}>
-          닫기
-        </button>
+        <div className="detailFooter">
+          <div className="detailWriter">- {notice.writer}</div>
+          <button className="close-btn" onClick={() => toggleNotice()}>
+            닫기
+          </button>
+        </div>
       </div>
     </div>
   );

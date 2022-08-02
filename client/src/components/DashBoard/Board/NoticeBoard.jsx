@@ -30,7 +30,9 @@ const NoticeBoard = ({ articles }) => {
 
         <div className="articleArea">
           {articles.map((notice) => {
-            return <NoticeBoardAccordion notice={notice} />;
+            return (
+              <NoticeBoardAccordion key={notice.noticeId} notice={notice} />
+            );
           })}
         </div>
       </div>
@@ -115,25 +117,51 @@ const totalContainer = () => css`
     .articleRow {
       border-bottom: 0.15rem solid black;
     }
-
+    /* 하이라이트 */
     .articleRow:hover,
     .articleRowOn {
       background-color: #dfe9f2;
       border-bottom: 0.15rem solid black;
     }
-
+    /* 아코디언 내용 */
     .detailRow {
-      display: inline-block;
-      padding: 2rem;
+      text-overflow: ellipsis;
+      display: block;
+      width: inherit;
+      padding: 1rem 0 1.8rem 0;
+      align-self: auto;
+      background-color: #f9f9f9;
     }
 
     .hide {
       display: none;
     }
-
+    .detailRow div {
+      display: block;
+    }
     .detailTitle {
-      text-overflow: ellipsis;
+    }
+    .detailWriter {
       max-width: 10rem;
+    }
+    .detailRegtime {
+      position: absolute;
+      right: 5rem;
+      max-width: 10rem;
+    }
+    .detailContent {
+      padding: 0 2rem;
+      text-align: left;
+    }
+    .detailFooter {
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 1rem 2rem;
+      text-align: right;
+    }
+
+    .close-btn {
+      text-align: right;
     }
   }
   /* 특정 열 별 설정 */
