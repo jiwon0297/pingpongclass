@@ -1,19 +1,34 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import NoticeBoardAccordion from './NoticeBoardArticle';
+import { useEffect, useState } from 'react';
+import NoticeBoardArticle from './NoticeBoardArticle';
 
-interface NoticeBoardProps {
-  articles: {
-    noticeId: number;
-    writer: string;
-    classTitle: string;
-    title: string;
-    content: string;
-    regtime: string;
-  }[];
+export interface ArticleProps {
+  noticeId: number;
+  writer: string;
+  classTitle: string;
+  title: string;
+  content: string;
+  regtime: string;
 }
 
-const NoticeBoard = ({ articles }: NoticeBoardProps) => {
+const NoticeBoard = () => {
+  const [articles, setArticles] = useState<ArticleProps[]>([
+    {
+      noticeId: 0,
+      writer: '',
+      classTitle: '',
+      title: '',
+      content: '',
+      regtime: '',
+    },
+  ]);
+
+  // 임시 더미 데이터 불러오기
+  useEffect(() => {
+    setArticles(dummy);
+  });
+
   return (
     <div css={totalContainer}>
       <div className="upperModalArea">
@@ -44,9 +59,9 @@ const NoticeBoard = ({ articles }: NoticeBoardProps) => {
         </div>
 
         <div className="articleArea">
-          {articles.map((notice) => {
+          {articles.map((article) => {
             return (
-              <NoticeBoardAccordion key={notice.noticeId} article={notice} />
+              <NoticeBoardArticle key={article.noticeId} article={article} />
             );
           })}
         </div>
@@ -93,10 +108,9 @@ const totalContainer = () => css`
 
   .col {
     overflow: hidden;
-    text-overflow: ellipsis;
     width: 15%;
     max-width: 30%;
-    height: 1.3rem;
+    height: 1.25rem;
   }
   /* 제목 행 */
   .titleRow {
@@ -183,16 +197,30 @@ const totalContainer = () => css`
     .del-btn {
       background-color: #bbbbbb;
     }
+
+    textarea {
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      resize: none;
+    }
+    #editTitle {
+      border-radius: 20rem;
+      padding: 0 0.5rem;
+    }
+    #editContent {
+      height: 200px;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      margin: 0.5rem;
+    }
   }
   /* 특정 열 별 설정 */
   .noticeId {
-    text-overflow: ellipsis;
-    max-width: 4%;
+    max-width: 3rem;
   }
   .classTitle,
   .writer,
   .regtime {
-    text-overflow: ellipsis;
     min-width: 14%;
     max-width: 17%;
   }
@@ -207,10 +235,166 @@ const totalContainer = () => css`
   }
   .title {
     text-overflow: ellipsis;
-    min-width: 46%;
-    width: 46%;
-    max-width: 50%;
+    min-width: calc(46%);
+    width: calc(46%);
+    max-width: calc(50%);
+  }
+  .col.title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: calc(46%);
+    width: calc(46%);
+    max-width: calc(50%);
   }
 `;
+
+const dummy = [
+  {
+    noticeId: 1,
+    writer: '이선생',
+    classTitle: '국어',
+    title:
+      '2학년 3반 국어 중간고사 범위aaaaaaaaaaaaaa22222222222222222222222222222222222222222',
+    content:
+      '공부 열심히 해aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 2,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위12321312312312312312312312',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 3,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위zzzz',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 4,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위zzzzzzzzzzz',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 5,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위dddddddddddddddddddd',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 6,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 7,
+    writer: '이선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 8,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 9,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 10,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 11,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 100,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 1000,
+    writer: '이선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 10000,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 100000,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 1000000,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 10000000,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+  {
+    noticeId: 100000000,
+    writer: '김선생',
+    classTitle: '국어',
+    title: '2학년 3반 국어 중간고사 범위',
+    content: '공부 열심히 해',
+    regtime: '2022/07/15',
+  },
+];
 
 export default NoticeBoard;

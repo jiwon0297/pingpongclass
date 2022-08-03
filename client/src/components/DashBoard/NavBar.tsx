@@ -11,6 +11,7 @@ const NavBar = ({ changeContent }: NavBarProps) => {
   const onClick = (toGo: string) => {
     changeContent(toGo);
   };
+
   return (
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
