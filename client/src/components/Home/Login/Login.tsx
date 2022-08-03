@@ -54,9 +54,7 @@ const Login = (props) => {
         <div>비밀번호 찾기</div>
       </div>
       <div>
-        <button onClick={onClickEmail}>
-          로그인
-        </button>
+        <button onClick={onClickEmail}>로그인</button>
         <button onClick={onClickReturn}>돌아가기</button>
         <button onClick={test}>뭐가 적혀있지?</button>
       </div>

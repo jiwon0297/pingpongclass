@@ -24,20 +24,20 @@ const Home = () => {
   const [tap, setTap] = useState('main');
   return (
     <div css={TotalContainer}>
-    <IosModal
-      renderCenter={true}
-      isRelative={false}
-      width="1500px"
-      height="800px"
-    >
-      <div css={ModalCSS}>
-        <LeftSide />
-        <RightSide setTap={setTap}/>
-      </div>
-    </IosModal>
-  </div>
-  )
-}
+      <IosModal
+        renderCenter={true}
+        isRelative={false}
+        width="1500px"
+        height="800px"
+      >
+        <div css={ModalCSS}>
+          <LeftSide />
+          <RightSide setTap={setTap} />
+        </div>
+      </IosModal>
+    </div>
+  );
+};
 
 const TotalContainer = css`
   background-image: url(${backgroundImg});

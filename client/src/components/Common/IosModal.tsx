@@ -23,8 +23,8 @@ const IosModal = ({
   isRelative = true,
   relativePos = {},
   absolutePos = {},
-  width = "1000px",
-  height = "600px",
+  width = '1000px',
+  height = '600px',
 }: IosModalProps) => {
   if (!isOpen) return <div />;
   if (!isRelative)
@@ -67,7 +67,12 @@ interface AbsoluteBoxProps {
   height: any;
 }
 
-const AbsoluteBox = ({ renderCenter, pos, width, height }: AbsoluteBoxProps) => css`
+const AbsoluteBox = ({
+  renderCenter,
+  pos,
+  width,
+  height,
+}: AbsoluteBoxProps) => css`
   position: absolute;
   width: ${width};
   height: ${height};
