@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from 'react';
 import { css } from '@emotion/react';
-import BackGround from '../components/DashBoard/BackGround';
 import IconGroup from '../components/DashBoard/IconGroup';
 import MainContent from '../components/DashBoard/MainContent';
 import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
 import NavBar from '../components/DashBoard/NavBar';
 import dashboardBackground from '../assets/images/dashboardBackground.png';
+import InputPassword from '../components/DashBoard/MyPage/InputPassword';
 
 function DashBoard() {
   const [content, setContent] = useState('mainContent');
@@ -15,32 +15,27 @@ function DashBoard() {
   };
   return (
     <div css={totalContainer}>
-      <BackGround />
       <div className="dashBoardContainer">
         <div className="navBar">
-          <h1>navBar</h1>
           <NavBar changeContent={changeContent} />
         </div>
         <div className="userInfo">
-          <h1>userInfo</h1>
           <div className="infoBar">
-            <h1>infoBar</h1>
             <IconGroup />
           </div>
           <div className="infoContent">
-            <h1>infoContent</h1>
             {
               {
                 mainContent: <MainContent />,
                 timeTable: <h1>시간표</h1>,
                 notice: <NoticeBoard articles={dummy} />,
                 shop: <h1>상점</h1>,
-                myPage: <h1>마이페이지</h1>,
+                myPage: <InputPassword />,
               }[content]
             }
           </div>
           <div className="footer">
-            <h1>footer</h1>
+            <h1>핑퐁클래스 파이팅</h1>
           </div>
         </div>
       </div>
@@ -199,9 +194,7 @@ const dummy = [
 const totalContainer = css`
   background-image: url(${dashboardBackground});
   background-size: cover;
-  width: 100%;
   height: 100vh;
-  display: flex;
 
   .dashBoardContainer {
     height: 100vh;
@@ -209,14 +202,15 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     background-color: transparent;
-    position: absolute;
   }
 
   .navBar {
-    height: 100vh;
+    height: 100%;
     width: 20%;
+    max-width: 300px;
+    min-width: 200px;
     background: rgba(144, 186, 194, 0.633);
     display: flex;
     flex-direction: column;
@@ -227,6 +221,8 @@ const totalContainer = css`
   .userInfo {
     height: 100%;
     width: 80%;
+    max-width: 1100px;
+    min-width: 500px;
     background: rgba(130, 101, 136, 0.404);
     display: flex;
     flex-direction: column;
@@ -243,12 +239,12 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: end;
     box-sizing: border-box;
   }
 
   .infoContent {
-    height: 80%;
+    height: 85%;
     width: 95%;
     margin: 10px;
     padding: 20px;
