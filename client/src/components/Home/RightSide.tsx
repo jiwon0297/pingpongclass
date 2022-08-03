@@ -44,9 +44,8 @@ const totalContainer = css`
   justify-content: center;
   align-items: right;
   padding-right: 5rem;
-
-  h2 {
-    color: #332757;
+  font-family: S h2 {
+    color: #323232;
     text-align: right;
     font-size: calc(1.5em + 2vw);
     margin: 2rem;
@@ -57,7 +56,7 @@ const totalContainer = css`
   }
 
   p {
-    color: #332757;
+    color: #323232;
     text-align: right;
     font-size: calc(0.5em + 1vw);
     font-weight: 700;
@@ -71,19 +70,15 @@ const totalContainer = css`
     margin: 2rem 0;
 
     button {
-      width: 13vw;
-      height: 6vh;
-      border-radius: 30px;
+      min-width: 154px;
+      padding: 16px 32px;
+      border-radius: 18px;
       border: none;
       font-weight: 700;
       font-size: calc(0.2em + 1vw);
       cursor: pointer;
       color: #ffffff;
       font-size: 1rem;
-    }
-
-    .teacher {
-      background-color: #7c99c6;
     }
 
     .student {

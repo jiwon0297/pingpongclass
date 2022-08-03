@@ -1,1 +1,28 @@
 /* 전체 적용 CSS 공간 */
+.App {
+  font-family: 'NanumSquare';
+}
+
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 100;
+  src: url('./assets/fonts/NanumSquareL.otf');
+}
+
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 200;
+  src: url('./assets/fonts/NanumSquareR.otf');
+}
+
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 300;
+  src: url('./assets/fonts/NanumSquareB.otf');
+}
+
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 400;
+  src: url('./assets/fonts/NanumSquareEB.otf');
+}
