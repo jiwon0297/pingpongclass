@@ -8,19 +8,6 @@ import dashboardBackground from '../assets/images/dashboardBackground.png';
 import InputPassword from '../components/DashBoard/MyPage/InputPassword';
 import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
 
-interface NoticeBoardProps {
-  articles: [
-    {
-      noticeId: number;
-      writer: string;
-      classTitle: string;
-      title: string;
-      content: string;
-      regtime: string;
-    },
-  ];
-}
-
 function DashBoard() {
   const [content, setContent] = useState('mainContent');
   const changeContent = (toGo) => {

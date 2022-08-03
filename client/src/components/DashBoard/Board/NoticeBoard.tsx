@@ -1,22 +1,37 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
-import NoticeBoardAccordion from './NoticeBoardAccordion';
+import NoticeBoardAccordion from './NoticeBoardArticle';
 
-const NoticeBoard = ({ articles }) => {
+interface NoticeBoardProps {
+  articles: {
+    noticeId: number;
+    writer: string;
+    classTitle: string;
+    title: string;
+    content: string;
+    regtime: string;
+  }[];
+}
+
+const NoticeBoard = ({ articles }: NoticeBoardProps) => {
   return (
     <div css={totalContainer}>
       <div className="upperModalArea">
         <div className="pageTitle">공지사항</div>
         <form>
-          <select value="수업">
+          <select
+            value="수업"
+            onChange={(e) => {
+              console.log(e);
+            }}
+          >
             <option value="1">국어</option>
             <option value="2">수학</option>
             <option value="3">사회</option>
             <option value="4">영어</option>
           </select>
           <input type="search" name="" id="" />
-          검색창
+          <button type="submit">검색</button>
         </form>
       </div>
       <div className="tableArea">
@@ -31,26 +46,13 @@ const NoticeBoard = ({ articles }) => {
         <div className="articleArea">
           {articles.map((notice) => {
             return (
-              <NoticeBoardAccordion key={notice.noticeId} notice={notice} />
+              <NoticeBoardAccordion key={notice.noticeId} article={notice} />
             );
           })}
         </div>
       </div>
     </div>
   );
-};
-
-NoticeBoard.propTypes = {
-  articles: PropTypes.arrayOf(
-    PropTypes.shape({
-      noticeId: PropTypes.number,
-      writer: PropTypes.string,
-      classTitle: PropTypes.string,
-      title: PropTypes.string,
-      content: PropTypes.string,
-      regtime: PropTypes.string,
-    }),
-  ).isRequired,
 };
 
 const totalContainer = () => css`
@@ -61,11 +63,7 @@ const totalContainer = () => css`
   position: relative;
   overflow: hidden;
   max-height: inherit;
-
-  /* 스크롤 바 숨기기 */
-  *::-webkit-scrollbar {
-    display: none;
-  }
+  max-width: inherit;
 
   /* table 영역 */
   .tableArea {
@@ -76,6 +74,11 @@ const totalContainer = () => css`
     overflow-y: scroll;
   }
 
+  /* 스크롤 바 숨기기 */
+  .tableArea::-webkit-scrollbar {
+    display: none;
+  }
+
   .tableArea div {
     display: inline-block;
   }
@@ -83,12 +86,8 @@ const totalContainer = () => css`
   .row,
   .article-btn {
     width: -webkit-fill-available;
-    max-width: -webkit-fill-available;
-    height: 40px;
+    max-width: inherit;
     border: none;
-  }
-
-  .article-btn {
     background-color: transparent;
   }
 
@@ -97,83 +96,105 @@ const totalContainer = () => css`
     text-overflow: ellipsis;
     width: 15%;
     max-width: 30%;
-    height: 20px;
-    /* justify-content: stretch; */
-    padding: 0 20px;
-    vertical-align: -webkit-baseline-middle;
+    height: 1.3rem;
   }
   /* 제목 행 */
   .titleRow {
     background-color: #c0d2e5;
   }
 
+  /* 구분선 */
+  /* .titleRow .col {
+    border-right: 0.5rem solid black;
+    vertical-align: middle;
+    padding: 1rem 0;
+  } */
+
   /* 게시글 항목 영역 */
   .articleArea {
-    max-width: inherit;
-    height: inherit;
-    padding: 0;
-    /* 1줄 */
+    /* padding: 1% 0; */
+    max-width: 100%;
 
+    /* 제목줄 1줄 */
     .articleRow {
+      padding: 0.5rem 0;
       border-bottom: 0.15rem solid black;
     }
+
     /* 하이라이트 */
     .articleRow:hover,
-    .articleRowOn {
+    .highlited {
       background-color: #dfe9f2;
       border-bottom: 0.15rem solid black;
     }
+
     /* 아코디언 내용 */
     .detailRow {
-      text-overflow: ellipsis;
       display: block;
-      width: inherit;
-      padding: 1rem 0 1.8rem 0;
-      align-self: auto;
+      padding: 0.5rem 0;
+
+      margin: 0.5rem 0 -0.5rem 0;
       background-color: #f9f9f9;
+      height: -webkit-max-content;
     }
 
+    /* 안 보이는 요소 */
     .hide {
       display: none;
     }
+
+    /*  */
     .detailRow div {
       display: block;
     }
-    .detailTitle {
-    }
-    .detailWriter {
-      max-width: 10rem;
-    }
-    .detailRegtime {
-      position: absolute;
-      right: 5rem;
-      max-width: 10rem;
-    }
+
+    /* 토글 내용 본문 영역 */
     .detailContent {
-      padding: 0 2rem;
+      padding: 0 2%;
       text-align: left;
-    }
-    .detailFooter {
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 1rem 2rem;
-      text-align: right;
+      width: inherit;
+      word-wrap: break-word;
     }
 
-    .close-btn {
-      text-align: right;
+    /* 토글 내용 바닥 영역 */
+    .detailFooter {
+      background-color: #f9f9f9;
+      padding: 1% 0;
+      position: relative;
+      left: 38%;
+      button {
+        border-radius: 3rem;
+        color: white;
+        border: none;
+        padding: 0.5rem;
+        margin: 0 0.5rem;
+        width: 5rem;
+      }
+    }
+
+    .detailWriter {
+      max-width: 10%;
+    }
+
+    .edit-btn {
+      background-color: #a1b9ce;
+    }
+
+    .del-btn {
+      background-color: #bbbbbb;
     }
   }
   /* 특정 열 별 설정 */
   .noticeId {
     text-overflow: ellipsis;
-    max-width: 4rem;
+    max-width: 4%;
   }
   .classTitle,
   .writer,
   .regtime {
     text-overflow: ellipsis;
-    max-width: 8rem;
+    min-width: 14%;
+    max-width: 17%;
   }
   .classTitleIcon {
     display: inline-block;
@@ -182,12 +203,13 @@ const totalContainer = () => css`
     align-self: center;
     width: 50%;
     min-width: max-content;
+    vertical-align: top;
   }
   .title {
     text-overflow: ellipsis;
-    min-width: 15rem;
-    width: 28rem;
-    max-width: 28rem;
+    min-width: 46%;
+    width: 46%;
+    max-width: 50%;
   }
 `;
 
