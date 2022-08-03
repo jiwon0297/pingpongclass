@@ -8,9 +8,9 @@ import dashboardBackground from '../assets/images/dashboardBackground.png';
 import InputPassword from '../components/DashBoard/MyPage/InputPassword';
 import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
 
-function DashBoard() {
+const DashBoard = () => {
   const [content, setContent] = useState('mainContent');
-  const changeContent = (toGo) => {
+  const changeContent = (toGo: string) => {
     setContent(toGo);
   };
   return (
@@ -41,7 +41,7 @@ function DashBoard() {
       </div>
     </div>
   );
-}
+};
 
 const dummy = [
   {

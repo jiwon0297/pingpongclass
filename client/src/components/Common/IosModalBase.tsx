@@ -6,8 +6,8 @@ import GreenEllipse from '../../assets/images/greenEllipse.png';
 
 interface IosModalBaseStyle {
   children: any;
-  width: any;
-  height: any;
+  width: string;
+  height: string;
 }
 
 const IosModalBase = ({ children, width, height }: IosModalBaseStyle) => {
@@ -29,8 +29,8 @@ const IosModalBase = ({ children, width, height }: IosModalBaseStyle) => {
 };
 
 interface TotalContainerProps {
-  width: number;
-  height: number;
+  width: string;
+  height: string;
 }
 
 const totalContainer = ({ width, height }: TotalContainerProps) => css`
@@ -74,17 +74,5 @@ const Header = css`
 const Body = css`
   height: calc(100% - 3rem);
 `;
-
-// IosModalBase.propTypes = {
-//   children: PropTypes.node,
-//   width: PropTypes.string,
-//   height: PropTypes.string,
-// };
-
-// IosModalBase.defaultProps = {
-//   children: null,
-//   width: '1000px',
-//   height: '600px',
-// };
 
 export default IosModalBase;

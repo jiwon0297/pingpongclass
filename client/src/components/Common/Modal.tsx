@@ -1,19 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
 import getPositionCSS from '../../utils/getPositionCSS';
+import type { GetpositionCSSProps } from '../../utils/getPositionCSS';
 
 // props에는 크기정보가 들어가야함
 
 interface ModalProps {
   children?: any;
-  isOpen?: any;
-  renderCenter?: any;
-  isRelative?: any;
-  relativePos?: any;
-  absolutePos?: any;
-  width?: any;
-  height?: any;
+  isOpen?: boolean;
+  renderCenter?: boolean;
+  isRelative?: boolean;
+  relativePos?: GetpositionCSSProps;
+  absolutePos?: GetpositionCSSProps;
+  width?: string;
+  height?: string;
 }
 
 const Modal = ({

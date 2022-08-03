@@ -4,7 +4,7 @@ interface PasswordFindProps {
   setTap: Function;
 }
 
-const PasswordFind = (props: PasswordFindProps) => {
+const PasswordFind = ({ setTap }: PasswordFindProps) => {
   return (
     <div>
       PasswordFind
