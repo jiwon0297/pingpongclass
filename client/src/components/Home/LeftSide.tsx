@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import MainLogo from '../../assets/images/mainLogo.png';
 import MainPicture from '../../assets/images/mainPicture.png';
 
-function LeftSide() {
+function LeftSide(): any {
   return (
     <div css={totalContainer}>
       <img src={MainLogo} alt="기본로고" className="main-logo" />

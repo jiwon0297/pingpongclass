@@ -1,11 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
 import RedEllipse from '../../assets/images/redEllipse.png';
 import YellowEllipse from '../../assets/images/yellowEllipse.png';
 import GreenEllipse from '../../assets/images/greenEllipse.png';
 
-const IosModalBase = ({ children, width, height }) => {
+interface IosModalBase {
+  children: any;
+  width: any;
+  height: any;
+}
+
+const IosModalBase = ({ children, width, height }: IosModalBase) => {
   return (
     <div css={totalContainer({ width, height })}>
       <div css={YellowBackground} />
@@ -23,7 +28,12 @@ const IosModalBase = ({ children, width, height }) => {
   );
 };
 
-const totalContainer = ({ width, height }) => css`
+interface totalContainerProps {
+  width: number;
+  height: number;
+}
+
+const totalContainer = ({ width, height }: totalContainerProps) => css`
   width: ${width};
   height: ${height};
 `;
@@ -65,16 +75,16 @@ const Body = css`
   height: calc(100% - 3rem);
 `;
 
-IosModalBase.propTypes = {
-  children: PropTypes.node,
-  width: PropTypes.string,
-  height: PropTypes.string,
-};
+// IosModalBase.propTypes = {
+//   children: PropTypes.node,
+//   width: PropTypes.string,
+//   height: PropTypes.string,
+// };
 
-IosModalBase.defaultProps = {
-  children: null,
-  width: '1000px',
-  height: '600px',
-};
+// IosModalBase.defaultProps = {
+//   children: null,
+//   width: '1000px',
+//   height: '600px',
+// };
 
 export default IosModalBase;

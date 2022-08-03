@@ -3,10 +3,23 @@ import React, { useState } from 'react';
 import { css } from '@emotion/react';
 import IconGroup from '../components/DashBoard/IconGroup';
 import MainContent from '../components/DashBoard/MainContent';
-import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
 import NavBar from '../components/DashBoard/NavBar';
 import dashboardBackground from '../assets/images/dashboardBackground.png';
 import InputPassword from '../components/DashBoard/MyPage/InputPassword';
+import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
+
+interface NoticeBoardProps {
+  articles: [
+    {
+      noticeId: number;
+      writer: string;
+      classTitle: string;
+      title: string;
+      content: string;
+      regtime: string;
+    },
+  ];
+}
 
 function DashBoard() {
   const [content, setContent] = useState('mainContent');
@@ -50,14 +63,15 @@ const dummy = [
     classTitle: '국어',
     title:
       '2학년 3반 국어 중간고사 범위aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa22222222222222222222222222222222222222222',
-    content: '공부 열심히 해',
+    content:
+      '공부 열심히 해aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     regtime: '2022/07/15',
   },
   {
     noticeId: 2,
     writer: '김선생',
     classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
+    title: '2학년 3반 국어 중간고사 범위12321312312312312312312312',
     content: '공부 열심히 해',
     regtime: '2022/07/15',
   },

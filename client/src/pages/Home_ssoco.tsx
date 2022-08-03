@@ -1,6 +1,7 @@
-//SSOCO
+// SSOCO
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import backgroundImg from '../assets/images/homeBackground.png';
 import IosModal from '../components/Common/IosModal';
 // import Modal from '../components/Common/Modal';
@@ -19,8 +20,10 @@ import RightSide from '../components/Home/RightSide';
   >
 */
 
-const Home = () => (
-  <div css={TotalContainer}>
+const Home = () => {
+  const [tap, setTap] = useState('main');
+  return (
+    <div css={TotalContainer}>
     <IosModal
       renderCenter={true}
       isRelative={false}
@@ -29,11 +32,12 @@ const Home = () => (
     >
       <div css={ModalCSS}>
         <LeftSide />
-        <RightSide />
+        <RightSide setTap={setTap}/>
       </div>
     </IosModal>
   </div>
-);
+  )
+}
 
 const TotalContainer = css`
   background-image: url(${backgroundImg});

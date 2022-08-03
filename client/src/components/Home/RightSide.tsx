@@ -1,7 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
-function RightSide() {
+interface RightSideProps {
+  setTap: Function;
+}
+
+function RightSide(props: RightSideProps) {
+  const { setTap } = props;
+  console.log(setTap);
   return (
     <div css={totalContainer}>
       <h2>
