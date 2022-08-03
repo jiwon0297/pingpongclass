@@ -1,19 +1,21 @@
 /** @jsxImportSource @emotion/react */
+import React from 'react';
 import { css } from '@emotion/react';
 import getPositionCSS from '../../utils/getPositionCSS';
 import IosModalBase from './IosModalBase';
+import type { GetpositionCSSProps } from '../../utils/getPositionCSS';
 
 // props에는 크기정보가 들어가야함
 
 interface IosModalProps {
   children?: any;
-  isOpen?: any;
-  renderCenter?: any;
-  isRelative?: any;
-  relativePos?: any;
-  absolutePos?: any;
-  width?: any;
-  height?: any;
+  isOpen?: boolean;
+  renderCenter?: boolean;
+  isRelative?: boolean;
+  relativePos?: GetpositionCSSProps;
+  absolutePos?: GetpositionCSSProps;
+  width?: string;
+  height?: string;
 }
 
 const IosModal = ({

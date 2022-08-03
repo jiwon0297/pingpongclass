@@ -1,5 +1,10 @@
-interface GetpositionCSSProps {
-  pos: any;
+export interface GetpositionCSSProps {
+  pos?: {
+    top?: string;
+    left?: string;
+    bottom?: string;
+    right?: string;
+  };
 }
 
 const getPositionCSS = (pos: GetpositionCSSProps): string => {

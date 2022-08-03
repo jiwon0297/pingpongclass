@@ -3,8 +3,12 @@ import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
 import mainLogo from '../../assets/images/mainLogo.png';
 
-const NavBar = ({ changeContent }) => {
-  const onClick = (toGo) => {
+interface NavBarProps {
+  changeContent: Function;
+}
+
+const NavBar = ({ changeContent }: NavBarProps) => {
+  const onClick = (toGo: string) => {
     changeContent(toGo);
   };
   return (

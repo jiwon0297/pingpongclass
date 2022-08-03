@@ -8,7 +8,6 @@ interface RightSideProps {
 
 function RightSide(props: RightSideProps) {
   const { setTap } = props;
-  console.log(setTap);
 
   const onClickTeacher = () => {
     setTap('teacherLogin');

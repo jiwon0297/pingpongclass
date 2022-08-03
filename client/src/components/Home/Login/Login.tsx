@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 // import axios from 'axios';
 
-const Login = (props) => {
+interface LoginProps {
+  tap: string;
+  setTap: Function;
+}
+
+const Login = (props: LoginProps) => {
   const { tap, setTap } = props;
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
@@ -60,11 +64,6 @@ const Login = (props) => {
       </div>
     </div>
   );
-};
-
-Login.propTypes = {
-  tap: PropTypes.string.isRequired,
-  setTap: PropTypes.func.isRequired,
 };
 
 export default Login;

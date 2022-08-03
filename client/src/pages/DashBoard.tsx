@@ -7,9 +7,9 @@ import NavBar from '../components/DashBoard/NavBar';
 import dashboardBackground from '../assets/images/dashboardBackground.png';
 import InputPassword from '../components/DashBoard/MyPage/InputPassword';
 
-function DashBoard() {
+const DashBoard = () => {
   const [content, setContent] = useState('mainContent');
-  const changeContent = (toGo) => {
+  const changeContent = (toGo: string) => {
     setContent(toGo);
   };
   return (
@@ -40,7 +40,7 @@ function DashBoard() {
       </div>
     </div>
   );
-}
+};
 
 const totalContainer = css`
   background-image: url(${dashboardBackground});
