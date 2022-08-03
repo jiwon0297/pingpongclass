@@ -12,6 +12,7 @@ import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Api(value = "학생 API", tags={"학생"})
@@ -173,8 +175,8 @@ public class StudentController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getPoint(@PathVariable int studentId){
         try{
-            List<LogEntity> list = service.getPoint(studentId);
-            return new ResponseEntity<List<LogEntity>>(list, HttpStatus.OK);
+            List<Map<String, Integer>> list = service.getPoint(studentId);
+            return new ResponseEntity<List<Map<String, Integer>>>(list, HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
