@@ -26,7 +26,7 @@
     "craco.config.ts",
     "src",
     "src/**/*.ts",
-    "src/store/index.ts"
+    "src/store/*.ts"
   ] /* 컴파일할 파일 경로 */,
   "exclude": ["node_modules", "build"] /* 컴파일 안할 파일 경로 */
 }
