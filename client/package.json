@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "pingpongclass-client",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.18.6",
@@ -9,6 +9,7 @@
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
@@ -19,6 +20,7 @@
     "@types/react-redux": "^7.1.24",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
+    "axios": "^0.27.2",
     "craco-alias": "^3.0.1",
     "eslint": "^8.20.0",
     "eslint-config-airbnb": "^19.0.4",

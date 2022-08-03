@@ -1,8 +1,8 @@
-interface getpositionCSSProps {
+interface GetpositionCSSProps {
   pos: any;
 }
 
-const getPositionCSS = (pos: getpositionCSSProps): string => {
+const getPositionCSS = (pos: GetpositionCSSProps): string => {
   return Object.entries(pos)
     .map(([key, value]) =>
       ['top', 'left', 'right', 'bottom'].includes(key)

@@ -4,13 +4,13 @@ import RedEllipse from '../../assets/images/redEllipse.png';
 import YellowEllipse from '../../assets/images/yellowEllipse.png';
 import GreenEllipse from '../../assets/images/greenEllipse.png';
 
-interface IosModalBase {
+interface IosModalBaseStyle {
   children: any;
   width: any;
   height: any;
 }
 
-const IosModalBase = ({ children, width, height }: IosModalBase) => {
+const IosModalBase = ({ children, width, height }: IosModalBaseStyle) => {
   return (
     <div css={totalContainer({ width, height })}>
       <div css={YellowBackground} />
@@ -28,12 +28,12 @@ const IosModalBase = ({ children, width, height }: IosModalBase) => {
   );
 };
 
-interface totalContainerProps {
+interface TotalContainerProps {
   width: number;
   height: number;
 }
 
-const totalContainer = ({ width, height }: totalContainerProps) => css`
+const totalContainer = ({ width, height }: TotalContainerProps) => css`
   width: ${width};
   height: ${height};
 `;

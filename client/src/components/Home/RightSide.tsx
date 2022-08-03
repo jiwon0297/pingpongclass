@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import PropTypes from 'prop-types';
 
 interface RightSideProps {
   setTap: Function;
@@ -8,6 +9,10 @@ interface RightSideProps {
 function RightSide(props: RightSideProps) {
   const { setTap } = props;
   console.log(setTap);
+
+  const onClickTeacher = () => {
+    setTap('teacherLogin');
+  };
   return (
     <div css={totalContainer}>
       <h2>
@@ -24,7 +29,9 @@ function RightSide(props: RightSideProps) {
         만들기 위해 제작했어요.
       </p>
       <div className="buttons">
-        <button className="teacher">선생님이신가요?</button>
+        <button className="teacher" onClick={onClickTeacher}>
+          선생님이신가요?
+        </button>
         <button className="student">학생이신가요?</button>
       </div>
     </div>
@@ -94,5 +101,9 @@ const totalContainer = css`
     }
   }
 `;
+
+RightSide.propTypes = {
+  setTap: PropTypes.func.isRequired,
+};
 
 export default RightSide;

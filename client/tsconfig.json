@@ -24,6 +24,7 @@
   },
   "include": [
     "craco.config.ts",
+    "tsconfig.json",
     "src",
     "src/**/*.ts",
     "src/store/*.ts"
