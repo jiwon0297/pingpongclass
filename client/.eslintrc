@@ -9,7 +9,7 @@
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
-    "NodeJS": true,
+    "NodeJS": true
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
