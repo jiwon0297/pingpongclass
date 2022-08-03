@@ -1,4 +1,4 @@
-//SSOCO
+// SSOCO
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import backgroundImg from '../assets/images/homeBackground.png';
