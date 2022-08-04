@@ -469,7 +469,7 @@ class VideoRoomComponent extends Component {
     });
   }
 
-  // subscribeToUserChanged: 구독한 유저중에 닉네임, 비디오, 오디오, 화면공유 상태가 변경되었을 때 감지해서 화면을 바꿔주는 함수
+  // subscribeToUserChanged: 구독한 유저중에 닉네임, 비디오, 오디오, 화면공유, 포인트 상태가 변경되었을 때 감지해서 화면을 바꿔주는 함수
   subscribeToUserChanged() {
     this.state.session.on("signal:userChanged", (event) => {
       let remoteUsers = this.state.subscribers;
@@ -485,6 +485,9 @@ class VideoRoomComponent extends Component {
           }
           if (data.nickname !== undefined) {
             user.setNickname(data.nickname);
+          }
+          if (data.point !== undefined) {
+            user.setPoint(data.point);
           }
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
