@@ -38,8 +38,8 @@ const SingleParticipantPanel = (props) => {
         <button onClick={onClickPointDown}>▼</button>
         <span>상점 : {user.point}</span>
         <span>출석 : {user.attendenceTime}</span>
-        {user.isVideoOn ? <Videocam /> : <VideocamOff color="secondary" />}
-        {user.isAudioOn ? <Mic /> : <MicOff color="secondary" />}
+        {user.videoActive ? <Videocam /> : <VideocamOff color="secondary" />}
+        {user.audioActive ? <Mic /> : <MicOff color="secondary" />}
       </div>
     </div>
   );
