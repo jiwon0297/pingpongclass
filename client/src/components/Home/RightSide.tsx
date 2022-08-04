@@ -44,7 +44,7 @@ const totalContainer = css`
   justify-content: center;
   align-items: right;
   padding-right: 5rem;
-  font-family: S h2 {
+  h2 {
     color: #323232;
     text-align: right;
     font-size: calc(1.5em + 2vw);
@@ -79,6 +79,7 @@ const totalContainer = css`
       cursor: pointer;
       color: #ffffff;
       font-size: 1rem;
+      font-family: 'NanumSquareRound';
     }
 
     .student {
