@@ -120,9 +120,12 @@
 }
 input:focus {
   border: none;
-  box-shadow: 0 0 5px #dd7e8f;
+  box-shadow: 0 0 1px 3px var(--pink);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: var(--text-dark);
+  outline: none;
 }
-
+s
 /** div **/
 .div-total {
   margin: 25px 0;
@@ -138,4 +141,29 @@ input:focus {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+
+/* select */
+.select {
+  width: 195px;
+  height: 48px;
+  font-family: 'NanumSquare';
+  font-size: 1.2em;
+  font-weight: 300;
+  border: 1.77px solid black;
+  border-radius: 29px;
+  padding: 4px 25px;
+}
+
+.select:focus {
+  border: none;
+  box-shadow: 0 0 1px 3px var(--pink);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: var(--text-dark);
+  outline: none;
+}
+
+option {
+  font-weight: 200;
+  font-family: 'NanumSquare';
 }

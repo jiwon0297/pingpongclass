@@ -2,7 +2,6 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useState } from 'react';
-// import axios from 'axios';
 
 interface LoginProps {
   tap: string;
@@ -26,23 +25,26 @@ const Login = (props: LoginProps) => {
   };
 
   const onClickLogin = async () => {
-    setTap('login');
-    axios
-      .post('/auth/login', {
-        id: userId,
-        password: userPw,
-      })
-      .then(function (response) {
-        // 성공한 경우 실행
-        console.log(response);
-      })
-      .catch(function (error) {
-        // 에러인 경우 실행
-        console.log(error);
-      })
-      .then(function () {
-        // 항상 실행
-      });
+    setTap('email');
+    // axios
+    //   .post('/auth/login', {
+    //     id: userId,
+    //     password: userPw,
+    //   })
+    //   .then(function (response) {
+    //     if(response.)
+    //     setTap('login');
+    //     // 성공한 경우 실행
+    //     console.log('성공then', response);
+    //   })
+    //   .catch(function (error) {
+    //     // 에러인 경우 실행
+    //     console.log('catch : ', error);
+    //   })
+    //   .then(function () {
+    //     // 항상 실행
+    //     console.log('항상then', userId);
+    //   });
 
     // const res = await axios.post('http://localhost:8080/api/login', {
     //   id: +userId,
@@ -56,7 +58,7 @@ const Login = (props: LoginProps) => {
     //   "refreshToken": "string"
     // }
 
-    // console.log(res);
+    //
   };
 
   // const test = () => {
