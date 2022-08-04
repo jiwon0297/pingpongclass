@@ -12,14 +12,6 @@ export default class ParticipantComponent extends Component {
     this.participantScroll = React.createRef();
   }
 
-  componentDidUpdate() {
-    console.log(this.props.myinfo, "내정보");
-    console.log(this.props.subscribers, "참가자정보");
-    this.props.subscribers.forEach((elem) => {
-      console.log(elem, "남정보");
-    });
-  }
-
   // close: 무언가를 닫는 함수
   close() {
     this.props.close(undefined);

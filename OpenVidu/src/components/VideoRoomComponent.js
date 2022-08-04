@@ -1134,6 +1134,7 @@ class VideoRoomComponent extends Component {
                 >
                   <ChatComponent
                     user={localUser}
+                    subscribers={subscribers}
                     chatDisplay={this.state.chatDisplay}
                     close={this.toggleChat}
                     messageReceived={this.checkNotification}
