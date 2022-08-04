@@ -2,8 +2,8 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 
-const ReactionList = () => {
-  return <div css={totalContainer}>전체 리액션 목록</div>;
+const GetItemList = () => {
+  return <div css={totalContainer}>보유 아이템 목록</div>;
 };
 
 const totalContainer = () => css`
@@ -11,4 +11,4 @@ const totalContainer = () => css`
   padding: 1rem;
 `;
 
-export default ReactionList;
+export default GetItemList;

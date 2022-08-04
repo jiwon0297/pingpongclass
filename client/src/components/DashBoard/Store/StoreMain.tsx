@@ -3,14 +3,24 @@ import { css } from '@emotion/react';
 import { useState } from 'react';
 import ItemList from './ItemListTap/ItemList';
 import ReactionList from './ItemListTap/ReactionList';
+import GetItemList from './GetItemListTap/GetItemList';
+import GetReactionList from './GetItemListTap/GetReactionList';
 import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
+import HelpIcon from '@mui/icons-material/HelpOutline';
+import CircleIcon from '@mui/icons-material/Circle';
+import { yellow } from '@mui/material/colors';
 
 const StoreMain = () => {
-  const [tap, setTap] = useState('itemTap');
+  const [itemtap, setTap] = useState('itemTap');
+  const [gettap, setGetTap] = useState('getItemTap');
 
   // 클릭 이벤트 핸들러
   const onClickTap = (prop: string) => {
     setTap(prop);
+  };
+
+  const onClickGetTap = (prop: string) => {
+    setGetTap(prop);
   };
 
   return (
@@ -20,40 +30,78 @@ const StoreMain = () => {
         <hr />
         <div className="sideContainer">
           <div className="draw">
-            <p>랜덤 뽑기</p>
+            <div className="bbobkki">
+              <p>랜덤 뽑기</p>
+              <HelpIcon fontSize="small" color="action" />
+            </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
             <button type="button" className="bbobkkiBtn">
-              퐁 X 15
+              <span>
+                <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
+                &nbsp; X 15
+              </span>
             </button>
           </div>
           <div className="itemList">
             <div className="item-tap">
               <div
-                className={tap === 'itemTap' ? 'store1 selected' : 'store1'}
+                className={itemtap === 'itemTap' ? 'store1 selected' : 'store1'}
                 onClick={() => onClickTap('itemTap')}
               >
                 아이템
               </div>
               <div
-                className={tap === 'reactionTap' ? 'store2 selected' : 'store2'}
+                className={
+                  itemtap === 'reactionTap' ? 'store2 selected' : 'store2'
+                }
                 onClick={() => onClickTap('reactionTap')}
               >
                 리액션
               </div>
             </div>
             <div className="item-main">
-              {tap === 'itemTap' && <ItemList />}
-              {tap === 'reactionTap' && <ReactionList />}
+              {itemtap === 'itemTap' && <ItemList />}
+              {itemtap === 'reactionTap' && <ReactionList />}
             </div>
           </div>
           <div className="pongCount">
-            <span>퐁 X 보유개수</span>
+            <span>
+              <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
+              &nbsp; X 보유개수
+            </span>
           </div>
         </div>
       </div>
       <div className="myItemContainer">
         <div className="pageTitle">보유 목록</div>
         <hr />
+        <div className="sideContainer">
+          <div className="example">예시화면</div>
+          <div className="getItemList">
+            <div className="item-tap">
+              <div
+                className={
+                  gettap === 'getItemTap' ? 'store1 selected' : 'store1'
+                }
+                onClick={() => onClickGetTap('getItemTap')}
+              >
+                아이템
+              </div>
+              <div
+                className={
+                  gettap === 'getReactionTap' ? 'store2 selected' : 'store2'
+                }
+                onClick={() => onClickGetTap('getReactionTap')}
+              >
+                리액션
+              </div>
+            </div>
+            <div className="item-main">
+              {gettap === 'getItemTap' && <GetItemList />}
+              {gettap === 'getReactionTap' && <GetReactionList />}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -71,6 +119,12 @@ const totalContainer = () => css`
   display: flex;
   flex-direction: column;
 
+  .bbobkki {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
   ul {
     list-style: none;
     padding: 0;
@@ -81,6 +135,20 @@ const totalContainer = () => css`
     height: 28vh;
     margin: auto;
     border-radius: 20px;
+  }
+
+  .getItemList {
+    width: 55%;
+    height: 25vh;
+    margin: auto;
+    border-radius: 20px;
+  }
+
+  .example {
+    width: 40%;
+    height: 25vh;
+    margin: auto;
+    background-color: gray;
   }
 
   .item-tap {
@@ -99,6 +167,7 @@ const totalContainer = () => css`
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       background-color: #fcc97d;
+      margin-right: 0.2rem;
     }
     .store1:hover,
     .store2:hover {
@@ -108,6 +177,9 @@ const totalContainer = () => css`
     .selected {
       background-color: white;
       font-weight: 700;
+      border-top: 1px solid gray;
+      border-left: 1px solid gray;
+      border-right: 1px solid gray;
     }
   }
 
@@ -117,6 +189,9 @@ const totalContainer = () => css`
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     text-align: left;
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
   }
 
   .pageTitle {
@@ -149,7 +224,7 @@ const totalContainer = () => css`
   }
 
   .draw {
-    width: 22%;
+    width: 21%;
     height: 28vh;
     display: inline-flex;
     margin: 0;
@@ -158,10 +233,11 @@ const totalContainer = () => css`
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
-    border: 1px solid lightgray;
+    box-shadow: 0 0 3px 0 lightgray;
 
     p {
       font-weight: 700;
+      padding-right: 0.2rem;
     }
 
     .bobkkiCapsule {
@@ -179,9 +255,12 @@ const totalContainer = () => css`
     border-radius: 5px;
     border: 1px solid lightgray;
     font-weight: 700;
+    box-shadow: 0 0 3px 0 lightgray;
 
     span {
-      margin: auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
   }
 
@@ -194,6 +273,16 @@ const totalContainer = () => css`
     margin: 16px 0 16px 0;
     font-family: 'NanumSquareRound';
     font-weight: 700;
+    box-shadow: 0 0 3px 0 lightgray;
+
+    span {
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
   }
 `;
 
