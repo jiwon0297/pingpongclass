@@ -32,10 +32,17 @@ const SingleParticipantPanel = (props) => {
 
   return (
     <div id="oneParticipant">
-      <div className="right_side">{user.nickname}</div>
-      <div className="left_side">
+      <div className="right-side">{user.nickname}</div>
+      <div className="left-side">
         <button onClick={onClickPointUp}>▲</button>
-        <button onClick={onClickPointDown}>▼</button>
+
+        {user.point ? (
+          <button onClick={onClickPointDown}>▼</button>
+        ) : (
+          <button onClick={onClickPointDown} disabled>
+            ▼
+          </button>
+        )}
         <span>상점 : {user.point}</span>
         <span>출석 : {user.attendenceTime}</span>
         {user.videoActive ? <Videocam /> : <VideocamOff color="secondary" />}
