@@ -69,21 +69,21 @@ const totalContainer = css`
 
   .userInfo {
     height: 90%;
-    width: 900px;
+    width: 1000px;
     min-width: 900px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    box-shadow: 5px 5px 10px -5px;
-    border-radius: 10px;
+    box-shadow: 5px 5px 15px -5px;
+    border-radius: 20px;
   }
 
   .infoBar {
     height: 5%;
     width: 95%;
-    margin: 10px;
+    margin: 10px 10px 0px 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -96,13 +96,14 @@ const totalContainer = css`
     width: 95%;
     margin: 10px;
     padding: 20px;
-    background: #bcbcbc;
+    background: rgb(236, 236, 236);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
     box-sizing: border-box;
     gap: 30px;
+    overflow-y: scroll;
   }
 
   .footer {
@@ -110,7 +111,7 @@ const totalContainer = css`
     width: 95%;
     margin: 10px;
     padding: 0px 20px;
-    background: #8d9491;
+    background: rgb(236, 236, 236);
     display: flex;
     flex-direction: column;
     align-items: center;
