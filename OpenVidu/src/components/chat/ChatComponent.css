@@ -196,9 +196,15 @@ span.triangle {
 /* 귓속말 상대 선택 */
 #whisper select {
   position: absolute;
+  bottom: calc(1rem + 90px);
   left: 3%;
   height: 20px;
   width: 94%;
+  background-color: white;
+}
+
+#whisper .menu-item-box {
+  height: 0.5rem;
 }
 
 #messageInput {

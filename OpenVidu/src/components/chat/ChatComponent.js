@@ -20,6 +20,7 @@ export default class ChatComponent extends Component {
     this.close = this.close.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.changeTarget = this.changeTarget.bind(this);
+    this.convert12 = this.convert12.bind(this);
   }
 
   componentDidMount() {
@@ -29,14 +30,11 @@ export default class ChatComponent extends Component {
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         const data = JSON.parse(event.data);
-        const time = new Date();
         let messageList = this.state.messageList;
         messageList.push({
           connectionId: event.from.connectionId,
           nickname: data.nickname,
-          time: `${String(time.getHours() - 12).padStart(2, "0")}:${String(
-            time.getMinutes(),
-          ).padStart(2, "0")}`,
+          time: this.convert12(),
           message: data.message,
           type: "chat",
         });
@@ -61,14 +59,11 @@ export default class ChatComponent extends Component {
       .getStreamManager()
       .stream.session.on("signal:private-chat", (event) => {
         const data = JSON.parse(event.data);
-        const time = new Date();
         let messageList = this.state.messageList;
         messageList.push({
           connectionId: event.from.connectionId,
           nickname: data.nickname,
-          time: `${String(time.getHours()).padStart(2, "0")}:${String(
-            time.getMinutes(),
-          ).padStart(2, "0")}`,
+          time: this.convert12(),
           message: data.message,
           type: "private-chat",
           target: data.target,
@@ -88,11 +83,6 @@ export default class ChatComponent extends Component {
         this.setState({ messageList: messageList });
         this.scrollToBottom();
       });
-
-    // 리사이즈 이벤트가 발생하면 맨 아래로 스크롤을 내리기
-    const elem = this.chatHeight.current;
-    console.log("우아아아아", elem);
-    elem.addEventListener("resize", () => console.log("testetstsetsetestset"));
   }
 
   // handleChange: 메시지를 입력할 때마다 작동하는 현재 작성 메시지 변경 이벤트 핸들러
@@ -172,7 +162,7 @@ export default class ChatComponent extends Component {
 
   // name: 오석호
   // date: 2022/08/04
-  // changeTarget: 메시지 전송 대상을 변경하는 함수
+  // desc: 메시지 전송 대상을 변경하는 함수
   changeTarget(e) {
     if (e.target.value === "all") this.setState({ messageTarget: "all" });
     else {
@@ -181,6 +171,19 @@ export default class ChatComponent extends Component {
       );
       this.setState({ messageTarget: target[0] });
     }
+  }
+
+  // name: 오석호
+  // date: 2022/08/04
+  // desc: 시간 계산용 함수
+  convert12() {
+    const time = new Date();
+    let hours = time.getHours();
+    const minutes = time.getMinutes().toString().padStart(2, "0");
+    const apm = hours < 12 ? "오전 " : "오후 ";
+    hours = hours % 12 || 12;
+    const msg = apm + hours + ":" + minutes;
+    return msg;
   }
 
   // render: 렌더링을 담당하는 함수
@@ -241,8 +244,14 @@ export default class ChatComponent extends Component {
             ))}
           </div>
           <div id="whisper">
-            <select onChange={this.changeTarget}>
-              <option defaultValue="all">all</option>
+            <select
+              id="demo-simple-select-outlined"
+              className="select-box"
+              onChange={this.changeTarget}
+            >
+              <option defaultValue="all" className="menu-item-box">
+                all
+              </option>
               {this.props.subscribers.map((sub, i) => (
                 <option value={sub.nickname}>{sub.nickname}</option>
               ))}
