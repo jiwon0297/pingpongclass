@@ -2,13 +2,10 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
-import Notice from './Notice';
+import ManagedClass from './ManagedClass';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setContent, selectContent } from '@src/store/content';
-import axios from 'axios';
-import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-
-export interface NoticeProps {
+export interface ManagedClassProps {
   noticeId: number;
   writer: string;
   classTitle: string;
@@ -23,14 +20,13 @@ export interface SubjectProps {
 }
 
 const NoticeBoard = () => {
-  const [articles, setArticles] = useState<NoticeProps[]>([]);
+  const [articles, setArticles] = useState<ManagedClassProps[]>([]);
   const [subjects, setSubjects] = useState<SubjectProps[]>([]);
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<SubjectProps>();
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
-  const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -43,47 +39,24 @@ const NoticeBoard = () => {
   const { setTarget } = useIntersectionObserver({ onIntersect });
   // 임시 더미 데이터 불러오기
   useEffect(() => {
-    // setArticles(dummy);
     setSubjects(dummySubjects);
     setIsTeacher(true);
   }, []);
 
-  useEffect(() => {
-    let testClassId = 0;
-    let testUserId = 5030001;
-
-    InterceptedAxios.get(
-      '/notice/list?classId=' +
-        testClassId.toString() +
-        '&userId=' +
-        testUserId.toString(),
-    )
-      .then((response) => {
-        console.log(response);
-        let list = response.data.content;
-        setArticles(list);
-      })
-      .catch(() => {});
-    // axios.interceptors.request.use(function () {/*...*/});
-  }, [page]);
-
-  const deleteNotice = (key: number) => {
+  const deleteClass = (key: number) => {
     setArticles(articles.filter((article) => article.noticeId !== key));
   };
 
-  const postNotice = () => {
-    dispatch(setContent({ content: 'postNotice' }));
+  const addClass = () => {
+    // setContent('addClass');
+    dispatch(setContent({ content: 'addClass' }));
   };
 
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .get('http://i7a403.p.ssafy.io:8080/notice', {})
-      .then(() => {})
-      .catch(() => {});
-    // console.log(e);
-    // console.log(e.currentTarget.elements[0]);
-    // console.log(e.currentTarget.elements[1]);
+    console.log(e);
+    console.log(e.currentTarget.elements[0]);
+    console.log(e.currentTarget.elements[1]);
 
     // 검색 로직
   };
@@ -105,7 +78,7 @@ const NoticeBoard = () => {
   return (
     <div css={totalContainer}>
       <div className="upperModalArea">
-        <div className="pageTitle">공지사항</div>
+        <div className="pageTitle">수업관리</div>
         <form onSubmit={search}>
           <select onChange={handleSelect}>
             {subjects.map((s) => (
@@ -126,7 +99,7 @@ const NoticeBoard = () => {
               <button type="submit" className="sub-btn">
                 검색
               </button>
-              <button type="button" className="main-btn" onClick={postNotice}>
+              <button type="button" className="main-btn">
                 글 쓰기
               </button>
             </>
@@ -141,7 +114,7 @@ const NoticeBoard = () => {
         <div className="row titleRow">
           <div className="col noticeId">번호</div>
           <div className="col classTitle">수업명</div>
-          <div className="col noticeTitle">제목</div>
+          <div className="col title">제목</div>
           <div className="col writer">작성자</div>
           <div className="col regtime">작성일</div>
         </div>
@@ -149,10 +122,10 @@ const NoticeBoard = () => {
         <div className="articleArea">
           {articles.map((article) => {
             return (
-              <Notice
+              <ManagedClass
                 key={article.noticeId}
                 article={article}
-                deleteNotice={() => deleteNotice(article.noticeId)}
+                deleteClass={() => deleteClass(article.noticeId)}
               />
             );
           })}
@@ -177,7 +150,7 @@ const totalContainer = () => css`
 
   .pageTitle {
     text-align: left;
-    /* font-size: 2rem; */
+    font-size: 2rem;
     border-bottom: 0.15rem solid black;
     width: inherit;
   }
@@ -353,7 +326,7 @@ const totalContainer = () => css`
     min-width: max-content;
     vertical-align: top;
   }
-  .noticeTitle {
+  .title {
     white-space: nowrap;
     text-overflow: ellipsis;
     min-width: calc(46%);
