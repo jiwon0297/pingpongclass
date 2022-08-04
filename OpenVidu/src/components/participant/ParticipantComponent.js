@@ -9,12 +9,38 @@ export default class ParticipantComponent extends Component {
   constructor(props) {
     super(props);
     this.close = this.close.bind(this);
+    this.upPointChanged = this.upPointChanged.bind(this);
+    this.downPointChanged = this.downPointChanged.bind(this);
     this.participantScroll = React.createRef();
+  }
+
+  componentDidMount() {
+    // point-up 이벤트를 여기서 감지
+    this.props.user
+      .getStreamManager()
+      .stream.session.on("signal:point-up", (event) => {
+        this.upPointChanged();
+      });
+
+    // point-down 이벤트를 여기서 감지
+    this.props.user
+      .getStreamManager()
+      .stream.session.on("signal:point-down", (event) => {
+        this.downPointChanged();
+      });
   }
 
   // close: 무언가를 닫는 함수
   close() {
     this.props.close(undefined);
+  }
+
+  upPointChanged() {
+    this.props.upPointChanged();
+  }
+
+  downPointChanged() {
+    this.props.downPointChanged();
   }
 
   // render: 렌더링을 담당하는 함수
@@ -35,20 +61,26 @@ export default class ParticipantComponent extends Component {
           <div className="participants-wrap" ref={this.participantScroll}>
             <div>
               <SingleParticipantPanel
-                myinfo={this.props.myinfo.nickname}
-                point={this.props.myinfo.point}
-                attendenceTime={this.props.myinfo.attendenceTime}
-                isVideoOn={this.props.myinfo.videoActive}
-                isAudioOn={this.props.myinfo.audioActive}
+                user={this.props.user}
+                // myinfo={this.props.user.nickname}
+                // point={this.props.user.point}
+                // attendenceTime={this.props.user.attendenceTime}
+                // isVideoOn={this.props.user.videoActive}
+                // isAudioOn={this.props.user.audioActive}
+                // upPoint={this.props.user.upPoint}
+                // downPoint={this.props.user.downPoint}
               />
             </div>
             {this.props.subscribers.map((sub, i) => (
               <SingleParticipantPanel
-                myinfo={sub.nickname}
-                point={this.props.myinfo.point}
-                attendenceTime={sub.attendenceTime}
-                isVideoOn={sub.videoActive}
-                isAudioOn={sub.audioActive}
+                user={sub}
+                // myinfo={sub.nickname}
+                // point={sub.point}
+                // attendenceTime={sub.attendenceTime}
+                // isVideoOn={sub.videoActive}
+                // isAudioOn={sub.audioActive}
+                // upPoint={sub.upPoint}
+                // downPoint={sub.downPoint}
               />
             ))}
           </div>
