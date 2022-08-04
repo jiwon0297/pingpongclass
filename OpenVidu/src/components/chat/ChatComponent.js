@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CloseBtn from "../../assets/images/closeBtn.png";
+import CloseBtn from "@material-ui/icons/Close";
 import Send from "../../assets/images/uil_message.png";
 import "./ChatComponent.css";
 
@@ -195,12 +195,7 @@ export default class ChatComponent extends Component {
           {/* 툴바 */}
           <div id="chatToolbar">
             <span>채팅창</span>
-            <img
-              src={CloseBtn}
-              id="closeButton"
-              alt="채팅창 닫기"
-              onClick={this.close}
-            />
+            <CloseBtn id="closeButton" onClick={this.close} alt="채팅창 닫기" />
           </div>
           {/* 메시지 */}
           <div className="message-wrap" ref={this.chatScroll}>

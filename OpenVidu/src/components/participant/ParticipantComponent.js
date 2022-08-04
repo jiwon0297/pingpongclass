@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CloseBtn from "../../assets/images/closeBtn.png";
+import CloseBtn from "@material-ui/icons/Close";
 import SingleParticipantPanel from "./SingleParticipantPanel";
 
 import "./ParticipantComponent.css";
@@ -25,11 +25,10 @@ export default class ParticipantComponent extends Component {
           {/* 툴바 */}
           <div id="participantToolbar">
             <span>참여자 목록</span>
-            <img
-              src={CloseBtn}
+            <CloseBtn
               id="closeButton"
-              alt="참여자 목록 닫기"
               onClick={this.close}
+              alt="참여자 목록 닫기"
             />
           </div>
           {/* 참여자 */}
