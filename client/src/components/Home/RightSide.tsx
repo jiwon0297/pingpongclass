@@ -12,13 +12,16 @@ function RightSide(props: RightSideProps) {
   const onClickTeacher = () => {
     setTap('teacherLogin');
   };
+  const onClickStudent = () => {
+    setTap('studentLogin');
+  };
   return (
     <div css={totalContainer}>
-      <h2>
-        함께 만들어가는, <br />
-        <span className="programName">&nbsp;핑퐁클래스.&nbsp;</span>
-      </h2>
-      <p>
+      <div className="title-div">
+        <div className="title">인터렉티브 화상 교육</div>
+        <div className="title-highlight">&nbsp;핑퐁클래스&nbsp;</div>
+      </div>
+      <div className="text text-div">
         핑퐁클래스는 20년간의 노하우가 담긴
         <br />
         선생님들과 학생분들의 각종 요청들을 받아서
@@ -26,12 +29,14 @@ function RightSide(props: RightSideProps) {
         모두가 꿈꾸는 온라인 교육 세상을
         <br />
         만들기 위해 제작했어요.
-      </p>
-      <div className="buttons">
-        <button className="teacher" onClick={onClickTeacher}>
+      </div>
+      <div className="buttons-div">
+        <button className="button blue" onClick={onClickTeacher}>
           선생님이신가요?
         </button>
-        <button className="student">학생이신가요?</button>
+        <button className="button pink" onClick={onClickStudent}>
+          학생이신가요?
+        </button>
       </div>
     </div>
   );
@@ -44,52 +49,22 @@ const totalContainer = css`
   justify-content: center;
   align-items: right;
   padding-right: 5rem;
-  font-family: S h2 {
-    color: #323232;
-    text-align: right;
-    font-size: calc(1.5em + 2vw);
-    margin: 2rem;
-    span {
-      color: #ffffff;
-      background-color: #df5b73;
-    }
+
+  .text-div {
+    padding: 11px 20px 41px;
   }
 
-  p {
-    color: #323232;
+  .text {
+    color: #332757;
     text-align: right;
-    font-size: calc(0.5em + 1vw);
-    font-weight: 700;
+    font-size: calc(1.2vw);
+    font-weight: 200;
   }
 
-  .buttons {
-    display: inline-block;
-    flex-direction: row;
-    justify-content: center;
+  .buttons-div {
+    margin: 1rem 0;
     text-align: right;
-    margin: 2rem 0;
 
-    button {
-      min-width: 154px;
-      padding: 16px 32px;
-      border-radius: 18px;
-      border: none;
-      font-weight: 700;
-      font-size: calc(0.2em + 1vw);
-      cursor: pointer;
-      color: #ffffff;
-      font-size: 1rem;
-    }
-
-    .student {
-      color: #ffffff;
-      background-color: #dd7e8f;
-    }
-
-    .teacher {
-      color: #ffffff;
-      background-color: #7c99c6;
-    }
     button:first-child {
       margin-right: 1rem;
     }
