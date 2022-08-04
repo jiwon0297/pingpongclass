@@ -1,6 +1,14 @@
 /* 전체 적용 CSS 공간 */
+:root {
+  --blue: #7c99c6;
+  --pink: #dd7e8f;
+  --gray: #b6b8bb;
+  --text-dark: #3a3a3a;
+}
+
 .App {
   font-family: 'NanumSquareRound';
+  color: var(--text-dark);
 }
 
 @font-face {
@@ -57,5 +65,145 @@
     format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+/* 글씨 */
+.title-div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 11px 0;
+}
+
+.title {
+  font-size: 2.4vw;
+  font-weight: 600;
+  margin: 4px;
+}
+
+.title-sub {
+  font-size: 1.3vw;
+  font-weight: 600;
+  margin: 4px;
+  margin-right: 36px;
+  width: 100px;
+}
+
+.title-highlight {
+  color: #ffffff;
+  font-size: calc(3vw);
+  background-color: #df5b73;
+}
+
+.text-small {
+  text-align: right;
+}
+
+/* 버튼*/
+.button {
+  vertical-align: middle;
+  min-width: 10vw;
+  border-radius: 29px;
+  padding: 15px 44px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1.1vw;
+  background-color: var(--gray);
+}
+
+.button-big {
+  vertical-align: middle;
+  min-width: 10vw;
+  border-radius: 29px;
+  padding: 15px 44px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1.1vw;
+  font-family: 'NanumSquareRound';
+}
+
+.blue {
+  background-color: var(--blue);
+  color: #ffffff;
+  font-family: 'NanumSquareRound';
+}
+
+.pink {
+  background-color: var(--pink);
+  color: #ffffff;
+  font-family: 'NanumSquareRound';
+}
+
+.gray {
+  background-color: var(--gray);
+  color: #ffffff;
+  font-family: 'NanumSquareRound';
+}
+
+/* input */
+.input {
+  width: 255px;
+  height: 37px;
+  font-family: 'NanumSquareRound';
+  font-size: 1.2em;
+  font-weight: 300;
+  border-radius: 15px;
+  padding: 4px 25px;
+  border: 1px solid gray;
+}
+
+input:focus {
+  border: none;
+  box-shadow: 0 0 1px 3px var(--pink);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: var(--text-dark);
+  outline: none;
+}
+
+/** div **/
+.div-total {
+  margin: 25px 0;
+}
+
+.div-main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.div-sub {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* select */
+.select {
+  width: 195px;
+  height: 48px;
+  font-family: 'NanumSquareRound';
+  font-size: 1.2em;
+  font-weight: 600;
+  border: 1.77px solid black;
+  border-radius: 15px;
+  padding: 4px 25px;
+  border: 1px solid gray;
+}
+
+.select:focus {
+  border: none;
+  box-shadow: 0 0 1px 3px var(--pink);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: var(--text-dark);
+  outline: none;
+}
+
+option {
+  font-weight: 600;
+  font-family: 'NanumSquareRound';
 }
 

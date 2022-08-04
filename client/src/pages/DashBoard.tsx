@@ -61,12 +61,8 @@ const totalContainer = css`
 
   .navBar {
     height: 100%;
-    width: 300px;
-    min-width: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
+    width: 250px;
+    min-width: 250px;
   }
 
   .userInfo {
@@ -78,7 +74,7 @@ const totalContainer = css`
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    box-shadow: 5px 5px 15px -5px;
+    box-shadow: 3px 3px 10px -5px;
     border-radius: 20px;
   }
 
@@ -98,7 +94,6 @@ const totalContainer = css`
     width: 95%;
     margin: 10px;
     padding: 20px;
-    background: rgb(236, 236, 236);
     display: flex;
     flex-direction: column;
     align-items: center;
