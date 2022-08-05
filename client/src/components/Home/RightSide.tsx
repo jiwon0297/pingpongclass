@@ -46,29 +46,25 @@ const totalContainer = css`
 
   .title-div {
     height: 17vh;
+    padding: 0 0 30px 0;
   }
 
   .text-div {
     height: 16vh;
   }
 
+  .text-div {
+    height: 12vh;
+    padding-bottom: 43px;
+  }
   .buttons-div {
-    height: 8vh;
+    text-align: right;
   }
 
   .text {
     color: #332757;
     text-align: right;
     font-size: calc(1.2vw);
-  }
-
-  .buttons-div {
-    margin: 1rem 0;
-    text-align: right;
-
-    button:first-child {
-      margin-right: 1rem;
-    }
   }
 
   .title-highlight,
