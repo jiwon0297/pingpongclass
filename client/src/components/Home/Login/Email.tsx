@@ -14,7 +14,7 @@ function Email(props: EmailProps) {
   const { setEmailConfirmed } = props;
   const [email, setEmail] = useState('');
   const [email1, setEmail1] = useState('');
-  const [email2, setEmail2] = useState('');
+  const [email2, setEmail2] = useState('naver.com');
   const [isUse, setUse] = useState(false);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
 
