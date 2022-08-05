@@ -37,8 +37,8 @@ const totalContainer = css`
   gap: 20px;
 
   button {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border: none;
     background-color: #e6e6e6;
     display: flex;
@@ -49,6 +49,11 @@ const totalContainer = css`
     background: white;
     box-shadow: 2px 2px 10px -5px;
     cursor: pointer;
+    transition: all 0.1s ease-in-out;
+  }
+
+  button:hover {
+    transform: scale(1.2);
   }
 `;
 export default IconGroup;
