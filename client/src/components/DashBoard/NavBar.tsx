@@ -1,7 +1,6 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
-import mainLogo from '../../assets/images/mainLogo.png';
+import mainLogo from '@assets/images/mainLogo.png';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
@@ -20,24 +19,20 @@ const NavBar = ({ changeContent }: NavBarProps) => {
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
       <div className="navButton" onClick={() => onClick('mainContent')}>
-        <DashboardIcon />
-        <p>대시보드</p>
+        <DashboardIcon style={{ fontSize: '40px' }} />
+        <h4>대시보드</h4>
       </div>
       <div className="navButton" onClick={() => onClick('timeTable')}>
-        <CalendarMonthIcon />
-        <p>시간표</p>
+        <CalendarMonthIcon style={{ fontSize: '40px' }} />
+        <h4>수업목록</h4>
       </div>
       <div className="navButton" onClick={() => onClick('notice')}>
-        <CampaignIcon />
-        <p>공지사항</p>
+        <CampaignIcon style={{ fontSize: '40px' }} />
+        <h4>공지사항</h4>
       </div>
       <div className="navButton" onClick={() => onClick('shop')}>
-        <StorefrontIcon />
-        <p>상점</p>
-      </div>
-      <div className="navButton" onClick={() => onClick('myPage')}>
-        <PersonIcon />
-        <p>마이페이지</p>
+        <StorefrontIcon style={{ fontSize: '40px' }} />
+        <h4>상점</h4>
       </div>
     </div>
   );
@@ -45,7 +40,7 @@ const NavBar = ({ changeContent }: NavBarProps) => {
 
 const totalContainer = css`
   width: 210px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,12 +59,12 @@ const totalContainer = css`
     align-items: center;
     justify-content: space-between;
     font-size: 20px;
-    padding-left: 28px;
+    padding-left: 18px;
     cursor: pointer;
     box-sizing: border-box;
   }
 
-  .navButton p {
+  .navButton h4 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -81,9 +76,5 @@ const totalContainer = css`
     width: 90%;
   }
 `;
-
-NavBar.propTypes = {
-  changeContent: PropTypes.func.isRequired,
-};
 
 export default NavBar;

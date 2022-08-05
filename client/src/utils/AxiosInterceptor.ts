@@ -61,7 +61,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
       .post(
         `/auth/reissue`, // token refresh api
         {
-          grantType: 'Bearer',
+          grantType: 'bearer',
           accessToken: accessToken,
           refreshToken: refreshToken,
         },
