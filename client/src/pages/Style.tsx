@@ -30,6 +30,8 @@ const Style = () => {
             <div className="pink color">pink</div>
             <div className="sub-name">--gray</div>
             <div className="gray color">gray</div>
+            <div className="sub-name">--font-dark</div>
+            <div className="dark color">gray</div>
           </div>
           <div className="comp-div">
             <h1 className="name">타이틀</h1>

@@ -133,7 +133,7 @@ s
 
 .div-main {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   flex-direction: column;
 }
 
@@ -166,4 +166,9 @@ s
 option {
   font-weight: 200;
   font-family: 'NanumSquare';
+}
+
+/* hover */
+.hover:hover {
+  color: var(--pink);
 }

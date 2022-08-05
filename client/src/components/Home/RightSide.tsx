@@ -9,12 +9,10 @@ interface RightSideProps {
 function RightSide(props: RightSideProps) {
   const { setTap } = props;
 
-  const onClickTeacher = () => {
-    setTap('teacherLogin');
+  const onClickLogin = () => {
+    setTap('login');
   };
-  const onClickStudent = () => {
-    setTap('studentLogin');
-  };
+
   return (
     <div css={totalContainer}>
       <div className="title-div">
@@ -31,11 +29,8 @@ function RightSide(props: RightSideProps) {
         만들기 위해 제작했어요.
       </div>
       <div className="buttons-div">
-        <button className="button blue" onClick={onClickTeacher}>
-          선생님이신가요?
-        </button>
-        <button className="button pink" onClick={onClickStudent}>
-          학생이신가요?
+        <button className="button blue" onClick={onClickLogin}>
+          로그인
         </button>
       </div>
     </div>
@@ -48,10 +43,18 @@ const totalContainer = css`
   flex-direction: column;
   justify-content: center;
   align-items: right;
-  padding-right: 5rem;
+  padding-right: 7rem;
+
+  .title-div {
+    height: 17vh;
+  }
 
   .text-div {
-    padding: 11px 20px 41px;
+    height: 16vh;
+  }
+
+  .buttons-div {
+    height: 8vh;
   }
 
   .text {

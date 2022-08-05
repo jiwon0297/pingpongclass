@@ -5,10 +5,13 @@ import LeftSide from '../components/Home/LeftSide';
 import RightSide from '../components/Home/RightSide';
 import Login from '../components/Home/Login/Login';
 import Email from '../components/Home/Login/Email';
+import PasswordSetting from '../components/Home/Login/PasswordSetting';
 import PasswordFind from '../components/Home/Login/PasswordFind';
 
 const Home = () => {
   const [tap, setTap] = useState('main');
+  const [userId, setUserId] = useState('');
+  const [email, setEmailConfirmed] = useState('');
   return (
     <div css={totalContainer}>
       <div className="triangles">
@@ -27,10 +30,24 @@ const Home = () => {
             <div className="sideContainer">
               <LeftSide />
               {tap === 'main' && <RightSide setTap={setTap} />}
-              {(tap === 'teacherLogin' || tap === 'studentLogin') && (
-                <Login tap={tap} setTap={setTap} />
+              {tap === 'login' && (
+                <Login
+                  tap={tap}
+                  setTap={setTap}
+                  userId={userId}
+                  setUserId={setUserId}
+                />
               )}
-              {tap === 'email' && <Email setTap={setTap} />}
+              {tap === 'email' && (
+                <Email setTap={setTap} setEmailConfirmed={setEmailConfirmed} />
+              )}
+              {tap === 'passwordSetting' && (
+                <PasswordSetting
+                  setTap={setTap}
+                  email={email}
+                  userId={userId}
+                />
+              )}
               {tap === 'passwordFind' && <PasswordFind setTap={setTap} />}
             </div>
           </div>
