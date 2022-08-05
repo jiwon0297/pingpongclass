@@ -8,6 +8,7 @@ import dashboardBackground from '../assets/images/dashboardBackground.png';
 import InputPassword from '../components/DashBoard/MyPage/InputPassword';
 import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
 import StoreMain from '@src/components/DashBoard/Store/StoreMain';
+import Footer from '@src/components/DashBoard/Footer/Footer';
 
 const DashBoard = () => {
   const [content, setContent] = useState('mainContent');
@@ -36,7 +37,7 @@ const DashBoard = () => {
             }
           </div>
           <div className="footer">
-            <h1>footer</h1>
+            <Footer />
           </div>
         </div>
       </div>
