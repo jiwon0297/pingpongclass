@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import getPositionCSS from '@utils/getPositionCSS';
 import type { GetpositionCSSProps } from '@utils/getPositionCSS';

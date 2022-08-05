@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import React from 'react';
 import { css } from '@emotion/react';
 import getPositionCSS from '@utils/getPositionCSS';
 import IosModalBase from '@components/Common/IosModalBase';

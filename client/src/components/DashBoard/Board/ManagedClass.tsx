@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react';
 import { NoticeProps } from '@components/DashBoard/Board/NoticeBoard';
 import { useAppDispatch, useAppSelector } from '@store/hooks';

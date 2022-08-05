@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@store/hooks';

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import RedEllipse from '@assets/images/redEllipse.png';
 import YellowEllipse from '@assets/images/yellowEllipse.png';

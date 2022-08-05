@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import React, { useState, useEffect } from 'react';
