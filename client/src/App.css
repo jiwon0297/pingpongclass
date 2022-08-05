@@ -171,7 +171,7 @@ input:focus {
 
 .div-main {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   flex-direction: column;
 }
 
@@ -207,3 +207,7 @@ option {
   font-family: 'NanumSquareRound';
 }
 
+/* hover */
+.hover:hover {
+  color: var(--pink);
+}

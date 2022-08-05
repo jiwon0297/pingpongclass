@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { useState, useCallback } from 'react';
 import ItemList from './ItemListTap/ItemList';

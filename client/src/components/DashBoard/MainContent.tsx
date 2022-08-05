@@ -1,17 +1,12 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import HeatMap from './HeatMap';
-import banner from '../../assets/images/banner.png';
-import MyInfo from './MyInfo';
-import TodaysClass from './TodaysClass';
+import HeatMap from '@components/DashBoard/HeatMap';
+import banner from '@assets/images/banner.png';
+import MyInfo from '@components/DashBoard/MyInfo';
+import TodaysClass from '@components/DashBoard/TodaysClass';
 
 const MainContent = () => {
   return (
     <div css={totalContainer}>
-      <div className="banner">
-        <img src={banner} alt="" />
-      </div>
-      <h2>내 정보</h2>
       <div className="myInfo">
         <MyInfo />
       </div>
