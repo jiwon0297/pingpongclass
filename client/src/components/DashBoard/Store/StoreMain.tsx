@@ -69,11 +69,7 @@ const StoreMain = () => {
               zIndex: '10002',
             }}
           >
-            <img
-              src={BobkkiCapsule}
-              alt="뽑기캡슐"
-              style={{ marginTop: '50px' }}
-            />
+            <img src={BobkkiCapsule} alt="뽑기캡슐" />
           </motion.div>
         </Animation>
       )}
@@ -191,7 +187,7 @@ const totalContainer = () => css`
 
   .itemList {
     width: 55%;
-    height: 28vh;
+    height: 25vh;
     margin: auto;
     border-radius: 20px;
   }
@@ -284,7 +280,7 @@ const totalContainer = () => css`
 
   .draw {
     width: 21%;
-    height: 28vh;
+    height: 25vh;
     display: inline-flex;
     margin: 0;
     justify-content: center;

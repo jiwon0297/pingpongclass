@@ -82,10 +82,10 @@ const totalContainer = css`
   }
 
   .userInfo {
-    height: 80%;
+    height: 85%;
     width: 1000px;
     min-width: 1000px;
-    margin-top: 100px;
+    margin-top: 50px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -96,9 +96,9 @@ const totalContainer = css`
   }
 
   .infoBar {
-    height: 70px;
+    height: 60px;
     width: 95%;
-    padding: 20px 20px 0px 20px;
+    padding: 10px 10px 0px 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -107,10 +107,9 @@ const totalContainer = css`
   }
 
   .infoContent {
-    height: 85%;
+    height: 90%;
     width: 95%;
-    margin: 10px;
-    padding: 20px;
+    padding: 10px 20px 10px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -127,9 +126,7 @@ const totalContainer = css`
   .footer {
     height: 5%;
     width: 95%;
-    margin: 10px;
-    padding: 0px 20px;
-    background: rgb(236, 236, 236);
+    padding: 0px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -37,8 +37,8 @@ const totalContainer = css`
 
   button {
     border: 1px solid;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     display: flex;
     flex-direction: row;
     align-items: center;
