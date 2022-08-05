@@ -8,10 +8,6 @@ import TodaysClass from './TodaysClass';
 const MainContent = () => {
   return (
     <div css={totalContainer}>
-      <div className="banner">
-        <img src={banner} alt="" />
-      </div>
-      <h2>내 정보</h2>
       <div className="myInfo">
         <MyInfo />
       </div>

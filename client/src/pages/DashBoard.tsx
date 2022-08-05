@@ -28,7 +28,7 @@ const DashBoard = () => {
             {
               {
                 mainContent: <MainContent />,
-                timeTable: <h1>시간표</h1>,
+                timeTable: <h1>수업목록</h1>,
                 notice: <NoticeBoard />,
                 shop: <StoreMain />,
                 myPage: <InputPassword />,
@@ -54,7 +54,7 @@ const totalContainer = css`
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     background-color: transparent;
   }
@@ -66,9 +66,10 @@ const totalContainer = css`
   }
 
   .userInfo {
-    height: 90%;
+    height: 80%;
     width: 1000px;
     min-width: 1000px;
+    margin-top: 100px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -79,9 +80,9 @@ const totalContainer = css`
   }
 
   .infoBar {
-    height: 5%;
+    height: 70px;
     width: 95%;
-    margin: 10px 10px 0px 10px;
+    padding: 20px 20px 0px 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
