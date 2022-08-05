@@ -11,13 +11,14 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
+import { autocompleteClasses } from '@mui/material';
 
 const StoreMain = () => {
   const [itemtap, setTap] = useState('itemTap');
   const [gettap, setGetTap] = useState('getItemTap');
   const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
 
-  const onClickOpenModel = useCallback(() => {
+  const onClickOpenModal = useCallback(() => {
     setOpenBbobkki(!isOpenBbobkki);
   }, [isOpenBbobkki]);
 
@@ -33,16 +34,48 @@ const StoreMain = () => {
   return (
     <div css={totalContainer}>
       {isOpenBbobkki && (
-        <Animation onClickOpenModal={onClickOpenModel}>
+        <Animation onClickOpenModal={onClickOpenModal}>
           <motion.div
             animate={{
-              backgroundColor: '#000',
-              boxShadow: '10px 10px 0 rgba(0, 0, 0, 0.2)',
-              scale: [1, 2, 2, 1, 1],
-              rotate: [0, 0, 270, 270, 0],
-              borderRadius: ['20%', '20%', '50%', '50%', '20%'],
+              scale: [1, 2, 2, 1, 2, 0],
+              rotate: [0, 50, -50, 50, -50, 360],
+              background: 'var(--action)',
+              transitionEnd: {
+                opacity: '0',
+              },
             }}
-          />
+            transition={{ duration: 4, repeat: 0 }}
+            style={{
+              margin: 'auto',
+              position: 'relative',
+              zIndex: '10001',
+            }}
+          >
+            <img
+              src={BobkkiCapsule}
+              alt="뽑기캡슐"
+              style={{ marginTop: '50px' }}
+            />
+          </motion.div>
+
+          <motion.div
+            animate={{
+              scale: [0, 0, 0, 0, 0, 0, 2],
+              rotate: [0, 50, -50, 50, -50, 360, 0],
+              background: 'var(--action)',
+            }}
+            transition={{ duration: 10, repeat: 0 }}
+            style={{
+              margin: 'auto',
+              zIndex: '10002',
+            }}
+          >
+            <img
+              src={BobkkiCapsule}
+              alt="뽑기캡슐"
+              style={{ marginTop: '50px' }}
+            />
+          </motion.div>
         </Animation>
       )}
       <div className="drawContainer">
@@ -55,16 +88,18 @@ const StoreMain = () => {
               <HelpIcon fontSize="small" color="action" />
             </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
-            <button
+            <motion.button
               type="button"
               className="bbobkkiBtn"
-              onClick={onClickOpenModel}
+              onClick={onClickOpenModal}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               <span>
                 <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
                 &nbsp; X 15
               </span>
-            </button>
+            </motion.button>
           </div>
           <div className="itemList">
             <div className="item-tap">

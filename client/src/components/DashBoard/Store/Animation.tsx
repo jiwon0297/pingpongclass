@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React, { PropsWithChildren } from 'react';
+import { motion } from 'framer-motion';
 
 interface ModalDefaultType {
   onClickOpenModal: () => void;
@@ -12,11 +13,19 @@ const Animation = ({
 }: PropsWithChildren<ModalDefaultType>) => {
   return (
     <div css={totalContainer}>
-      <div className="Bbobkki">{children}</div>
-      <br />
-      <button className="button pink" onClick={onClickOpenModal}>
-        확인
-      </button>
+      <div className="Bbobkki">
+        {children}
+        <br />
+        <motion.button
+          className="button pink"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onClickOpenModal}
+          style={{ zIndex: '10003' }}
+        >
+          확인{' '}
+        </motion.button>
+      </div>
     </div>
   );
 };
@@ -31,7 +40,7 @@ const totalContainer = () => css`
   height: 100vh;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 9999;
   animation: 0.7s ease-in-out loadEffect1;
 
@@ -40,11 +49,9 @@ const totalContainer = () => css`
     height: 50%;
     align-items: center;
     border: none;
-    border-radius: 3px;
-    box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
-    box-sizing: border-box;
-    background-color: white;
+    background-color: transparent;
     z-index: 10000;
+    justify-content: center;
   }
 
   @keyframes loadEffect1 {
