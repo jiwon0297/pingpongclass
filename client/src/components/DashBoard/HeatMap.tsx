@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import ReactTooltip from 'react-tooltip';
@@ -65,7 +64,7 @@ const totalContainer = css`
   width: 100%;
 
   .container {
-    width: 100%;
+    width: 80%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;

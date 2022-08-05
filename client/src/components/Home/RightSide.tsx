@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
 
@@ -61,7 +60,6 @@ const totalContainer = css`
     color: #332757;
     text-align: right;
     font-size: calc(1.2vw);
-    font-weight: 200;
   }
 
   .buttons-div {
@@ -71,6 +69,11 @@ const totalContainer = css`
     button:first-child {
       margin-right: 1rem;
     }
+  }
+
+  .title-highlight,
+  .title {
+    font-weight: 800;
   }
 `;
 

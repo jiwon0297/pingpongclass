@@ -1,9 +1,13 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import NoticeBoardArticle from './NoticeBoardArticle';
+import React, { useEffect, useState } from 'react';
+import useIntersectionObserver from '@src/utils/useIntersectionObserver';
+import Notice from './Notice';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { setContent, selectContent } from '@src/store/content';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 
-export interface ArticleProps {
+export interface NoticeProps {
   noticeId: number;
   writer: string;
   classTitle: string;
@@ -12,48 +16,158 @@ export interface ArticleProps {
   regtime: string;
 }
 
+export interface SubjectProps {
+  subjectCode: number;
+  classTitle: string;
+}
+
 const NoticeBoard = () => {
-  const [articles, setArticles] = useState<ArticleProps[]>([
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const [selected, setSelected] = useState<SubjectProps>();
+  const [articles, setArticles] = useState<NoticeProps[]>([]);
+  const [subjects, setSubjects] = useState<SubjectProps[]>([
     {
-      noticeId: 0,
-      writer: '',
-      classTitle: '',
-      title: '',
-      content: '',
-      regtime: '',
+      subjectCode: 0,
+      classTitle: '전체 선택',
     },
   ]);
+  const [page, setPage] = useState(1);
+  const dispatch = useAppDispatch();
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
 
+  const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+    // console.log(`감지결과 : ${isIntersecting}`);
+    if (isIntersecting) {
+      setPage((prev) => prev + 1);
+      setArticles((prev) => [...prev, ...dummy]);
+    }
+  };
+
+  const testClassId = 0;
+  const testUserId = 5030001;
+
+  const { setTarget } = useIntersectionObserver({ onIntersect });
   // 임시 더미 데이터 불러오기
   useEffect(() => {
-    setArticles(dummy);
-  });
+    // setArticles(dummy);
+    // setSubjects(dummySubjects);
+    InterceptedAxios.get('/students/' + testUserId.toString())
+      .then((response) => {
+        let list = response.data.content;
+        setSubjects((prev) => [...prev, ...list]);
+      })
+      .catch(() => {});
+
+    if (testUserId < 4040000) {
+      setIsTeacher(true);
+    } else {
+      setIsTeacher(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    let word = '';
+    if (keyword !== '') {
+      word = '&titleSearch=' + keyword;
+    }
+
+    let searchQuery =
+      '/notice/list?classId=' +
+      testClassId.toString() +
+      '&userId=' +
+      testUserId.toString() +
+      '&pageNumber=' +
+      page.toString() +
+      word;
+
+    console.log(searchQuery);
+
+    InterceptedAxios.get(searchQuery)
+      .then((response) => {
+        let list = response.data.content;
+        setArticles((prev) => [...prev, ...list]);
+      })
+      .catch(() => {});
+  }, [page]);
+
+  useEffect(() => {
+    // console.log(selected);
+  }, [selected]);
+
+  const deleteNotice = (key: number) => {
+    InterceptedAxios.delete('/notice/' + key.toString())
+      .then(() => {
+        setArticles(articles.filter((article) => article.noticeId !== key));
+      })
+      .catch(() => {});
+  };
+
+  const postNotice = () => {
+    dispatch(setContent({ content: 'postNotice' }));
+  };
+
+  const search = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setArticles([]);
+    setPage(1);
+
+    // 검색 로직
+  };
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    let code = parseInt(e.target.value);
+    let title = '';
+    subjects.forEach((s) => {
+      if (s.subjectCode === code) {
+        title = s.classTitle;
+      }
+    });
+    setSelected({
+      subjectCode: code,
+      classTitle: title,
+    });
+  };
 
   return (
     <div css={totalContainer}>
       <div className="upperModalArea">
         <div className="pageTitle">공지사항</div>
-        <form>
-          <select
-            value="수업"
-            onChange={(e) => {
-              console.log(e);
-            }}
-          >
-            <option value="1">국어</option>
-            <option value="2">수학</option>
-            <option value="3">사회</option>
-            <option value="4">영어</option>
+        <form onSubmit={search}>
+          <select onChange={handleSelect}>
+            {subjects.map((s) => (
+              <option key={s.subjectCode} value={s.subjectCode}>
+                {s.classTitle}
+              </option>
+            ))}
           </select>
-          <input type="search" name="" id="" />
-          <button type="submit">검색</button>
+          <input
+            type="search"
+            name=""
+            id=""
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          {isTeacher ? (
+            <>
+              <button type="submit" className="sub-btn">
+                검색
+              </button>
+              <button type="button" className="main-btn" onClick={postNotice}>
+                글 쓰기
+              </button>
+            </>
+          ) : (
+            <button type="submit" className="main-btn">
+              검색
+            </button>
+          )}
         </form>
       </div>
       <div className="tableArea">
         <div className="row titleRow">
           <div className="col noticeId">번호</div>
           <div className="col classTitle">수업명</div>
-          <div className="col title">제목</div>
+          <div className="col noticeTitle">제목</div>
           <div className="col writer">작성자</div>
           <div className="col regtime">작성일</div>
         </div>
@@ -61,9 +175,16 @@ const NoticeBoard = () => {
         <div className="articleArea">
           {articles.map((article) => {
             return (
-              <NoticeBoardArticle key={article.noticeId} article={article} />
+              <Notice
+                key={article.noticeId}
+                article={article}
+                deleteNotice={() => deleteNotice(article.noticeId)}
+              />
             );
           })}
+          <div ref={setTarget} className="Loading">
+            {/* {isLoading && 'Loading...'} */}
+          </div>
         </div>
       </div>
     </div>
@@ -73,12 +194,32 @@ const NoticeBoard = () => {
 const totalContainer = () => css`
   /* 전역 */
   text-align: center;
-  width: inherit;
+  width: -webkit-fill-available;
   height: inherit;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   max-height: inherit;
   max-width: inherit;
+
+  .pageTitle {
+    text-align: left;
+    /* font-size: 2rem; */
+    border-bottom: 0.15rem solid black;
+    width: inherit;
+  }
+
+  form {
+    margin: 0.5rem;
+    button {
+      border: none;
+    }
+    .main-btn {
+      background-color: pink;
+    }
+    .sub-btn {
+      background-color: grey;
+    }
+  }
 
   /* table 영역 */
   .tableArea {
@@ -86,7 +227,7 @@ const totalContainer = () => css`
     width: inherit;
     height: inherit;
     position: absolute;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
   }
 
   /* 스크롤 바 숨기기 */
@@ -99,11 +240,12 @@ const totalContainer = () => css`
   }
 
   .row,
-  .article-btn {
+  .article.btn {
     width: -webkit-fill-available;
     max-width: inherit;
     border: none;
     background-color: transparent;
+    font-family: 'NanumSquare';
   }
 
   .col {
@@ -114,6 +256,7 @@ const totalContainer = () => css`
   }
   /* 제목 행 */
   .titleRow {
+    padding: 0.5rem 0;
     background-color: #c0d2e5;
   }
 
@@ -175,11 +318,13 @@ const totalContainer = () => css`
       background-color: #f9f9f9;
       padding: 1% 0;
       position: relative;
-      left: 38%;
+      left: 76%;
+      width: max-content;
       button {
         border-radius: 3rem;
         color: white;
         border: none;
+        width: max-content;
         padding: 0.5rem;
         margin: 0 0.5rem;
         width: 5rem;
@@ -187,7 +332,8 @@ const totalContainer = () => css`
     }
 
     .detailWriter {
-      max-width: 10%;
+      padding: 0.5rem;
+      max-width: -webkit-max-content;
     }
 
     .edit-btn {
@@ -233,13 +379,7 @@ const totalContainer = () => css`
     min-width: max-content;
     vertical-align: top;
   }
-  .title {
-    text-overflow: ellipsis;
-    min-width: calc(46%);
-    width: calc(46%);
-    max-width: calc(50%);
-  }
-  .col.title {
+  .noticeTitle {
     white-space: nowrap;
     text-overflow: ellipsis;
     min-width: calc(46%);
@@ -247,6 +387,29 @@ const totalContainer = () => css`
     max-width: calc(50%);
   }
 `;
+
+const dummySubjects = [
+  {
+    subjectCode: 1,
+    classTitle: '국어',
+  },
+  {
+    subjectCode: 2,
+    classTitle: '수학',
+  },
+  {
+    subjectCode: 3,
+    classTitle: '사회',
+  },
+  {
+    subjectCode: 4,
+    classTitle: '과학',
+  },
+  {
+    subjectCode: 5,
+    classTitle: '영어',
+  },
+];
 
 const dummy = [
   {

@@ -1,9 +1,8 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import HeatMap from './HeatMap';
-import banner from '../../assets/images/banner.png';
-import MyInfo from './MyInfo';
-import TodaysClass from './TodaysClass';
+import HeatMap from '@components/DashBoard/HeatMap';
+import banner from '@assets/images/banner.png';
+import MyInfo from '@components/DashBoard/MyInfo';
+import TodaysClass from '@components/DashBoard/TodaysClass';
 
 const MainContent = () => {
   return (
@@ -11,16 +10,16 @@ const MainContent = () => {
       <div className="banner">
         <img src={banner} alt="" />
       </div>
-      <h1>내 정보</h1>
+      <h2>내 정보</h2>
       <div className="myInfo">
         <MyInfo />
       </div>
-      <h1>오늘의 수업</h1>
+      <h2>오늘의 수업</h2>
       <div className="todaysClass">
         <TodaysClass />
       </div>
       <div className="attandance">
-        <h1>나의 참여도</h1>
+        <h2>나의 참여도</h2>
         <HeatMap />
       </div>
     </div>
@@ -45,7 +44,7 @@ const totalContainer = css`
     height: 100%;
     width: 100%;
     border-radius: 20px;
-    box-shadow: 3px 3px 10px -5px;
+    box-shadow: 2px 2px 15px -5px;
   }
 
   .myInfo {

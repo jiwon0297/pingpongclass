@@ -1,18 +1,29 @@
-/** @jsxImportSource @emotion/react */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { css } from '@emotion/react';
-import IconGroup from '../components/DashBoard/IconGroup';
-import MainContent from '../components/DashBoard/MainContent';
-import NavBar from '../components/DashBoard/NavBar';
-import dashboardBackground from '../assets/images/dashboardBackground.png';
-import InputPassword from '../components/DashBoard/MyPage/InputPassword';
-import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
+import IconGroup from '@components/DashBoard/IconGroup';
+import MainContent from '@components/DashBoard/MainContent';
+import NavBar from '@components/DashBoard/NavBar';
+import dashboardBackground from '@assets/images/dashboardBackground.png';
+import InputPassword from '@components/DashBoard/MyPage/InputPassword';
+import NoticeBoard from '@components/DashBoard/Board/NoticeBoard';
+import EditNotice from '@components/DashBoard/Board/EditNotice';
+import ManagedClassBoard from '@components/DashBoard/Board/ManagedClassBoard';
+import EditClass from '@components/DashBoard/Board/EditClass';
+import StoreMain from '@components/DashBoard/Store/StoreMain';
+import Footer from '@components/DashBoard/Footer/Footer';
 
 const DashBoard = () => {
+  const contentStore = useAppSelector((state) => state.content.content);
   const [content, setContent] = useState('mainContent');
   const changeContent = (toGo: string) => {
     setContent(toGo);
   };
+  useEffect(() => {
+    // 리렌더링을 위한 함수
+    setContent(contentStore);
+  }, [contentStore]);
+
   return (
     <div css={totalContainer}>
       <div className="dashBoardContainer">
@@ -29,13 +40,18 @@ const DashBoard = () => {
                 mainContent: <MainContent />,
                 timeTable: <h1>시간표</h1>,
                 notice: <NoticeBoard />,
-                shop: <h1>상점</h1>,
+                postNotice: <EditNotice />,
+                editNotice: <EditNotice />,
+                class: <ManagedClassBoard />,
+                addClass: <EditClass />,
+                editClass: <EditClass />,
+                shop: <StoreMain />,
                 myPage: <InputPassword />,
               }[content]
             }
           </div>
           <div className="footer">
-            <h1>footer</h1>
+            <Footer />
           </div>
         </div>
       </div>
@@ -73,7 +89,7 @@ const totalContainer = css`
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    box-shadow: 3px 3px 10px -5px;
+    box-shadow: 2px 2px 10px -5px;
     border-radius: 20px;
   }
 

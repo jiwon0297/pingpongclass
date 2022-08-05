@@ -1,14 +1,17 @@
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import '@src/index.css';
+import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
-import App from './App';
-import store from './store/store';
+import App from '@src/App';
+import store from '@store/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <CookiesProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </CookiesProvider>,
 );
