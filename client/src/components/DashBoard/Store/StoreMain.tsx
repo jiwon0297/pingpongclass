@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import ItemList from './ItemListTap/ItemList';
 import ReactionList from './ItemListTap/ReactionList';
 import GetItemList from './GetItemListTap/GetItemList';
@@ -9,10 +9,17 @@ import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import CircleIcon from '@mui/icons-material/Circle';
 import { yellow } from '@mui/material/colors';
+import Animation from './Animation';
+import { motion } from 'framer-motion';
 
 const StoreMain = () => {
   const [itemtap, setTap] = useState('itemTap');
   const [gettap, setGetTap] = useState('getItemTap');
+  const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
+
+  const onClickOpenModel = useCallback(() => {
+    setOpenBbobkki(!isOpenBbobkki);
+  }, [isOpenBbobkki]);
 
   // 클릭 이벤트 핸들러
   const onClickTap = (prop: string) => {
@@ -25,6 +32,19 @@ const StoreMain = () => {
 
   return (
     <div css={totalContainer}>
+      {isOpenBbobkki && (
+        <Animation onClickOpenModal={onClickOpenModel}>
+          <motion.div
+            animate={{
+              backgroundColor: '#000',
+              boxShadow: '10px 10px 0 rgba(0, 0, 0, 0.2)',
+              scale: [1, 2, 2, 1, 1],
+              rotate: [0, 0, 270, 270, 0],
+              borderRadius: ['20%', '20%', '50%', '50%', '20%'],
+            }}
+          />
+        </Animation>
+      )}
       <div className="drawContainer">
         <div className="pageTitle">뽑기</div>
         <hr />
@@ -35,7 +55,11 @@ const StoreMain = () => {
               <HelpIcon fontSize="small" color="action" />
             </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
-            <button type="button" className="bbobkkiBtn">
+            <button
+              type="button"
+              className="bbobkkiBtn"
+              onClick={onClickOpenModel}
+            >
               <span>
                 <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
                 &nbsp; X 15
