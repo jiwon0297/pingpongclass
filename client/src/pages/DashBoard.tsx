@@ -73,6 +73,7 @@ const totalContainer = css`
     align-items: center;
     justify-content: center;
     background-color: transparent;
+    animation: smoothAppear 1s;
   }
 
   .navBar {
@@ -134,6 +135,17 @@ const totalContainer = css`
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+  }
+
+  @keyframes smoothAppear {
+    from {
+      opacity: 0;
+      transform: translateY(-5%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 

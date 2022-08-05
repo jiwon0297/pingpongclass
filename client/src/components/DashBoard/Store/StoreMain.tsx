@@ -118,6 +118,7 @@ const totalContainer = () => css`
   max-width: inherit;
   display: flex;
   flex-direction: column;
+  animation: 0.7s ease-in-out loadEffect1;
 
   .bbobkki {
     display: flex;
@@ -282,6 +283,15 @@ const totalContainer = () => css`
       text-align: center;
       display: flex;
       justify-content: center;
+    }
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
     }
   }
 `;
