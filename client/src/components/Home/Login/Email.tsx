@@ -1,5 +1,7 @@
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { useState } from 'react';
 
 interface EmailProps {
@@ -14,6 +16,7 @@ function Email(props: EmailProps) {
   const [email1, setEmail1] = useState('');
   const [email2, setEmail2] = useState('');
   const [isUse, setUse] = useState(false);
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onChangeEmail1 = (e) => {
     setEmail1(e.target.value);
@@ -34,12 +37,11 @@ function Email(props: EmailProps) {
     if (email1 == null) {
       alert('이메일을 입력해주세요.');
     } else {
-      axios
-        .get('/users/email/{email}', {
-          params: {
-            email: email1 + '@' + email2,
-          },
-        })
+      InterceptedAxios.get('/users/email/{email}', {
+        params: {
+          email: email1 + '@' + email2,
+        },
+      })
         .then(function () {
           console.log('이메일 중복안됨');
           alert('사용 가능한 이메일입니다.');

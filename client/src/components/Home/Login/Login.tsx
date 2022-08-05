@@ -1,7 +1,9 @@
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useState } from 'react';
-import { idText } from 'typescript';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import { setCookie } from '@utils/cookie';
 
 interface LoginProps {
   tap: string;
@@ -11,10 +13,10 @@ interface LoginProps {
 }
 
 const Login = (props: LoginProps) => {
-  const { tap, setTap } = props;
-  const { userId, setUserId } = props;
+  const { setTap, userId, setUserId } = props;
   const [userPw, setUserPw] = useState('');
   const [accessToken, setToken] = useState('');
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -31,19 +33,30 @@ const Login = (props: LoginProps) => {
     setTap('main');
   };
 
-  const onClickLogin = async () => {
+  const onClickLogin = () => {
     //유효성 검사
-    // if(userId.length <7)
 
-    axios
-      .post('/auth/login', {
-        id: userId,
-        password: userPw,
-      })
-      .then(function (response) {
+    InterceptedAxios.post('/auth/login', {
+      id: userId,
+      password: userPw,
+    })
+      .then((response) => {
         //성공
+        console.log('넘어옴?');
         setToken(response.data.accessToken);
-        localStorage.setItem('accessToken', accessToken);
+        // localStorage 저장
+        if (response.data) {
+          setCookie('jwt-accessToken', response.data.accessToken, {
+            path: '/',
+            secure: true,
+            sameSite: 'none',
+          });
+          setCookie('jwt-refreshToken', response.data.refreshToken, {
+            path: '/',
+            secure: true,
+            sameSite: 'none',
+          });
+        }
 
         if (response.data.first) {
           alert('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');

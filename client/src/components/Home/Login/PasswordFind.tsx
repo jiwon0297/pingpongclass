@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useState } from 'react';
-import { idText } from 'typescript';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 
 interface PasswordFindProps {
   setTap: Function;
@@ -12,6 +12,7 @@ const PasswordFind = (props: PasswordFindProps) => {
   const { setTap } = props;
   const [userId, setUserId] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -25,11 +26,10 @@ const PasswordFind = (props: PasswordFindProps) => {
     setTap('login');
   };
   const onClickFind = (e) => {
-    axios
-      .post('/users/password', {
-        user_id: userId,
-        email: userEmail,
-      })
+    InterceptedAxios.post('/users/password', {
+      user_id: userId,
+      email: userEmail,
+    })
       .then(function (response) {
         alert('이메일을 확인해주세요.');
       })

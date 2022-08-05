@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { useState } from 'react';
 
 interface PasswordProps {
@@ -14,6 +15,7 @@ const PasswordSetting = (props: PasswordProps) => {
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
   const [emailCheckMsg, setMsg] = useState('');
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onClickReturn = () => {
     setTap('email');
@@ -40,12 +42,11 @@ const PasswordSetting = (props: PasswordProps) => {
   const onClickSetting = (e) => {
     //학생, 선생님 나눠서
     if (userId.length == 10) {
-      axios
-        .patch('/students', {
-          studentId: userId,
-          email: email,
-          password: password1,
-        })
+      InterceptedAxios.patch('/students', {
+        studentId: userId,
+        email: email,
+        password: password1,
+      })
         .then(function (response) {
           alert('로그인 성공');
         })
@@ -54,12 +55,11 @@ const PasswordSetting = (props: PasswordProps) => {
           console.log('실패', error);
         });
     } else {
-      axios
-        .patch('/teachers', {
-          teacherId: userId,
-          email: email,
-          password: password1,
-        })
+      InterceptedAxios.patch('/teachers', {
+        teacherId: userId,
+        email: email,
+        password: password1,
+      })
         .then(function (response) {
           alert('로그인 성공');
         })
