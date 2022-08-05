@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import BoxContainer from "./BoxContainer";
+import BoxContainer from "../common/BoxContainer";
 import SubmitButton from "./SubmitButton";
 import "./QuizComponent.css";
 
 class QuizComponent extends Component {
   state = {
     question: this.props.quiz.question,
-    A1: 'O',
-    A2: 'X',
+    A1: "O",
+    A2: "X",
     select: "none",
   };
 

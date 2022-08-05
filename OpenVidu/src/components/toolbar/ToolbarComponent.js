@@ -11,6 +11,7 @@ import VideocamOff from "@material-ui/icons/VideocamOff";
 import Fullscreen from "@material-ui/icons/Fullscreen";
 import FullscreenExit from "@material-ui/icons/FullscreenExit";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
+import SettingsIcon from "@material-ui/icons/Settings";
 import PictureInPicture from "@material-ui/icons/PictureInPicture";
 import ScreenShare from "@material-ui/icons/ScreenShare";
 import StopScreenShare from "@material-ui/icons/StopScreenShare";
@@ -265,6 +266,14 @@ export default class ToolbarComponent extends Component {
                 <p>비디오 전환</p>
               </div>
             </IconButton>
+
+            <IconButton color="inherit" className="navButton">
+              <div className="buttonStyle">
+                <SettingsIcon />
+                <p>설정</p>
+              </div>
+            </IconButton>
+
             <IconButton
               color="inherit"
               className="navButton"
