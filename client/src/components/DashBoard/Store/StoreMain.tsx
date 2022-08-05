@@ -32,47 +32,7 @@ const StoreMain = () => {
 
   return (
     <div css={totalContainer}>
-      {isOpenBbobkki && (
-        <Animation onClickOpenModal={onClickOpenModal}>
-          <motion.div
-            animate={{
-              scale: [1, 2, 2, 1, 2, 0],
-              rotate: [0, 50, -50, 50, -50, 360],
-              background: 'var(--action)',
-              transitionEnd: {
-                opacity: '0',
-              },
-            }}
-            transition={{ duration: 4, repeat: 0 }}
-            style={{
-              margin: 'auto',
-              position: 'relative',
-              zIndex: '10001',
-            }}
-          >
-            <img
-              src={BobkkiCapsule}
-              alt="뽑기캡슐"
-              style={{ marginTop: '50px' }}
-            />
-          </motion.div>
-
-          <motion.div
-            animate={{
-              scale: [0, 0, 0, 0, 0, 0, 2],
-              rotate: [0, 50, -50, 50, -50, 360, 0],
-              background: 'var(--action)',
-            }}
-            transition={{ duration: 10, repeat: 0 }}
-            style={{
-              margin: 'auto',
-              zIndex: '10002',
-            }}
-          >
-            <img src={BobkkiCapsule} alt="뽑기캡슐" />
-          </motion.div>
-        </Animation>
-      )}
+      {isOpenBbobkki && <Animation onClickOpenModal={onClickOpenModal} />}
       <div className="drawContainer">
         <div className="pageTitle">뽑기</div>
         <hr />
