@@ -43,6 +43,7 @@ export default class ToolbarComponent extends Component {
     this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
     this.startStickerEvent = this.startStickerEvent.bind(this);
+    this.toggleSetting = this.toggleSetting.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -83,6 +84,10 @@ export default class ToolbarComponent extends Component {
   // toggleChat: 채팅 토글 함수
   toggleChat() {
     this.props.toggleChat();
+  }
+
+  toggleSetting() {
+    this.props.toggleSetting();
   }
 
   toggleParticipant() {
@@ -267,7 +272,11 @@ export default class ToolbarComponent extends Component {
               </div>
             </IconButton>
 
-            <IconButton color="inherit" className="navButton">
+            <IconButton
+              color="inherit"
+              className="navButton"
+              onClick={this.toggleSetting}
+            >
               <div className="buttonStyle">
                 <SettingsIcon />
                 <p>설정</p>

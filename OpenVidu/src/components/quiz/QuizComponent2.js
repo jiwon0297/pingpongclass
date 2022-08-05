@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import BoxContainer from "../common/BoxContainer";
+import BoxContainer from "./BoxContainer";
 import SubmitButton from "./SubmitButton";
 import "./QuizComponent.css";
 

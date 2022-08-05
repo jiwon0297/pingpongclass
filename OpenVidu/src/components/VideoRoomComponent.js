@@ -16,6 +16,7 @@ import Sticker from "./pointClickEvent/PointSticker";
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
+import Setting from "./settings/Setting";
 
 var localUser = new UserModel();
 
@@ -75,6 +76,7 @@ class VideoRoomComponent extends Component {
       totalWidth: 0,
       stickers: [],
       quiz: {},
+      settingDisplay: false,
     };
 
     // 메서드 바인딩 과정
@@ -109,8 +111,10 @@ class VideoRoomComponent extends Component {
     this.closeDialogExtension = this.closeDialogExtension.bind(this);
     // toggleChat: 채팅 토글 버튼 함수
     this.toggleChat = this.toggleChat.bind(this);
-    // toggleParticipant: 채팅 토글 버튼 함수
+    // toggleParticipant: 참가자 목록 토글 버튼 함수
     this.toggleParticipant = this.toggleParticipant.bind(this);
+    // toggleSetting: 설정 토글 버튼 함수
+    this.toggleSetting = this.toggleSetting.bind(this);
     // checkNotification: 알림 확인 함수
     this.checkNotification = this.checkNotification.bind(this);
     // checkSize: 화면 크기 체크 함수
@@ -131,6 +135,11 @@ class VideoRoomComponent extends Component {
     this.startStickerEvent = this.startStickerEvent.bind(this);
     // answerUpdate: 퀴즈 정답 수신해서 통계에 적용하는 함수
     this.answerUpdate = this.answerUpdate.bind(this);
+    // 설정용 함수
+    this.getVideos = this.getVideos.bind(this);
+    this.setVideos = this.setVideos.bind(this);
+    this.getAudios = this.getAudios.bind(this);
+    this.setAudios = this.setAudios.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -596,6 +605,106 @@ class VideoRoomComponent extends Component {
     }
   }
 
+  // 설정용 함수
+  async getVideos() {
+    try {
+      const devices = await this.OV.getDevices();
+      const videoDevices = devices.filter(
+        (device) => device.kind === "videoinput",
+      );
+      console.log(videoDevices);
+      return videoDevices;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async setVideos(deviceId, devices) {
+    try {
+      const newVideoDevice = devices.filter(
+        (device) => deviceId === device.deviceId,
+      );
+
+      // 새로운 디바이스가 존재한다면
+      if (newVideoDevice.length > 0) {
+        // Creating a new publisher with specific videoSource
+        // In mobile devices the default and first camera is the front one
+        // Publisher를 새롭게 설정
+        const newPublisher = this.OV.initPublisher(undefined, {
+          audioSource: undefined,
+          videoSource: newVideoDevice[0].deviceId,
+          publishAudio: localUser.isAudioActive(),
+          publishVideo: localUser.isVideoActive(),
+          mirror: true,
+        });
+
+        //newPublisher.once("accessAllowed", () => {
+        // 현재 스트림매니저가 관리하는 값들을 publish 해제하고 위에서 만든 새로운 Publisher를 발행 후 localUser에 등록
+        await this.state.session.unpublish(
+          this.state.localUser.getStreamManager(),
+        );
+        await this.state.session.publish(newPublisher);
+        this.state.localUser.setStreamManager(newPublisher);
+        // 현재 컴포넌트의 상태값 변경
+        this.setState({
+          currentVideoDevice: newVideoDevice,
+          localUser: localUser,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async getAudios() {
+    try {
+      const devices = await this.OV.getDevices();
+      const audioDevices = devices.filter(
+        (device) => device.kind === "audioinput",
+      );
+      return audioDevices;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async setAudios(deviceId, devices) {
+    try {
+      const newAudioDevice = devices.filter(
+        (device) => deviceId === device.deviceId,
+      );
+
+      // 새로운 디바이스가 존재한다면
+      if (newAudioDevice.length > 0) {
+        // Creating a new publisher with specific videoSource
+        // In mobile devices the default and first camera is the front one
+        // Publisher를 새롭게 설정
+        const newPublisher = this.OV.initPublisher(undefined, {
+          audioSource: newAudioDevice[0].deviceId,
+          videoSource: undefined,
+          publishAudio: localUser.isAudioActive(),
+          publishVideo: localUser.isVideoActive(),
+          mirror: true,
+        });
+
+        //newPublisher.once("accessAllowed", () => {
+        // 현재 스트림매니저가 관리하는 값들을 publish 해제하고 위에서 만든 새로운 Publisher를 발행 후 localUser에 등록
+        await this.state.session.unpublish(
+          this.state.localUser.getStreamManager(),
+        );
+        await this.state.session.publish(newPublisher);
+        this.state.localUser.setStreamManager(newPublisher);
+        // 현재 컴포넌트의 상태값 변경
+        this.setState({
+          currentAudioDevice: newAudioDevice,
+          localUser: localUser,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   // switchCamera: 카메라를 변경할 때 작동하는 함수 (주의 - async!!!)
   async switchCamera() {
     try {
@@ -970,6 +1079,14 @@ class VideoRoomComponent extends Component {
     }, 1.5 * 1000);
   };
 
+  // name: 오석호
+  // date: 2022/08/05
+  // desc: 설정창 켜고끄기
+  toggleSetting() {
+    console.log(this.state.settingDisplay);
+    this.setState({ settingDisplay: !this.state.settingDisplay });
+  }
+
   // name: 원재호
   // date: 2022/08/02
   // desc: 퀴즈 관련 함수 모아놓음
@@ -1032,6 +1149,16 @@ class VideoRoomComponent extends Component {
     return (
       <>
         <div className="container" id="container">
+          <Setting
+            display={this.state.settingDisplay}
+            toggleSetting={this.toggleSetting}
+            header="Setting"
+            getVideos={this.getVideos}
+            setVideos={this.setVideos}
+            getAudios={this.getAudios}
+            setAudios={this.setAudios}
+          />
+
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
@@ -1186,6 +1313,7 @@ class VideoRoomComponent extends Component {
               toggleChat={this.toggleChat}
               toggleParticipant={this.toggleParticipant}
               toggleQuiz={this.toggleQuiz}
+              toggleSetting={this.toggleSetting}
               startStickerEvent={this.startStickerEvent}
             />
           </div>
