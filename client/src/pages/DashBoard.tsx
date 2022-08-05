@@ -11,6 +11,7 @@ import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
 import EditNotice from '../components/DashBoard/Board/EditNotice';
 import ManagedClassBoard from '../components/DashBoard/Board/ManagedClassBoard';
 import EditClass from '../components/DashBoard/Board/EditClass';
+import StoreMain from '@src/components/DashBoard/Store/StoreMain';
 
 const DashBoard = () => {
   const contentStore = useAppSelector((state) => state.content.content);
@@ -44,7 +45,7 @@ const DashBoard = () => {
                 class: <ManagedClassBoard />,
                 addClass: <EditClass />,
                 editClass: <EditClass />,
-                shop: <h1>상점</h1>,
+                shop: <StoreMain />,
                 myPage: <InputPassword />,
               }[content]
             }
@@ -88,7 +89,7 @@ const totalContainer = css`
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    box-shadow: 3px 3px 10px -5px;
+    box-shadow: 2px 2px 10px -5px;
     border-radius: 20px;
   }
 

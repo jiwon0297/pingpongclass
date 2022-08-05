@@ -23,11 +23,16 @@ export interface SubjectProps {
 }
 
 const NoticeBoard = () => {
-  const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [subjects, setSubjects] = useState<SubjectProps[]>([]);
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<SubjectProps>();
+  const [articles, setArticles] = useState<NoticeProps[]>([]);
+  const [subjects, setSubjects] = useState<SubjectProps[]>([
+    {
+      subjectCode: 0,
+      classTitle: '전체 선택',
+    },
+  ]);
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -40,35 +45,63 @@ const NoticeBoard = () => {
     }
   };
 
+  const testClassId = 0;
+  const testUserId = 5030001;
+
   const { setTarget } = useIntersectionObserver({ onIntersect });
   // 임시 더미 데이터 불러오기
   useEffect(() => {
     // setArticles(dummy);
-    setSubjects(dummySubjects);
-    setIsTeacher(true);
+    // setSubjects(dummySubjects);
+    InterceptedAxios.get('/students/' + testUserId.toString())
+      .then((response) => {
+        let list = response.data.content;
+        setSubjects((prev) => [...prev, ...list]);
+      })
+      .catch(() => {});
+
+    if (testUserId < 4040000) {
+      setIsTeacher(true);
+    } else {
+      setIsTeacher(false);
+    }
   }, []);
 
   useEffect(() => {
-    let testClassId = 0;
-    let testUserId = 5030001;
+    let word = '';
+    if (keyword !== '') {
+      word = '&titleSearch=' + keyword;
+    }
 
-    InterceptedAxios.get(
+    let searchQuery =
       '/notice/list?classId=' +
-        testClassId.toString() +
-        '&userId=' +
-        testUserId.toString(),
-    )
+      testClassId.toString() +
+      '&userId=' +
+      testUserId.toString() +
+      '&pageNumber=' +
+      page.toString() +
+      word;
+
+    console.log(searchQuery);
+
+    InterceptedAxios.get(searchQuery)
       .then((response) => {
-        console.log(response);
         let list = response.data.content;
-        setArticles(list);
+        setArticles((prev) => [...prev, ...list]);
       })
       .catch(() => {});
-    // axios.interceptors.request.use(function () {/*...*/});
   }, [page]);
 
+  useEffect(() => {
+    // console.log(selected);
+  }, [selected]);
+
   const deleteNotice = (key: number) => {
-    setArticles(articles.filter((article) => article.noticeId !== key));
+    InterceptedAxios.delete('/notice/' + key.toString())
+      .then(() => {
+        setArticles(articles.filter((article) => article.noticeId !== key));
+      })
+      .catch(() => {});
   };
 
   const postNotice = () => {
@@ -77,13 +110,8 @@ const NoticeBoard = () => {
 
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .get('http://i7a403.p.ssafy.io:8080/notice', {})
-      .then(() => {})
-      .catch(() => {});
-    // console.log(e);
-    // console.log(e.currentTarget.elements[0]);
-    // console.log(e.currentTarget.elements[1]);
+    setArticles([]);
+    setPage(1);
 
     // 검색 로직
   };
@@ -99,7 +127,6 @@ const NoticeBoard = () => {
       subjectCode: code,
       classTitle: title,
     });
-    console.log(selected);
   };
 
   return (
@@ -363,10 +390,6 @@ const totalContainer = () => css`
 `;
 
 const dummySubjects = [
-  {
-    subjectCode: 0,
-    classTitle: '수업선택',
-  },
   {
     subjectCode: 1,
     classTitle: '국어',

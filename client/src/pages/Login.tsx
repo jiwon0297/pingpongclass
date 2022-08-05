@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { setCookie } from '@src/utils/cookie';
 import { useState } from 'react';
 
 const App = () => {
@@ -24,8 +25,19 @@ const App = () => {
     setToken(result.data.accessToken);
     let refreshToken = result.data.refreshToken;
     // localStorage 저장
-    localStorage.setItem('jwt-accessToken', accessToken);
-    localStorage.setItem('jwt-refreshToken', refreshToken);
+    // sessionStorage.setItem('jwt-accessToken', accessToken);
+    if (result.data) {
+      setCookie('jwt-accessToken', result.data.accessToken, {
+        path: '/',
+        secure: true,
+        sameSite: 'none',
+      });
+      setCookie('jwt-refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: 'none',
+      });
+    }
   };
 
   return (
