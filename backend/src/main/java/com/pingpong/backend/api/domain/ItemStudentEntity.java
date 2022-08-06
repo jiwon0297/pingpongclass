@@ -1,9 +1,8 @@
 package com.pingpong.backend.api.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -20,9 +19,17 @@ public class ItemStudentEntity {
 
     @ManyToOne
     @JoinColumn(name="student_id", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private StudentEntity studentEntity;
 
     @ManyToOne
     @JoinColumn(name="item_id", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private ItemEntity itemEntity;
+
+    @Builder
+    public ItemStudentEntity(StudentEntity studentEntity, ItemEntity itemEntity) {
+        this.studentEntity = studentEntity;
+        this.itemEntity = itemEntity;
+    }
 }

@@ -8,6 +8,7 @@ import com.pingpong.backend.api.domain.RankingEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.domain.response.RankResponse;
+import com.pingpong.backend.api.repository.LogRepository;
 import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.util.SecurityUtil;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,9 +27,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService{
     private final StudentRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    private final LogRepository logRepository;
     private final RankingRepository rankingRepository;
-
+    private final PasswordEncoder encoder;
 
     /*
     회원가입
@@ -71,6 +73,13 @@ public class StudentServiceImpl implements StudentService{
     @Transactional
     public void modify(StudentEntity student) {
         StudentEntity studentEntity = repository.findById(student.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+
+        if("".equals(student.getPassword())==false && student.getPassword() != null){
+            new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
+                    student.getClassNum(), student.getStudentNum(), student.getEmail(), encoder.encode(student.getPassword()),student.getProfile(),
+                    student.getPoint(), student.getTotalPoint(), student.getIntroduce());
+        }
+        
         studentEntity.modifyStudent(student);
     }
 
@@ -87,8 +96,8 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<LogEntity> getPoint(int studentId) {
-        return repository.getPoint(studentId);
+    public List<Map<String, Integer>> getPoint(int studentId) {
+        return logRepository.getPoint(studentId);
     }
 
     @Override
@@ -96,6 +105,17 @@ public class StudentServiceImpl implements StudentService{
     public void updatePoint(int studentId, int point) {
         StudentEntity student = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         student.updatePoint(point);
+    }
+
+    @Override
+    public void selectiveDelete(List<Integer> list) {
+        for(int id:list)
+            repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
     }
 
     //아래 두 메소드 허용권한을 다르게 해서 권한검증 테스트

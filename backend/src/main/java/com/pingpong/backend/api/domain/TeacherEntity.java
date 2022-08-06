@@ -1,18 +1,12 @@
 package com.pingpong.backend.api.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-//import lombok.*;
-//@Getter
-//@Builder
-//@AllArgsConstructor
-//@NoArgsConstructor
 
 @Entity(name = "teacher")
 @Table(name = "teacher")
@@ -20,6 +14,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TeacherEntity {
     @Id
     private int teacherId;
@@ -49,15 +44,12 @@ public class TeacherEntity {
     @Column(name = "activated")
     private boolean activated=true;
 
-
-
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "teacher_authority",
             joinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "teacherId")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authorityName")})
     private Set<Authority> authorities;
-
 
     @Builder
     public TeacherEntity(int teacherId, String name, String email, int isAdmin, String password, String birth, int manageGrade, String profile) {
@@ -89,11 +81,19 @@ public class TeacherEntity {
         this.email = email;
     }
 
-    public void modifyTeacher(TeacherEntity teacher){
-        this.name = teacher.getName();
-        this.email = teacher.getEmail();
-        this.password = teacher.getPassword();
-        this.profile = teacher.getProfile();
+    public void modifyTeacher(TeacherEntity entity){
+        if("".equals(entity.getEmail()) == false && entity.getEmail()!=null){
+            this.email = entity.getEmail();
+        }
+        if("".equals(entity.getPassword()) == false && entity.getPassword()!=null){
+            this.password = entity.getPassword();
+        }
+        if("".equals(entity.getProfile()) == false && entity.getProfile()!=null){
+            this.profile = entity.getProfile();
+        }
+        if(entity.getManageGrade()!=0){
+            this.manageGrade = entity.getManageGrade();
+        }
     }
 
     public static TeacherEntity from(TeacherEntity teacher) {

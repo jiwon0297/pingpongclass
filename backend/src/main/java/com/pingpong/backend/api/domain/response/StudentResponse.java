@@ -1,10 +1,11 @@
 package com.pingpong.backend.api.domain.response;
 
 import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.service.S3Service;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 @Getter
@@ -16,6 +17,7 @@ public class StudentResponse {
     private int studentNum;
     private String email;
     private String profile;
+    private String profileFullPath;
     private int point;
     private int totalPoint;
     private String introduce;
@@ -23,7 +25,11 @@ public class StudentResponse {
     private String nextLevel;
     private int levelPoint;
     private int myRank;
+    private int jandiColor;
+    private int borderColor;
 
+    @Autowired
+    S3Service s3Service;
     public StudentResponse(StudentEntity entity, int myRank){
         this.studentId=entity.getStudentId();
         this.name=entity.getName();
@@ -32,16 +38,19 @@ public class StudentResponse {
         this.studentNum=entity.getStudentNum();
         this.email=entity.getEmail();
         this.profile=entity.getProfile();
+        this.profileFullPath="https://" + s3Service.CLOUD_FRONT_DOMAIN_NAME+"/"+ entity.getProfile();
         this.point=entity.getPoint();
         this.totalPoint=entity.getTotalPoint();
         this.introduce=entity.getIntroduce();
+        this.jandiColor=entity.getJandiColor();
+        this.borderColor=entity.getBorderColor();
 
         HashMap<Integer, String> levelname = new HashMap<>();
-        levelname.put(1, "Bronze");
-        levelname.put(2, "Silver");
-        levelname.put(3, "Gold");
-        levelname.put(4, "Platinum");
-        levelname.put(5, "Ruby");
+        levelname.put(1, "White");
+        levelname.put(2, "Yellow");
+        levelname.put(3, "Green");
+        levelname.put(4, "Blue");
+        levelname.put(5, "Purple");
         levelname.put(6, "Rainbow");
 
         HashMap<Integer, Integer> levelrank = new HashMap<>();
