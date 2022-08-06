@@ -1,11 +1,6 @@
 FROM openjdk:8-jre-alpine AS builder
-COPY gradlew .gradle
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-COPY src src
-RUN chmod +x ./gradlew
-RUN ./gradlew bootJar
+RUN chmod +x ./gradle
+RUN ./gradle bootJar
 
 FROM openjdk:8-jre-alpine
 EXPOSE 8080
