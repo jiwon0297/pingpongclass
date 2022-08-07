@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
 import CapsuleBox from '../../../assets/images/capsuleBox.png';
 import ItemBackground from '../../../assets/images/splash2.png';
-import FreepassTicket from '../../../assets/images/freepassTicket.png';
+import FreePassTicket from '../../../assets/images/freePassTicket.png';
 import { CenterFocusStrong } from '@mui/icons-material';
 
 interface ModalDefaultType {
@@ -108,10 +108,10 @@ const Animation = ({
           style={{
             margin: 'auto',
             position: 'absolute',
-            top: '8vh',
+            top: '3vh',
           }}
         >
-          <img src={FreepassTicket} alt="아이템" style={{ width: '70%' }} />
+          <img src={FreePassTicket} alt="아이템" style={{ width: '75%' }} />
         </motion.div>
 
         <motion.div
