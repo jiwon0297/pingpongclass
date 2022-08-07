@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 https: interface MyPageModalStyle {
   close: any;
@@ -10,8 +9,12 @@ https: interface MyPageModalStyle {
 }
 
 const MyPageModal = ({ close, changeContent }: MyPageModalStyle) => {
+  const cookies = new Cookies();
+
   const onClickLogout = () => {
     alert('로그아웃 하시겠습니까?');
+    cookies.remove('jwt-refreshToken');
+    location.href = '/';
   };
 
   const onClick = () => {
