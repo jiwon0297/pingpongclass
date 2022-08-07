@@ -75,7 +75,7 @@ public class StudentServiceImpl implements StudentService{
         StudentEntity studentEntity = repository.findById(student.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
 
         if("".equals(student.getPassword())==false && student.getPassword() != null){
-            new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
+            student = new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
                     student.getClassNum(), student.getStudentNum(), student.getEmail(), encoder.encode(student.getPassword()),student.getProfile(),
                     student.getPoint(), student.getTotalPoint(), student.getIntroduce());
         }
