@@ -12,6 +12,8 @@ const attachSinkId = (element, sinkId) => {
     }
     console.error(errorMessage);
   });
+
+  console.log("엘리먼트", element);
 };
 
 const useUpdateSpeaker = (elementRef, speakerInfo) => {

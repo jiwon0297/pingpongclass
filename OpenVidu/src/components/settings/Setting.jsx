@@ -7,37 +7,42 @@ const Setting = (props) => {
     display,
     toggleSetting,
     header,
-    setVideos,
-    setAudios,
-    currentVideoDevice,
-    currentAudioDevice,
-    currentSpeakerDevice,
+    setVideo,
+    setAudio,
+    setSpeaker,
+    setMyVideos,
+    videos,
+    setMyAudios,
+    audios,
+    setMySpeakers,
+    speakers,
+    currentVideoDeviceId,
+    currentAudioDeviceId,
+    currentSpeakerDeviceId,
   } = props;
-  const [myVideos, setMyVideos] = useState([]);
-  const [myAudios, setMyAudios] = useState([]);
-  const [mySpeakers, setMySpeakers] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState();
-  const [selectedAudio, setSelectedAudio] = useState();
-  const [selectedSpeaker, setSelectedSpeaker] = useState();
 
-  const changeVideo = () => {};
+  const changeVideo = (e) => {
+    setVideo(e.target.value, videos);
+  };
 
-  const changeAudio = () => {};
+  const changeAudio = (e) => {
+    setAudio(e.target.value, audios);
+  };
 
-  const setUp = () => {};
+  const changeSpeaker = (e) => {
+    setSpeaker(e.target.value);
+  };
 
   useEffect(() => {
     const getMyDevices = async () => {
-      const videos = await getVideos();
-      const audios = await getAudios();
-      const speakers = await getSpeakers();
-      setMyVideos(videos);
-      setMyAudios(audios);
-      setMySpeakers(speakers);
+      const newVideos = await getVideos();
+      const newAudios = await getAudios();
+      const newSpeakers = await getSpeakers();
+      setMyVideos(newVideos);
+      setMyAudios(newAudios);
+      setMySpeakers(newSpeakers);
     };
-    if (display) {
-      getMyDevices();
-    }
+    if (display) getMyDevices();
   }, [display]);
 
   return (
@@ -53,28 +58,45 @@ const Setting = (props) => {
           <main>
             <div className="settingSection">
               <div className="settingVideo">
-                <select onChange={changeVideo} value={currentVideoDevice}>
-                  {myVideos.map((video, i) => (
-                    <option value={video.deviceId}>{video.label}</option>
-                  ))}
+                <select onChange={changeVideo}>
+                  {videos.map((video, i) =>
+                    video.deviceId === currentVideoDeviceId ? (
+                      <option value={video.deviceId} selected>
+                        {video.label}
+                      </option>
+                    ) : (
+                      <option value={video.deviceId}>{video.label}</option>
+                    ),
+                  )}
                 </select>
               </div>
-              <div className="settingAudio" value={currentAudioDevice}>
-                <select>
-                  {myAudios.map((audio, i) => (
-                    <option value={audio.deviceId}>{audio.label}</option>
-                  ))}
+              <div className="settingAudio">
+                <select onChange={changeAudio}>
+                  {audios.map((audio, i) =>
+                    audio.deviceId === currentAudioDeviceId ? (
+                      <option value={audio.deviceId} selected>
+                        {audio.label}
+                      </option>
+                    ) : (
+                      <option value={audio.deviceId}>{audio.label}</option>
+                    ),
+                  )}
                 </select>
               </div>
-              <div className="settingSpeaker" value={currentSpeakerDevice}>
-                <select>
-                  {mySpeakers.map((speaker, i) => (
-                    <option value={speaker.deviceId}>{speaker.label}</option>
-                  ))}
+              <div className="settingSpeaker">
+                <select onChange={changeSpeaker}>
+                  {speakers.map((speaker, i) =>
+                    speaker.deviceId === currentSpeakerDeviceId ? (
+                      <option value={speaker.deviceId} selected>
+                        {speaker.label}
+                      </option>
+                    ) : (
+                      <option value={speaker.deviceId}>{speaker.label}</option>
+                    ),
+                  )}
                 </select>
               </div>
             </div>
-            <button onClick={setUp}>적용</button>
           </main>
         </section>
       ) : null}

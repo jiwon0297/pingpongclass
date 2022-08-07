@@ -73,6 +73,8 @@ class VideoRoomComponent extends Component {
       speakers: this.props.setDevices.speakers,
       currentVideoDevice: this.props.setDevices.selectedVideoTrack,
       currentAudioDevice: this.props.setDevices.selectedAudioTrack,
+      currentVideoDeviceId: this.props.setDevices.selectedVideo,
+      currentAudioDeviceId: this.props.setDevices.selectedAudio,
       currentSpeakerDeviceId: this.props.setDevices.selectedSpeaker,
       randPick: undefined,
       smile: smile,
@@ -84,23 +86,6 @@ class VideoRoomComponent extends Component {
       quiz: {},
       settingDisplay: false,
     };
-
-    // Setup컴포넌트에서 선택한 장치 상태를 OpenVidu 클라이언트로 전달
-    // 선택된 장치가 없는 경우 예외처리 필요할 수도 있음을 참고
-    this.state.videos = this.props.setDevices.videos;
-    this.state.audios = this.props.setDevices.audios;
-    this.state.speakers = this.props.setDevices.speakers;
-    this.state.currentVideoDevice = this.props.setDevices.videos.filter(
-      (device) => device.deviceId === this.props.setDevices.selectedVideo,
-    )[0];
-    this.state.currentAudioDevice = this.props.setDevices.audios.filter(
-      (device) => device.deviceId === this.props.setDevices.selectedAudio,
-    )[0];
-    this.state.currentSpeakerDevice = this.props.setDevices.speakers.filter(
-      (device) => device.deviceId === this.props.setDevices.selectedSpeaker,
-    )[0];
-
-    console.log(this.state.videos);
 
     // 메서드 바인딩 과정
     // joinSession: 세션 접속
@@ -159,8 +144,12 @@ class VideoRoomComponent extends Component {
     // answerUpdate: 퀴즈 정답 수신해서 통계에 적용하는 함수
     this.answerUpdate = this.answerUpdate.bind(this);
     // 설정용 함수
-    this.setVideos = this.setVideos.bind(this);
-    this.setAudios = this.setAudios.bind(this);
+    this.setMyVideos = this.setMyVideos.bind(this);
+    this.setMyAudios = this.setMyAudios.bind(this);
+    this.setMySpeakers = this.setMySpeakers.bind(this);
+    this.setVideo = this.setVideo.bind(this);
+    this.setAudio = this.setAudio.bind(this);
+    this.setSpeaker = this.setSpeaker.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -313,8 +302,8 @@ class VideoRoomComponent extends Component {
 
     // publisher 초기설정(자기자신)
     let publisher = this.OV.initPublisher(undefined, {
-      audioSource: currAudio,
-      videoSource: currVideo,
+      audioSource: this.state.currentAudioDevice,
+      videoSource: this.state.currentVideoDevice,
       publishAudio: localUser.isAudioActive(),
       publishVideo: localUser.isVideoActive(),
       resolution: "1280x720",
@@ -350,9 +339,9 @@ class VideoRoomComponent extends Component {
 
     this.setState(
       {
-        currentVideoDevice: currVideo,
-        currentAudioDevice: currAudio,
-        currentSpeakerDevice: currSpeaker,
+        currentVideoDevice: this.state.currentVideoDevice,
+        currentAudioDevice: this.state.currentAudioDevice,
+        currentSpeakerDeviceId: this.state.currentSpeakerDeviceId,
         localUser: localUser,
       },
       () => {
@@ -641,7 +630,22 @@ class VideoRoomComponent extends Component {
     }
   }
 
-  async setVideos(deviceId, devices) {
+  // 디바이스들 갱신하기
+  setMyVideos(videos) {
+    this.setState({ videos: videos });
+  }
+
+  // 디바이스들 갱신하기
+  setMyAudios(audios) {
+    this.setState({ audios: audios });
+  }
+
+  // 디바이스들 갱신하기
+  setMySpeakers(speakers) {
+    this.setState({ speakers: speakers });
+  }
+
+  async setVideo(deviceId, devices) {
     try {
       const newVideoDevice = devices.filter(
         (device) => deviceId === device.deviceId,
@@ -670,6 +674,7 @@ class VideoRoomComponent extends Component {
         // 현재 컴포넌트의 상태값 변경
         this.setState({
           currentVideoDevice: newVideoDevice,
+          currentVideoDeviceId: newVideoDevice[0].deviceId,
           localUser: localUser,
         });
       }
@@ -678,7 +683,7 @@ class VideoRoomComponent extends Component {
     }
   }
 
-  async setAudios(deviceId, devices) {
+  async setAudio(deviceId, devices) {
     try {
       const newAudioDevice = devices.filter(
         (device) => deviceId === device.deviceId,
@@ -707,12 +712,19 @@ class VideoRoomComponent extends Component {
         // 현재 컴포넌트의 상태값 변경
         this.setState({
           currentAudioDevice: newAudioDevice,
+          currentAudioDeviceId: newAudioDevice[0].deviceId,
           localUser: localUser,
         });
       }
     } catch (e) {
       console.error(e);
     }
+  }
+
+  setSpeaker(deviceId) {
+    this.setState({
+      currentSpeakerDeviceId: deviceId,
+    });
   }
 
   // switchCamera: 카메라를 변경할 때 작동하는 함수 (주의 - async!!!)
@@ -1148,7 +1160,7 @@ class VideoRoomComponent extends Component {
     console.log(this.state.quiz);
   };
 
-  // render: 렌더링을 담당하는 함수
+  // render: 렌더링을 담당setMy하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1163,10 +1175,18 @@ class VideoRoomComponent extends Component {
             display={this.state.settingDisplay}
             toggleSetting={this.toggleSetting}
             header="Setting"
-            setVideos={this.setVideos}
-            setAudios={this.setAudios}
-            currentVideoDevice={this.state.currentVideoDevice}
-            currentAudioDevice={this.state.currentAudioDevice}
+            setMyVideos={this.setMyVideos}
+            setMyAudios={this.setMyAudios}
+            setMySpeakers={this.setMySpeakers}
+            videos={this.state.videos}
+            audios={this.state.audios}
+            speakers={this.state.speakers}
+            setVideo={this.setVideo}
+            setAudio={this.setAudio}
+            setSpeaker={this.setSpeaker}
+            currentVideoDeviceId={this.state.currentVideoDeviceId}
+            currentAudioDeviceId={this.state.currentAudioDeviceId}
+            currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
           />
 
           <QuizModal
@@ -1229,6 +1249,7 @@ class VideoRoomComponent extends Component {
                   <StreamComponent
                     user={localUser}
                     handleNickname={this.nicknameChanged}
+                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
                   />
                   <FaceDetection
                     autoPlay={localUser.isScreenShareActive() ? false : true}
@@ -1247,6 +1268,7 @@ class VideoRoomComponent extends Component {
                 <StreamComponent
                   user={sub}
                   streamId={sub.streamManager.stream.streamId}
+                  currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
                 />
                 <EmojiFilter user={sub} />
               </div>

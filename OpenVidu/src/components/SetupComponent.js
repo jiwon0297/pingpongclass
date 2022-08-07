@@ -66,8 +66,10 @@ const SetupComponent = (props) => {
       let videoTrack;
       if (selectedVideo) {
         videoTrack = await getVideoTrack(selectedVideo);
-        setSelectedVideoTrack(videoTrack);
-        stream.addTrack(videoTrack);
+        if (videoTrack) {
+          setSelectedVideoTrack(videoTrack);
+          stream.addTrack(videoTrack);
+        }
       }
       if (effectCnt.current >= 2) setStream(stream);
       else ++effectCnt.current;
@@ -84,11 +86,14 @@ const SetupComponent = (props) => {
       let audioTrack;
       if (selectedAudio) {
         audioTrack = await getAudioTrack(selectedAudio);
-        setSelectedAudioTrack(audioTrack);
-        stream.addTrack(audioTrack);
+        if (audioTrack) {
+          setSelectedAudioTrack(audioTrack);
+          stream.addTrack(audioTrack);
+        }
       }
       if (effectCnt.current >= 2) setStream(stream);
       else ++effectCnt.current;
+      console.log(stream.getAudioTracks());
     };
     changeStream();
   }, [selectedAudio]);
