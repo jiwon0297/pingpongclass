@@ -72,7 +72,7 @@ const PasswordFind = (props: PasswordFindProps) => {
               value={userId}
               className="input"
               css={css`
-                width: 378px;
+                width: 385px;
               `}
             />
           </div>

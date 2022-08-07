@@ -57,7 +57,7 @@ const DashBoard = () => {
         </div>
         <div className="userInfo">
           <div className="infoBar">
-            <IconGroup />
+            <IconGroup changeContent={changeContent} />
           </div>
           <div className="infoContent">
             {

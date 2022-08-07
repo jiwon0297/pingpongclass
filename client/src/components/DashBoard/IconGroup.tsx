@@ -6,7 +6,11 @@ import { useState } from 'react';
 import AlarmModal from './AlarmModal';
 import MyPageModal from './MyPageModal';
 
-const IconGroup = () => {
+interface IconGroupProps {
+  changeContent: Function;
+}
+
+const IconGroup = ({ changeContent }: IconGroupProps) => {
   const [toggle, setToggle] = useState('');
   const onClick = (method: any) => {
     setToggle(method);
@@ -24,7 +28,9 @@ const IconGroup = () => {
         <AccountCircleIcon />
       </button>
       {toggle === 'alarm' ? <AlarmModal close={onClick} /> : null}
-      {toggle === 'myPage' ? <MyPageModal close={onClick} /> : null}
+      {toggle === 'myPage' ? (
+        <MyPageModal close={onClick} changeContent={changeContent} />
+      ) : null}
     </div>
   );
 };
