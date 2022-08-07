@@ -15,6 +15,9 @@ const App = () => {
   // 트랙으로 전달
   const [selectedVideoTrack, setSelectedVideoTrack] = useState();
   const [selectedAudioTrack, setSelectedAudioTrack] = useState();
+  // 비디오를 켜고 들어갈 것인지 끄고 들어갈 것인지
+  const [isVideoOn, setIsVideoOn] = useState(true);
+  const [isAudioOn, setIsAudioOn] = useState(true);
 
   const setDevices = {
     videos,
@@ -33,6 +36,10 @@ const App = () => {
     setSelectedVideoTrack,
     selectedAudioTrack,
     setSelectedAudioTrack,
+    isVideoOn,
+    setIsVideoOn,
+    isAudioOn,
+    setIsAudioOn,
   };
 
   return (

@@ -11,6 +11,10 @@ import {
   getAudios,
   getSpeakers,
 } from "./utils/customUseDevice";
+import Mic from "@material-ui/icons/Mic";
+import MicOff from "@material-ui/icons/MicOff";
+import Videocam from "@material-ui/icons/Videocam";
+import VideocamOff from "@material-ui/icons/VideocamOff";
 
 const SetupComponent = (props) => {
   const { setTap, setDevices } = props;
@@ -29,6 +33,10 @@ const SetupComponent = (props) => {
     selectedSpeaker,
     setSelectedVideoTrack,
     setSelectedAudioTrack,
+    isVideoOn,
+    setIsVideoOn,
+    isAudioOn,
+    setIsAudioOn,
   } = setDevices;
 
   const [isLoading, setIsLoading] = useState(true);
@@ -111,6 +119,16 @@ const SetupComponent = (props) => {
     setSelectedSpeaker(e.target.value);
   };
 
+  const toggleVideo = (e) => {
+    stream.getVideoTracks().forEach((track) => (track.enabled = !isVideoOn));
+    setIsVideoOn(!isVideoOn);
+  };
+
+  const toggleAudio = (e) => {
+    stream.getAudioTracks().forEach((track) => (track.enabled = !isAudioOn));
+    setIsAudioOn(!isAudioOn);
+  };
+
   const goNext = () => {
     setTap("class");
   };
@@ -123,7 +141,7 @@ const SetupComponent = (props) => {
     );
 
   return (
-    <div>
+    <div className="totalContainer">
       <div className="preview">
         <video ref={previewFace} autoPlay />
       </div>
@@ -135,6 +153,9 @@ const SetupComponent = (props) => {
               <option value={video.deviceId}>{video.label}</option>
             ))}
           </select>
+          <button onClick={toggleVideo}>
+            {isVideoOn ? <Videocam /> : <VideocamOff />}
+          </button>
         </div>
         <div className="settingAudio">
           <p>마이크 : </p>
@@ -143,6 +164,9 @@ const SetupComponent = (props) => {
               <option value={audio.deviceId}>{audio.label}</option>
             ))}
           </select>
+          <button onClick={toggleAudio}>
+            {isAudioOn ? <Mic /> : <MicOff />}
+          </button>
         </div>
         <div className="settingSpeaker">
           <p>스피커 : </p>
