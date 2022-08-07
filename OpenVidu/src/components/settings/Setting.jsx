@@ -58,6 +58,7 @@ const Setting = (props) => {
           <main>
             <div className="settingSection">
               <div className="settingVideo">
+                <p>비디오 : </p>
                 <select onChange={changeVideo}>
                   {videos.map((video, i) =>
                     video.deviceId === currentVideoDeviceId ? (
@@ -71,6 +72,7 @@ const Setting = (props) => {
                 </select>
               </div>
               <div className="settingAudio">
+                <p>마이크 : </p>
                 <select onChange={changeAudio}>
                   {audios.map((audio, i) =>
                     audio.deviceId === currentAudioDeviceId ? (
@@ -84,6 +86,7 @@ const Setting = (props) => {
                 </select>
               </div>
               <div className="settingSpeaker">
+                <p>오디오 : </p>
                 <select onChange={changeSpeaker}>
                   {speakers.map((speaker, i) =>
                     speaker.deviceId === currentSpeakerDeviceId ? (

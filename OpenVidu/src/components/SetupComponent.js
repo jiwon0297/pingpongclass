@@ -129,6 +129,7 @@ const SetupComponent = (props) => {
       </div>
       <div className="settingSection">
         <div className="settingVideo">
+          <p>비디오 : </p>
           <select onChange={selectVideo}>
             {videos.map((video, i) => (
               <option value={video.deviceId}>{video.label}</option>
@@ -136,6 +137,7 @@ const SetupComponent = (props) => {
           </select>
         </div>
         <div className="settingAudio">
+          <p>마이크 : </p>
           <select onChange={selectAudio}>
             {audios.map((audio, i) => (
               <option value={audio.deviceId}>{audio.label}</option>
@@ -143,6 +145,7 @@ const SetupComponent = (props) => {
           </select>
         </div>
         <div className="settingSpeaker">
+          <p>스피커 : </p>
           <select onChange={selectSpeaker}>
             {speakers.map((speaker, i) => (
               <option value={speaker.deviceId}>{speaker.label}</option>
@@ -150,7 +153,9 @@ const SetupComponent = (props) => {
           </select>
         </div>
       </div>
-      <button onClick={goNext}>입장하기</button>
+      <div className="next">
+        <button onClick={goNext}>입장하기</button>
+      </div>
     </div>
   );
 };
