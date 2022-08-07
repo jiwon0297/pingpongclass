@@ -92,7 +92,7 @@
 .title-highlight {
   color: #ffffff;
   font-size: calc(3vw);
-  background-color: #df5b73;
+  background-color: var(--pink);
 }
 
 .text-small {

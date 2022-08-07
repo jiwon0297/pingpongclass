@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 
-interface MyPageModalStyle {
+https: interface MyPageModalStyle {
   close: any;
   changeContent: Function;
 }

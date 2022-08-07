@@ -65,16 +65,16 @@ const Login = (props: LoginProps) => {
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
             path: '/',
-            // secure: true,
+            secure: true,
             sameSite: 'none',
           });
           setCookie('jwt-refreshToken', response.data, {
             path: '/',
-            // secure: true,
+            secure: true,
             sameSite: 'none',
           });
         }
-
+        //첫 로그인이면,
         if (response.data.first) {
           // setToast('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
           notify();

@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
+import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
-import { useState } from 'react';
-
 interface PasswordProps {
   setTap: Function;
   email: String;
@@ -15,58 +14,65 @@ const PasswordSetting = (props: PasswordProps) => {
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
   const [emailCheckMsg, setMsg] = useState('');
+  const [nextAvailable, setNextAvailable] = useState(false);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onClickReturn = () => {
     setTap('email');
   };
 
+  useEffect(() => {
+    // 리렌더링을 위한 함수
+    if (password1 != '' && password1 == password2) {
+      setMsg('비밀번호가 일치합니다.');
+      setNextAvailable(true);
+    } else {
+      setMsg('비밀번호가 일치하지 않습니다.');
+      setNextAvailable(false);
+    }
+  }, [password1, password2]);
+
   const onChangePassword1 = (e) => {
     setPassword1(e.target.value);
-    if (password1 != '' && password1 == password2) {
-      setMsg('비밀번호가 일치합니다.');
-    } else {
-      setMsg('비밀번호가 일치하지 않습니다.');
-    }
   };
 
-  const onChangePassword2 = (e) => {
+  const onChangePassword2 = async (e) => {
     setPassword2(e.target.value);
-    if (password1 != '' && password1 == password2) {
-      setMsg('비밀번호가 일치합니다.');
-    } else {
-      setMsg('비밀번호가 일치하지 않습니다.');
-    }
   };
 
   const onClickSetting = (e) => {
-    //학생, 선생님 나눠서
-    if (userId.length == 10) {
-      InterceptedAxios.patch('/students', {
-        studentId: userId,
-        email: email,
-        password: password1,
-      })
-        .then(function (response) {
-          alert('로그인 성공');
-        })
-        .catch(function (error) {
-          alert('회원수정 실패.');
-          console.log('실패', error);
-        });
+    if (!nextAvailable) {
+      alert('비밀번호를 확인해주세요.');
     } else {
-      InterceptedAxios.patch('/teachers', {
-        teacherId: userId,
-        email: email,
-        password: password1,
-      })
-        .then(function (response) {
-          alert('로그인 성공');
+      if (userId.length == 10) {
+        //학생, 선생님 나눠서
+        InterceptedAxios.patch('/students', {
+          studentId: userId,
+          email: email,
+          password: password1,
         })
-        .catch(function (error) {
-          alert('회원수정 실패.');
-          console.log('실패', error);
-        });
+          .then(function (response) {
+            alert('로그인 성공');
+            location.href = '/dashboard';
+          })
+          .catch(function (error) {
+            alert('회원수정 실패.');
+            console.log('실패', error);
+          });
+      } else {
+        InterceptedAxios.patch('/teachers', {
+          teacherId: userId,
+          email: email,
+          password: password1,
+        })
+          .then(function (response) {
+            alert('로그인 성공');
+          })
+          .catch(function (error) {
+            alert('회원수정 실패.');
+            console.log('실패', error);
+          });
+      }
     }
   };
 
@@ -94,8 +100,20 @@ const PasswordSetting = (props: PasswordProps) => {
               `}
             />
           </div>
-          <div className="div-sub">
-            <div className="title-sub">비밀번호 확인</div>
+          <div
+            className="div-sub"
+            css={css`
+              margin-bottom: 3px;
+            `}
+          >
+            <div
+              className="title-sub"
+              css={css`
+                width: 150px;
+              `}
+            >
+              비밀번호 확인
+            </div>
             <input
               onChange={(e) => onChangePassword2(e)}
               type="password"
@@ -139,7 +157,6 @@ const totalContainer = css`
   }
   .div-total {
     height: 24vh;
-    margin-bottom: 13px;
   }
 
   .input-email {

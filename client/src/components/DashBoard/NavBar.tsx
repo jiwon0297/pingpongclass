@@ -6,6 +6,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import PersonIcon from '@mui/icons-material/Person';
+import { Link } from 'react-router-dom';
 
 interface NavBarProps {
   changeContent: Function;
@@ -17,7 +18,7 @@ const NavBar = ({ changeContent }: NavBarProps) => {
   };
   return (
     <div css={totalContainer}>
-      <img src={mainLogo} alt="" />
+      <img src={mainLogo} alt="" onClick={() => onClick('mainContent')} />
       <div className="navButton" onClick={() => onClick('mainContent')}>
         <DashboardIcon style={{ fontSize: '40px' }} />
         <h4>대시보드</h4>
