@@ -31,7 +31,7 @@ const OvVideoComponent = (props) => {
       user.getStreamManager().addVideoElement(videoRef.current);
       console.log(currentSpeakerDeviceId);
     }
-  }, [user, mutedSound, currentSpeakerDeviceId]);
+  }, [user, mutedSound, currentSpeakerDeviceId, props]);
 
   // render: 렌더링을 도와주는 함수
   return (

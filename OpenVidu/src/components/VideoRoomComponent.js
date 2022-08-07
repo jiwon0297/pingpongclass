@@ -290,16 +290,6 @@ class VideoRoomComponent extends Component {
     // 연결된 디바이스 중에서 비디오 디바이스를 필터링
     // var videoDevices = devices.filter((device) => device.kind === "videoinput");
 
-    const currVideo = this.props.setDevices.videos.filter(
-      (device) => device.deviceId === this.props.setDevices.selectedVideo,
-    )[0];
-    const currAudio = this.props.setDevices.audios.filter(
-      (device) => device.deviceId === this.props.setDevices.selectedAudio,
-    )[0];
-    const currSpeaker = this.props.setDevices.speakers.filter(
-      (device) => device.deviceId === this.props.setDevices.selectedSpeaker,
-    )[0];
-
     // publisher 초기설정(자기자신)
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: this.state.currentAudioDevice,
@@ -476,6 +466,8 @@ class VideoRoomComponent extends Component {
       newUser.setStreamManager(subscriber);
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
+      newUser.setAudioActive(event.stream.audioActive);
+      newUser.setVideoActive(event.stream.videoActive);
 
       newUser.setAttendenceTime(
         JSON.parse(event.stream.connection.data).attTime,
@@ -673,7 +665,7 @@ class VideoRoomComponent extends Component {
         this.state.localUser.setStreamManager(newPublisher);
         // 현재 컴포넌트의 상태값 변경
         this.setState({
-          currentVideoDevice: newVideoDevice,
+          currentVideoDevice: newVideoDevice[0],
           currentVideoDeviceId: newVideoDevice[0].deviceId,
           localUser: localUser,
         });
@@ -697,8 +689,8 @@ class VideoRoomComponent extends Component {
         const newPublisher = this.OV.initPublisher(undefined, {
           audioSource: newAudioDevice[0].deviceId,
           videoSource: undefined,
-          publishAudio: localUser.isAudioActive(),
           publishVideo: localUser.isVideoActive(),
+          publishAudio: localUser.isAudioActive(),
           mirror: true,
         });
 
@@ -711,7 +703,7 @@ class VideoRoomComponent extends Component {
         this.state.localUser.setStreamManager(newPublisher);
         // 현재 컴포넌트의 상태값 변경
         this.setState({
-          currentAudioDevice: newAudioDevice,
+          currentAudioDevice: newAudioDevice[0],
           currentAudioDeviceId: newAudioDevice[0].deviceId,
           localUser: localUser,
         });
