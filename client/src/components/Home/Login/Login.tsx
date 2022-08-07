@@ -2,16 +2,45 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useState } from 'react';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import { setCookie } from '@utils/cookie';
+import { setRefreshToken } from '../../../storage/Cookie';
+import { SET_TOKEN } from '../../../store/Auth';
+import { useDispatch } from 'react-redux';
+
+import { ToastContainer, toast } from 'react-toastify';
 
 interface LoginProps {
   tap: string;
   setTap: Function;
+  userId: string;
+  setUserId: Function;
 }
 
 const Login = (props: LoginProps) => {
-  const { tap, setTap } = props;
-  const [userId, setUserId] = useState('');
+  const { setTap, userId, setUserId } = props;
   const [userPw, setUserPw] = useState('');
+  const [accessToken, setToken] = useState('');
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const [toastMsg, setToast] = useState('');
+
+  const dispatch = useDispatch();
+
+  const notify = () =>
+    toast.success(toastMsg, {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
+  if (toastMsg) {
+    notify();
+    setToast('');
+  }
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -20,31 +49,16 @@ const Login = (props: LoginProps) => {
     setUserPw(e.target.value);
   };
 
+  const onClickFind = () => {
+    setTap('passwordFind');
+  };
+
   const onClickReturn = () => {
     setTap('main');
   };
 
-  const onClickLogin = async () => {
-    setTap('email');
-    // axios
-    //   .post('/auth/login', {
-    //     id: userId,
-    //     password: userPw,
-    //   })
-    //   .then(function (response) {
-    //     if(response.)
-    //     setTap('login');
-    //     // 성공한 경우 실행
-    //     console.log('성공then', response);
-    //   })
-    //   .catch(function (error) {
-    //     // 에러인 경우 실행
-    //     console.log('catch : ', error);
-    //   })
-    //   .then(function () {
-    //     // 항상 실행
-    //     console.log('항상then', userId);
-    //   });
+  const onClickLogin = () => {
+    //유효성 검사
 
     InterceptedAxios.post('/auth/login', {
       id: userId,
@@ -52,12 +66,26 @@ const Login = (props: LoginProps) => {
     })
       .then((response) => {
         //성공
+        console.log(response);
+
+        // if (response.status) {
+        //   // 쿠키에 Refresh Token, store에 Access Token 저장
+        //   setRefreshToken(response.data.refreshToken);
+        //   dispatch(SET_TOKEN(response.data.accessToken));
+
+        //   alert('토큰저장');
+        // } else {
+        //   console.log(response.data);
+        // }
+        const expires = new Date();
+        expires.setMinutes(+expires.getMinutes + 60);
         setToken(response.data.accessToken);
         // localStorage 저장
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
             path: '/',
             // secure: true,
+            expires,
             sameSite: 'Lax',
           });
           setCookie('jwt-refreshToken', response.data, {
@@ -66,20 +94,28 @@ const Login = (props: LoginProps) => {
             sameSite: 'Lax',
           });
         }
-
-    //
+        //첫 로그인이면,
+        if (response.data.first) {
+          // setToast('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
+          notify();
+          alert('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
+          setTap('email');
+        } else {
+          alert('로그인 성공');
+          location.href = '/dashboard';
+        }
+        console.log('로그인 성공', response);
+      })
+      .catch(function (error) {
+        console.log('로그인 실패', error);
+      });
   };
-
-  // const test = () => {
-  //   console.log('유저아이디:', userId, '유저비밀번호', userPw);
-  // };
 
   return (
     <div css={totalContainer}>
-      <div className="text-div">
-        <h2 className="title">
-          {tap === 'studentLogin' ? 'STUDENT' : 'TEACHER'}
-        </h2>
+      <ToastContainer />
+      <div className="div-title">
+        <h2 className="title">로그인</h2>
       </div>
       <div className="div-total">
         <div className="div-main">
@@ -104,14 +140,22 @@ const Login = (props: LoginProps) => {
             />
           </div>
         </div>
-        <div className="text-small">비밀번호 찾기</div>
+        <div
+          className="text-small hover"
+          onClick={onClickFind}
+          css={css`
+            cursor: pointer;
+          `}
+        >
+          비밀번호 찾기
+        </div>
       </div>
       <div className="buttons-div">
+        <button className="button gray" onClick={onClickReturn}>
+          이전
+        </button>
         <button className="button pink" onClick={onClickLogin}>
           로그인
-        </button>
-        <button className="button gray" onClick={onClickReturn}>
-          돌아가기
         </button>
         {/* <button onClick={test}>뭐가 적혀있지?</button> */}
       </div>
@@ -125,19 +169,18 @@ const totalContainer = css`
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  padding-right: 5rem;
+  padding-right: 7rem;
 
-  .text-div {
-    padding: 10px 20px;
+  .div-title {
+    height: 9vh;
+  }
+  .div-total {
+    height: 24vh;
+    margin-bottom: 13px;
   }
 
-  .buttons-div {
-    margin: 1rem 0;
-    text-align: right;
-
-    button:first-child {
-      margin-right: 1rem;
-    }
+  button:first-of-type {
+    margin-right: 1rem;
   }
 `;
 

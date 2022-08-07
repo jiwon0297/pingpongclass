@@ -1,9 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import React from 'react';
 import { css } from '@emotion/react';
-import getPositionCSS from '../../utils/getPositionCSS';
-import IosModalBase from './IosModalBase';
-import type { GetpositionCSSProps } from '../../utils/getPositionCSS';
+import getPositionCSS from '@utils/getPositionCSS';
+import IosModalBase from '@components/Common/IosModalBase';
+import type { GetpositionCSSProps } from '@utils/getPositionCSS';
 
 // props에는 크기정보가 들어가야함
 
@@ -81,6 +79,15 @@ const AbsoluteBox = ({
   ${renderCenter ? 'transform:translate(-50%, -50%); top:50%; left:50%;' : ''};
   ${getPositionCSS(pos)};
   padding: 10px;
+  animation: 0.7s ease-in-out loadEffect1;
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 interface RelativeBoxProps {

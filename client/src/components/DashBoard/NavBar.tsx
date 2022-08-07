@@ -1,12 +1,12 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
-import mainLogo from '../../assets/images/mainLogo.png';
+import mainLogo from '@assets/images/mainLogo.png';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import PersonIcon from '@mui/icons-material/Person';
+import { Link } from 'react-router-dom';
 
 interface NavBarProps {
   changeContent: Function;
@@ -18,26 +18,22 @@ const NavBar = ({ changeContent }: NavBarProps) => {
   };
   return (
     <div css={totalContainer}>
-      <img src={mainLogo} alt="" />
+      <img src={mainLogo} alt="" onClick={() => onClick('mainContent')} />
       <div className="navButton" onClick={() => onClick('mainContent')}>
-        <DashboardIcon />
-        <p>대시보드</p>
+        <DashboardIcon style={{ fontSize: '40px' }} />
+        <h4>대시보드</h4>
       </div>
       <div className="navButton" onClick={() => onClick('timeTable')}>
-        <CalendarMonthIcon />
-        <p>시간표</p>
+        <CalendarMonthIcon style={{ fontSize: '40px' }} />
+        <h4>수업목록</h4>
       </div>
       <div className="navButton" onClick={() => onClick('notice')}>
-        <CampaignIcon />
-        <p>공지사항</p>
+        <CampaignIcon style={{ fontSize: '40px' }} />
+        <h4>공지사항</h4>
       </div>
       <div className="navButton" onClick={() => onClick('shop')}>
-        <StorefrontIcon />
-        <p>상점</p>
-      </div>
-      <div className="navButton" onClick={() => onClick('myPage')}>
-        <PersonIcon />
-        <p>마이페이지</p>
+        <StorefrontIcon style={{ fontSize: '40px' }} />
+        <h4>상점</h4>
       </div>
     </div>
   );
@@ -45,7 +41,7 @@ const NavBar = ({ changeContent }: NavBarProps) => {
 
 const totalContainer = css`
   width: 210px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,7 +49,7 @@ const totalContainer = css`
   border-radius: 20px;
   gap: 26px;
   padding: 30px 10px;
-  margin-top: 100px;
+  margin-top: 50px;
   box-shadow: 2px 2px 15px -5px;
 
   .navButton {
@@ -63,13 +59,19 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    font-size: 20px;
-    padding-left: 28px;
+    font-size: calc(0.3rem + 1vw);
+    padding-left: 18px;
     cursor: pointer;
     box-sizing: border-box;
+    transition: all 0.1s ease-in-out;
   }
 
-  .navButton p {
+  .navButton:hover {
+    transform: scale(1.1);
+  }
+
+  .navButton h4 {
+    font-size: 20px;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -81,9 +83,5 @@ const totalContainer = css`
     width: 90%;
   }
 `;
-
-NavBar.propTypes = {
-  changeContent: PropTypes.func.isRequired,
-};
 
 export default NavBar;

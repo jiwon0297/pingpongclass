@@ -3,26 +3,49 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
-  HeadersDefaults,
 } from 'axios';
 import { setCookie, getCookie } from './cookie';
+
+// 사용법: 원하는 위치에서 임포트 후 기본 axios 대신에 사용
+// import axios from 'axios';
+// import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+// 생성자 밑에서 인터셉터 설정된 axiosInstance 생성
+// const InterceptedAxios = setupInterceptorsTo(axios.create());
+// 사용
+// const login = async () => {
+//   const result = await InterceptedAxios.post('/auth/login', {
+//     id: id,
+//     password: password,
+//   });
+//   return result;
+// };
 
 // 요청 성공 직전 호출됩니다.
 // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
-  // config.baseURL = 'https://i7a403.p.ssafy.io/be';
+  // config.baseURL = 'http://i7a403.p.ssafy.io:8080';
+  // config.headers['Content-Type'] = 'application/json';
   // config.headers['Content-Type'] = 'application/json';
   // console.log(config.headers);
 
   config.timeout = 1000;
+  // console.log(config.url);
+  if (config.method === 'post' || config.method === 'POST') {
+    if (config.url === '/auth/login') {
+    }
+  } else if (config.method === 'get' || config.method === 'GET') {
+  } else if (config.method === 'patch' || config.method === 'PATCH') {
+  } else if (config.method === 'delete' || config.method === 'DELETE') {
+  }
+
   return config;
 };
-// let accessToken = '';
-let accessToken = getCookie('jwt-accessToken');
 
 // 요청 에러 직전 호출됩니다.
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
+  console.log('요청 에러');
+
   // console.error(`[요청 에러] [${JSON.stringify(error)}]`);
   return Promise.reject(error);
 };
@@ -33,7 +56,7 @@ const onRequestError = (error: AxiosError): Promise<AxiosError> => {
         .then() 으로 이어집니다.
     */
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-  console.info(`[response] [${JSON.stringify(response)}]`);
+  // console.info(`[응답] [${JSON.stringify(response)}]`);
   return response;
 };
 
@@ -43,35 +66,28 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
         .catch() 으로 이어집니다.    
     */
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
-  // console.log('응답 에러');
   const { config, response } = error;
   if (response?.status === 401) {
     const originalRequest = config;
-    // console.log(config);
 
     let accessToken = getCookie('jwt-accessToken');
     let refreshToken = getCookie('jwt-refreshToken');
-
+    // token refresh 요청
     axios
       .post(
         `/auth/reissue`, // token refresh api
-        {
-          grantType: 'Bearer',
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        },
+        refreshToken, // header // 빈 params
       )
       .then((res) => {
+        // console.log(res);
+
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           res.data;
-        // sessionStorage.multiSet([
-        //   ['jwt-accessToken', newAccessToken],
-        //   ['jwt-refreshToken', newRefreshToken],
-        // ]);
         setCookie('jwt-accessToken', newAccessToken, {
           path: '/',
-          secure: true,
-          sameSite: 'none',
+          // secure: true,
+          // sameSite: 'none',
+          sameSite: 'Lax',
         });
         setCookie('jwt-refreshToken', newRefreshToken, {
           path: '/',
@@ -83,19 +99,19 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
         originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;
         // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
         accessToken = newAccessToken;
-        // console.log('JWT 토큰 갱신 성공');
+        console.log('JWT 토큰 갱신 성공');
         return axios.request(originalRequest);
       });
     // 새로운 토큰 저장
-    return axios.request(originalRequest);
   }
-  console.error(`[response error] [${JSON.stringify(error)}]`);
+  console.error(`[응답 에러] [${JSON.stringify(error)}]`);
   return Promise.reject(error);
 };
 
 export function setupInterceptorsTo(
   axiosInstance: AxiosInstance,
 ): AxiosInstance {
+  let accessToken = getCookie('jwt-accessToken');
   axiosInstance.interceptors.request.use(onRequest, onRequestError);
   axiosInstance.interceptors.response.use(onResponse, onResponseError);
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;

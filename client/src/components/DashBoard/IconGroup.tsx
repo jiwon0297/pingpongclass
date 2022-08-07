@@ -1,21 +1,36 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import EventIcon from '@mui/icons-material/Event';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useState } from 'react';
+import AlarmModal from './AlarmModal';
+import MyPageModal from './MyPageModal';
 
-const IconGroup = () => {
+interface IconGroupProps {
+  changeContent: Function;
+}
+
+const IconGroup = ({ changeContent }: IconGroupProps) => {
+  const [toggle, setToggle] = useState('');
+  const onClick = (method: any) => {
+    setToggle(method);
+  };
+
   return (
     <div css={totalContainer}>
-      <button>
+      <button onClick={() => onClick('timeTable')}>
         <EventIcon />
       </button>
-      <button>
+      <button onClick={() => onClick('alarm')}>
         <NotificationsNoneIcon />
       </button>
-      <button>
+      <button onClick={() => onClick('myPage')}>
         <AccountCircleIcon />
       </button>
+      {toggle === 'alarm' ? <AlarmModal close={onClick} /> : null}
+      {toggle === 'myPage' ? (
+        <MyPageModal close={onClick} changeContent={changeContent} />
+      ) : null}
     </div>
   );
 };
@@ -28,9 +43,10 @@ const totalContainer = css`
   gap: 20px;
 
   button {
-    border: 1px solid;
     width: 40px;
     height: 40px;
+    border: none;
+    background-color: #e6e6e6;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -39,6 +55,11 @@ const totalContainer = css`
     background: white;
     box-shadow: 2px 2px 10px -5px;
     cursor: pointer;
+    transition: all 0.1s ease-in-out;
+  }
+
+  button:hover {
+    transform: scale(1.2);
   }
 `;
 export default IconGroup;

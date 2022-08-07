@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, selectContent } from '@src/store/content';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { setContent, selectContent } from '@store/content';
 
 interface ManageClassProps {
   classId: number;
@@ -24,7 +23,7 @@ const ManageClass = () => {
     if (tmpTitle === '' || tmpContent === '') {
       return;
     }
-    axios('http://i7a403.p.ssafy.io:8080/teachers', {
+    axios('/teachers', {
       method: 'get',
       responseType: 'json',
     }).then(function (response) {

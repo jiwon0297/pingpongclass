@@ -26,74 +26,54 @@ export interface SubjectProps {
 
 const NoticeBoard = () => {
   const dispatch = useAppDispatch();
-
   const memberStore = useAppSelector((state) => state.member);
-
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [selected, setSelected] = useState<SubjectProps>();
+  const [selected, setSelected] = useState<SubjectProps>({
+    subjectCode: -1,
+    classTitle: '전체 선택',
+  });
   const [articles, setArticles] = useState<NoticeProps[]>([]);
   const [subjects, setSubjects] = useState<SubjectProps[]>([
     {
-      subjectCode: 0,
+      subjectCode: -1,
       classTitle: '전체 선택',
     },
   ]);
   const [page, setPage] = useState(1);
-  const dispatch = useAppDispatch();
-  const InterceptedAxios = setupInterceptorsTo(axios.create());
+  let totalPage = 0;
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
     if (isIntersecting) {
-      setPage((prev) => prev + 1);
-      setArticles((prev) => [...prev, ...dummy]);
+      if (totalPage >= page) {
+        setPage((prev) => prev + 1);
+      }
     }
   };
 
-  const testClassId = 0;
-  const testUserId = 5030001;
+  const testUserId = 2022000003;
+  // const testUserId = 5030001;
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
   // 임시 더미 데이터 불러오기
   useEffect(() => {
-    // saveMember(testUserId);
-    // console.log(getCookie('jwt-refreshToken'));
     console.log(memberStore);
 
     getSubjects();
 
-    // if (member.userId > 0 && member.userId < 5040000) {
-    //   setIsTeacher(true);
-    // } else {
-    //   setIsTeacher(false);
-    // }
-  }, []);
-
-  useEffect(() => {
-=======
-    // saveMember(testUserId);
-    // console.log(getCookie('jwt-refreshToken'));
-    console.log(memberStore);
-
-    getSubjects();
-
-    // if (member.userId > 0 && member.userId < 5040000) {
-    //   setIsTeacher(true);
-    // } else {
-    //   setIsTeacher(false);
-    // }
+    if (memberStore.userId > 0 && memberStore.userId < 5040000) {
+      setIsTeacher(true);
+    } else {
+      setIsTeacher(false);
+    }
   }, []);
 
   useEffect(() => {
     getNotice();
   }, [page]);
-
-  // useEffect(() => {
-  //   console.log(member);
-  // }, [member]);
 
   useEffect(() => {
     // console.log(selected);
@@ -321,6 +301,7 @@ const totalContainer = () => css`
   .row,
   .article.btn {
     width: -webkit-fill-available;
+    min-width: inherit;
     max-width: inherit;
     border: none;
     background-color: transparent;
@@ -339,16 +320,10 @@ const totalContainer = () => css`
     background-color: #c0d2e5;
   }
 
-  /* 구분선 */
-  /* .titleRow .col {
-    border-right: 0.5rem solid black;
-    vertical-align: middle;
-    padding: 1rem 0;
-  } */
-
   /* 게시글 항목 영역 */
   .articleArea {
     /* padding: 1% 0; */
+    width: -webkit-fill-available;
     max-width: 100%;
 
     /* 제목줄 1줄 */
@@ -466,177 +441,5 @@ const totalContainer = () => css`
     max-width: calc(50%);
   }
 `;
-
-const dummySubjects = [
-  {
-    subjectCode: 1,
-    classTitle: '국어',
-  },
-  {
-    subjectCode: 2,
-    classTitle: '수학',
-  },
-  {
-    subjectCode: 3,
-    classTitle: '사회',
-  },
-  {
-    subjectCode: 4,
-    classTitle: '과학',
-  },
-  {
-    subjectCode: 5,
-    classTitle: '영어',
-  },
-];
-
-const dummy = [
-  {
-    noticeId: 1,
-    writer: '이선생',
-    classTitle: '국어',
-    title:
-      '2학년 3반 국어 중간고사 범위aaaaaaaaaaaaaa22222222222222222222222222222222222222222',
-    content:
-      '공부 열심히 해aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 2,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위12321312312312312312312312',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 3,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위zzzz',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 4,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위zzzzzzzzzzz',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 5,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위dddddddddddddddddddd',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 6,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 7,
-    writer: '이선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 8,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 9,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 10,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 11,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 100,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 1000,
-    writer: '이선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 10000,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 100000,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 1000000,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 10000000,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-  {
-    noticeId: 100000000,
-    writer: '김선생',
-    classTitle: '국어',
-    title: '2학년 3반 국어 중간고사 범위',
-    content: '공부 열심히 해',
-    regtime: '2022/07/15',
-  },
-];
 
 export default NoticeBoard;
