@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import ColorChangeJandi from '../../../../assets/images/colorChange_Jandi.png';
 import ColorChangeBorder from '../../../../assets/images/colorChange_Border.png';
 import DoublePong from '../../../../assets/images/doublePong.png';
-import FreePassTicket from '../../../../assets/images/freePassTicket.png';
+import FreePassTicket from '../../../../assets/images/freepassTicket.png';
 
 const ItemList = () => {
   return (
