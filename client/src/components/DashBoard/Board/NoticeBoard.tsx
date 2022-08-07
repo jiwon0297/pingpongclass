@@ -5,8 +5,10 @@ import useIntersectionObserver from '@src/utils/useIntersectionObserver';
 import Notice from './Notice';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setContent, selectContent } from '@src/store/content';
+import { getMemberInfo, logIn, logOut, saveMember } from '@src/store/member';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { getCookie } from '@src/utils/cookie';
 
 export interface NoticeProps {
   noticeId: number;
@@ -23,6 +25,11 @@ export interface SubjectProps {
 }
 
 const NoticeBoard = () => {
+  const dispatch = useAppDispatch();
+
+  const memberStore = useAppSelector((state) => state.member);
+
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<SubjectProps>();
@@ -49,59 +56,58 @@ const NoticeBoard = () => {
   const testUserId = 5030001;
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
+
   // 임시 더미 데이터 불러오기
   useEffect(() => {
-    // setArticles(dummy);
-    // setSubjects(dummySubjects);
-    InterceptedAxios.get('/students/' + testUserId.toString())
-      .then((response) => {
-        let list = response.data.content;
-        setSubjects((prev) => [...prev, ...list]);
-      })
-      .catch(() => {});
+    // saveMember(testUserId);
+    // console.log(getCookie('jwt-refreshToken'));
+    console.log(memberStore);
 
-    if (testUserId < 4040000) {
-      setIsTeacher(true);
-    } else {
-      setIsTeacher(false);
-    }
+    getSubjects();
+
+    // if (member.userId > 0 && member.userId < 5040000) {
+    //   setIsTeacher(true);
+    // } else {
+    //   setIsTeacher(false);
+    // }
   }, []);
 
   useEffect(() => {
-    let word = '';
-    if (keyword !== '') {
-      word = '&titleSearch=' + keyword;
-    }
+=======
+    // saveMember(testUserId);
+    // console.log(getCookie('jwt-refreshToken'));
+    console.log(memberStore);
 
-    let searchQuery =
-      '/notice/list?classId=' +
-      testClassId.toString() +
-      '&userId=' +
-      testUserId.toString() +
-      '&pageNumber=' +
-      page.toString() +
-      word;
+    getSubjects();
 
-    console.log(searchQuery);
+    // if (member.userId > 0 && member.userId < 5040000) {
+    //   setIsTeacher(true);
+    // } else {
+    //   setIsTeacher(false);
+    // }
+  }, []);
 
-    InterceptedAxios.get(searchQuery)
-      .then((response) => {
-        let list = response.data.content;
-        setArticles((prev) => [...prev, ...list]);
-      })
-      .catch(() => {});
+  useEffect(() => {
+    getNotice();
   }, [page]);
+
+  // useEffect(() => {
+  //   console.log(member);
+  // }, [member]);
 
   useEffect(() => {
     // console.log(selected);
   }, [selected]);
 
   const deleteNotice = (key: number) => {
-    InterceptedAxios.delete('/notice/' + key.toString())
-      .then(() => {
-        setArticles(articles.filter((article) => article.noticeId !== key));
-      })
-      .catch(() => {});
+    let finalCheck = confirm('정말로 삭제하시겠습니까?');
+    if (finalCheck) {
+      InterceptedAxios.delete('/notice/' + key.toString())
+        .then(() => {
+          setArticles(articles.filter((article) => article.noticeId !== key));
+        })
+        .catch(() => {});
+    }
   };
 
   const postNotice = () => {
@@ -114,7 +120,79 @@ const NoticeBoard = () => {
     setPage(1);
 
     // 검색 로직
+    getNotice();
   };
+
+  const getSubjects = () => {
+    InterceptedAxios.get('/classes/' + testUserId.toString())
+      .then((response) => {
+        let list = response.data.content;
+        let newList: SubjectProps[] = list.map((ele) => {
+          newList.map((elem) => {
+            if (elem.subjectCode !== ele.subjectEntity.classSubjectCode) {
+              return {
+                subjectCode: ele.subjectEntity.classSubjectCode,
+                classTitle: ele.subjectEntity.name,
+              };
+            }
+          });
+        });
+        newList = [
+          {
+            subjectCode: -1,
+            classTitle: '전체 선택',
+          },
+          ...newList,
+        ];
+        setSubjects(newList);
+      })
+      .catch(() => {
+        console.log('학생 수업정보 에러');
+      });
+  };
+
+  const getNotice = () => {
+    let word = '';
+    if (keyword !== '') {
+      word = '&titleSearch=' + keyword;
+    }
+
+    let searchQuery =
+      '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
+      selected.subjectCode.toString() +
+      '&userId=' +
+      testUserId.toString() +
+      '&pageNumber=' +
+      page.toString() +
+      word;
+
+    // console.log(searchQuery);
+
+    InterceptedAxios.get(searchQuery)
+      .then((response) => {
+        let list = response.data.content;
+        totalPage = response.data.totalPages;
+        if (totalPage >= page) {
+          checkNewNotice(list);
+        } else {
+          alert('마지막 페이지입니다!');
+        }
+      })
+      .catch(() => {});
+  };
+
+  const checkNewNotice = (value: NoticeProps[]) => {
+    const newNotice: NoticeProps[] = [];
+    value.forEach((element) => {
+      const id = element.noticeId;
+      let ExistenceStatus = articles.findIndex((i) => i.noticeId === id);
+      if (ExistenceStatus === -1) {
+        newNotice.push(element);
+      }
+    });
+    setArticles([...articles, ...newNotice]);
+  };
+
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let code = parseInt(e.target.value);
     let title = '';

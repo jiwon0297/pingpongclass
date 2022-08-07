@@ -1,15 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
-import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { setCookie } from '@src/utils/cookie';
-import { useState } from 'react';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import { setCookie } from '@utils/cookie';
+import { useEffect, useState } from 'react';
+import { saveMember, logIn, logOut, getMemberInfo } from '@src/store/member';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const App = () => {
   const [id, setId] = useState(0);
   const [password, setPassword] = useState('');
   const [accessToken, setToken] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const dispatch = useAppDispatch();
+  const memberStore = useAppSelector((state) => state.member);
+
+  // useEffect(() => {
+  //   console.log(memberStore);
+  // }, [memberStore]);
 
   const login = async () => {
     const result = await InterceptedAxios.post('/auth/login', {
@@ -21,21 +29,22 @@ const App = () => {
 
   const go = async () => {
     const result = await login();
-    console.log(result);
     setToken(result.data.accessToken);
-    let refreshToken = result.data.refreshToken;
-    // localStorage 저장
-    // sessionStorage.setItem('jwt-accessToken', accessToken);
     if (result.data) {
       setCookie('jwt-accessToken', result.data.accessToken, {
         path: '/',
         secure: true,
         sameSite: 'none',
       });
-      setCookie('jwt-refreshToken', refreshToken, {
+      setCookie('jwt-refreshToken', JSON.stringify(result.data), {
         path: '/',
-        secure: true,
-        sameSite: 'none',
+        // secure: true,
+        sameSite: 'Lax',
+        // httpOnly: true,
+      });
+      // 로그인한 회원 정보 저장
+      dispatch(saveMember(id)).then(() => {
+        console.log(memberStore);
       });
     }
   };

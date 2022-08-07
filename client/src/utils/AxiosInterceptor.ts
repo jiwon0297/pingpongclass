@@ -10,8 +10,11 @@ import { setCookie, getCookie } from './cookie';
 // 요청 성공 직전 호출됩니다.
 // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
-  console.info(`[request] [${JSON.stringify(config)}]`);
-  // config.baseURL = 'http://i7a403.p.ssafy.io:8080';
+  // console.info(`[요청] [${JSON.stringify(config)}]`);
+  // config.baseURL = 'https://i7a403.p.ssafy.io/be';
+  // config.headers['Content-Type'] = 'application/json';
+  // console.log(config.headers);
+
   config.timeout = 1000;
   return config;
 };
@@ -20,9 +23,7 @@ let accessToken = getCookie('jwt-accessToken');
 
 // 요청 에러 직전 호출됩니다.
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
-  console.log('요청 에러');
-
-  console.error(`[request error] [${JSON.stringify(error)}]`);
+  // console.error(`[요청 에러] [${JSON.stringify(error)}]`);
   return Promise.reject(error);
 };
 
@@ -45,18 +46,12 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
   // console.log('응답 에러');
   const { config, response } = error;
   if (response?.status === 401) {
-    // console.log('권한 에러');
-    console.log('갱신 시도');
-    // console.log(error);
-    // console.log(response);
-
     const originalRequest = config;
     // console.log(config);
 
-    const refreshToken = getCookie('jwt-refreshToken');
-    console.log(accessToken);
-    console.log(refreshToken);
-    // token refresh 요청
+    let accessToken = getCookie('jwt-accessToken');
+    let refreshToken = getCookie('jwt-refreshToken');
+
     axios
       .post(
         `/auth/reissue`, // token refresh api
@@ -80,14 +75,16 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
         });
         setCookie('jwt-refreshToken', newRefreshToken, {
           path: '/',
-          secure: true,
-          sameSite: 'none',
+          // secure: true,
+          sameSite: 'Lax',
+          // httpOnly: true,
         });
         axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
         originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;
         // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
         accessToken = newAccessToken;
-        console.log('JWT 토큰 갱신 성공');
+        // console.log('JWT 토큰 갱신 성공');
+        return axios.request(originalRequest);
       });
     // 새로운 토큰 저장
     return axios.request(originalRequest);

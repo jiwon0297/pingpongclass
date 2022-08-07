@@ -46,17 +46,26 @@ const Login = (props: LoginProps) => {
     //     console.log('항상then', userId);
     //   });
 
-    // const res = await axios.post('http://localhost:8080/api/login', {
-    //   id: +userId,
-    //   password: userPw,
-    // });
-
-    // {
-    //   "accessToken": "string",
-    //   "accessTokenExpiresIn": 0,
-    //   "grantType": "string",
-    //   "refreshToken": "string"
-    // }
+    InterceptedAxios.post('/auth/login', {
+      id: userId,
+      password: userPw,
+    })
+      .then((response) => {
+        //성공
+        setToken(response.data.accessToken);
+        // localStorage 저장
+        if (response.data) {
+          setCookie('jwt-accessToken', response.data.accessToken, {
+            path: '/',
+            // secure: true,
+            sameSite: 'Lax',
+          });
+          setCookie('jwt-refreshToken', response.data, {
+            path: '/',
+            // secure: true,
+            sameSite: 'Lax',
+          });
+        }
 
     //
   };
