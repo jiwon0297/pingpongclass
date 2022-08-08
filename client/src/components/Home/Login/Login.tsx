@@ -102,7 +102,7 @@ const Login = (props: LoginProps) => {
           setTap('email');
         } else {
           alert('로그인 성공');
-          location.href = '/dashboard';
+          location.href = '/student';
         }
         console.log('로그인 성공', response);
       })

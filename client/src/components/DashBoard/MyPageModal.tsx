@@ -14,9 +14,9 @@ https: interface MyPageModalStyle {
 }
 
 const MyPageModal = ({ close }: MyPageModalStyle) => {
-  const { accessToken } = useSelector((state: any) => state.token);
-  const dispatch = useDispatch();
-  const refreshToken = getCookieToken();
+  // const { accessToken } = useSelector((state: any) => state.token);
+  // const dispatch = useDispatch();
+  // const refreshToken = getCookieToken();
 
   const onClickLogout = () => {
     // // store에 저장된 Access Token 정보를 받아 온다
