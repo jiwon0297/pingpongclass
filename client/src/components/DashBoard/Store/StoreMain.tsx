@@ -10,8 +10,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
-import { autocompleteClasses } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { useAppSelector } from '@src/store/hooks';
 
 const StoreMain = () => {
   const memberStore = useAppSelector((state) => state.member);
