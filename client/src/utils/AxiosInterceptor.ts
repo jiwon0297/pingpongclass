@@ -28,7 +28,7 @@ const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // config.headers['Content-Type'] = 'application/json';
   // console.log(config.headers);
 
-  config.timeout = 1000;
+  config.timeout = 0;
   // console.log(config.url);
   if (config.method === 'post' || config.method === 'POST') {
     if (config.url === '/auth/login') {

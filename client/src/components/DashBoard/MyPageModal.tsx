@@ -5,6 +5,7 @@ import { RootState } from '@src/store/store';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 import { getCookieToken, removeCookieToken } from '../../storage/Cookie';
 import { DELETE_TOKEN } from '../../store/Auth';
@@ -50,10 +51,15 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
     // useEffect(() => {
     //   logout();
     // }, []);
+    const cookies = new Cookies();
 
     alert('로그아웃 하시겠습니까?');
-    // cookies.remove('jwt-refreshToken');
+    cookies.remove('jwt-refreshToken');
     location.href = '/';
+  };
+
+  const onClickMyPage = () => {
+    location.href = '/mypage';
   };
 
   return (
@@ -69,7 +75,9 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
             />
           </div>
           <h3 onClick={onClickLogout}>로그아웃</h3>
-          <h3>마이페이지</h3>
+          <Link to="mypage">
+            <h3>마이페이지</h3>
+          </Link>
         </div>
       </div>
     </div>
