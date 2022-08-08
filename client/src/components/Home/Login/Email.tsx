@@ -20,10 +20,11 @@ function Email(props: EmailProps) {
 
   const onChangeEmail1 = (e) => {
     setEmail1(e.target.value);
+    setEmail(e.target.value + '@' + email2);
   };
   const onChangeEmail2 = (e) => {
     setEmail2(e.target.value);
-    console.log(email2);
+    setEmail(email1 + '@' + e.target.value);
   };
 
   const onClickReturn = () => {

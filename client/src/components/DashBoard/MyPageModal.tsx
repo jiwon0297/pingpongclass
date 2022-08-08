@@ -5,19 +5,19 @@ import { RootState } from '@src/store/store';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 import { getCookieToken, removeCookieToken } from '../../storage/Cookie';
 import { DELETE_TOKEN } from '../../store/Auth';
 
 https: interface MyPageModalStyle {
   close: any;
-  changeContent: Function;
 }
 
-const MyPageModal = ({ close, changeContent }: MyPageModalStyle) => {
-  const { accessToken } = useSelector((state: any) => state.token);
-  const dispatch = useDispatch();
-  const refreshToken = getCookieToken();
+const MyPageModal = ({ close }: MyPageModalStyle) => {
+  // const { accessToken } = useSelector((state: any) => state.token);
+  // const dispatch = useDispatch();
+  // const refreshToken = getCookieToken();
 
   const onClickLogout = () => {
     // // store에 저장된 Access Token 정보를 받아 온다
@@ -51,14 +51,15 @@ const MyPageModal = ({ close, changeContent }: MyPageModalStyle) => {
     // useEffect(() => {
     //   logout();
     // }, []);
+    const cookies = new Cookies();
 
     alert('로그아웃 하시겠습니까?');
-    // cookies.remove('jwt-refreshToken');
+    cookies.remove('jwt-refreshToken');
     location.href = '/';
   };
 
-  const onClick = () => {
-    changeContent('myPage');
+  const onClickMyPage = () => {
+    location.href = '/mypage';
   };
 
   return (
@@ -74,7 +75,9 @@ const MyPageModal = ({ close, changeContent }: MyPageModalStyle) => {
             />
           </div>
           <h3 onClick={onClickLogout}>로그아웃</h3>
-          <h3 onClick={onClick}>마이페이지</h3>
+          <Link to="mypage">
+            <h3>마이페이지</h3>
+          </Link>
         </div>
       </div>
     </div>
