@@ -25,8 +25,8 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("ppclass403@gmail.com");
         message.setTo(teacher.getEmail());
-        message.setSubject(teacher.getName()+"님 핑퐁클래스 비밀번호 재설정 메일");
-        message.setText(teacher.getName()+"님 핑퐁클래스 비밀번호 재설정 메일입니다.\n"+"(비밀번호 재설정 메일 => 프론트 만들면 url받아서 주기)");
+        message.setSubject("[핑퐁클래스]"+teacher.getName()+"님 비밀번호 재설정 메일");
+        message.setText("<h1>"+teacher.getName()+"님 핑퐁클래스 비밀번호 재설정 메일입니다.<h1>\n"+"(비밀번호 재설정 메일 => 프론트 만들면 url받아서 주기)");
         emailSender.send(message);
     }
 }
