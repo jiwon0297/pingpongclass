@@ -34,7 +34,7 @@ public class EmailService {
             mailForm += "<tr>";
             mailForm += "<td height='30'></td>";
             mailForm += "<td height='30' align='right'>";
-            mailForm += "<a href='http://i7a403.p.ssafy.io'><img src='https://ifh.cc/v-WmzgBT' alt='핑퐁클래스 로고' style='height:30px;'/></a>";
+            mailForm += "<a href='http://i7a403.p.ssafy.io'><img src='https://ifh.cc/g/FT3sGT.png' alt='핑퐁클래스 로고' style='height:58px;'/></a>";
             mailForm += "</td>";
             mailForm += "<td height='30'></td>";
             mailForm += "</tr>";
@@ -119,7 +119,7 @@ public class EmailService {
             mailForm += "<tr>";
             mailForm += "<td height='30'></td>";
             mailForm += "<td height='30' align='right'>";
-            mailForm += "<a href='http://i7a403.p.ssafy.io'><img src='https://ifh.cc/v-WmzgBT' alt='핑퐁클래스 로고' style='height:30px;'/></a>";
+            mailForm += "<a href='http://i7a403.p.ssafy.io'><img src='https://ifh.cc/g/FT3sGT.png' alt='핑퐁클래스 로고' style='height:58px;'/></a>";
             mailForm += "</td>";
             mailForm += "<td height='30'></td>";
             mailForm += "</tr>";
