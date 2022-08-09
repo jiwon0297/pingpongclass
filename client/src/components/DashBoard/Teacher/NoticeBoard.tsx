@@ -43,18 +43,19 @@ const NoticeBoard = () => {
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
   useLayoutEffect(() => {
-    dispatch(saveMember()).then(() => {
-      dispatch(getClasses(memberStore.userId)).then(() => {
-        setclasses(memberStore.classes);
-      });
-
-      if (memberStore.userId.toString().length !== 10) {
-        setIsTeacher(true);
-      } else {
-        setIsTeacher(false);
-      }
-    });
+    dispatch(saveMember());
   }, []);
+
+  useEffect(() => {
+    dispatch(getClasses(memberStore.userId)).then(() => {
+      setclasses(memberStore.classes);
+    });
+    if (memberStore.userId.toString().length !== 10) {
+      setIsTeacher(true);
+    } else {
+      setIsTeacher(false);
+    }
+  }, [memberStore]);
 
   useEffect(() => {
     getNotice();

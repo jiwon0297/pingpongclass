@@ -43,15 +43,18 @@ const NoticeBoard = () => {
 
   useLayoutEffect(() => {
     dispatch(saveMember());
-    dispatch(getClasses(memberStore.userId));
-    setclasses(memberStore.classes);
+  }, []);
 
+  useEffect(() => {
+    dispatch(getClasses(memberStore.userId)).then(() => {
+      setclasses(memberStore.classes);
+    });
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
       setIsTeacher(false);
     }
-  }, []);
+  }, [memberStore]);
 
   useEffect(() => {
     getNotice();
