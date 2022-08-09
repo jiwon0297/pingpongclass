@@ -21,8 +21,8 @@ import AddStudent from '@components/DashBoard/Admin/AddStudent';
 import AddStudentBulk from '@components/DashBoard/Admin/AddStudentBulk';
 import EditStudent from '@components/DashBoard/Admin/EditStudent';
 import StudentBoard from '@components/DashBoard/Admin/StudentBoard';
-import StudentMyInfo from './components/DashBoard/MyPage/StudentMyInfo';
-import TeacherMyInfo from './components/DashBoard/MyPage/TeacherMyInfo';
+import StudentMyInfo from '@components/DashBoard/MyPage/StudentMyInfo';
+import TeacherMyInfo from '@components/DashBoard/MyPage/TeacherMyInfo';
 import '@src/App.css';
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
             <Route path="studentmyinfo" element={<StudentMyInfo />} />
           </Route>
           <Route path="/teacher" element={<TeacherDashBoard />}>
-            <Route path="" element={<TeacherDashBoard />} />
+            <Route path="" element={<TeacherMainContent />} />
             <Route path="notice" element={<TeacherNoticeBoard />} />
             <Route path="classes" element={<TeacherClassList />} />
             <Route path="create" element={<TeacherNewClass />} />
@@ -67,4 +67,3 @@ const App = () => {
 };
 
 export default App;
-

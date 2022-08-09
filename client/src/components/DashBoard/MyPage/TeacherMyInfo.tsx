@@ -134,7 +134,7 @@ const TeacherMyInfo = () => {
             <input
               id="email"
               type="text"
-              value={memberStore.email}
+              value={email}
               placeholder=" 이메일을 입력하세요."
               onChange={(e) => onChangeEmail(e)}
             />
