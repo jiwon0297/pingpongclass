@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
@@ -6,7 +7,8 @@ import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { setCookie } from '@utils/cookie';
 import { setRefreshToken } from '../../../storage/Cookie';
 import { SET_TOKEN } from '../../../store/Auth';
-import { useDispatch } from 'react-redux';
+import { saveMember, logIn, logOut } from '@src/store/member';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -25,7 +27,7 @@ const Login = (props: LoginProps) => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [toastMsg, setToast] = useState('');
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const notify = () =>
     toast.success(toastMsg, {
@@ -68,16 +70,6 @@ const Login = (props: LoginProps) => {
       .then((response) => {
         //성공
         console.log(response);
-
-        // if (response.status) {
-        //   // 쿠키에 Refresh Token, store에 Access Token 저장
-        //   setRefreshToken(response.data.refreshToken);
-        //   dispatch(SET_TOKEN(response.data.accessToken));
-
-        //   alert('토큰저장');
-        // } else {
-        //   console.log(response.data);
-        // }
         const expires = new Date();
         expires.setMinutes(+expires.getMinutes + 60);
         setToken(response.data.accessToken);
@@ -112,6 +104,7 @@ const Login = (props: LoginProps) => {
             navigate('/admin');
           }
         }
+        dispatch(saveMember(parseInt(props.userId)));
         console.log('로그인 성공', response);
       })
       .catch(function (error) {
@@ -194,3 +187,4 @@ const totalContainer = css`
 `;
 
 export default Login;
+>>>>>>> develop
