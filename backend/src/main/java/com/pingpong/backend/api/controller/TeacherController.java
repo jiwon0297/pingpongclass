@@ -119,7 +119,7 @@ public class TeacherController {
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> modifyPassword(@RequestBody TeacherEntity teacher){
         try{
-            service.modifyPassword(teacher.getTeacherId(), passwordEncoder.encode(teacher.getPassword()));
+            service.modifyPassword(teacher.getTeacherId(),teacher.getPassword());
             return new ResponseEntity<String>("선생님 비밀번호 수정 성공", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<String>("선생님 비밀번호 수정 실패"+e.getMessage(), HttpStatus.FORBIDDEN);
@@ -142,7 +142,7 @@ public class TeacherController {
     @PatchMapping
     @ApiOperation(value = "선생님 정보 수정", notes = "선생님정보 수정")
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
-    public ResponseEntity<String> modify(@RequestPart TeacherRequest teacher, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<String> modify(@RequestPart(value="teacher") TeacherRequest teacher, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         try {
             if(!file.isEmpty()) {
                 if (file.getSize() >= 1048576) {

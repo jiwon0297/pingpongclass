@@ -5,7 +5,7 @@ import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { setCookie } from '@utils/cookie';
 import { setRefreshToken } from '../../../storage/Cookie';
 import { SET_TOKEN } from '../../../store/Auth';
-import { saveMember, logIn, logOut } from '@src/store/member';
+import { saveMember, logIn, logOut, getSubjects } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,6 @@ interface LoginProps {
 const Login = (props: LoginProps) => {
   const { setTap, userId, setUserId } = props;
   const [userPw, setUserPw] = useState('');
-  const [accessToken, setToken] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [toastMsg, setToast] = useState('');
 
@@ -70,7 +69,6 @@ const Login = (props: LoginProps) => {
         console.log(response);
         const expires = new Date();
         expires.setMinutes(+expires.getMinutes + 60);
-        setToken(response.data.accessToken);
         // localStorage 저장
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
@@ -79,7 +77,7 @@ const Login = (props: LoginProps) => {
             expires,
             sameSite: 'Lax',
           });
-          setCookie('jwt-refreshToken', response.data, {
+          setCookie('jwt-refreshToken', response.data.refreshToken, {
             path: '/',
             // secure: true,
             sameSite: 'Lax',
@@ -102,7 +100,8 @@ const Login = (props: LoginProps) => {
             navigate('/admin');
           }
         }
-        dispatch(saveMember(parseInt(props.userId)));
+        dispatch(saveMember());
+        dispatch(getSubjects(parseInt(props.userId)));
         console.log('로그인 성공', response);
       })
       .catch(function (error) {
