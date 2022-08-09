@@ -4,11 +4,7 @@ import { NoticeProps } from './NoticeBoard';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setContent, setParam, selectContent } from '@src/store/content';
 
-const Notice = (props: {
-  key: number;
-  article: NoticeProps;
-  deleteNotice: Function;
-}) => {
+const Notice = (props: { key: number; article: NoticeProps }) => {
   const [visible, setVisible] = useState(false);
   const [article, setArticle] = useState<NoticeProps>(props.article);
   const dispatch = useAppDispatch();
@@ -28,11 +24,6 @@ const Notice = (props: {
     dispatch(setContent({ content: 'editNotice' }));
   };
 
-  const deleteNotice = () => {
-    // 삭제요청 송신(예정)
-    props.deleteNotice();
-  };
-
   return (
     <div className={visible ? 'row articleRow highlited' : 'row articleRow'}>
       <button className="row article-btn" onClick={(e) => toggleNotice(e)}>
@@ -47,17 +38,6 @@ const Notice = (props: {
       <div className={visible ? 'row detailRow' : 'row detailRow hide'}>
         <div className="detailContent">{article.content}</div>
         <div className="detailWriter">- {article.writer}</div>
-        <div className="detailFooter">
-          <button
-            className="edit-btn"
-            onClick={() => editNotice(article.noticeId)}
-          >
-            수정
-          </button>
-          <button className="del-btn" onClick={() => deleteNotice()}>
-            삭제
-          </button>
-        </div>
       </div>
     </div>
   );

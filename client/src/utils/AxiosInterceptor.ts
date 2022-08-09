@@ -25,19 +25,6 @@ import { setCookie, getCookie } from './cookie';
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
   // config.baseURL = 'http://i7a403.p.ssafy.io:8080';
-  // config.headers['Content-Type'] = 'application/json';
-  // config.headers['Content-Type'] = 'application/json';
-  // console.log(config.headers);
-
-  config.timeout = 0;
-  // console.log(config.url);
-  if (config.method === 'post' || config.method === 'POST') {
-    if (config.url === '/auth/login') {
-    }
-  } else if (config.method === 'get' || config.method === 'GET') {
-  } else if (config.method === 'patch' || config.method === 'PATCH') {
-  } else if (config.method === 'delete' || config.method === 'DELETE') {
-  }
 
   return config;
 };
@@ -72,6 +59,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
 
     let accessToken = getCookie('jwt-accessToken');
     let refreshToken = getCookie('jwt-refreshToken');
+
     // token refresh 요청
     axios
       .post(
@@ -79,21 +67,15 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
         refreshToken, // header // 빈 params
       )
       .then((res) => {
-        // console.log(res);
-
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           res.data;
         setCookie('jwt-accessToken', newAccessToken, {
           path: '/',
-          // secure: true,
-          // sameSite: 'none',
           sameSite: 'Lax',
         });
         setCookie('jwt-refreshToken', newRefreshToken, {
           path: '/',
-          // secure: true,
           sameSite: 'Lax',
-          // httpOnly: true,
         });
         axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
         originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;
@@ -104,7 +86,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
       });
     // 새로운 토큰 저장
   }
-  console.error(`[응답 에러] [${JSON.stringify(error)}]`);
+  // console.error(`[응답 에러] [${JSON.stringify(error)}]`);
   return Promise.reject(error);
 };
 
@@ -115,6 +97,8 @@ export function setupInterceptorsTo(
   axiosInstance.interceptors.request.use(onRequest, onRequestError);
   axiosInstance.interceptors.response.use(onResponse, onResponseError);
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+  // axiosInstance.defaults.headers.common['Content-Type'] =
+  //   'application/json; charset=UTF-8';
 
   return axiosInstance;
 }
