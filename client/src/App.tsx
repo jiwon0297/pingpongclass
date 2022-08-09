@@ -4,7 +4,7 @@ import DashBoard from '@pages/DashBoard';
 import TeacherDashBoard from '@pages/TeacherDashBoard';
 import Style from '@pages/Style';
 import Login from '@pages/Login';
-import OpenVidu from './openvidu/App';
+import OpenVidu from '@openvidu/App';
 import MainContent from '@components/DashBoard/MainContent';
 import NoticeBoard from '@components/DashBoard/Board/NoticeBoard';
 import ClassList from '@components/DashBoard/TodaysClass/ClassList';
@@ -49,7 +49,7 @@ const App = () => {
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
           </Route>
           <Route path="/style" element={<Style />} />
-          <Route path="/class" element={<OpenVidu />} />
+          <Route path="/class/:code" element={<OpenVidu />} />
         </Routes>
       </BrowserRouter>
     </div>
