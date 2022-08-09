@@ -25,6 +25,7 @@ import { setCookie, getCookie } from './cookie';
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
   config.baseURL = 'http://i7a403.p.ssafy.io:8080/be';
+  console.log(config.baseURL);
 
   return config;
 };
