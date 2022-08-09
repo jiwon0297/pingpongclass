@@ -97,8 +97,7 @@ const TeacherMyInfo = () => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          console.log(memberStore.profileFullPath);
-          navigate('/teacher/teachermyinfo');
+          location.href = '/student/mypage';
         })
         .catch(function (error) {
           console.log(error);
