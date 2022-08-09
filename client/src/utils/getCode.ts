@@ -9,3 +9,5 @@ const getCode = async () => {
     if (!(code in usedCode)) return code;
   }
 };
+
+export default getCode;
