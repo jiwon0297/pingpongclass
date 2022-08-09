@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import ProfilImage from '../../../assets/images/profile.png';
 import { useAppSelector } from '@src/store/hooks';
 import IosModalNew from '@src/components/Common/IosModalNew';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
@@ -21,8 +21,9 @@ const TeacherMyInfo = () => {
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isUse, setUse] = useState(false);
-  const [files, setFiles] = useState<File>();
+  const [preview, setPreview] = useState<any>(memberStore.profileFullPath);
   const [isMouseOn, setIsMouseOn] = useState(false);
+  const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
 
   // const accessToken = getCookie('jwt-accessToken');
   const onChangePassword = (e) => {
@@ -37,15 +38,22 @@ const TeacherMyInfo = () => {
   const onChangePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
   };
+
+  // 이미지 프리뷰 업로드 함수
   const onChangeFiles = (e) => {
-    if (e.target.files[0] === undefined) return;
-    // 파일 용량 체크
-    if (e.target.files[0] > 1 * 1024 * 1024) {
-      e.target.value = '';
-      alert('업로드 가능한 최대 용량은 1MB입니다. ');
-      return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const file = reader.result;
+      if (file) setPreview(file);
+    };
+    if (e.target.files && e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
     }
-    setFiles(e.target.files[0]);
+  };
+
+  const onDeleteFiles = (e) => {
+    if (newImageFile.current) newImageFile.current.files = null;
+    setPreview('https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null');
   };
 
   const emailCheck = async () => {
@@ -95,7 +103,13 @@ const TeacherMyInfo = () => {
         'teacher',
         new Blob([teacherString], { type: 'application/json' }),
       );
-      if (files !== undefined) frm.append('file', files);
+
+      if (newImageFile.current) {
+        if (newImageFile.current.files)
+          frm.append('file', newImageFile.current.files[0]);
+        // else frm.append('file', null);
+        // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
+      }
       InterceptedAxios.post('/teachers/modify', frm, {
         headers: {
           'Content-Type': `multipart/form-data`,
@@ -119,9 +133,9 @@ const TeacherMyInfo = () => {
       </div>
       <div className="infoContainer">
         <div className="profileContainer">
-          {memberStore.profileFullPath ===
+          {preview ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
-          memberStore.profileFullPath ===
+          preview ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
             <img
               src={ProfilImage}
@@ -132,7 +146,7 @@ const TeacherMyInfo = () => {
             />
           ) : (
             <img
-              src={memberStore.profileFullPath}
+              src={preview}
               alt="프로필사진"
               className="profile-logo"
               onMouseEnter={() => setIsMouseOn(true)}
@@ -149,18 +163,14 @@ const TeacherMyInfo = () => {
                   <EditIcon className="edit-icon-btn" />
                 </label>
                 <input
+                  ref={newImageFile}
                   type="file"
                   id="profile-image"
                   accept="image/*"
-                  onChange={(e) => onChangeFiles(e)}
+                  onChange={onChangeFiles}
                 />
               </div>
-              <DeleteIcon
-                className="delete-icon-btn"
-                onClick={(e) => {
-                  console.log('good');
-                }}
-              />
+              <DeleteIcon className="delete-icon-btn" onClick={onDeleteFiles} />
             </div>
           ) : null}
         </div>
@@ -180,7 +190,7 @@ const TeacherMyInfo = () => {
               id="manageGrade"
               value={manageGrade}
               type="text"
-              onChange={(e) => onChangeManageGrade(e)}
+              onChange={onChangeManageGrade}
             />
           </div>
           <div className="fieldContainer">
