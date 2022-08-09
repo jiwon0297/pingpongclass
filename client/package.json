@@ -72,5 +72,5 @@
   "devDependencies": {
     "@types/react-calendar-heatmap": "^1.6.3"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://i7a403.p.ssafy.io:8080"
 }
