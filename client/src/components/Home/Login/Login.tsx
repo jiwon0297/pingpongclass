@@ -103,7 +103,15 @@ const Login = (props: LoginProps) => {
         } else {
           if (userId.length == 10) {
             alert('로그인 성공');
-            location.href = '/student';
+            InterceptedAxios.post('/users/info')
+              .then(function (response1) {
+                console.log('로그인 성공', response1);
+              })
+              .catch(function (error) {
+                alert(' 실패.');
+                console.log('실패', error);
+              });
+            // location.href = '/student';
           }
           if (userId.length == 7 && userId.charAt(0) === '4') {
             alert('로그인 성공');
