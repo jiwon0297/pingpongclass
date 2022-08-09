@@ -70,7 +70,7 @@ public class EmailService {
             mailForm += "<tr>";
             mailForm += "<td></td>";
             mailForm += "<td style='padding:30px; background:#f5f5f5; text-align:center;'>";
-            mailForm += "<p style='font-size:25px; font-weight:500; color:#333333;'><span style='margin-right:20px; color:#666666;'>인증번호</span>" + randomPassword + "</p>";
+            mailForm += "<p style='font-size:25px; font-weight:500; color:#333333;'><span style='margin-right:20px; color:#666666;'>임시비밀번호 : </span>" + randomPassword + "</p>";
             mailForm += "</td>";
             mailForm += "<td></td>";
             mailForm += "</tr>";
@@ -155,7 +155,7 @@ public class EmailService {
             mailForm += "<tr>";
             mailForm += "<td></td>";
             mailForm += "<td style='padding:30px; background:#f5f5f5; text-align:center;'>";
-            mailForm += "<p style='font-size:25px; font-weight:500; color:#333333;'><span style='margin-right:20px; color:#666666;'>인증번호</span>" + randomPassword + "</p>";
+            mailForm += "<p style='font-size:25px; font-weight:500; color:#333333;'><span style='margin-right:20px; color:#666666;'>임시비밀번호 : </span>" + randomPassword + "</p>";
             mailForm += "</td>";
             mailForm += "<td></td>";
             mailForm += "</tr>";
