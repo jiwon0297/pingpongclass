@@ -24,9 +24,9 @@ const InputPassword = () => {
       })
         .then(function (response) {
           if (memberStore.userId >= 2022000000) {
-            navigate('student/studentmyinfo');
+            navigate('/student/studentmyinfo');
           } else {
-            navigate('teacher/teachermyinfo');
+            navigate('/teacher/teachermyinfo');
           }
         })
         .catch(function (error) {
@@ -60,6 +60,7 @@ const ModalCSS = css`
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 380px;
   display: flex;
   flex-direction: column;
   justify-content: center;
