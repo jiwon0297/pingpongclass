@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
@@ -41,7 +41,7 @@ const NoticeBoard = () => {
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(saveMember());
     dispatch(getClasses(memberStore.userId));
     setclasses(memberStore.classes);
@@ -135,9 +135,9 @@ const NoticeBoard = () => {
   };
 
   return (
-    <div css={totalContainer}>
+    <div css={NoticeBoardStyle}>
       <div className="upperModalArea">
-        <div className="pageTitle">공지사항(관리자)</div>
+        <div className="pageTitle">공지사항</div>
         <form onSubmit={search}>
           <select onChange={handleSelect}>
             {classes.map((s) => (
@@ -180,7 +180,7 @@ const NoticeBoard = () => {
   );
 };
 
-const totalContainer = () => css`
+export const NoticeBoardStyle = () => css`
   /* 전역 */
   text-align: center;
   width: -webkit-fill-available;
@@ -351,6 +351,9 @@ const totalContainer = () => css`
     min-width: calc(46%);
     width: calc(46%);
     max-width: calc(50%);
+  }
+  select {
+    max-width: 8%;
   }
 `;
 
