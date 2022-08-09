@@ -6,6 +6,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Delete, Edit } from '@mui/icons-material';
+
 // import { getCookie } from '../../../utils/cookie';
 
 const TeacherMyInfo = () => {
@@ -18,6 +22,8 @@ const TeacherMyInfo = () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isUse, setUse] = useState(false);
   const [files, setFiles] = useState<File>();
+  const [isMouseOn, setIsMouseOn] = useState(false);
+
   // const accessToken = getCookie('jwt-accessToken');
   const onChangePassword = (e) => {
     setPassword(e.target.value);
@@ -107,7 +113,7 @@ const TeacherMyInfo = () => {
   };
 
   return (
-    <div css={ModalCSS}>
+    <div css={ModalCSS(isMouseOn)}>
       <div className="commonModal">
         <IosModalNew />
       </div>
@@ -117,20 +123,46 @@ const TeacherMyInfo = () => {
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
           memberStore.profileFullPath ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
-            <img src={ProfilImage} alt="프로필사진" className="profile-logo" />
+            <img
+              src={ProfilImage}
+              alt="프로필사진"
+              className="profile-logo"
+              onMouseEnter={() => setIsMouseOn(true)}
+              onMouseLeave={() => setIsMouseOn(false)}
+            />
           ) : (
             <img
               src={memberStore.profileFullPath}
               alt="프로필사진"
               className="profile-logo"
+              onMouseEnter={() => setIsMouseOn(true)}
+              onMouseLeave={() => setIsMouseOn(false)}
             />
           )}
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
-            onChange={(e) => onChangeFiles(e)}
-          />
+          {isMouseOn ? (
+            <div
+              className="profile-img-button"
+              onMouseEnter={() => setIsMouseOn(true)}
+            >
+              <div className="editbtn">
+                <label htmlFor="profile-image">
+                  <EditIcon className="edit-icon-btn" />
+                </label>
+                <input
+                  type="file"
+                  id="profile-image"
+                  accept="image/*"
+                  onChange={(e) => onChangeFiles(e)}
+                />
+              </div>
+              <DeleteIcon
+                className="delete-icon-btn"
+                onClick={(e) => {
+                  console.log('good');
+                }}
+              />
+            </div>
+          ) : null}
         </div>
 
         <div className="infoListContainer">
@@ -193,7 +225,7 @@ const TeacherMyInfo = () => {
   );
 };
 
-const ModalCSS = css`
+const ModalCSS = (isMouseOn) => css`
   height: 100%;
   width: 100%;
   min-height: 400px;
@@ -219,6 +251,7 @@ const ModalCSS = css`
   }
 
   .profileContainer {
+    position: relative;
     width: 200px;
     height: 200px;
     box-sizing: border-box;
@@ -229,22 +262,46 @@ const ModalCSS = css`
     align-items: center;
   }
 
-  .profileContainer img {
-    border-radius: 200px;
-    width: 100%;
-    height: 100%;
-  }
-
-  .profileContainer img:hover {
-    transform: scale(1.03);
-  }
-
-  .profileContainer input {
+  .profileContainer .profile-logo {
     position: absolute;
     border-radius: 200px;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
+    width: 200px;
+    height: 200px;
+    filter: ${isMouseOn ? 'brightness(70%); ' : ''};
+  }
+
+  .profileContainer .profile-img-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+  }
+
+  .profileContainer .profile-img-button .editbtn {
+    height: 30px;
+    width: 30px;
+    margin: 1rem;
+  }
+
+  .profileContainer .profile-img-button .editbtn .edit-icon-btn {
+    width: 30px;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .profileContainer .profile-img-button .editbtn input {
+    display: none;
+  }
+
+  .profileContainer .profile-img-button .delete-icon-btn {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: red;
+    margin: 1rem;
   }
 
   .profileContainer .infoListContainer {
@@ -289,6 +346,7 @@ const ModalCSS = css`
     justify-content: space-between;
     align-items: center;
     font-weight: 700;
+    margin: 1rem;
   }
 
   .fieldContainer input {
