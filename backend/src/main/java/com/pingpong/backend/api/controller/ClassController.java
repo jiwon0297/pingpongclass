@@ -40,7 +40,7 @@ public class ClassController {
     @ApiOperation(value = "실시간 수업 여부 체크")
     @GetMapping("/isoopen/{classId}")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<?> isOpenClass(@RequestBody int classId){
+    public ResponseEntity<?> isOpenClass(@PathVariable int classId){
         try{
             boolean isOpen = classService.isOpen(classId);
             return new ResponseEntity<Boolean>(isOpen, HttpStatus.OK);
