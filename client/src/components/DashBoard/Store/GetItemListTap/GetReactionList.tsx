@@ -1,13 +1,83 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '@src/store/hooks';
+import member, {
+  setPoint,
+  saveMember,
+  allItems,
+  Items,
+  saveItem,
+} from '@src/store/member';
+
+function Item({ item }) {
+  const img = '/items/' + item.name + '.gif';
+  return (
+    <div className="item-div">
+      <img src={img} style={{ width: '100%' }} />
+      <p>{item.name}</p>
+    </div>
+  );
+}
 
 const GetReactionList = () => {
-  return <div css={totalContainer}>보유 리액션 목록</div>;
+  const [items, setItems] = useState<Items[]>([allItems]);
+  const memberStore = useAppSelector((state) => state.member);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    //로딩시 해당 유저의 아이템 불러오기
+    dispatch(saveItem(memberStore.userId)).then(() => {
+      setItems(memberStore.items);
+      dispatch(saveMember());
+      console.log('-------랜더링 : ', items);
+    });
+  }, []);
+
+  const filterItem = items.filter(
+    (item) =>
+      item.category !== undefined &&
+      item.category === 'REACTION' &&
+      item.cnt !== undefined &&
+      item.cnt > 0,
+  );
+
+  // console.log(items);
+
+  return (
+    <div css={totalContainer}>
+      {filterItem.map((item, index) => (
+        <Item key={index} item={item} />
+      ))}
+    </div>
+  );
 };
 
 const totalContainer = () => css`
-  /* 전역 */
-  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .item-div {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 2px 2px 8px -5px;
+    transition: all 0.1s ease-in-out;
+    margin: 0.2rem;
+    border: 1px solid lightgray;
+
+    :hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+
+    p {
+      font-size: calc(0.5vw);
+    }
+  }
 `;
 
 export default GetReactionList;

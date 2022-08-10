@@ -88,7 +88,7 @@ public class ItemServiceImpl implements ItemService{
         StudentEntity student = studentRepository.findById(request.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         ItemEntity item = itemRepository.getOne(request.getItemId());
         ItemStudentEntity entity = new ItemStudentEntity(student, item);
-
+        student.usePoint(student.getPoint()-15);
         System.out.println("----------- item : "+item);
 
         if(item.getCategory().equals("REACTION")){
@@ -118,6 +118,12 @@ public class ItemServiceImpl implements ItemService{
             }
         }
         return result;
+    }
+
+    @Override
+    public String findItemName(int itemId) throws Exception {
+        String name = itemRepository.getOne(itemId).getName();
+        return name;
     }
 
 }

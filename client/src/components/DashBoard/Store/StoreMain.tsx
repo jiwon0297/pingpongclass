@@ -13,7 +13,13 @@ import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
-import { setPoint } from '@src/store/member';
+import member, {
+  setPoint,
+  saveMember,
+  allItems,
+  Items,
+  saveItem,
+} from '@src/store/member';
 
 const StoreMain = () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -21,11 +27,31 @@ const StoreMain = () => {
   const [itemtap, setTap] = useState('itemTap');
   const [gettap, setGetTap] = useState('getItemTap');
   const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
+  const [items, setItems] = useState<Items[]>([allItems]);
+  const [change, setChange] = useState('');
+  const [getItem, setGetItem] = useState<number>(0);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    //로딩시 해당 유저의 아이템 불러오기
+    dispatch(saveItem(memberStore.userId)).then(() => {
+      setItems(memberStore.items);
+      dispatch(saveMember());
+      console.log('-------랜더링 : ', items);
+    });
+  }, []);
+
+  useEffect(() => {
+    dispatch(saveItem(memberStore.userId)).then(() => {
+      setItems(memberStore.items);
+      dispatch(saveMember());
+      console.log('-------뽑을때 : ', items);
+    });
+  }, [change]);
 
   const onClickBtn = () => {
     //사용하시겠습니까? 창
-    if (memberStore.point < 0) {
+    if (memberStore.point < 15) {
       alert('보유 퐁퐁이가 부족합니다.');
     } else {
       const isUse = confirm('퐁퐁이 15개를 사용하여 뽑기를 진행하시겠습니까?');
@@ -34,14 +60,19 @@ const StoreMain = () => {
         //랜덤 아이템 선택
         const rarity = Math.floor(Math.random() * 10) + 1; //1~10까지
         if (rarity > 6) {
-          itemId = Math.floor(Math.random() * 4) + 7;
+          //희귀도4
+          itemId = Math.floor(Math.random() * 2) + 1;
         } else if (rarity > 3) {
-          itemId = Math.floor(Math.random() * 3) + 4;
+          //희귀도3
+          itemId = Math.floor(Math.random() * 10) + 5;
         } else if (rarity > 1) {
-          itemId = Math.floor(Math.random() * 2) + 2;
+          //희귀도2
+          itemId = 4;
         } else {
-          itemId = 1;
+          //희귀도1
+          itemId = 3;
         }
+        setGetItem(itemId);
         console.log('뽑은 아이템 :' + itemId + ',' + memberStore.userId);
 
         //뽑기 아이템 DB 저장
@@ -51,8 +82,9 @@ const StoreMain = () => {
         })
           .then(() => {
             onClickOpenModal();
+            setChange('change');
             //퐁퐁이 개수 줄인 정보 받아오기
-            dispatch(setPoint());
+            console.log(memberStore);
           })
           .catch(function (error) {
             alert('뽑기 과정에서 에러 발생');
@@ -79,7 +111,10 @@ const StoreMain = () => {
 
   return (
     <div css={totalContainer}>
-      {isOpenBbobkki && <Animation onClickOpenModal={onClickOpenModal} />}
+      {isOpenBbobkki && (
+        <Animation onClickOpenModal={onClickOpenModal} getItem={getItem} />
+      )}
+
       <div className="drawContainer">
         <div className="store-title-div">
           <div className="pageTitle">

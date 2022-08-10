@@ -37,6 +37,20 @@ public class ClassController {
         return "수업을 시작했습니다.";
     }
 
+    @ApiOperation(value = "실시간 수업 여부 체크")
+    @GetMapping("/isoopen/{classId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<?> isOpenClass(@PathVariable int classId){
+        try{
+            boolean isOpen = classService.isOpen(classId);
+            return new ResponseEntity<Boolean>(isOpen, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("실시간 수업 여부 체크 실패", HttpStatus.FORBIDDEN);
+        }
+
+    }
+
     //수업 종료 후 해당 수업의 url을 삭제
     @ApiOperation(value = "수업 종료")
     @PatchMapping("/{classId}/close")
@@ -112,4 +126,14 @@ public class ClassController {
     public ClassResponse findClassInfo(@PathVariable final int classId){
         return classService.findClassInfo(classId);
     }
+
+    @ApiOperation(value= "해당 유저의 시간표를 만들기 위한 치트키API" )
+    @GetMapping("/today/{userId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public List<List<ClassResponse>> makingTimeTable(@PathVariable final int userId){
+        return classService.makeTimeTable(userId);
+    }
+
+
+
 }
