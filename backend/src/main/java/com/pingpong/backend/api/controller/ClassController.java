@@ -1,9 +1,11 @@
 package com.pingpong.backend.api.controller;
 
+import com.pingpong.backend.api.domain.ClassEntity;
 import com.pingpong.backend.api.domain.request.ClassRequest;
 import com.pingpong.backend.api.domain.request.OpenRequest;
 import com.pingpong.backend.api.domain.response.ClassResponse;
 import com.pingpong.backend.api.domain.response.ClassStudentResponse;
+import com.pingpong.backend.api.domain.response.TeacherResponse;
 import com.pingpong.backend.api.service.ClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +22,7 @@ import java.util.List;
 
 @Api(value = "수업 API", tags={"수업"})
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/be/classes")
 @RequiredArgsConstructor
 public class ClassController {
@@ -68,9 +73,9 @@ public class ClassController {
 
     //요청받은 요일에 해당하는 수업 목록 조회
     @ApiOperation(value = "요일에 따른 수업 목록 조회")
-    @GetMapping("/{userId}/today")
+    @GetMapping("")
     @PreAuthorize("hasRole('STUDENT')")
-    public Page<ClassResponse> findTodayClasses(@RequestParam(value="id") final int userId, @RequestParam(value="day") final int classDay, Pageable pageable){
+    public Page<ClassResponse> findTodayClasses(@RequestParam(value="id")int userId, @RequestParam(value="day")int classDay, Pageable pageable){
         Page<ClassResponse> pageReponse = null;
         pageReponse=classService.findTodayClasses(userId, classDay ,pageable);
         return pageReponse;
@@ -98,5 +103,13 @@ public class ClassController {
     @PreAuthorize("hasRole('TEACHER')")
     public List<String> findUrlCheck(){
         return classService.findOpenUrl();
+    }
+
+    //수업 세부 정보 출력
+    @ApiOperation(value= "수업 세부 정보 출력" )
+    @GetMapping("/classinfo/{classId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ClassResponse findClassInfo(@PathVariable final int classId){
+        return classService.findClassInfo(classId);
     }
 }

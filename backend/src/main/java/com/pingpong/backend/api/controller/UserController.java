@@ -17,13 +17,16 @@ import com.pingpong.backend.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.Map;
 
 @Api(value = "유저 API", tags={"Users(학생, 선생님) 비밀번호 찾기"})
 @RestController
@@ -39,6 +42,8 @@ public class UserController {
 
     private final TeacherServiceImpl teacherService;
     private final StudentServiceImpl studentService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @ApiOperation(value = "비밀번호 찾기", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping("/password")
@@ -125,6 +130,27 @@ public class UserController {
             return ResponseEntity.ok(new StudentResponse(student, rank));
         } else{
             return ResponseEntity.ok(new TeacherResponse(teacherRepository.getOne(Integer.parseInt(id))));
+        }
+    }
+
+    @PostMapping("/myinfo")
+    @PreAuthorize("hasRole('STUDENT')")
+    @ApiOperation(value = "마이페이지 진입", notes = "마이페이지 진입을 위한 api")
+    public ResponseEntity<?> checkPassword(@RequestBody Map<String, String> map) {
+        String id = SecurityUtil.getCurrentUsername();
+        String password = map.get("password");
+        System.out.println(id+" "+password);
+        if(id == null) return new ResponseEntity<String>("로그인된 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        if(id.length() == 10){
+            StudentEntity student = studentRepository.getOne(Integer.parseInt(id));
+            if(passwordEncoder.matches(password, student.getPassword()))
+                return new ResponseEntity<String>("비밀번호 동일", HttpStatus.OK);
+            else return new ResponseEntity<String>("비밀번호 틀림", HttpStatus.FORBIDDEN);
+        } else{
+            TeacherEntity teacher = teacherRepository.getOne(Integer.parseInt(id));
+            if(passwordEncoder.matches(password,teacher.getPassword()))
+                return new ResponseEntity<String>("비밀번호 동일", HttpStatus.OK);
+            else return new ResponseEntity<String>("비밀번호 틀림", HttpStatus.FORBIDDEN);
         }
     }
 }
