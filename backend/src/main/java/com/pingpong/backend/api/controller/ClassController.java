@@ -37,6 +37,20 @@ public class ClassController {
         return "수업을 시작했습니다.";
     }
 
+    @ApiOperation(value = "실시간 수업 여부 체크")
+    @GetMapping("/isopen/{classId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<?> isOpenClass(@PathVariable int classId){
+        try{
+            String isOpen = classService.isOpen(classId);
+            return new ResponseEntity<String>(isOpen, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("실시간 수업 여부 체크 실패", HttpStatus.FORBIDDEN);
+        }
+
+    }
+
     //수업 종료 후 해당 수업의 url을 삭제
     @ApiOperation(value = "수업 종료")
     @PatchMapping("/{classId}/close")

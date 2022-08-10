@@ -198,6 +198,16 @@ public class ClassService {
         classEntity.updateUrl(openRequest.getClassUrl());
     }
 
+    @Transactional
+    public String isOpen(int classId){
+        String classUrl = classRepository.getOne(classId).getClassUrl();
+        if(classUrl==null || classUrl==""){
+            return "";
+        } else{
+            return classUrl;
+        }
+    }
+
     //강의 종료
     @Transactional
     public void deleteUrl(int classId){

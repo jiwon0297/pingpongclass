@@ -7,14 +7,39 @@ import CapsuleBox from '../../../assets/images/capsuleBox.png';
 import ItemBackground from '../../../assets/images/splash2.png';
 import FreePassTicket from '../../../assets/images/freepassTicket.png';
 import { CenterFocusStrong } from '@mui/icons-material';
+import InterceptedAxios from '@utils/iAxios';
+import { useState, useCallback, useEffect } from 'react';
 
 interface ModalDefaultType {
   onClickOpenModal: () => void;
+  getItem: number;
 }
 
-const Animation = ({
-  onClickOpenModal,
-}: PropsWithChildren<ModalDefaultType>) => {
+const Animation = ({ onClickOpenModal, getItem }: ModalDefaultType) => {
+  const [getItemName, setGetItemName] = useState('');
+  const [getItemImg, setGetItemImg] = useState('');
+
+  useEffect(() => {
+    if (getItem) {
+      InterceptedAxios.get(`/items/itemName/${getItem}`)
+        .then((response) => {
+          //이미지 설정
+          if (getItem < 5) {
+            //이름 설정
+            setGetItemName(response.data);
+            setGetItemImg(getItem + '.png');
+          } else {
+            setGetItemImg(response.data + '.gif');
+            //이름 설정
+            setGetItemName(response.data + ' 이모지');
+          }
+        })
+        .catch(function (error) {
+          console.log('아이템 이름 조회과정에서 에러발생', error);
+        });
+    }
+  }, [getItem]);
+
   return (
     <div css={totalContainer}>
       <div
@@ -111,7 +136,11 @@ const Animation = ({
             top: '3vh',
           }}
         >
-          <img src={FreePassTicket} alt="아이템" style={{ width: '75%' }} />
+          <img
+            src={'/items/' + getItemImg}
+            alt="아이템"
+            style={{ width: '55%' }}
+          />
         </motion.div>
 
         <motion.div
@@ -135,7 +164,7 @@ const Animation = ({
               color: 'white',
             }}
           >
-            발표프리패스권~!
+            {getItemName}
           </p>
         </motion.div>
       </div>

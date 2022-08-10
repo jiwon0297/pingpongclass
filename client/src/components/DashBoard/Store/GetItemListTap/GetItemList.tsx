@@ -1,28 +1,57 @@
 import { css } from '@emotion/react';
-import ColorChangeJandi from '../../../../assets/images/colorChange_Jandi.png';
-import ColorChangeBorder from '../../../../assets/images/colorChange_Border.png';
-import DoublePong from '../../../../assets/images/doublePong.png';
-import FreePassTicket from '../../../../assets/images/freepassTicket.png';
+import { useState, useCallback, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '@src/store/hooks';
+import member, {
+  setPoint,
+  saveMember,
+  allItems,
+  Items,
+  saveItem,
+} from '@src/store/member';
+
+function Item({ item }) {
+  const img = '/items/' + item.itemId + '.png';
+  return (
+    <div className="colorchangeBorder">
+      <img src={img} style={{ width: '100%' }} />
+      <p>
+        {item.name}:{item.cnt}
+      </p>
+    </div>
+  );
+}
 
 const GetItemList = () => {
+  // const { items } = props;
+  const [items, setItems] = useState<Items[]>([allItems]);
+  const memberStore = useAppSelector((state) => state.member);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    //로딩시 해당 유저의 아이템 불러오기
+    dispatch(saveItem(memberStore.userId)).then(() => {
+      setItems(memberStore.items);
+      dispatch(saveMember());
+      console.log('-------랜더링 : ', items);
+    });
+  }, []);
+
+  // console.log(items, ',,');
+  const filterItem = items.filter(
+    (item) =>
+      item.category !== undefined &&
+      item.category !== 'REACTION' &&
+      item.cnt !== undefined &&
+      item.cnt > 0,
+  );
+
+  // console.log(items);
+
   return (
     <div css={totalContainer}>
-      <div className="colorchangeJandi">
-        <img src={ColorChangeJandi} style={{ width: '100%' }} />
-        <p>색변경권[잔디]:0</p>
-      </div>
-      <div className="colorchangeBorder">
-        <img src={ColorChangeBorder} style={{ width: '100%' }} />
-        <p>색변경권[테두리]:0</p>
-      </div>
-      <div className="doublePong">
-        <img src={DoublePong} style={{ width: '100%' }} />
-        <p>더블퐁퐁권:0</p>
-      </div>
-      <div className="freePassTicket">
-        <img src={FreePassTicket} style={{ width: '100%' }} />
-        <p>발표프리패스권:0</p>
-      </div>
+      {filterItem.map((item, index) => (
+        <Item key={index} item={item} />
+      ))}
     </div>
   );
 };

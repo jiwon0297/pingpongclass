@@ -10,10 +10,25 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@src/store/hooks';
 
-function TodaysClass() {
+interface ClassProps {
+  classDay: number;
+  classDesc: string;
+  classId: number;
+  classTitle: string;
+  subjectEntity: {
+    classSubjectCode: number;
+    name: string;
+  };
+  teacherName: string;
+  timetableId: number;
+  isActive: boolean;
+}
+
+function TodaysClass(props) {
+  const classListFromMainContent = props.classList;
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
-  const [classList, setClassList] = useState([] as any);
+  const [classList, setClassList] = useState(classListFromMainContent as any);
   var dt = new Date();
   const loadClassList = async () => {
     const studentId = memberStore.userId;
@@ -21,7 +36,34 @@ function TodaysClass() {
     const result = await AXIOS.get(`/classes`, {
       params: { id: studentId, day: classDay },
     });
+
+    // promise.all 처리!
+    const promises = result.data.content.map(async (elem, i) => {
+      const isActiveClass = await AXIOS.get(`/classes/isoopen/${elem.classId}`);
+      console.log(isActiveClass.data, elem.classId);
+      elem.isActive = isActiveClass.data;
+    });
+    await Promise.all(promises);
+    // result.data.content.forEach(async (elem) => {
+    //   const isActiveClass = await AXIOS.get(`/classes/isoopen/${elem.classId}`);
+    //   elem.isActive = isActiveClass;
+    // });
     setClassList(result.data.content);
+  };
+  console.log(classList);
+
+  const joinClass = async (cls: ClassProps) => {
+    console.log(cls);
+    // string으로 받으면 아래 주석 풀수있음
+    // if (cls.classUrl) {
+    //   navigate(`/class/${cls.classUrl}`, {
+    //     state: {
+    //       classId: cls.classId,
+    //       classTitle: cls.classTitle,
+    //       teacherName: cls.teacherName,
+    //     },
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -35,14 +77,17 @@ function TodaysClass() {
           type: 'progressbar',
         }}
         slidesPerView={3.5}
-        spaceBetween={20}
+        spaceBetween={0}
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
         {classList.map((cls, idx) => (
-          <SwiperSlide key={idx}>
-            <ClassCard objectName={cls.classTitle} />
+          <SwiperSlide key={idx} onClick={() => joinClass(cls)}>
+            <ClassCard
+              clsList={{ classTitle: cls.classTitle, classDesc: cls.classDesc }}
+              isActive={cls.isActive}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

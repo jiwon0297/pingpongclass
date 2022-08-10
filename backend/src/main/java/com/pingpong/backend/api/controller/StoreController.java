@@ -96,4 +96,16 @@ public class StoreController {
             return new ResponseEntity<String>("테두리 색 변경 실패",HttpStatus.FORBIDDEN);
         }
     }
+    @ApiOperation(value = "아이템 번호로 아이템명 조회", notes = "아이템명 조회")
+    @GetMapping("/itemName/{item_id}")
+    public ResponseEntity<?> findItemName(@PathVariable int item_id) throws Exception {
+        try{
+            String itemName = itemService.findItemName(item_id);
+            return new ResponseEntity<String>(itemName,HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("아이템명조회 실패",HttpStatus.FORBIDDEN);
+        }
+    }
+
 }
