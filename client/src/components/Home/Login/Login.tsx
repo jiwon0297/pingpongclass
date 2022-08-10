@@ -77,14 +77,13 @@ const Login = (props: LoginProps) => {
     })
       .then((response) => {
         //성공
-        const expires = new Date();
+        let expires = new Date();
+        expires.setMinutes(expires.getMinutes() + 60);
 
-        expires.setDate(+expires.getDate + 7);
-
-        if (isSaveId) {
+        https: if (isSaveId) {
           setCookie('savedId', userId, {
             path: '/',
-            expires: expires,
+            expires,
             sameSite: 'Lax',
           });
         }
@@ -93,13 +92,15 @@ const Login = (props: LoginProps) => {
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
             path: '/',
-            // secure: true,
+            expires,
             sameSite: 'Lax',
           });
+          expires = new Date();
+          expires.setDate(expires.getDate() + 7);
           setCookie('jwt-refreshToken', response.data.refreshToken, {
             path: '/',
             // secure: true,
-            expires: expires,
+            expires,
             sameSite: 'Lax',
           });
         }
@@ -194,7 +195,6 @@ const Login = (props: LoginProps) => {
         <button className="button pink" onClick={onClickLogin}>
           로그인
         </button>
-        {/* <button onClick={test}>뭐가 적혀있지?</button> */}
       </div>
     </div>
   );
