@@ -9,7 +9,7 @@ import { saveMember, logIn, logOut, getClasses } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useNavigate } from 'react-router-dom';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface LoginProps {
   tap: string;
@@ -22,25 +22,9 @@ const Login = (props: LoginProps) => {
   const { setTap, userId, setUserId } = props;
   const [userPw, setUserPw] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
-  const [toastMsg, setToast] = useState('');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const notify = () =>
-    toast.success(toastMsg, {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-    });
-  if (toastMsg) {
-    notify();
-    setToast('');
-  }
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -59,7 +43,6 @@ const Login = (props: LoginProps) => {
 
   const onClickLogin = () => {
     //유효성 검사
-
     InterceptedAxios.post('/auth/login', {
       id: userId,
       password: userPw,
@@ -84,34 +67,33 @@ const Login = (props: LoginProps) => {
         }
         //첫 로그인이면,
         if (response.data.first) {
-          // setToast('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
-          notify();
-          alert('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
+          toast.success('반갑습니다! 첫 로그인시, 정보 설정이 필요합니다.');
           setTap('email');
         } else {
           if (userId.length == 10) {
+            toast.success(userId + ' 학생 핑퐁클래스 등교 완료!');
             navigate('/student');
           }
           if (userId.length == 7 && userId.charAt(0) === '4') {
+            toast.success(userId + ' 선생님 핑퐁클래스 출근 완료!');
             navigate('/teacher');
           }
           if (userId.length == 7 && userId.charAt(0) === '5') {
+            toast.success(userId + ' 관리자님 핑퐁클래스 출근 완료!');
             navigate('/admin');
           }
         }
         dispatch(saveMember());
         dispatch(getClasses(parseInt(props.userId)));
-        console.log('로그인 성공', response);
       })
       .catch(function (error) {
-        alert('아이디와 비밀번호를 다시 확인해주세요.');
-        console.log('로그인 실패', error);
+        console.log(error);
+        toast.error('로그인 실패. 아이디와 비밀번호를 다시 확인해주세요.');
       });
   };
 
   return (
     <div css={totalContainer}>
-      <ToastContainer />
       <div className="div-title">
         <h2 className="title">로그인</h2>
       </div>
