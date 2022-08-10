@@ -4,18 +4,23 @@ import { useAppSelector } from '@src/store/hooks';
 import IosModalNew from '@src/components/Common/IosModalNew';
 import { useState, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Delete, Edit } from '@mui/icons-material';
+import member from '@src/store/member';
+import { Link } from 'react-router-dom';
 
-// import { getCookie } from '../../../utils/cookie';
+interface TeacherDataInterface {
+  teacherId: number;
+  manageGrade: number;
+  email: string;
+  password: string;
+  profile?: string;
+}
 
 const TeacherMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const [email, setEmail] = useState(memberStore.email);
-  const navigate = useNavigate();
   const [manageGrade, setManageGrade] = useState(memberStore.manageGrade);
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
@@ -23,28 +28,55 @@ const TeacherMyInfo = () => {
   const [isUse, setUse] = useState(false);
   const [preview, setPreview] = useState<any>(memberStore.profileFullPath);
   const [isMouseOn, setIsMouseOn] = useState(false);
+  const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
   const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
 
-  // const accessToken = getCookie('jwt-accessToken');
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
   const onChangeManageGrade = (e) => {
     setManageGrade(e.target.value);
   };
+
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
+    if (e.target.value !== memberStore.email) {
+      var re =
+        /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+      if (!re.test(e.target.value)) setUse(false);
+      else {
+        InterceptedAxios.get(`/users/email/${e.target.value}`)
+          .then(function () {
+            setEmail(e.target.value);
+            setUse(true);
+          })
+          .catch(function (error) {
+            setUse(false);
+          });
+      }
+    } else {
+      setEmail(e.target.value);
+    }
   };
+
   const onChangePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
   };
 
   // 이미지 프리뷰 업로드 함수
   const onChangeFiles = (e) => {
+    if (e.target.files[0] > 10 * 1024 * 1024) {
+      e.target.value = '';
+      alert('업로드 가능한 최대 용량은 10MB입니다. ');
+      return;
+    }
     const reader = new FileReader();
     reader.onloadend = () => {
       const file = reader.result;
-      if (file) setPreview(file);
+      if (file) {
+        setPreview(file);
+        setIsPreviewReset(false);
+      }
     };
     if (e.target.files && e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
@@ -52,64 +84,55 @@ const TeacherMyInfo = () => {
   };
 
   const onDeleteFiles = (e) => {
-    if (newImageFile.current) newImageFile.current.files = null;
+    setIsPreviewReset(true);
     setPreview('https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null');
   };
 
-  const emailCheck = async () => {
-    //유효성검사
-    if (email === null) {
-      console.log('email null~~');
-      setUse(false);
-    } else if (email === memberStore.email) {
-      console.log('email 같음!');
-      setUse(true);
-    } else {
-      console.log(email);
-      console.log(memberStore.email);
-      InterceptedAxios.get(`/users/email/${email}`)
-        .then(function () {
-          setEmail(email);
-          setUse(true);
-        })
-        .catch(function (error) {
-          setEmail('');
-          setUse(false);
-        });
-    }
-  };
-
   const onEditMyInfo = (e) => {
-    if (password === null) {
-      alert('비밀번호를 입력해주세요.');
-    } else if (email === null) {
+    if (email === null) {
       alert('이메일을 확인해주세요.');
     } else if (manageGrade === null) {
       alert('담당학년을 입력해주세요.');
-    } else if (passwordconfirm === null) {
-      alert('비밀번호확인을 입력해주세요.');
     } else if (!(password === passwordconfirm)) {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+    } else if (!isUse) {
+      alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
-      const teacher = {
-        teacherId: memberStore.userId,
-        manageGrade: manageGrade,
-        email: email,
-        password: password,
-      };
+      let teacher: TeacherDataInterface;
+      if (!isPreviewReset) {
+        teacher = {
+          teacherId: memberStore.userId,
+          manageGrade: manageGrade,
+          email: email,
+          password: password,
+        };
+      } else {
+        teacher = {
+          teacherId: memberStore.userId,
+          manageGrade: manageGrade,
+          email: email,
+          password: password,
+          profile: 'reset',
+        };
+      }
       const teacherString = JSON.stringify(teacher);
       frm.append(
         'teacher',
         new Blob([teacherString], { type: 'application/json' }),
       );
 
-      if (newImageFile.current) {
-        if (newImageFile.current.files)
-          frm.append('file', newImageFile.current.files[0]);
+      if (
+        !isPreviewReset &&
+        newImageFile.current &&
+        newImageFile.current.files
+      ) {
+        console.log('파일넣음');
+        frm.append('file', newImageFile.current.files[0]);
         // else frm.append('file', null);
         // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
       }
+
       InterceptedAxios.post('/teachers/modify', frm, {
         headers: {
           'Content-Type': `multipart/form-data`,
@@ -166,7 +189,7 @@ const TeacherMyInfo = () => {
                   ref={newImageFile}
                   type="file"
                   id="profile-image"
-                  accept="image/*"
+                  accept="image/jpg, image/jpeg, image/png"
                   onChange={onChangeFiles}
                 />
               </div>
@@ -227,9 +250,11 @@ const TeacherMyInfo = () => {
         <button type="button" className="submit" onClick={onEditMyInfo}>
           수정
         </button>
-        <button type="button" className="cancel">
-          취소
-        </button>
+        <Link to="/teacher">
+          <button type="button" className="cancel">
+            취소
+          </button>
+        </Link>
       </div>
     </div>
   );
@@ -345,6 +370,14 @@ const ModalCSS = (isMouseOn) => css`
     box-sizing: border-box;
     font-family: 'NanumSquareRound';
     cursor: pointer;
+  }
+
+  .submit {
+    background-color: #f6ac55;
+  }
+
+  .cancel {
+    background-color: gray;
   }
 
   .fieldContainer {
