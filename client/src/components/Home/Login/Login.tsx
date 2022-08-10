@@ -67,7 +67,9 @@ const Login = (props: LoginProps) => {
       .then((response) => {
         //성공
         const expires = new Date();
+
         expires.setMinutes(+expires.getDate + 7);
+
         // localStorage 저장
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
