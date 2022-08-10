@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
 import { useLayoutEffect, useState } from 'react';
 
-const StudentResult = ({ whoami, myData, othersData }) => {
+const StudentResult = ({
+  teacherName,
+  classTitle,
+  whoami,
+  myData,
+  othersData,
+}) => {
   const [totalStudentNum, setTotalStudentNum] = useState(0);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
@@ -45,6 +51,7 @@ const StudentResult = ({ whoami, myData, othersData }) => {
       <div css={ClassStatistic}>
         <h3>수업 통계</h3>
         <div className="teacher index">
+          <div className="t-classname">수업 이름</div>
           <div className="t-nickname">선생님 이름</div>
           <div className="t-attendence-time">수업 개설 시간</div>
           <div className="t-point">총 부여 상점</div>
@@ -52,7 +59,8 @@ const StudentResult = ({ whoami, myData, othersData }) => {
           <div className="t-att-student-number">참여 학생 수</div>
         </div>
         <div className="teacher">
-          <div className="t-nickname">{teacherModel.nickname.slice(0, -5)}</div>
+          <div className="t-classname">{classTitle}</div>
+          <div className="t-nickname">{teacherName}</div>
           <div className="t-attendence-time">{teacherModel.attendenceTime}</div>
           <div className="t-point">{totalSticker}</div>
           <div className="t-student-number">{attStudentNum}</div>
@@ -111,6 +119,13 @@ const ClassStatistic = css`
       align-items: center;
       justify-content: center;
       text-align: center;
+    }
+
+    & > .t-classname {
+      display: flex;
+      width: 100px;
+      justify-content: center;
+      align-items: center;
     }
 
     & > .t-nickname {

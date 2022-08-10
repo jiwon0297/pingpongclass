@@ -32,10 +32,12 @@ const App = () => {
   // 입장코드
   const { code } = useParams();
   const { state } = useLocation();
+  console.log(state, typeof state);
 
   const memberStore = useAppSelector((state) => state.member);
   console.log(memberStore, '얘');
   const whoami = whoru(memberStore.userId);
+  console.log(state.classTitle, state.teacherName);
 
   const setDevices = {
     videos,
@@ -63,7 +65,13 @@ const App = () => {
   return (
     <>
       {tap === 'setup' && (
-        <SetupComponent setTap={setTap} setDevices={setDevices} code={code} />
+        <SetupComponent
+          teacherName={state.teacherName}
+          classTitle={state.classTitle}
+          setTap={setTap}
+          setDevices={setDevices}
+          code={code}
+        />
       )}
       {tap === 'class' && (
         <VideoRoomComponent
@@ -72,10 +80,12 @@ const App = () => {
           memberStore={memberStore}
           whoami={whoami}
           setTap={setTap}
-          classId={state}
+          classId={state.classId}
           setMyData={setMyData}
           setOthersData={setOthersData}
           navigate={navigate}
+          teacherName={state.teacherName}
+          classTitle={state.classTitle}
         />
       )}
       {tap === 'result' && (
@@ -83,6 +93,8 @@ const App = () => {
           whoami={whoami}
           myData={myData}
           othersData={othersData}
+          teacherName={state.teacherName}
+          classTitle={state.classTitle}
         />
       )}
     </>

@@ -148,7 +148,9 @@ export default class ToolbarComponent extends Component {
           {this.props.sessionId && (
             <div id="titleContent">
               {/* <span id="session-title">{mySessionId}</span> */}
-              <span id="session-title">2-3 수요일 6교시 국어</span>
+              <span id="session-title">
+                {this.props.classTitle} - {this.props.teacherName}
+              </span>
             </div>
           )}
 

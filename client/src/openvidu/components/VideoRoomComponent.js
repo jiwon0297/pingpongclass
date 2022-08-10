@@ -1404,6 +1404,8 @@ class VideoRoomComponent extends Component {
           {/* 하단 툴바 */}
           <div className="toolbar">
             <ToolbarComponent
+              teacherName={this.props.teacherName}
+              classTitle={this.props.classTitle}
               whoami={this.props.whoami}
               sessionId={mySessionId}
               user={localUser}

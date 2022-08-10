@@ -3,9 +3,19 @@ import { Link } from 'react-router-dom';
 import TeacherResult from './result/TeacherResult';
 import StudentResult from './result/StudentResult';
 import './SetupComponent.css';
+import { getAudios, getVideos } from './utils/customUseDevice';
 
 const Result = (props) => {
-  const { whoami, myData, othersData } = props;
+  const { teacherName, classTitle, whoami, myData, othersData } = props;
+
+  // 장치 중지시키기
+  const stopDevices = async () => {
+    const audios = await getAudios();
+    const videos = await getVideos();
+    console.log(audios);
+  };
+  stopDevices();
+
   return (
     <>
       <div css={TotalContainer}>
@@ -15,6 +25,8 @@ const Result = (props) => {
               whoami={whoami}
               myData={myData}
               othersData={othersData}
+              teacherName={teacherName}
+              classTitle={classTitle}
             />
             <Link to={`/teacher`}>
               <div className="btn-items">
@@ -28,6 +40,8 @@ const Result = (props) => {
               whoami={whoami}
               myData={myData}
               othersData={othersData}
+              teacherName={teacherName}
+              classTitle={classTitle}
             />
             <Link to={`/student`}>
               <div className="btn-items">
