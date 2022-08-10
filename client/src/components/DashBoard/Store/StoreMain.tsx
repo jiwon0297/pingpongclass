@@ -20,8 +20,6 @@ import member, {
   Items,
   saveItem,
 } from '@src/store/member';
-import { ModalHover } from 'react-modal-hover';
-import InterceptedAxios from '@utils/iAxios';
 
 const StoreMain = () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());

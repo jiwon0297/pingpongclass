@@ -34,6 +34,7 @@ const App = () => {
   const { state } = useLocation();
 
   const memberStore = useAppSelector((state) => state.member);
+  console.log(memberStore, '얘');
   const whoami = whoru(memberStore.userId);
 
   const setDevices = {
