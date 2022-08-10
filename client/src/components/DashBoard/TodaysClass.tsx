@@ -24,10 +24,11 @@ interface ClassProps {
   isActive: boolean;
 }
 
-function TodaysClass() {
+function TodaysClass(props) {
+  const classListFromMainContent = props.classList;
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
-  const [classList, setClassList] = useState([] as any);
+  const [classList, setClassList] = useState(classListFromMainContent as any);
   var dt = new Date();
   const loadClassList = async () => {
     const studentId = memberStore.userId;
@@ -53,6 +54,16 @@ function TodaysClass() {
 
   const joinClass = async (cls: ClassProps) => {
     console.log(cls);
+    // string으로 받으면 아래 주석 풀수있음
+    // if (cls.classUrl) {
+    //   navigate(`/class/${cls.classUrl}`, {
+    //     state: {
+    //       classId: cls.classId,
+    //       classTitle: cls.classTitle,
+    //       teacherName: cls.teacherName,
+    //     },
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -72,11 +83,10 @@ function TodaysClass() {
         className="mySwiper"
       >
         {classList.map((cls, idx) => (
-          <SwiperSlide key={idx}>
+          <SwiperSlide key={idx} onClick={() => joinClass(cls)}>
             <ClassCard
-              objectName={cls.classTitle}
+              clsList={{ classTitle: cls.classTitle, classDesc: cls.classDesc }}
               isActive={cls.isActive}
-              onClick={() => joinClass(cls)}
             />
           </SwiperSlide>
         ))}

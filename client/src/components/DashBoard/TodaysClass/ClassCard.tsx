@@ -3,17 +3,17 @@ import { css } from '@emotion/react';
 const ClassCard = ({ clsList, isActive }: any) => {
   if (clsList) {
     return (
-      <div css={totalContainer}>
+      <div css={TotalContainer(isActive)}>
         <h2>{clsList.classTitle}</h2>
         <p>{clsList.classDesc}</p>
       </div>
     );
   } else {
-    return <div css={totalContainer}> </div>;
+    return null;
   }
 };
 
-const totalContainer = (isActive: boolean) => css`
+const TotalContainer = (isActive: boolean) => css`
   width: 233px;
   height: 233px;
   background: #fdfcf3;
@@ -29,8 +29,8 @@ const totalContainer = (isActive: boolean) => css`
   filter: ${isActive ? 'brightness(100%)' : 'brightness(50%)'};
 
   :hover {
-    transform: scale(1.05);
-    cursor: pointer;
+    transform: ${isActive ? 'scale(1.05)' : null};
+    cursor: ${isActive ? 'pointer' : null};
   }
 `;
 

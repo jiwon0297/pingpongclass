@@ -32,6 +32,7 @@ function TeacherTodaysClass() {
   const [classList, setClassList] = useState([] as any);
   const navigate = useNavigate();
   var dt = new Date();
+  console.log(classList);
 
   const loadClassList = async () => {
     const teacherId = memberStore.userId;
@@ -83,7 +84,13 @@ function TeacherTodaysClass() {
       >
         {classList.map((cls, idx) => (
           <SwiperSlide key={idx} onClick={() => openClass(cls)}>
-            <ClassCard objectName={cls.classTitle} isActive={true} />
+            <ClassCard
+              clsList={{
+                classTitle: cls.classTitle,
+                classDesc: cls.classDesc,
+              }}
+              isActive={true}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
