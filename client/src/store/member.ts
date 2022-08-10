@@ -181,6 +181,12 @@ export const memberSlice = createSlice({
       return convert(action);
     },
     logOut: () => initialState,
+    setPoint: (state) => {
+      let newPoint = +state.point - 15;
+      console.log(newPoint);
+
+      return { ...state, point: newPoint };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -194,7 +200,7 @@ export const memberSlice = createSlice({
   },
 });
 
-export const { logIn, logOut } = memberSlice.actions;
+export const { logIn, logOut, setPoint } = memberSlice.actions;
 
 export default memberSlice.reducer;
 
@@ -228,3 +234,4 @@ export default memberSlice.reducer;
 //   "isAdmin": 1,
 //   "s3Service": null
 // }
+>>>>>>> Feat#Store

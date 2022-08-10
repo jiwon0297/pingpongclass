@@ -84,9 +84,15 @@ public class ItemServiceImpl implements ItemService{
     //아이템 저장
     @Transactional
     public String save(final ItemRequest request) throws IOException {
+        System.out.println("---------------save : "+request.getStudentId()+"/"+request.getItemId());
         StudentEntity student = studentRepository.getOne(request.getStudentId());
         ItemEntity item = itemRepository.getOne(request.getItemId());
         ItemStudentEntity entity = new ItemStudentEntity(student, item);
+        System.out.println("----------- item : "+item);
+        //퐁퐁 개수 감소
+        student = StudentEntity.builder()
+                .point(student.getPoint()-15).build();
+
         if(item.getCategory().equals("REACTION")){
             //리액션 중복 확인
             int reaction = itemStudentRepository.countByStudentEntityAndItemEntity(student, item);
