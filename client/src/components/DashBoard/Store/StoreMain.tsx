@@ -75,17 +75,43 @@ const StoreMain = () => {
     setGetTap(prop);
   };
 
+  const onInfoEnter = () => {};
+
   return (
     <div css={totalContainer}>
       {isOpenBbobkki && <Animation onClickOpenModal={onClickOpenModal} />}
       <div className="drawContainer">
-        <div className="pageTitle">뽑기</div>
+        <div className="store-title-div">
+          <div className="pageTitle">
+            뽑기{' '}
+            <span
+              css={css`
+                font-size: 0.5em;
+                font-weight: 300;
+                margin-left: 10px;
+              `}
+            >
+              {' '}
+              뽑기로 획득 가능한 아이템 리스트
+            </span>
+          </div>
+          <div className="pongCount">
+            <span>
+              <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
+              &nbsp; X {memberStore.point}
+            </span>
+          </div>
+        </div>
         <hr />
         <div className="sideContainer">
           <div className="draw">
             <div className="bbobkki">
               <p>랜덤 뽑기</p>
-              <HelpIcon fontSize="small" color="action" />
+              <HelpIcon
+                fontSize="small"
+                color="action"
+                onMouseEnter={onInfoEnter}
+              />
             </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
             <motion.button
@@ -122,12 +148,6 @@ const StoreMain = () => {
               {itemtap === 'itemTap' && <ItemList />}
               {itemtap === 'reactionTap' && <ReactionList />}
             </div>
-          </div>
-          <div className="pongCount">
-            <span>
-              <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
-              &nbsp; X {memberStore.point}
-            </span>
           </div>
         </div>
       </div>
@@ -191,9 +211,9 @@ const totalContainer = () => css`
   }
 
   .itemList {
-    width: 55%;
-    height: 25vh;
-    margin: auto;
+    width: 70%;
+    height: 80%;
+    margin-left: 29px;
     border-radius: 20px;
   }
 
@@ -223,7 +243,7 @@ const totalContainer = () => css`
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 33.33%;
+      width: 25%;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       background-color: #fcc97d;
@@ -261,6 +281,13 @@ const totalContainer = () => css`
     font-weight: 700;
   }
 
+  .store-title-div {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
   .drawContainer {
     height: 55%;
     justify-content: center;
@@ -270,9 +297,10 @@ const totalContainer = () => css`
     display: inline-flex;
     flex-direction: row;
     vertical-align: middle;
-    margin-top: 1rem;
+    margin-top: 0.7rem;
     justify-content: center;
     width: 100%;
+    height: 83%;
   }
 
   .myItemContainer {
@@ -286,7 +314,7 @@ const totalContainer = () => css`
 
   .draw {
     width: 21%;
-    height: 25vh;
+    height: 80%;
     display: inline-flex;
     margin: 0;
     justify-content: center;

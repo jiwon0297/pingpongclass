@@ -25,7 +25,7 @@ const TeacherMyInfo = () => {
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
-  const [isUse, setUse] = useState(false);
+  const [isUse, setUse] = useState(true);
   const [preview, setPreview] = useState<any>(memberStore.profileFullPath);
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
@@ -54,8 +54,9 @@ const TeacherMyInfo = () => {
             setUse(false);
           });
       }
-    } else {
+    } else if (e.target.value === memberStore.email) {
       setEmail(e.target.value);
+      setUse(true);
     }
   };
 
@@ -360,7 +361,6 @@ const ModalCSS = (isMouseOn) => css`
   }
 
   .buttonsContainer button {
-    background-color: #f6ac55;
     color: white;
     border: 0;
     padding: 10px 30px;

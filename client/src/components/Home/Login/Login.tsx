@@ -1,13 +1,12 @@
 import { css } from '@emotion/react';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
-import { setCookie } from '@utils/cookie';
-import { setRefreshToken } from '../../../storage/Cookie';
-import { SET_TOKEN } from '../../../store/Auth';
+import { setCookie, getCookie } from '@utils/cookie';
 import { saveMember, logIn, logOut, getClasses } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useNavigate } from 'react-router-dom';
+import { FormControlLabel, Checkbox } from '@mui/material/';
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -23,6 +22,7 @@ const Login = (props: LoginProps) => {
   const [userPw, setUserPw] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [toastMsg, setToast] = useState('');
+  const [isSaveId, setisSaveId] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -41,6 +41,17 @@ const Login = (props: LoginProps) => {
     notify();
     setToast('');
   }
+
+  useEffect(() => {
+    if (getCookie('savedId') !== undefined) {
+      setUserId(getCookie('savedId'));
+      setisSaveId(true);
+    }
+  }, []);
+
+  const onClickSave = (e) => {
+    setisSaveId(!isSaveId);
+  };
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -66,19 +77,30 @@ const Login = (props: LoginProps) => {
     })
       .then((response) => {
         //성공
-        const expires = new Date();
-        expires.setMinutes(+expires.getDate + 7);
+        let expires = new Date();
+        expires.setMinutes(expires.getMinutes() + 60);
+
+        https: if (isSaveId) {
+          setCookie('savedId', userId, {
+            path: '/',
+            expires,
+            sameSite: 'Lax',
+          });
+        }
+
         // localStorage 저장
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
             path: '/',
-            // secure: true,
+            expires,
             sameSite: 'Lax',
           });
+          expires = new Date();
+          expires.setDate(expires.getDate() + 7);
           setCookie('jwt-refreshToken', response.data.refreshToken, {
             path: '/',
             // secure: true,
-            expires: expires,
+            expires,
             sameSite: 'Lax',
           });
         }
@@ -125,7 +147,12 @@ const Login = (props: LoginProps) => {
               className="input"
             />
           </div>
-          <div className="div-sub">
+          <div
+            className="div-sub"
+            css={css`
+              margin-bottom: 0;
+            `}
+          >
             <div className="title-sub">비밀번호</div>
             <input
               onChange={(e) => onChangePw(e)}
@@ -138,14 +165,27 @@ const Login = (props: LoginProps) => {
             />
           </div>
         </div>
-        <div
-          className="text-small hover"
-          onClick={onClickFind}
-          css={css`
-            cursor: pointer;
-          `}
-        >
-          비밀번호 찾기
+        <div className="login-bottom-div">
+          <div
+            className="text-small hover"
+            onClick={onClickFind}
+            css={css`
+              cursor: pointer;
+              margin-right: 20px;
+            `}
+          >
+            비밀번호 찾기
+          </div>
+          <div className="text-small">
+            {
+              <Checkbox
+                onChange={onClickSave}
+                color="primary"
+                checked={isSaveId}
+              />
+            }
+            아이디 저장
+          </div>
         </div>
       </div>
       <div className="buttons-div">
@@ -155,7 +195,6 @@ const Login = (props: LoginProps) => {
         <button className="button pink" onClick={onClickLogin}>
           로그인
         </button>
-        {/* <button onClick={test}>뭐가 적혀있지?</button> */}
       </div>
     </div>
   );
@@ -179,6 +218,11 @@ const totalContainer = css`
 
   button:first-of-type {
     margin-right: 1rem;
+  }
+  .login-bottom-div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 `;
 
