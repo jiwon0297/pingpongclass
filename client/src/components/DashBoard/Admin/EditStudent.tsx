@@ -1,18 +1,15 @@
 import { css } from '@emotion/react';
 import IosModalNew from '@src/components/Common/IosModalNew';
 import ProfilImage from '@assets/images/profile.png';
-import { useAppSelector } from '@src/store/hooks';
 import React, { useState, useRef } from 'react';
 import InterceptedAxios from '@utils/iAxios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
-const StudentMyInfo = () => {
+const EditStudent = () => {
   const { studentId } = useParams();
-  const memberStore = useAppSelector((state) => state.member);
   const [student, setStudent] = useState<StudentProps>();
-  const [studentExist, setStudentExist] = useState(false);
   const [email, setEmail] = useState('');
   const [grade, setGrade] = useState(0);
   const [classNum, setClassNum] = useState(0);
@@ -28,13 +25,6 @@ const StudentMyInfo = () => {
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
   const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
-
-  interface StudentDataInterface {
-    studentId: number;
-    email: string;
-    password: string;
-    profile?: string;
-  }
 
   interface StudentProps {
     studentId?: number;
@@ -53,7 +43,6 @@ const StudentMyInfo = () => {
     if (studentId !== undefined) {
       InterceptedAxios.get('/students/' + studentId).then((res) => {
         setStudent(res.data);
-        setStudentExist(true);
       });
     }
   };
@@ -145,9 +134,9 @@ const StudentMyInfo = () => {
         studentId: student?.studentId || 0,
         email: email,
         password: password,
-        grade: student?.grade || 0,
-        classNum: student?.classNum || 0,
-        studentNum: student?.studentNum || 0,
+        grade: grade || 0,
+        classNum: classNum || 0,
+        studentNum: studentNum || 0,
       });
     }
 
@@ -163,15 +152,16 @@ const StudentMyInfo = () => {
   };
 
   const deleteStudent = (e) => {
-    InterceptedAxios.delete('/students/' + studentId)
-      .then(function (response) {
-        alert('회원 삭제에 성공했습니다.');
-        location.href = '/admin/students';
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert('회원 삭제에 실패하였습니다.');
-      });
+    alert('현재 봉인된 기능입니다.');
+    // InterceptedAxios.delete('/students/' + studentId)
+    //   .then(function (response) {
+    //     alert('회원 삭제에 성공했습니다.');
+    //     location.href = '/admin/students';
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //     alert('회원 삭제에 실패하였습니다.');
+    //   });
   };
 
   const onEditMyInfo = (e) => {
@@ -628,4 +618,4 @@ const ModalCSS = (isMouseOn) => css`
   }
 `;
 
-export default StudentMyInfo;
+export default EditStudent;
