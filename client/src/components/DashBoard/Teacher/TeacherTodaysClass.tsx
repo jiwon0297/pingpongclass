@@ -9,12 +9,30 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@src/store/hooks';
+import getCode from '@utils/getCode';
+import { number } from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+
+interface ClassProps {
+  classDay: number;
+  classDesc: string;
+  classId: number;
+  classTitle: string;
+  subjectEntity: {
+    classSubjectCode: number;
+    name: string;
+  };
+  teacherName: string;
+  timetableId: number;
+}
 
 function TeacherTodaysClass() {
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   const [classList, setClassList] = useState([] as any);
+  const navigate = useNavigate();
   var dt = new Date();
+
   const loadClassList = async () => {
     const teacherId = memberStore.userId;
     const classDay = dt.getDay();
@@ -24,6 +42,21 @@ function TeacherTodaysClass() {
     setClassList(result.data.content);
     console.log(result);
     console.log(classList);
+  };
+
+  const openClass = async (cls: ClassProps) => {
+    const newCode = await getCode();
+    const newData = {
+      classId: cls.classId,
+      classUrl: newCode,
+    };
+
+    try {
+      await AXIOS.patch(`/classes/open`, newData);
+      navigate(`/class/${newCode}`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
@@ -44,7 +77,7 @@ function TeacherTodaysClass() {
         className="mySwiper"
       >
         {classList.map((cls, idx) => (
-          <SwiperSlide key={idx}>
+          <SwiperSlide key={idx} onClick={() => openClass(cls)}>
             <ClassCard objectName={cls.classTitle} />
           </SwiperSlide>
         ))}

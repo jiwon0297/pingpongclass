@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SetupComponent from './components/SetupComponent';
 import VideoRoomComponent from './components/VideoRoomComponent';
 import { useParams } from 'react-router-dom';
+import { useAppSelector } from '@src/store/hooks';
 
 const App = () => {
   const [tap, setTap] = useState('setup');
@@ -22,6 +23,8 @@ const App = () => {
 
   // 입장코드
   const { code } = useParams();
+
+  const memberStore = useAppSelector((state) => state.member);
 
   const setDevices = {
     videos,
@@ -52,7 +55,11 @@ const App = () => {
         <SetupComponent setTap={setTap} setDevices={setDevices} code={code} />
       )}
       {tap === 'class' && (
-        <VideoRoomComponent setDevices={setDevices} code={code} />
+        <VideoRoomComponent
+          setDevices={setDevices}
+          code={code}
+          memberStore={memberStore}
+        />
       )}
     </>
   );

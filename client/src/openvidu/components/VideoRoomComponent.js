@@ -12,7 +12,6 @@ import QuizModal from './quiz/QuizModal';
 import QuizModalStudent from './quiz/QuizModalStudent';
 import ShieldModal from './items/ShieldModal';
 import Sticker from './pointClickEvent/PointSticker';
-import { getVideos, getAudios, getSpeakers } from './utils/customUseDevice';
 
 import OpenViduLayout from '../layout/openvidu-layout';
 import UserModel from '../models/user-model';
@@ -43,9 +42,7 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.code;
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
-    let userName = this.props.user
-      ? this.props.user
-      : '익명의 유저 ' + Math.floor(Math.random() * 100);
+    let userName = this.props.memberStore.name;
     // remotes:
     this.remotes = [];
     // localUserAccessAllowed:
@@ -150,6 +147,7 @@ class VideoRoomComponent extends Component {
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
   componentDidMount() {
+    console.log('-------------', this.props.code);
     // openViduLayoutOptions: 화면 레이아웃 설정
     const openViduLayoutOptions = {
       maxRatio: 9 / 16, // The narrowest ratio that will be used (default 2x3)
