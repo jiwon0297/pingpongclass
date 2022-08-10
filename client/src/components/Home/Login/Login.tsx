@@ -37,6 +37,7 @@ const Login = (props: LoginProps) => {
       progress: undefined,
       theme: 'colored',
     });
+
   if (toastMsg) {
     notify();
     setToast('');
@@ -78,7 +79,7 @@ const Login = (props: LoginProps) => {
       .then((response) => {
         //성공
         let expires = new Date();
-        expires.setMinutes(expires.getMinutes() + 60);
+        expires.setDate(expires.getDate() + 1);
 
         https: if (isSaveId) {
           setCookie('savedId', userId, {

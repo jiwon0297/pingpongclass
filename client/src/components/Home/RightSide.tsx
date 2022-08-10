@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import InterceptedAxios from '@utils/iAxios';
+import { setCookie } from '@utils/cookie';
+import { saveMember, getClasses } from '@src/store/member';
+import { useNavigate } from 'react-router-dom';
 
 interface RightSideProps {
   setTap: Function;
@@ -7,10 +13,85 @@ interface RightSideProps {
 
 function RightSide(props: RightSideProps) {
   const { setTap } = props;
+  const [userId, setUserID] = useState(0);
+  const [userPw, setUserPw] = useState('');
+  const [status, setStatus] = useState('');
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  //컴포넌트마운트/업데이트/컴포넌트마운트직후
+  useEffect(() => {
+    if (userPw !== '') {
+      goRealLogin(status);
+    }
+  }, [userPw]);
 
   const onClickLogin = () => {
     setTap('login');
   };
+
+  const goLogin = (params) => {
+    setStatus(params);
+    if (params === 'student') {
+      setUserID(2022000001);
+      setUserPw('ssafy2022000001');
+      alert('학생 로그인');
+    } else if (params === 'teacher') {
+      setUserID(4030001);
+      setUserPw('ssafy4030001');
+      alert('선생님 로그인');
+    } else {
+      setUserID(5030001);
+      setUserPw('ssafy5030001');
+      alert('관리자 로그인');
+    }
+  };
+
+  function goRealLogin(params) {
+    InterceptedAxios.post('/auth/login', {
+      id: userId,
+      password: userPw,
+    })
+      .then((response) => {
+        //성공
+        let expires = new Date();
+        expires.setDate(expires.getDate() + 1);
+
+        // localStorage 저장
+        if (response.data) {
+          setCookie('jwt-accessToken', response.data.accessToken, {
+            path: '/',
+            expires,
+            sameSite: 'Lax',
+          });
+          expires = new Date();
+          expires.setDate(expires.getDate() + 7);
+          setCookie('jwt-refreshToken', response.data.refreshToken, {
+            path: '/',
+            // secure: true,
+            expires,
+            sameSite: 'Lax',
+          });
+        }
+
+        if (params === 'student') {
+          navigate('/student');
+        } else if (params === 'teacher') {
+          navigate('/teacher');
+        } else {
+          navigate('/admin');
+        }
+
+        dispatch(saveMember());
+        dispatch(getClasses(userId));
+        console.log('로그인 성공', response);
+      })
+      .catch(function (error) {
+        alert('로그인 에러.');
+        console.log('로그인 실패', error);
+      });
+  }
 
   return (
     <div css={totalContainer}>
@@ -28,6 +109,30 @@ function RightSide(props: RightSideProps) {
         만들기 위해 제작했어요.
       </div>
       <div className="buttons-div">
+        <button
+          className="button blue"
+          onClick={(e) => {
+            goLogin('student');
+          }}
+        >
+          학생
+        </button>
+        <button
+          className="button blue"
+          onClick={(e) => {
+            goLogin('teacher');
+          }}
+        >
+          선생님
+        </button>
+        <button
+          className="button blue"
+          onClick={(e) => {
+            goLogin('admin');
+          }}
+        >
+          관리자
+        </button>
         <button className="button blue" onClick={onClickLogin}>
           로그인
         </button>
