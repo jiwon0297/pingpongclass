@@ -60,9 +60,10 @@ const SetupComponent = (props) => {
       setSelectedAudioTrack(newAudios[0]);
       setSelectedVideoTrack(newVideos[0]);
       setStream(createStream(newAudios[0], newVideos[0]));
-      setIsLoading(false);
     };
-    getMyDevices();
+    getMyDevices().then(() => {
+      setIsLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -135,9 +136,9 @@ const SetupComponent = (props) => {
 
   if (isLoading)
     return (
-      <>
+      <div className="loading">
         <Loading />
-      </>
+      </div>
     );
 
   return (

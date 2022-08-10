@@ -8,13 +8,22 @@ import { getAudios, getVideos } from './utils/customUseDevice';
 const Result = (props) => {
   const { teacherName, classTitle, whoami, myData, othersData } = props;
 
-  // 장치 중지시키기
-  const stopDevices = async () => {
-    const audios = await getAudios();
-    const videos = await getVideos();
-    console.log(audios);
-  };
-  stopDevices();
+  // 결과창 나온 시간
+  const time = new Date();
+  const finTime =
+    String(time.getHours()).padStart(2, '0') +
+    ':' +
+    String(time.getMinutes()).padStart(2, '0') +
+    ':' +
+    String(time.getSeconds()).padStart(2, '0');
+
+  // // 장치 중지시키기
+  // const stopDevices = async () => {
+  //   const audios = await getAudios();
+  //   const videos = await getVideos();
+  //   console.log(audios);
+  // };
+  // stopDevices();
 
   return (
     <>
@@ -27,6 +36,7 @@ const Result = (props) => {
               othersData={othersData}
               teacherName={teacherName}
               classTitle={classTitle}
+              finTime={finTime}
             />
             <Link to={`/teacher`}>
               <div className="btn-items">
@@ -42,6 +52,7 @@ const Result = (props) => {
               othersData={othersData}
               teacherName={teacherName}
               classTitle={classTitle}
+              finTime={finTime}
             />
             <Link to={`/student`}>
               <div className="btn-items">

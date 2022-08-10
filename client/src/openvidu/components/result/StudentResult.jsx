@@ -7,6 +7,7 @@ const StudentResult = ({
   whoami,
   myData,
   othersData,
+  finTime,
 }) => {
   const [totalStudentNum, setTotalStudentNum] = useState(0);
   const [attStudentNum, setAttStudentNum] = useState(0);
@@ -54,6 +55,7 @@ const StudentResult = ({
           <div className="t-classname">수업 이름</div>
           <div className="t-nickname">선생님 이름</div>
           <div className="t-attendence-time">수업 개설 시간</div>
+          <div className="t-fin-time">수업 종료 시간</div>
           <div className="t-point">총 부여 상점</div>
           <div className="t-student-number">전체 학생 수</div>
           <div className="t-att-student-number">참여 학생 수</div>
@@ -62,6 +64,7 @@ const StudentResult = ({
           <div className="t-classname">{classTitle}</div>
           <div className="t-nickname">{teacherName}</div>
           <div className="t-attendence-time">{teacherModel.attendenceTime}</div>
+          <div className="t-fin-time">{finTime}</div>
           <div className="t-point">{totalSticker}</div>
           <div className="t-student-number">{attStudentNum}</div>
           <div className="t-att-student-number">{totalStudentNum}</div>
@@ -135,7 +138,8 @@ const ClassStatistic = css`
       align-items: center;
     }
 
-    & > .t-attendence-time {
+    & > .t-attendence-time,
+    .t-fin-time {
       display: flex;
       width: 100px;
       justify-content: center;
