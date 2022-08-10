@@ -14,6 +14,10 @@ const StudentMyInfo = () => {
   const [student, setStudent] = useState<StudentProps>();
   const [studentExist, setStudentExist] = useState(false);
   const [email, setEmail] = useState('');
+  const [grade, setGrade] = useState(0);
+  const [classNum, setClassNum] = useState(0);
+  const [studentNum, setStudentNum] = useState(0);
+  const [introduce, setIntroduce] = useState('');
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const [isUse, setUse] = useState(true);
@@ -38,7 +42,6 @@ const StudentMyInfo = () => {
     profileFullPath?: string;
     profile?: string;
     password?: string;
-
     name?: string;
     grade?: number;
     classNum?: number;
@@ -62,23 +65,19 @@ const StudentMyInfo = () => {
   };
 
   const gradeChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newStudent: StudentProps = { ...student, grade: +e.target.value };
-    setStudent(newStudent);
+    setGrade(parseInt(e.target.value));
   };
 
   const classNumChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newStudent: StudentProps = { ...student, classNum: +e.target.value };
-    setStudent(newStudent);
+    setClassNum(parseInt(e.target.value));
   };
 
   const studentNumChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newStudent: StudentProps = { ...student, studentNum: +e.target.value };
-    setStudent(newStudent);
+    setStudentNum(parseInt(e.target.value));
   };
 
   const introduceChanged = (e) => {
-    let newStudent: StudentProps = { ...student, introduce: e.target.value };
-    setStudent(newStudent);
+    setIntroduce(e.target.value);
   };
 
   const onChangePassword = (e) => {
@@ -163,6 +162,18 @@ const StudentMyInfo = () => {
       });
   };
 
+  const deleteStudent = (e) => {
+    InterceptedAxios.delete('/students/' + studentId)
+      .then(function (response) {
+        alert('회원 삭제에 성공했습니다.');
+        location.href = '/admin/students';
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert('회원 삭제에 실패하였습니다.');
+      });
+  };
+
   const onEditMyInfo = (e) => {
     if (email === null) {
       alert('이메일을 확인해주세요.');
@@ -178,19 +189,21 @@ const StudentMyInfo = () => {
           studentId: student?.studentId || 0,
           email: email,
           password: password,
-          grade: student?.grade || 0,
-          classNum: student?.classNum || 0,
-          studentNum: student?.studentNum || 0,
+          grade: grade || 0,
+          classNum: classNum || 0,
+          studentNum: studentNum || 0,
+          introduce: introduce || '',
         };
       } else {
         studentData = {
           studentId: student?.studentId || 0,
           email: email,
           password: password,
+          grade: grade || 0,
+          classNum: classNum || 0,
+          studentNum: studentNum || 0,
+          introduce: introduce || '',
           profile: 'reset',
-          grade: student?.grade || 0,
-          classNum: student?.classNum || 0,
-          studentNum: student?.studentNum || 0,
         };
       }
       const teacherString = JSON.stringify(studentData);
@@ -366,9 +379,14 @@ const StudentMyInfo = () => {
       </div>
       <div className="buttonsContainer">
         {studentId ? (
-          <button type="button" className="submit" onClick={onEditMyInfo}>
-            수정
-          </button>
+          <>
+            <button type="button" className="submit" onClick={onEditMyInfo}>
+              수정
+            </button>
+            <button type="button" className="delete" onClick={deleteStudent}>
+              삭제
+            </button>
+          </>
         ) : (
           <button type="button" className="submit" onClick={onEnroll}>
             추가
@@ -503,6 +521,10 @@ const ModalCSS = (isMouseOn) => css`
     box-sizing: border-box;
     font-family: 'NanumSquareRound';
     cursor: pointer;
+  }
+
+  .delete {
+    background-color: #f65570;
   }
 
   .submit {
