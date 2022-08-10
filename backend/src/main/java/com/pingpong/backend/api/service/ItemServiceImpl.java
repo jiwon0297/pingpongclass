@@ -120,4 +120,10 @@ public class ItemServiceImpl implements ItemService{
         return result;
     }
 
+    @Override
+    public String findItemName(int itemId) throws Exception {
+        String name = itemRepository.getOne(itemId).getName();
+        return name;
+    }
+
 }

@@ -20,4 +20,7 @@ public interface ItemService {
 
     //리액션 목록 조회
     List<ItemStudentResponse> findReaction(int studentId) throws Exception;
+
+    //아이템명 조회
+    String findItemName(int itemId) throws Exception;
 }
