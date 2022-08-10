@@ -19,12 +19,14 @@ const DashBoard = () => {
         <div className="navBar">
           <NavBar />
         </div>
-        <div className="userInfo">
-          <div className="infoBar">
-            <IconGroup />
-          </div>
-          <div className="infoContent">
-            <Outlet />
+        <div className="dashboardRight">
+          <div className="userInfo">
+            <div className="infoBar">
+              <IconGroup />
+            </div>
+            <div className="infoContent">
+              <Outlet />
+            </div>
           </div>
           <div className="footer">
             <Footer />
@@ -55,6 +57,10 @@ const totalContainer = css`
     height: 100%;
     width: 250px;
     min-width: 250px;
+  }
+
+  .dashboardRight {
+    height: 100%;
   }
 
   .userInfo {
@@ -101,8 +107,8 @@ const totalContainer = css`
 
   .footer {
     height: 5%;
-    width: 95%;
-    padding: 0px 10px;
+    width: 1000px;
+    padding: 20px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;

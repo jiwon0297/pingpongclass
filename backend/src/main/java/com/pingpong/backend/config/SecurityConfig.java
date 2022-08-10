@@ -102,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                 .and()
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한 설정하겠다
                 .antMatchers( "/web-resources/**", "/actuator/**").permitAll()//해당 api 요청은 인증없이 접근 허용하겠다는 의미
-//                .antMatchers("/be/items/**").hasRole("STUDENT")
+                .antMatchers("/be/items/**").hasRole("STUDENT")
                 .antMatchers("/be/admin/**","/be/excel/**").hasRole("ADMIN")
 //                .anyRequest().authenticated() //나머지 요청들은 모두 인증되어야 한다
 
