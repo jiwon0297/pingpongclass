@@ -9,7 +9,9 @@ const Footer = () => {
 };
 
 const TotalContainer = () => css`
-  font-weight: 600;
+  font-weight: 300;
+  color: #4d4d4d;
+  font-size: 0.8em;
   p {
     margin: 0;
   }
