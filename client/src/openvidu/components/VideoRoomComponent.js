@@ -44,6 +44,7 @@ class VideoRoomComponent extends Component {
     let sessionName = this.props.code;
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.memberStore.name;
+    if (this.props.whoami === 'teacher') userName += ' (선생님)';
     // remotes:
     this.remotes = [];
     // localUserAccessAllowed:
@@ -88,6 +89,8 @@ class VideoRoomComponent extends Component {
     this.joinSession = this.joinSession.bind(this);
     // leaveSession: 세션 접속해제
     this.leaveSession = this.leaveSession.bind(this);
+    // selfLeaveSession: 학생 혼자 세션 나갔을 때
+    this.selfLeaveSession = this.selfLeaveSession.bind(this);
     // onbeforeunload: 접속 종료 전에 일어나는 일들을 처리하는 함수
     this.onbeforeunload = this.onbeforeunload.bind(this);
     // updateLayout: 레이아웃 업데이트
@@ -369,9 +372,36 @@ class VideoRoomComponent extends Component {
     );
   }
 
+  // 학생이 자기혼자 나간경우
+  selfLeaveSession() {
+    const mySession = this.state.session;
+
+    if (mySession) {
+      mySession.disconnect();
+    }
+
+    // Empty all properties...
+    // 모든 설정들 초기화
+    this.OV = null;
+    this.setState({
+      session: undefined,
+      subscribers: [],
+      mySessionId: 'SessionA',
+      myUserName: '퇴장한 유저',
+      localUser: undefined,
+    });
+    if (this.props.selfLeaveSession) {
+      this.props.selfLeaveSession();
+    }
+
+    return this.props.navigate('/student');
+  }
+
   // leaveSession: 세션을 빠져나가는 함수
   async leaveSession() {
     const mySession = this.state.session;
+    this.props.setMyData(this.state.localUser);
+    this.props.setOthersData(this.state.subscribers);
 
     if (this.props.whoami === 'teacher') {
       console.log('나는 선생님', this.props.classId);
@@ -1387,6 +1417,7 @@ class VideoRoomComponent extends Component {
               toggleFullscreen={this.toggleFullscreen}
               switchCamera={this.switchCamera}
               leaveSession={this.leaveSession}
+              selfLeaveSession={this.selfLeaveSession}
               toggleChat={this.toggleChat}
               toggleParticipant={this.toggleParticipant}
               toggleQuiz={this.toggleQuiz}

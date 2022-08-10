@@ -2,7 +2,7 @@ import { useState } from 'react';
 import SetupComponent from './components/SetupComponent';
 import VideoRoomComponent from './components/VideoRoomComponent';
 import ResultComponent from './components/ResultComponent';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@src/store/hooks';
 import whoru from '@utils/whoru';
 
@@ -22,11 +22,16 @@ const App = () => {
   // 비디오를 켜고 들어갈 것인지 끄고 들어갈 것인지
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [isAudioOn, setIsAudioOn] = useState(true);
+  // 통계를 내기 위한 자료
+  const [myData, setMyData] = useState(true);
+  const [othersData, setOthersData] = useState(true);
+
+  // 라우팅용
+  const navigate = useNavigate();
 
   // 입장코드
   const { code } = useParams();
   const { state } = useLocation();
-  console.log(state, 'adfadf');
 
   const memberStore = useAppSelector((state) => state.member);
   const whoami = whoru(memberStore.userId);
@@ -67,9 +72,18 @@ const App = () => {
           whoami={whoami}
           setTap={setTap}
           classId={state}
+          setMyData={setMyData}
+          setOthersData={setOthersData}
+          navigate={navigate}
         />
       )}
-      {tap === 'result' && <ResultComponent whoami={whoami} />}
+      {tap === 'result' && (
+        <ResultComponent
+          whoami={whoami}
+          myData={myData}
+          othersData={othersData}
+        />
+      )}
     </>
   );
 };

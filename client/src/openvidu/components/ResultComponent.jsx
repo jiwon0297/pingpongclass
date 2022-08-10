@@ -5,21 +5,29 @@ import StudentResult from './result/StudentResult';
 import './SetupComponent.css';
 
 const Result = (props) => {
-  const { whoami } = props;
+  const { whoami, myData, othersData } = props;
   return (
     <>
       <div>Result</div>
       <div>
         {whoami === 'teacher' ? (
           <>
-            <TeacherResult />
+            <TeacherResult
+              whoami={whoami}
+              myData={myData}
+              othersData={othersData}
+            />
             <Link to={`/teacher`}>
               <button>대시보드로</button>
             </Link>
           </>
         ) : (
           <>
-            <StudentResult />
+            <StudentResult
+              whoami={whoami}
+              myData={myData}
+              othersData={othersData}
+            />
             <Link to={`/student`}>
               <button>대시보드로</button>
             </Link>

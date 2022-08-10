@@ -1,7 +1,17 @@
-import React from 'react';
+import { useEffect } from 'react';
 
-const StudentResult = () => {
-  return <div>StudentResult</div>;
+const StudentResult = ({ whoami, myData, othersData }) => {
+  useEffect(() => {
+    console.log(whoami);
+    console.log(myData);
+    console.log(othersData);
+  }, [whoami, myData, othersData]);
+
+  return (
+    <div>
+      <h2>StudentResult</h2>
+    </div>
+  );
 };
 
 export default StudentResult;

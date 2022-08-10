@@ -44,6 +44,7 @@ export default class ToolbarComponent extends Component {
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
     this.startStickerEvent = this.startStickerEvent.bind(this);
     this.toggleSetting = this.toggleSetting.bind(this);
+    this.selfLeaveSession = this.selfLeaveSession.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -80,6 +81,11 @@ export default class ToolbarComponent extends Component {
   // leaveSession: 세션 이탈 함수
   leaveSession() {
     this.props.leaveSession();
+  }
+
+  // selfLeaveSession: 혼자 세션 이탈 함수
+  selfLeaveSession() {
+    this.props.selfLeaveSession();
   }
 
   // toggleChat: 채팅 토글 함수
@@ -317,17 +323,31 @@ export default class ToolbarComponent extends Component {
               </div>
             </IconButton>
 
-            <IconButton
-              color="secondary"
-              className="navButton"
-              onClick={this.leaveSession}
-              id="navLeaveButton"
-            >
-              <div className="buttonStyle">
-                <PowerSettingsNew />
-                <p>수업 나가기</p>
-              </div>
-            </IconButton>
+            {this.props.whoami !== 'teacher' ? (
+              <IconButton
+                color="secondary"
+                className="navButton"
+                onClick={this.selfLeaveSession}
+                id="navLeaveButton"
+              >
+                <div className="buttonStyle">
+                  <PowerSettingsNew />
+                  <p>수업 나가기</p>
+                </div>
+              </IconButton>
+            ) : (
+              <IconButton
+                color="secondary"
+                className="navButton"
+                onClick={this.leaveSession}
+                id="navLeaveButton"
+              >
+                <div className="buttonStyle">
+                  <PowerSettingsNew />
+                  <p>수업 나가기</p>
+                </div>
+              </IconButton>
+            )}
 
             <IconButton
               color="inherit"
