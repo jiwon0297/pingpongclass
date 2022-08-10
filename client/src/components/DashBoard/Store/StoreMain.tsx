@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import ItemList from './ItemListTap/ItemList';
 import ReactionList from './ItemListTap/ReactionList';
 import GetItemList from './GetItemListTap/GetItemList';
@@ -10,13 +12,55 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppSelector, useAppDispatch } from '@src/store/hooks';
+import { setPoint } from '@src/store/member';
 
 const StoreMain = () => {
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   const [itemtap, setTap] = useState('itemTap');
   const [gettap, setGetTap] = useState('getItemTap');
   const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const onClickBtn = () => {
+    //사용하시겠습니까? 창
+    if (memberStore.point < 0) {
+      alert('보유 퐁퐁이가 부족합니다.');
+    } else {
+      const isUse = confirm('퐁퐁이 15개를 사용하여 뽑기를 진행하시겠습니까?');
+      if (isUse) {
+        let itemId = 0;
+        //랜덤 아이템 선택
+        const rarity = Math.floor(Math.random() * 10) + 1; //1~10까지
+        if (rarity > 6) {
+          itemId = Math.floor(Math.random() * 4) + 7;
+        } else if (rarity > 3) {
+          itemId = Math.floor(Math.random() * 3) + 4;
+        } else if (rarity > 1) {
+          itemId = Math.floor(Math.random() * 2) + 2;
+        } else {
+          itemId = 1;
+        }
+        console.log('뽑은 아이템 :' + itemId + ',' + memberStore.userId);
+
+        //뽑기 아이템 DB 저장
+        InterceptedAxios.post('/items', {
+          studentId: memberStore.userId,
+          itemId: itemId,
+        })
+          .then(() => {
+            onClickOpenModal();
+            //퐁퐁이 개수 줄인 정보 받아오기
+            dispatch(setPoint());
+          })
+          .catch(function (error) {
+            alert('뽑기 과정에서 에러 발생');
+            console.log('뽑기 DB저장 실패', error);
+          });
+      }
+    }
+  };
 
   const onClickOpenModal = useCallback(() => {
     setOpenBbobkki(!isOpenBbobkki);
@@ -47,7 +91,7 @@ const StoreMain = () => {
             <motion.button
               type="button"
               className="bbobkkiBtn"
-              onClick={onClickOpenModal}
+              onClick={onClickBtn}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
