@@ -24,7 +24,7 @@ import { setCookie, getCookie } from './cookie';
 // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
-  config.baseURL = 'http://localhost/be';
+  config.baseURL = 'http://localhost:80/be';
   console.log(config.baseURL);
 
   return config;
