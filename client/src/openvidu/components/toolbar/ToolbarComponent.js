@@ -185,57 +185,69 @@ export default class ToolbarComponent extends Component {
               )}
             </IconButton>
 
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navRandButton"
-              onClick={this.pickRandomStudent}
-              disabled={!this.state.randAvailable}
-            >
-              <div className="buttonStyle">
-                {this.state.randAvailable ? (
-                  <Shuffle />
-                ) : (
-                  <Shuffle
-                    color="secondary"
-                    style={{ animation: 'cooldown 5s linear 1' }}
-                  />
-                )}
-                <p>랜덤 학생 뽑기</p>
-              </div>
-            </IconButton>
+            {this.props.whoami === 'teacher' && (
+              <>
+                <IconButton
+                  color="inherit"
+                  className="navButton"
+                  id="navRandButton"
+                  onClick={this.pickRandomStudent}
+                  disabled={!this.state.randAvailable}
+                >
+                  <div className="buttonStyle">
+                    {this.state.randAvailable ? (
+                      <Shuffle />
+                    ) : (
+                      <Shuffle
+                        color="secondary"
+                        style={{ animation: 'cooldown 5s linear 1' }}
+                      />
+                    )}
+                    <p>랜덤 학생 뽑기</p>
+                  </div>
+                </IconButton>
+              </>
+            )}
 
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navRandButton"
-              onClick={this.startStickerEvent}
-              disabled={!this.state.stickerAvailable}
-            >
-              <div className="buttonStyle">
-                {this.state.stickerAvailable ? (
-                  <AccessTime />
-                ) : (
-                  <AccessTime
-                    color="secondary"
-                    style={{ animation: 'cooldown 30s linear 1' }}
-                  />
-                )}
-                <p>집중 스티커</p>
-              </div>
-            </IconButton>
+            {this.props.whoami === 'teacher' && (
+              <>
+                <IconButton
+                  color="inherit"
+                  className="navButton"
+                  id="navRandButton"
+                  onClick={this.startStickerEvent}
+                  disabled={!this.state.stickerAvailable}
+                >
+                  <div className="buttonStyle">
+                    {this.state.stickerAvailable ? (
+                      <AccessTime />
+                    ) : (
+                      <AccessTime
+                        color="secondary"
+                        style={{ animation: 'cooldown 30s linear 1' }}
+                      />
+                    )}
+                    <p>집중 스티커</p>
+                  </div>
+                </IconButton>
+              </>
+            )}
 
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navRandButton"
-              onClick={this.toggleQuiz}
-            >
-              <div className="buttonStyle">
-                <Quiz />
-                <p>퀴즈 열기</p>
-              </div>
-            </IconButton>
+            {this.props.whoami === 'teacher' && (
+              <>
+                <IconButton
+                  color="inherit"
+                  className="navButton"
+                  id="navRandButton"
+                  onClick={this.toggleQuiz}
+                >
+                  <div className="buttonStyle">
+                    <Quiz />
+                    <p>퀴즈 열기</p>
+                  </div>
+                </IconButton>
+              </>
+            )}
 
             <IconButton
               color="inherit"
