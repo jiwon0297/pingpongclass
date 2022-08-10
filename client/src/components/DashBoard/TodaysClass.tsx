@@ -10,6 +10,20 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@src/store/hooks';
 
+interface ClassProps {
+  classDay: number;
+  classDesc: string;
+  classId: number;
+  classTitle: string;
+  subjectEntity: {
+    classSubjectCode: number;
+    name: string;
+  };
+  teacherName: string;
+  timetableId: number;
+  isActive: boolean;
+}
+
 function TodaysClass() {
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
@@ -21,7 +35,24 @@ function TodaysClass() {
     const result = await AXIOS.get(`/classes`, {
       params: { id: studentId, day: classDay },
     });
+
+    // promise.all 처리!
+    const promises = result.data.content.map(async (elem, i) => {
+      const isActiveClass = await AXIOS.get(`/classes/isoopen/${elem.classId}`);
+      console.log(isActiveClass.data, elem.classId);
+      elem.isActive = isActiveClass.data;
+    });
+    await Promise.all(promises);
+    // result.data.content.forEach(async (elem) => {
+    //   const isActiveClass = await AXIOS.get(`/classes/isoopen/${elem.classId}`);
+    //   elem.isActive = isActiveClass;
+    // });
     setClassList(result.data.content);
+  };
+  console.log(classList);
+
+  const joinClass = async (cls: ClassProps) => {
+    console.log(cls);
   };
 
   useEffect(() => {
@@ -42,7 +73,11 @@ function TodaysClass() {
       >
         {classList.map((cls, idx) => (
           <SwiperSlide key={idx}>
-            <ClassCard objectName={cls.classTitle} />
+            <ClassCard
+              objectName={cls.classTitle}
+              isActive={cls.isActive}
+              onClick={() => joinClass(cls)}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

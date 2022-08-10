@@ -83,7 +83,7 @@ function TeacherTodaysClass() {
       >
         {classList.map((cls, idx) => (
           <SwiperSlide key={idx} onClick={() => openClass(cls)}>
-            <ClassCard objectName={cls.classTitle} />
+            <ClassCard objectName={cls.classTitle} isActive={true} />
           </SwiperSlide>
         ))}
       </Swiper>
