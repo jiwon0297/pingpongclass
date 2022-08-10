@@ -4,7 +4,6 @@ import { useAppSelector } from '@src/store/hooks';
 import IosModalNew from '@src/components/Common/IosModalNew';
 import { useState, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,16 +12,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TeacherDataInterface {
   teacherId: number;
-  manageGrade?: number;
-  email?: string;
-  password?: string;
+  manageGrade: number;
+  email: string;
+  password: string;
   profile?: string;
 }
 
 const TeacherMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const [email, setEmail] = useState(memberStore.email);
-  const navigate = useNavigate();
   const [manageGrade, setManageGrade] = useState(memberStore.manageGrade);
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
@@ -91,20 +89,18 @@ const TeacherMyInfo = () => {
   };
 
   const onEditMyInfo = (e) => {
-    if (password === null) {
-      alert('비밀번호를 입력해주세요.');
-    } else if (email === null) {
+    if (email === null) {
       alert('이메일을 확인해주세요.');
     } else if (manageGrade === null) {
       alert('담당학년을 입력해주세요.');
-    } else if (passwordconfirm === null) {
+    } else if (password !== null && passwordconfirm === null) {
       alert('비밀번호확인을 입력해주세요.');
     } else if (!(password === passwordconfirm)) {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
       let teacher: TeacherDataInterface;
-      if (!isPreviewReset) {
+      if (!isPreviewReset && password) {
         teacher = {
           teacherId: memberStore.userId,
           manageGrade: manageGrade,
