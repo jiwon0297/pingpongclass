@@ -201,7 +201,7 @@ public class ClassService {
     @Transactional
     public boolean isOpen(int classId){
         String classUrl = classRepository.getOne(classId).getClassUrl();
-        if(classUrl==null){
+        if(classUrl==null || classUrl==""){
             return false;
         } else{
             return true;
