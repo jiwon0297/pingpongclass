@@ -13,7 +13,15 @@ import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
-import { setPoint } from '@src/store/member';
+import member, {
+  setPoint,
+  saveMember,
+  allItems,
+  Items,
+  saveItem,
+} from '@src/store/member';
+import { ModalHover } from 'react-modal-hover';
+import InterceptedAxios from '@utils/iAxios';
 
 const StoreMain = () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -21,11 +29,22 @@ const StoreMain = () => {
   const [itemtap, setTap] = useState('itemTap');
   const [gettap, setGetTap] = useState('getItemTap');
   const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
+  const [items, setItems] = useState<Items[]>([allItems]);
+  const [change, setChange] = useState('');
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    //로딩시 해당 유저의 아이템 불러오기
+    dispatch(saveItem(memberStore.userId)).then(() => {
+      // console.log('------------', memberStore.items);
+      setItems(memberStore.items);
+      dispatch(saveMember());
+    });
+  }, [change]);
 
   const onClickBtn = () => {
     //사용하시겠습니까? 창
-    if (memberStore.point < 0) {
+    if (memberStore.point < 15) {
       alert('보유 퐁퐁이가 부족합니다.');
     } else {
       const isUse = confirm('퐁퐁이 15개를 사용하여 뽑기를 진행하시겠습니까?');
@@ -34,13 +53,17 @@ const StoreMain = () => {
         //랜덤 아이템 선택
         const rarity = Math.floor(Math.random() * 10) + 1; //1~10까지
         if (rarity > 6) {
-          itemId = Math.floor(Math.random() * 4) + 7;
+          //희귀도4
+          itemId = Math.floor(Math.random() * 2) + 1;
         } else if (rarity > 3) {
-          itemId = Math.floor(Math.random() * 3) + 4;
+          //희귀도3
+          itemId = Math.floor(Math.random() * 10) + 5;
         } else if (rarity > 1) {
-          itemId = Math.floor(Math.random() * 2) + 2;
+          //희귀도2
+          itemId = 4;
         } else {
-          itemId = 1;
+          //희귀도1
+          itemId = 3;
         }
         console.log('뽑은 아이템 :' + itemId + ',' + memberStore.userId);
 
@@ -51,8 +74,10 @@ const StoreMain = () => {
         })
           .then(() => {
             onClickOpenModal();
+            setChange('change');
             //퐁퐁이 개수 줄인 정보 받아오기
-            dispatch(setPoint());
+
+            console.log(memberStore);
           })
           .catch(function (error) {
             alert('뽑기 과정에서 에러 발생');
@@ -75,17 +100,44 @@ const StoreMain = () => {
     setGetTap(prop);
   };
 
+  const onInfoEnter = () => {};
+
   return (
     <div css={totalContainer}>
       {isOpenBbobkki && <Animation onClickOpenModal={onClickOpenModal} />}
+
       <div className="drawContainer">
-        <div className="pageTitle">뽑기</div>
+        <div className="store-title-div">
+          <div className="pageTitle">
+            뽑기{' '}
+            <span
+              css={css`
+                font-size: 0.5em;
+                font-weight: 300;
+                margin-left: 10px;
+              `}
+            >
+              {' '}
+              뽑기로 획득 가능한 아이템 리스트
+            </span>
+          </div>
+          <div className="pongCount">
+            <span>
+              <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
+              &nbsp; X {memberStore.point}
+            </span>
+          </div>
+        </div>
         <hr />
         <div className="sideContainer">
           <div className="draw">
             <div className="bbobkki">
               <p>랜덤 뽑기</p>
-              <HelpIcon fontSize="small" color="action" />
+              <HelpIcon
+                fontSize="small"
+                color="action"
+                onMouseEnter={onInfoEnter}
+              />
             </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
             <motion.button
@@ -122,12 +174,6 @@ const StoreMain = () => {
               {itemtap === 'itemTap' && <ItemList />}
               {itemtap === 'reactionTap' && <ReactionList />}
             </div>
-          </div>
-          <div className="pongCount">
-            <span>
-              <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
-              &nbsp; X {memberStore.point}
-            </span>
           </div>
         </div>
       </div>
@@ -191,9 +237,9 @@ const totalContainer = () => css`
   }
 
   .itemList {
-    width: 55%;
-    height: 25vh;
-    margin: auto;
+    width: 70%;
+    height: 80%;
+    margin-left: 29px;
     border-radius: 20px;
   }
 
@@ -223,7 +269,7 @@ const totalContainer = () => css`
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 33.33%;
+      width: 25%;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       background-color: #fcc97d;
@@ -261,6 +307,13 @@ const totalContainer = () => css`
     font-weight: 700;
   }
 
+  .store-title-div {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
   .drawContainer {
     height: 55%;
     justify-content: center;
@@ -270,9 +323,10 @@ const totalContainer = () => css`
     display: inline-flex;
     flex-direction: row;
     vertical-align: middle;
-    margin-top: 1rem;
+    margin-top: 0.7rem;
     justify-content: center;
     width: 100%;
+    height: 83%;
   }
 
   .myItemContainer {
@@ -286,7 +340,7 @@ const totalContainer = () => css`
 
   .draw {
     width: 21%;
-    height: 25vh;
+    height: 80%;
     display: inline-flex;
     margin: 0;
     justify-content: center;

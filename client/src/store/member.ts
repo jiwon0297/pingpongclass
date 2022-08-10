@@ -69,6 +69,24 @@ export interface Member {
   isAdmin?: number;
 }
 
+export interface Items {
+  itemId?: number;
+  name?: string;
+  rarity?: number;
+  category?: string;
+  describe?: string;
+  cnt?: number;
+}
+
+export const allItems = {
+  itemId: 1,
+  name: '',
+  rarity: 1,
+  category: '',
+  describe: '',
+  cnt: 0,
+};
+
 export interface StudentMember
   extends Omit<Member, 'birth' | 'manageGrade' | 'authorities' | 'isAdmin'> {}
 
@@ -144,7 +162,19 @@ export const saveMember = createAsyncThunk('saveMember', async () => {
   return formattedUserData;
 });
 
-const convert = (action: PayloadAction<any>) => {
+export const saveItem = createAsyncThunk('saveItem', async (id: number) => {
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
+
+  const response = await InterceptedAxios.get('/items/' + id);
+
+  const list = response.data;
+  let newList: Items[] = [];
+  newList = [allItems, ...list];
+
+  return newList;
+});
+
+const convert = (state, action: PayloadAction<any>) => {
   const newMember = {
     userId: action.payload.userId,
     name: action.payload.name,
@@ -162,8 +192,8 @@ const convert = (action: PayloadAction<any>) => {
     nextLevel: action.payload?.nextLevel ? action.payload?.nextLevel : '',
     levelPoint: action.payload?.levelPoint ? action.payload?.levelPoint : 0,
     myRank: action.payload?.myRank ? action.payload?.myRank : 0,
-    items: action.payload?.items ? action.payload?.items : [],
-    classes: action.payload?.classes ? action.payload?.classes : [],
+    items: action.payload?.items === [] ? action.payload?.items : state.items,
+    classes: action.payload?.classes ? action.payload?.classes : state.classes,
     // 선생, 관리자만
     birth: action.payload?.birth ? action.payload?.birth : '',
     manageGrade: action.payload?.manageGrade ? action.payload?.manageGrade : 0,
@@ -178,7 +208,7 @@ export const memberSlice = createSlice({
   initialState: initialState,
   reducers: {
     logIn: (state, action: PayloadAction<any>) => {
-      return convert(action);
+      return convert(state, action);
     },
     logOut: () => initialState,
     setPoint: (state) => {
@@ -191,11 +221,15 @@ export const memberSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(saveMember.fulfilled, (state, action) => {
-        return convert(action);
+        return convert(state, action);
       })
       .addCase(getClasses.fulfilled, (state, action) => {
         const newUser = { ...state, classes: action.payload };
         return newUser;
+      })
+      .addCase(saveItem.fulfilled, (state, action) => {
+        const newItem = { ...state, items: action.payload };
+        return newItem;
       });
   },
 });

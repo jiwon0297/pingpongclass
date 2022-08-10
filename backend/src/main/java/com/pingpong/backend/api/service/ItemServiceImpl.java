@@ -85,13 +85,11 @@ public class ItemServiceImpl implements ItemService{
     @Transactional
     public String save(final ItemRequest request) throws IOException {
         System.out.println("---------------save : "+request.getStudentId()+"/"+request.getItemId());
-        StudentEntity student = studentRepository.getOne(request.getStudentId());
+        StudentEntity student = studentRepository.findById(request.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         ItemEntity item = itemRepository.getOne(request.getItemId());
         ItemStudentEntity entity = new ItemStudentEntity(student, item);
+        student.usePoint(student.getPoint()-15);
         System.out.println("----------- item : "+item);
-        //퐁퐁 개수 감소
-        student = StudentEntity.builder()
-                .point(student.getPoint()-15).build();
 
         if(item.getCategory().equals("REACTION")){
             //리액션 중복 확인
@@ -120,6 +118,12 @@ public class ItemServiceImpl implements ItemService{
             }
         }
         return result;
+    }
+
+    @Override
+    public String findItemName(int itemId) throws Exception {
+        String name = itemRepository.getOne(itemId).getName();
+        return name;
     }
 
 }
