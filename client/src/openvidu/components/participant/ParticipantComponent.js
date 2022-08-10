@@ -64,6 +64,7 @@ export default class ParticipantComponent extends Component {
               <SingleParticipantPanel
                 whoami={this.props.whoami}
                 user={this.props.user}
+                isMyself={true}
                 // myinfo={this.props.user.nickname}
                 // point={this.props.user.point}
                 // attendenceTime={this.props.user.attendenceTime}
@@ -78,6 +79,7 @@ export default class ParticipantComponent extends Component {
                 key={i}
                 whoami={this.props.whoami}
                 user={sub}
+                isMyself={false}
                 // myinfo={sub.nickname}
                 // point={sub.point}
                 // attendenceTime={sub.attendenceTime}
