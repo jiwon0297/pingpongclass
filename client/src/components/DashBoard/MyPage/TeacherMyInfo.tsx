@@ -49,6 +49,12 @@ const TeacherMyInfo = () => {
 
   // 이미지 프리뷰 업로드 함수
   const onChangeFiles = (e) => {
+    if (e.target.files[0] > 1 * 1024 * 1024) {
+      e.target.value = '';
+      alert('업로드 가능한 최대 용량은 1MB입니다. ');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onloadend = () => {
       const file = reader.result;
