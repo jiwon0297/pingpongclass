@@ -29,14 +29,23 @@ const StoreMain = () => {
   const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
   const [items, setItems] = useState<Items[]>([allItems]);
   const [change, setChange] = useState('');
+  const [getItem, setGetItem] = useState<number>(0);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     //로딩시 해당 유저의 아이템 불러오기
     dispatch(saveItem(memberStore.userId)).then(() => {
-      // console.log('------------', memberStore.items);
       setItems(memberStore.items);
       dispatch(saveMember());
+      console.log('-------랜더링 : ', items);
+    });
+  }, []);
+
+  useEffect(() => {
+    dispatch(saveItem(memberStore.userId)).then(() => {
+      setItems(memberStore.items);
+      dispatch(saveMember());
+      console.log('-------뽑을때 : ', items);
     });
   }, [change]);
 
@@ -63,6 +72,7 @@ const StoreMain = () => {
           //희귀도1
           itemId = 3;
         }
+        setGetItem(itemId);
         console.log('뽑은 아이템 :' + itemId + ',' + memberStore.userId);
 
         //뽑기 아이템 DB 저장
@@ -74,7 +84,6 @@ const StoreMain = () => {
             onClickOpenModal();
             setChange('change');
             //퐁퐁이 개수 줄인 정보 받아오기
-
             console.log(memberStore);
           })
           .catch(function (error) {
@@ -102,7 +111,9 @@ const StoreMain = () => {
 
   return (
     <div css={totalContainer}>
-      {isOpenBbobkki && <Animation onClickOpenModal={onClickOpenModal} />}
+      {isOpenBbobkki && (
+        <Animation onClickOpenModal={onClickOpenModal} getItem={getItem} />
+      )}
 
       <div className="drawContainer">
         <div className="store-title-div">

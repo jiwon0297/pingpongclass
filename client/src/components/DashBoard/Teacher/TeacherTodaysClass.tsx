@@ -76,7 +76,7 @@ function TeacherTodaysClass() {
           type: 'progressbar',
         }}
         slidesPerView={3.5}
-        spaceBetween={20}
+        spaceBetween={0}
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"
@@ -140,6 +140,14 @@ const totalContainer = css`
 
   .swiper-pagination-progressbar-fill {
     background-color: #d65745;
+  }
+
+  .swiper-slide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
   }
 `;
 

@@ -66,7 +66,7 @@ function TodaysClass() {
           type: 'progressbar',
         }}
         slidesPerView={3.5}
-        spaceBetween={20}
+        spaceBetween={0}
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"
