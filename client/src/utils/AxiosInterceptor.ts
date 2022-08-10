@@ -3,6 +3,7 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  responseEncoding,
 } from 'axios';
 import { setCookie, getCookie } from './cookie';
 
@@ -24,7 +25,7 @@ import { setCookie, getCookie } from './cookie';
 // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
-  // config.baseURL = 'http://i7a403.p.ssafy.io:8080';
+  // config.baseURL = 'http://i7a403.p.ssafy.io:8080/be';
 
   return config;
 };
@@ -60,15 +61,18 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
     let accessToken = getCookie('jwt-accessToken');
     let refreshToken = getCookie('jwt-refreshToken');
 
-    // token refresh 요청
-    axios
-      .post(
-        `/auth/reissue`, // token refresh api
-        { accessToken, refreshToken }, // header // 빈 params
-      )
+    axios({
+      method: 'post',
+      url: '/auth/reissue',
+      data: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
+    })
       .then((res) => {
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-          res.data;
+        const newAccessToken = res.data.accessToken;
+        const newRefreshToken = res.data.refreshToken;
+
         setCookie('jwt-accessToken', newAccessToken, {
           path: '/',
           sameSite: 'Lax',
@@ -78,11 +82,14 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
           sameSite: 'Lax',
         });
         axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-        originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
         accessToken = newAccessToken;
         console.log('JWT 토큰 갱신 성공');
         return axios.request(originalRequest);
+      })
+      .catch((e) => {
+        console.log('에러발생 : ', e);
       });
     // 새로운 토큰 저장
   }
