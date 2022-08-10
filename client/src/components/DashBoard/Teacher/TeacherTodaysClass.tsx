@@ -43,6 +43,7 @@ function TeacherTodaysClass() {
   };
 
   const openClass = async (cls: ClassProps) => {
+    console.log(cls.classId);
     const newCode = await getCode();
     const newData = {
       classId: cls.classId,
@@ -51,7 +52,9 @@ function TeacherTodaysClass() {
 
     try {
       await AXIOS.patch(`/classes/open`, newData);
-      navigate(`/class/${newCode}`);
+      navigate(`/class/${newCode}`, {
+        state: cls.classId,
+      });
     } catch (e) {
       console.error(e);
     }

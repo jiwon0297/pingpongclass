@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import InterceptedAxios from '@utils/iAxios';
 import './VideoRoomComponent.css';
 import { OpenVidu } from 'openvidu-browser';
 import StreamComponent from './stream/StreamComponent';
@@ -320,8 +321,10 @@ class VideoRoomComponent extends Component {
     localUser.setStreamManager(publisher);
 
     // 이벤트 등록
+    if (this.props.whoami !== 'teacher') this.subscribeToSessionClosed();
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
+
     this.sendSignalUserChanged({
       isScreenShareActive: localUser.isScreenShareActive(),
     });
@@ -367,8 +370,27 @@ class VideoRoomComponent extends Component {
   }
 
   // leaveSession: 세션을 빠져나가는 함수
-  leaveSession() {
+  async leaveSession() {
     const mySession = this.state.session;
+
+    if (this.props.whoami === 'teacher') {
+      console.log('나는 선생님', this.props.classId);
+      try {
+        const result = await InterceptedAxios.patch(
+          `/classes/${this.props.classId}/close`,
+          {
+            classId: this.props.classId,
+          },
+        );
+        console.log(result);
+      } catch (e) {
+        console.error(e);
+      }
+
+      this.state.localUser.getStreamManager().stream.session.signal({
+        type: 'classClosed',
+      });
+    }
 
     if (mySession) {
       mySession.disconnect();
@@ -384,9 +406,43 @@ class VideoRoomComponent extends Component {
       myUserName: '퇴장한 유저',
       localUser: undefined,
     });
+
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
+    this.props.setTap('result');
+
+    // if (this.props.whoami === 'teacher') {
+    //   this.props.user.getStreamManager().stream.session.signal({
+    //     type: 'private-chat',
+    //   });
+    //   // await axios.delete(
+    //   //   `https://i7a403.p.ssafy.io/openvidu/api/sessions/${this.props.code}`,
+    //   //   {
+    //   //     headers: {
+    //   //       Authorization:
+    //   //         `Basic ` +
+    //   //         btoa(
+    //   //           unescape(
+    //   //             encodeURIComponent(
+    //   //               `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SERVER_SECRET}`,
+    //   //             ),
+    //   //           ),
+    //   //         ),
+    //   //     },
+    //   //   },
+    //   // );
+    //   if (this.props.leaveSession) {
+    //     this.props.leaveSession();
+    //   }
+    //   this.props.setTap('result');
+    // } else {
+    //   console.log('wow');
+    //   if (this.props.leaveSession) {
+    //     this.props.leaveSession();
+    //   }
+    //   this.props.setTap('result');
+    // }
   }
 
   // camStatusChanged: 캠 설정 변경
@@ -479,7 +535,6 @@ class VideoRoomComponent extends Component {
       setTimeout(() => {
         this.checkSomeoneShareScreen();
       }, 20);
-      event.preventDefault();
       this.updateLayout();
     });
   }
@@ -556,6 +611,13 @@ class VideoRoomComponent extends Component {
         },
         () => this.checkSomeoneShareScreen(),
       );
+    });
+  }
+
+  subscribeToSessionClosed() {
+    this.state.session.on('signal:classClosed', (event) => {
+      console.log('닫힘');
+      this.leaveSession();
     });
   }
 
@@ -1277,6 +1339,7 @@ class VideoRoomComponent extends Component {
                   style={participantDisplay}
                 >
                   <ParticipantComponent
+                    whoami={this.props.whoami}
                     user={localUser}
                     subscribers={subscribers}
                     participantDisplay={this.state.participantDisplay}
@@ -1311,6 +1374,7 @@ class VideoRoomComponent extends Component {
           {/* 하단 툴바 */}
           <div className="toolbar">
             <ToolbarComponent
+              whoami={this.props.whoami}
               sessionId={mySessionId}
               user={localUser}
               showNotification={this.state.messageReceived}

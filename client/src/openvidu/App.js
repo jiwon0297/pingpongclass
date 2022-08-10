@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import SetupComponent from './components/SetupComponent';
 import VideoRoomComponent from './components/VideoRoomComponent';
-import { useParams } from 'react-router-dom';
+import ResultComponent from './components/ResultComponent';
+import { useParams, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@src/store/hooks';
+import whoru from '@utils/whoru';
 
 const App = () => {
   const [tap, setTap] = useState('setup');
@@ -23,8 +25,11 @@ const App = () => {
 
   // 입장코드
   const { code } = useParams();
+  const { state } = useLocation();
+  console.log(state, 'adfadf');
 
   const memberStore = useAppSelector((state) => state.member);
+  const whoami = whoru(memberStore.userId);
 
   const setDevices = {
     videos,
@@ -59,8 +64,12 @@ const App = () => {
           setDevices={setDevices}
           code={code}
           memberStore={memberStore}
+          whoami={whoami}
+          setTap={setTap}
+          classId={state}
         />
       )}
+      {tap === 'result' && <ResultComponent whoami={whoami} />}
     </>
   );
 };
