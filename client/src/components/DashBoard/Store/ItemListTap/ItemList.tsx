@@ -7,20 +7,20 @@ import FreePassTicket from '../../../../assets/images/freepassTicket.png';
 const ItemList = () => {
   return (
     <div css={totalContainer}>
-      <div className="colorchangeJandi">
-        <img src={ColorChangeJandi} style={{ width: '100%' }} />
+      <div className="item-div">
+        <img src={ColorChangeJandi} className="itemImg" />
         <p>색변경권[잔디]</p>
       </div>
-      <div className="colorchangeBorder">
-        <img src={ColorChangeBorder} style={{ width: '100%' }} />
+      <div className="item-div">
+        <img src={ColorChangeBorder} className="itemImg" />
         <p>색변경권[테두리]</p>
       </div>
-      <div className="doublePong">
-        <img src={DoublePong} style={{ width: '100%' }} />
+      <div className="item-div">
+        <img src={DoublePong} className="itemImg" />
         <p>더블퐁퐁권</p>
       </div>
-      <div className="freePassTicket">
-        <img src={FreePassTicket} style={{ width: '100%' }} />
+      <div className="item-div">
+        <img src={FreePassTicket} className="itemImg" />
         <p>발표프리패스권</p>
       </div>
     </div>
@@ -31,6 +31,7 @@ const totalContainer = () => css`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  height: calc(100% - 2rem);
 
   div {
     width: 25%;
@@ -53,6 +54,11 @@ const totalContainer = () => css`
 
     p {
       font-size: calc(0.8vw);
+      margin-bottom: 0px;
+    }
+
+    .itemImg {
+      height: calc(100% - 2rem);
     }
   }
 `;
