@@ -8,9 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Delete, Edit } from '@mui/icons-material';
 
 // import { getCookie } from '../../../utils/cookie';
+
+interface TeacherDataInterface {
+  teacherId: number;
+  manageGrade?: number;
+  email?: string;
+  password?: string;
+  profile?: string;
+}
 
 const TeacherMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
@@ -23,6 +30,7 @@ const TeacherMyInfo = () => {
   const [isUse, setUse] = useState(false);
   const [preview, setPreview] = useState<any>(memberStore.profileFullPath);
   const [isMouseOn, setIsMouseOn] = useState(false);
+  const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
   const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
 
   // const accessToken = getCookie('jwt-accessToken');
@@ -44,7 +52,10 @@ const TeacherMyInfo = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       const file = reader.result;
-      if (file) setPreview(file);
+      if (file) {
+        setPreview(file);
+        setIsPreviewReset(false);
+      }
     };
     if (e.target.files && e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
@@ -52,7 +63,7 @@ const TeacherMyInfo = () => {
   };
 
   const onDeleteFiles = (e) => {
-    if (newImageFile.current) newImageFile.current.files = null;
+    setIsPreviewReset(true);
     setPreview('https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null');
   };
 
@@ -92,24 +103,40 @@ const TeacherMyInfo = () => {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
-      const teacher = {
-        teacherId: memberStore.userId,
-        manageGrade: manageGrade,
-        email: email,
-        password: password,
-      };
+      let teacher: TeacherDataInterface;
+      if (!isPreviewReset) {
+        teacher = {
+          teacherId: memberStore.userId,
+          manageGrade: manageGrade,
+          email: email,
+          password: password,
+        };
+      } else {
+        teacher = {
+          teacherId: memberStore.userId,
+          manageGrade: manageGrade,
+          email: email,
+          password: password,
+          profile: 'reset',
+        };
+      }
       const teacherString = JSON.stringify(teacher);
       frm.append(
         'teacher',
         new Blob([teacherString], { type: 'application/json' }),
       );
 
-      if (newImageFile.current) {
-        if (newImageFile.current.files)
-          frm.append('file', newImageFile.current.files[0]);
+      if (
+        !isPreviewReset &&
+        newImageFile.current &&
+        newImageFile.current.files
+      ) {
+        console.log('파일넣음');
+        frm.append('file', newImageFile.current.files[0]);
         // else frm.append('file', null);
         // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
       }
+
       InterceptedAxios.post('/teachers/modify', frm, {
         headers: {
           'Content-Type': `multipart/form-data`,
@@ -166,7 +193,7 @@ const TeacherMyInfo = () => {
                   ref={newImageFile}
                   type="file"
                   id="profile-image"
-                  accept="image/*"
+                  accept="image/jpg, image/jpeg, image/png"
                   onChange={onChangeFiles}
                 />
               </div>
