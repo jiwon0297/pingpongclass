@@ -68,18 +68,18 @@ const Login = (props: LoginProps) => {
         //성공
         console.log(response);
         const expires = new Date();
-        expires.setMinutes(+expires.getMinutes + 60);
+        expires.setMinutes(+expires.getDate + 7);
         // localStorage 저장
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
             path: '/',
             // secure: true,
-            expires,
             sameSite: 'Lax',
           });
           setCookie('jwt-refreshToken', response.data.refreshToken, {
             path: '/',
             // secure: true,
+            expires: expires,
             sameSite: 'Lax',
           });
         }
