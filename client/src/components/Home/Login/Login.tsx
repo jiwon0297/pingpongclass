@@ -21,6 +21,7 @@ const Login = (props: LoginProps) => {
   const { setTap, userId, setUserId } = props;
   const [userPw, setUserPw] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const [isSaveId, setisSaveId] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
