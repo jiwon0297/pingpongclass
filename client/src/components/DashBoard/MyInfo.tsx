@@ -24,8 +24,6 @@ const Myinfo = () => {
     setLevelImg('/levels/' + memberStore.currentLevel + '.png');
   }, [memberStore]);
 
-  console.log(totalRate);
-
   return (
     <div css={totalContainer}>
       <div
@@ -79,6 +77,7 @@ const Myinfo = () => {
         </div>
       </div>
       <div className="rankingContainer">
+        <p style={{ width: '100%', fontWeight: '700' }}>실시간 순위</p>
         <div className="myRanking">
           <div className="rankingInfo">
             <div className="rankBox">{memberStore.myRank}위</div>
@@ -91,6 +90,10 @@ const Myinfo = () => {
           </div>
           <button>수정하기</button>
         </div>
+        <br />
+        <p style={{ width: '100%', fontWeight: '700' }}>
+          랭킹(매일 오전 8시 기준)
+        </p>
         <Ranking />
       </div>
     </div>
@@ -194,7 +197,6 @@ const totalContainer = css`
     width: 100%;
     height: 40px;
     background-color: #f1f5ff;
-    border-top: #d0d0d0 1px solid;
     display: flex;
     flex-direction: row;
     align-items: center;
