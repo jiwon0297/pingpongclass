@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { useState, useCallback, useEffect } from 'react';
-import ReactTooltip from 'react-tooltip';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import ItemList from './ItemListTap/ItemList';
@@ -31,19 +30,14 @@ const StoreMain = () => {
   const [items, setItems] = useState<Items[]>([allItems]);
   const [change, setChange] = useState('');
   const [getItem, setGetItem] = useState<number>(0);
-  const [showHelp, setShowHelp] = useState(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     //로딩시 해당 유저의 아이템 불러오기
     dispatch(saveItem(memberStore.userId)).then(() => {
-      if (memberStore.userId === -1) {
-        console.log('-------아이템 랜더링(아이디) : ', memberStore.userId);
-
-        setItems(memberStore.items);
-        // dispatch(saveMember());
-        console.log('-------아이템 랜더링 : ', items);
-      }
+      setItems(memberStore.items);
+      dispatch(saveMember());
+      console.log('-------랜더링 : ', items);
     });
   }, []);
 
@@ -113,17 +107,13 @@ const StoreMain = () => {
     setGetTap(prop);
   };
 
-  const onInfoEnter = () => {
-    setShowHelp(true);
-  };
+  const onInfoEnter = () => {};
 
   return (
     <div css={totalContainer}>
       {isOpenBbobkki && (
         <Animation onClickOpenModal={onClickOpenModal} getItem={getItem} />
       )}
-
-      {showHelp && <div className="showHelp">hi</div>}
 
       <div className="drawContainer">
         <div className="store-title-div">
@@ -155,24 +145,9 @@ const StoreMain = () => {
               <HelpIcon
                 fontSize="small"
                 color="action"
-                id="helpIcon"
-                data-tip
-                data-for="tooltip"
+                onMouseEnter={onInfoEnter}
               />
             </div>
-            <ReactTooltip
-              id="tooltip"
-              effect="solid"
-              place="top"
-              type="light"
-              textColor="#191919"
-              border
-              borderColor="gray"
-            >
-              퐁퐁이를 모아 아이템을 뽑아 보세요!
-              <br />
-              랜덤으로 아이템을 획득할 수있습니다.
-            </ReactTooltip>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
             <motion.button
               type="button"
@@ -449,14 +424,6 @@ const totalContainer = () => css`
       display: flex;
       justify-content: center;
     }
-  }
-  .showHelp {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    flex-direction: column;
-    z-index: 2;
   }
 
   @keyframes loadEffect1 {

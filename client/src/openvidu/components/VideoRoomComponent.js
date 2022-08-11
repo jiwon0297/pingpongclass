@@ -12,6 +12,7 @@ import EmojiFilter from './items/EmojiFilter';
 import QuizModal from './quiz/QuizModal';
 import QuizModalStudent from './quiz/QuizModalStudent';
 import ShieldModal from './items/ShieldModal';
+import ShieldModalLoading from './items/ShieldModalLoading';
 import Sticker from './pointClickEvent/PointSticker';
 
 import OpenViduLayout from '../layout/openvidu-layout';
@@ -65,6 +66,8 @@ class VideoRoomComponent extends Component {
       quizDisplay: false,
       quizDisplayStudent: false,
       shieldDisplay: false,
+      shieldLoadingDisplay: false,
+      shieldLoadingDisplay: false,
       videos: this.props.setDevices.videos,
       audios: this.props.setDevices.audios,
       speakers: this.props.setDevices.speakers,
@@ -613,6 +616,14 @@ class VideoRoomComponent extends Component {
                   },
                 });
               }
+            } else if (
+              data.randPick !==
+              this.state.localUser.getStreamManager().stream.streamId
+            ) {
+              // this.toggleShieldLoading();
+              if (!data.picked) {
+                this.toggleShieldLoading();
+              }
             }
           }
           if (data.isSmileActive !== undefined) {
@@ -1000,7 +1011,7 @@ class VideoRoomComponent extends Component {
       let studentList = [];
       // 선생님이거나 관리자가 아닌 계정(체크 방식 변경 예정)
       list.forEach((elem) => {
-        if (elem.idType !== 3 && elem.idType !== 4) {
+        if (!elem.nickname.includes('(선생님)')) {
           studentList.push(elem);
         }
       });
@@ -1078,6 +1089,11 @@ class VideoRoomComponent extends Component {
     this.setState({ shieldDisplay: !this.state.shieldDisplay });
     this.updateLayout();
   }
+
+  toggleShieldLoading = () => {
+    this.setState({ shieldLoadingDisplay: !this.state.shieldLoadingDisplay });
+    this.updateLayout();
+  };
 
   // name: 한준수
   // date: 2022/07/28
@@ -1275,6 +1291,12 @@ class VideoRoomComponent extends Component {
             header="Quiz Modal"
             quiz={this.state.quiz}
           />
+          <ShieldModalLoading
+            display={this.state.shieldLoadingDisplay}
+            toggleShieldLoading={this.toggleShieldLoading}
+            timeOut={2.5}
+            header="방어권 구경"
+          />
           <ShieldModal
             display={this.state.shieldDisplay}
             user={localUser}
@@ -1301,6 +1323,7 @@ class VideoRoomComponent extends Component {
               top={stickerKey.top}
               removeSticker={this.removeSticker}
               left={stickerKey.left}
+              localUser={localUser}
             ></Sticker>
           ))}
 

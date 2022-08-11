@@ -32,12 +32,14 @@ const DashBoard = () => {
         <div className="navBar">
           <TeacherNavBar />
         </div>
-        <div className="userInfo">
-          <div className="infoBar">
-            <IconGroup />
-          </div>
-          <div className="infoContent">
-            <Outlet />
+        <div className="dashboardRight">
+          <div className="userInfo">
+            <div className="infoBar">
+              <IconGroup />
+            </div>
+            <div className="infoContent">
+              <Outlet />
+            </div>
           </div>
           <div className="footer">
             <Footer />
@@ -49,7 +51,7 @@ const DashBoard = () => {
   return (
     <div css={totalContainer}>
       {loading ? (
-        <div className="loadingImg">
+        <div className="loadingImgBox">
           <h1>로딩중...</h1>
           <img src={loadingImg} alt="" />
         </div>
@@ -65,7 +67,7 @@ const totalContainer = css`
   background-size: cover;
   height: 100vh;
 
-  .loadingImg {
+  .loadingImgBox {
     width: 100%;
     height: 100%;
     display: flex;
@@ -73,6 +75,11 @@ const totalContainer = css`
     align-items: center;
     justify-content: center;
   }
+  .loadingImgBox img {
+    width: 600px;
+    height: auto;
+  }
+
   .dashBoardContainer {
     height: 100%;
     width: 100%;
@@ -82,6 +89,10 @@ const totalContainer = css`
     justify-content: center;
     background-color: transparent;
     animation: smoothAppear 1s;
+  }
+
+  .dashboardRight {
+    height: 100%;
   }
 
   .navBar {

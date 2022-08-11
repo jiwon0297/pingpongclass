@@ -61,6 +61,7 @@ const totalContainer = () => css`
   padding: 10px;
 
   .item-div {
+    width: 105px;
     width: 100px;
     height: 100px;
     background: #ffffff;
