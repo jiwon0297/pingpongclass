@@ -13,7 +13,7 @@ function Item({ item }) {
   const img = '/items/' + item.itemId + '.png';
   return (
     <div className="colorchangeBorder">
-      <img src={img} style={{ width: '100%' }} />
+      <img src={img} style={{ width: '90%' }} />
       <p>
         {item.name}:{item.cnt}
       </p>
@@ -72,7 +72,7 @@ const totalContainer = () => css`
     border-radius: 20px;
     box-shadow: 2px 2px 8px -5px;
     transition: all 0.1s ease-in-out;
-    margin: 1rem;
+    margin: 0.5rem;
     border: 1px solid lightgray;
 
     :hover {
