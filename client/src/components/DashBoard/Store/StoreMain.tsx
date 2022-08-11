@@ -247,7 +247,7 @@ const totalContainer = () => css`
 
   .itemList {
     width: 70%;
-    height: 80%;
+    height: 100%;
     margin-left: 29px;
     border-radius: 20px;
   }
@@ -301,7 +301,7 @@ const totalContainer = () => css`
 
   .item-main {
     background-color: white;
-    height: calc(100% - 2rem);
+    height: 90%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     text-align: left;
@@ -365,8 +365,9 @@ const totalContainer = () => css`
     }
 
     .bobkkiCapsule {
-      width: 50%;
+      width: 70%;
       height: auto;
+      margin-top: 10px;
     }
   }
 
@@ -389,7 +390,7 @@ const totalContainer = () => css`
   }
 
   .bbobkkiBtn {
-    width: 50%;
+    width: 80%;
     background-color: white;
     height: 4vh;
     border-radius: 5px;

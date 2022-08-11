@@ -126,7 +126,7 @@ const totalContainer = () => css`
 
   .item-div {
     width: 25%;
-    height: 100%;
+    height: 50%;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -142,16 +142,16 @@ const totalContainer = () => css`
       transform: scale(1.05);
       cursor: pointer;
     }
+  }
 
-    p {
-      font-size: calc(0.8vw);
-      margin-bottom: 0px;
-    }
+  p {
+    font-size: calc(0.6vw);
+  }
 
-    .itemImg {
-      height: calc(100% - 2rem);
-    }
-
+  .itemImg {
+    height: 70%;
+    width: auto;
+  }
 `;
 
 export default ItemList;
