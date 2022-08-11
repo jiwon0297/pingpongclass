@@ -142,18 +142,15 @@ const StoreMain = () => {
         <div className="sideContainer">
           <div className="draw">
             <div className="bbobkki">
-              <div
-                data-tip
-                data-for="helpIcon"
-                css={css`
-                  display: flex;
-                `}
-              >
+              <div className="help-div" data-tip data-for="helpIcon">
                 <p>랜덤 뽑기</p>
                 <HelpIcon
                   fontSize="small"
                   color="action"
                   onMouseEnter={onInfoEnter}
+                  css={css`
+                    height: 1.2vw;
+                  `}
                 />
               </div>
               <ReactTooltip
@@ -258,8 +255,14 @@ const totalContainer = () => css`
   text-align: center;
   flex-direction: column;
   justify-content: start;
-  gap: 60px;
+  gap: 20px;
   animation: 0.7s ease-in-out loadEffect1;
+
+  .help-div {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10%;
+  }
 
   .bbobkki {
     display: flex;
@@ -274,7 +277,7 @@ const totalContainer = () => css`
 
   .itemList {
     width: 70%;
-    height: 100%;
+    height: 80%;
     margin-left: 30px;
     border-radius: 20px;
   }
@@ -286,7 +289,7 @@ const totalContainer = () => css`
     margin-left: 30px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     border-radius: 20px;
   }
 
@@ -299,11 +302,10 @@ const totalContainer = () => css`
 
   .item-tap {
     width: 100%;
-    height: 10%;
+    height: 15%;
     display: flex;
     flex-direction: row;
     justify-content: start;
-    height: 2rem;
     border-bottom: dashed 1px gray;
 
     .store1,
@@ -335,7 +337,7 @@ const totalContainer = () => css`
   .item-main {
     background-color: white;
     width: 100%;
-    height: 90%;
+    height: 85%;
     border-radius: 0 0 20px 20px;
     text-align: left;
     border-bottom: 1px solid gray;
@@ -356,7 +358,7 @@ const totalContainer = () => css`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
   }
 
   .drawContainer {
@@ -405,11 +407,12 @@ const totalContainer = () => css`
 
     p {
       font-weight: 700;
+      font-size: 1.1vw;
       padding-right: 0.2rem;
     }
 
     .bobkkiCapsule {
-      width: 50%;
+      width: 60%;
       height: auto;
     }
   }
@@ -435,12 +438,12 @@ const totalContainer = () => css`
   }
 
   .bbobkkiBtn {
-    width: 50%;
+    width: 80%;
     background-color: white;
     height: 15%;
     border-radius: 5px;
     border: 1px solid lightgray;
-    margin: 16px 0 16px 0;
+    margin-top: 5%;
     font-family: 'NanumSquareRound';
     font-weight: 700;
     box-shadow: 0 0 3px 0 lightgray;
