@@ -7,6 +7,7 @@ const Myinfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const [totalRate, setTotalRate] = useState(0 as number);
   const [currentRate, setcurrentRate] = useState(0 as number);
+  const [levelImg, setLevelImg] = useState('');
 
   useEffect(() => {
     setTotalRate(
@@ -18,45 +19,61 @@ const Myinfo = () => {
       (memberStore.point / (memberStore.totalPoint + memberStore.levelPoint)) *
         100,
     );
-  }, []);
+
+    setLevelImg('/levels/' + memberStore.currentLevel + '.png');
+  }, [memberStore]);
 
   console.log(totalRate);
 
   return (
     <div css={totalContainer}>
-      <div className="infoContainer">
-        {memberStore.profileFullPath ===
-          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
-        memberStore.profileFullPath ===
-          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
-          <img
-            src={defaultProfile}
-            alt="기본프로필사진"
-            className="profile-logo"
-          />
-        ) : (
-          <img
-            src={memberStore.profileFullPath}
-            alt="지정된프로필사진"
-            className="profile-logo"
-          />
-        )}
-        <div className="nameContainer">
-          <h2>{memberStore.name} 학생</h2>
-          <p>
-            [{memberStore.nextLevel}] 까지 {memberStore.levelPoint} 퐁퐁
-            남았어요 !
-          </p>
-        </div>
-      </div>
-      <div className="levelContainer">
-        <h2 className="level">{memberStore.currentLevel}</h2>
-        <div className="stickerContainer">
-          <div className="soFarSticker" style={{ width: `${totalRate}%` }}>
-            <span>{memberStore.totalPoint}</span>
+      <div
+        css={css`
+          width: 100%;
+        `}
+      >
+        <div className="infoContainer">
+          {memberStore.profileFullPath ===
+            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+          memberStore.profileFullPath ===
+            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
+            <img
+              src={defaultProfile}
+              alt="기본프로필사진"
+              className="profile-logo"
+            />
+          ) : (
+            <img
+              src={memberStore.profileFullPath}
+              alt="지정된프로필사진"
+              className="profile-logo"
+            />
+          )}
+          <div className="nameContainer">
+            <h2>{memberStore.name} 학생</h2>
+            <p>
+              [{memberStore.nextLevel}] 까지 {memberStore.levelPoint} 퐁퐁
+              남았어요 !
+            </p>
           </div>
-          <div className="currentSticker" style={{ width: `${currentRate}%` }}>
-            <span>{memberStore.point}</span>
+        </div>
+        <div className="levelContainer">
+          <div className="level-div">
+            <img src={levelImg} alt="" className="level-img" />
+            <div>
+              <h2 className="level">{memberStore.currentLevel}</h2>
+            </div>
+          </div>
+          <div className="stickerContainer">
+            <div className="soFarSticker" style={{ width: `${totalRate}%` }}>
+              <span>{memberStore.totalPoint}</span>
+            </div>
+            <div
+              className="currentSticker"
+              style={{ width: `${currentRate}%` }}
+            >
+              <span>{memberStore.point}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -149,7 +166,7 @@ const totalContainer = css`
     height: 70px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
   }
 
@@ -258,6 +275,19 @@ const totalContainer = css`
     border-radius: 100px;
     width: 80px;
     height: 30%;
+  }
+
+  .level-div {
+    display: flex;
+    flex-direction: row;
+    margin-right: 13px;
+  }
+
+  .level-img {
+    border: none;
+    height: 100%;
+    width: 27px;
+    margin-right: 6px;
   }
 
   @keyframes barIn {
