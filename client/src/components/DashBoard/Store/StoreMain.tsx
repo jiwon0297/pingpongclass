@@ -13,6 +13,7 @@ import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
+import ReactTooltip from 'react-tooltip';
 import member, {
   setPoint,
   saveMember,
@@ -141,12 +142,40 @@ const StoreMain = () => {
         <div className="sideContainer">
           <div className="draw">
             <div className="bbobkki">
-              <p>랜덤 뽑기</p>
-              <HelpIcon
-                fontSize="small"
-                color="action"
-                onMouseEnter={onInfoEnter}
-              />
+              <div
+                data-tip
+                data-for="helpIcon"
+                css={css`
+                  display: flex;
+                `}
+              >
+                <p>랜덤 뽑기</p>
+                <HelpIcon
+                  fontSize="small"
+                  color="action"
+                  onMouseEnter={onInfoEnter}
+                />
+              </div>
+              <ReactTooltip
+                id="helpIcon"
+                effect="solid"
+                place="top"
+                type="light"
+                textColor="#191919"
+                border
+                borderColor="gray"
+              >
+                <div
+                  css={css`
+                    text-align: center;
+                    padding: 5px;
+                  `}
+                >
+                  퐁퐁이를 모아 아이템을 뽑아 보세요!
+                  <br />
+                  랜덤확률로 아이템을 획득할수 있습니다.
+                </div>
+              </ReactTooltip>
             </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
             <motion.button
