@@ -41,10 +41,6 @@ const NoticeBoard = () => {
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
-  useLayoutEffect(() => {
-    dispatch(saveMember());
-  }, []);
-
   useEffect(() => {
     dispatch(getClasses(memberStore.userId)).then(() => {
       setClasses(memberStore.classes);
@@ -54,7 +50,7 @@ const NoticeBoard = () => {
     } else {
       setIsTeacher(false);
     }
-  }, [memberStore]);
+  }, []);
 
   useEffect(() => {
     getNotice();
@@ -192,6 +188,7 @@ export const NoticeBoardStyle = () => css`
   /* overflow: hidden; */
   max-height: inherit;
   max-width: inherit;
+  animation: 0.5s ease-in-out loadEffect1;
 
   button:hover {
     cursor: pointer;
@@ -308,6 +305,14 @@ export const NoticeBoardStyle = () => css`
         margin: 0 0.5rem;
         width: 5rem;
       }
+      button.sub-btn {
+        background-color: grey;
+        color: black;
+      }
+      button.sub-btn:hover {
+        background-color: grey;
+        color: red;
+      }
 
       button:visited {
         text-decoration: none;
@@ -391,6 +396,15 @@ export const NoticeBoardStyle = () => css`
   }
   a:visited {
     text-decoration: none;
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 

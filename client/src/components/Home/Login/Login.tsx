@@ -22,7 +22,6 @@ const Login = (props: LoginProps) => {
   const [userPw, setUserPw] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isSaveId, setisSaveId] = useState(false);
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -54,64 +53,78 @@ const Login = (props: LoginProps) => {
 
   const onClickLogin = () => {
     //유효성 검사
-    InterceptedAxios.post('/auth/login', {
-      id: userId,
-      password: userPw,
-    })
-      .then((response) => {
-        //성공
-        let expires = new Date();
-        expires.setDate(expires.getDate() + 1);
+    // 아이디.
+    // 특수문자 1자 이상, 전체 8자 이상일것.
+    const isValidId = (userId + '').length >= 7 && (userId + '').length <= 15;
 
-        https: if (isSaveId) {
-          setCookie('savedId', userId, {
-            path: '/',
-            expires,
-            sameSite: 'Lax',
-          });
-        }
+    // 비밀번호 특수문자 검사를 위한 정규식표현.
+    const specialLetter = userPw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+    // 특수문자 1자 이상, 전체 8자 이상일것.
+    const isValidPassword =
+      (userPw + '').length >= 5 && (userPw + '').length <= 15;
 
-        // localStorage 저장
-        if (response.data) {
-          setCookie('jwt-accessToken', response.data.accessToken, {
-            path: '/',
-            expires,
-            sameSite: 'Lax',
-          });
-          expires = new Date();
-          expires.setDate(expires.getDate() + 7);
-          setCookie('jwt-refreshToken', response.data.refreshToken, {
-            path: '/',
-            // secure: true,
-            expires,
-            sameSite: 'Lax',
-          });
-        }
-        //첫 로그인이면,
-        if (response.data.first) {
-          toast.success('반갑습니다! 첫 로그인시, 정보 설정이 필요합니다.');
-          setTap('email');
-        } else {
-          if (userId.length == 10) {
-            toast.success(userId + ' 학생 핑퐁클래스 등교 완료!');
-            navigate('/student');
-          }
-          if (userId.length == 7 && userId.charAt(0) === '4') {
-            toast.success(userId + ' 선생님 핑퐁클래스 출근 완료!');
-            navigate('/teacher');
-          }
-          if (userId.length == 7 && userId.charAt(0) === '5') {
-            toast.success(userId + ' 관리자님 핑퐁클래스 출근 완료!');
-            navigate('/admin');
-          }
-        }
-        dispatch(saveMember());
-        dispatch(getClasses(parseInt(props.userId)));
+    if (isValidPassword && isValidPassword) {
+      InterceptedAxios.post('/auth/login', {
+        id: userId,
+        password: userPw,
       })
-      .catch(function (error) {
-        console.log(error);
-        toast.error('로그인 실패. 아이디와 비밀번호를 다시 확인해주세요.');
-      });
+        .then((response) => {
+          //성공
+          let expires = new Date();
+          expires.setDate(expires.getDate() + 1);
+
+          https: if (isSaveId) {
+            setCookie('savedId', userId, {
+              path: '/',
+              expires,
+              sameSite: 'Lax',
+            });
+          }
+
+          // localStorage 저장
+          if (response.data) {
+            setCookie('jwt-accessToken', response.data.accessToken, {
+              path: '/',
+              expires,
+              sameSite: 'Lax',
+            });
+            expires = new Date();
+            expires.setDate(expires.getDate() + 7);
+            setCookie('jwt-refreshToken', response.data.refreshToken, {
+              path: '/',
+              // secure: true,
+              expires,
+              sameSite: 'Lax',
+            });
+          }
+          //첫 로그인이면,
+          if (response.data.first) {
+            toast.success('반갑습니다! 첫 로그인시, 정보 설정이 필요합니다.');
+            setTap('email');
+          } else {
+            if (userId.length == 10) {
+              toast.success(userId + ' 학생 핑퐁클래스 등교 완료!');
+              navigate('/student');
+            }
+            if (userId.length == 7 && userId.charAt(0) === '4') {
+              toast.success(userId + ' 선생님 핑퐁클래스 출근 완료!');
+              navigate('/teacher');
+            }
+            if (userId.length == 7 && userId.charAt(0) === '5') {
+              toast.success(userId + ' 관리자님 핑퐁클래스 출근 완료!');
+              navigate('/admin');
+            }
+          }
+          dispatch(saveMember());
+          dispatch(getClasses(parseInt(props.userId)));
+        })
+        .catch(function (error) {
+          console.log(error);
+          toast.error('로그인 실패. 아이디와 비밀번호를 다시 확인해주세요.');
+        });
+    } else {
+      toast.error('올바른 아이디와 비밀번호를 입력해주세요.');
+    }
   };
 
   return (
