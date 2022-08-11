@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
 import { useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
+import Ranking from './Ranking';
 
 const Myinfo = () => {
   const memberStore = useAppSelector((state) => state.member);
@@ -90,22 +91,7 @@ const Myinfo = () => {
           </div>
           <button>수정하기</button>
         </div>
-        <div className="ranking">
-          <div className="rankingInfo">
-            <div className="rankBox">1위</div>
-            <div className="nameBox">오석호</div>
-            <div className="myBio">안녕하세요 쏘콜라스 입니다.</div>
-          </div>
-          <button>펼치기</button>
-        </div>
-        <div className="rankingLow">
-          <div className="rankingInfo">
-            <div className="rankBox">2위</div>
-            <div className="nameBox">원재호호</div>
-            <div className="myBio">안녕하세요 쏘콜라스 선생님 제자입니다.</div>
-          </div>
-          <button>수정하기</button>
-        </div>
+        <Ranking />
       </div>
     </div>
   );
@@ -207,7 +193,7 @@ const totalContainer = css`
   .myRanking {
     width: 100%;
     height: 40px;
-    background-color: #f2f2f2;
+    background-color: #f1f5ff;
     border-top: #d0d0d0 1px solid;
     display: flex;
     flex-direction: row;
