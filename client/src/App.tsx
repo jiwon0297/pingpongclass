@@ -87,7 +87,7 @@ const App = () => {
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
           </Route>
           <Route path="/style" element={<Style />} />
-          <Route path="/class/:code" element={<OpenVidu />} />
+          <Route path="/lecture/:code" element={<OpenVidu />} />
         </Routes>
       </BrowserRouter>
     </div>
