@@ -67,6 +67,7 @@ class VideoRoomComponent extends Component {
       quizDisplayStudent: false,
       shieldDisplay: false,
       shieldLoadingDisplay: false,
+      shieldLoadingDisplay: false,
       videos: this.props.setDevices.videos,
       audios: this.props.setDevices.audios,
       speakers: this.props.setDevices.speakers,
@@ -1322,6 +1323,7 @@ class VideoRoomComponent extends Component {
               top={stickerKey.top}
               removeSticker={this.removeSticker}
               left={stickerKey.left}
+              localUser={localUser}
             ></Sticker>
           ))}
 

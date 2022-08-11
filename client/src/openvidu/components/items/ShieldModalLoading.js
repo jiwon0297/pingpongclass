@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './ShieldModalLoading.css';
 
-const shieldImg = require('../../assets/images/shield.png');
-
 class ShieldModalLoading extends Component {
   constructor(props) {
     super(props);
@@ -22,18 +20,10 @@ class ShieldModalLoading extends Component {
     }
   }
 
-  // name: 한준수
-  // date: 2022/07/28
-  // desc: 지목받은 학생이 방어권을 사용하는 함수
-  // todo: 호출 시 현재 수업에 참여 중인 자신을 제외한 학생 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
   useShield = () => {
     this.close();
   };
 
-  // name: 한준수
-  // date: 2022/07/28
-  // desc: 지목받은 학생이 방어권을 사용하지 않을 때 호출되는 함수
-  // todo: 호출 시 테두리를 변경하고 그 정보를 전체 참여자에게 공유한다.
   notUseShield = () => {
     this.close();
   };

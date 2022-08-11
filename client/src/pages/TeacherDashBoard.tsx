@@ -32,12 +32,14 @@ const DashBoard = () => {
         <div className="navBar">
           <TeacherNavBar />
         </div>
-        <div className="userInfo">
-          <div className="infoBar">
-            <IconGroup />
-          </div>
-          <div className="infoContent">
-            <Outlet />
+        <div className="dashboardRight">
+          <div className="userInfo">
+            <div className="infoBar">
+              <IconGroup />
+            </div>
+            <div className="infoContent">
+              <Outlet />
+            </div>
           </div>
           <div className="footer">
             <Footer />
@@ -82,6 +84,10 @@ const totalContainer = css`
     justify-content: center;
     background-color: transparent;
     animation: smoothAppear 1s;
+  }
+
+  .dashboardRight {
+    height: 100%;
   }
 
   .navBar {
