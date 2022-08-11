@@ -3,12 +3,24 @@ import defaultProfile from '@assets/images/defaultProfile.jpeg';
 import { useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 import Ranking from './Ranking';
+import EditIcon from '@mui/icons-material/Edit';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+
+interface StudentDataInterface {
+  studentId: number;
+  introduce: string;
+}
 
 const Myinfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const [totalRate, setTotalRate] = useState(0 as number);
   const [currentRate, setcurrentRate] = useState(0 as number);
   const [levelImg, setLevelImg] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+  const [introduce, setIntroduce] = useState(memberStore.introduce);
+  const AXIOS = setupInterceptorsTo(axios.create());
 
   useEffect(() => {
     setTotalRate(
@@ -23,6 +35,46 @@ const Myinfo = () => {
 
     setLevelImg('/levels/' + memberStore.currentLevel + '.png');
   }, [memberStore]);
+
+  const onClickEdit = (e) => {
+    setIsEdit(!isEdit);
+  };
+
+  const onChangeIntroduce = (e) => {
+    setIntroduce(e.target.value);
+  };
+
+  const onEditIntroduce = (e) => {
+    if (introduce == null) {
+      toast.warning('자개소개를 입력해주세요.');
+    } else {
+      const frm = new FormData();
+      let student: StudentDataInterface;
+      student = {
+        studentId: memberStore.userId,
+        introduce: introduce,
+      };
+      const studentString = JSON.stringify(student);
+      frm.append(
+        'student',
+        new Blob([studentString], { type: 'application/json' }),
+      );
+
+      AXIOS.post('/students/modify', frm, {
+        headers: {
+          'Content-Type': `multipart/form-data`,
+        },
+      })
+        .then(function (response) {
+          alert('정보 수정에 성공하였습니다.');
+          location.reload();
+        })
+        .catch(function (error) {
+          console.log(error);
+          toast.error('정보 수정에 실패하였습니다.');
+        });
+    }
+  };
 
   return (
     <div css={totalContainer}>
@@ -81,18 +133,44 @@ const Myinfo = () => {
         <div className="myRanking">
           <div className="rankingInfo">
             <div className="rankBox">{memberStore.myRank}위</div>
-            <div className="nameBox">{memberStore.name}</div>
+            <div className="nameBox">
+              {memberStore.name} [{memberStore.totalPoint} 퐁퐁]
+            </div>
             <div className="myBio">
-              {memberStore.introduce
-                ? memberStore.introduce
-                : '자기소개가 없습니다.'}
+              {isEdit && (
+                <input
+                  style={{
+                    height: '35px',
+                    width: '70%',
+                  }}
+                  value={introduce}
+                  onChange={(e) => onChangeIntroduce(e)}
+                />
+              )}
+              {!isEdit && (
+                <p>
+                  {memberStore.introduce
+                    ? memberStore.introduce
+                    : '자기소개가 없습니다.'}
+                </p>
+              )}
             </div>
           </div>
-          <button>수정하기</button>
+          {!isEdit && (
+            <button onClick={onClickEdit}>
+              <EditIcon />
+            </button>
+          )}
+          {isEdit && <button onClick={onEditIntroduce}>수정</button>}
+          {isEdit && (
+            <button onClick={onClickEdit} style={{ color: 'red' }}>
+              취소
+            </button>
+          )}
         </div>
         <br />
         <p style={{ width: '100%', fontWeight: '700' }}>
-          랭킹(매일 오전 8시 기준)
+          랭킹 Top 10 (매일 오전 8시 기준)
         </p>
         <Ranking />
       </div>
@@ -135,16 +213,17 @@ const totalContainer = css`
     margin-left: 20px;
   }
   .rankBox {
-    width: 50px;
+    width: 100px;
   }
   .myBio {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
   }
   .nameBox {
-    width: 100px;
+    width: 300px;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -276,6 +355,11 @@ const totalContainer = css`
     height: 100%;
     width: 29px;
     margin-right: 6px;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
   }
 
   @keyframes barIn {

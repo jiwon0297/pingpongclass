@@ -5,12 +5,21 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import EditIcon from '@mui/icons-material/Edit';
+import { toast } from 'react-toastify';
 
 interface RankingInterface {
   rankNum: number;
   studentId: number;
   name: string;
-  totalPoing: number;
+  totalPoint: number;
+  introduce: string;
+}
+
+interface StudentDataInterface {
+  studentId: number;
   introduce: string;
 }
 
@@ -20,6 +29,8 @@ const Ranking = () => {
   const [visible, setVisible] = useState(false);
   const [rankingList, setRankingList] = useState<RankingInterface[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
+  const [introduce, setIntroduce] = useState(memberStore.introduce);
   const loadRankingList = async () => {
     await AXIOS.get(`/students/ranking/`)
       .then(function (response) {
@@ -39,13 +50,49 @@ const Ranking = () => {
     loadRankingList().then(() => timer);
   }, []);
 
-  // useEffect(() => {
-  //   loadRankingList();
-  // }, []);
-
   const toggleNotice = (e: React.MouseEvent<HTMLElement>) => {
     // onCLick 이벤트
     setVisible(!visible);
+  };
+
+  const onClickEdit = (e) => {
+    setIsEdit(!isEdit);
+  };
+
+  const onChangeIntroduce = (e) => {
+    setIntroduce(e.target.value);
+  };
+
+  const onEditIntroduce = (e) => {
+    if (introduce == null) {
+      toast.warning('자개소개를 입력해주세요.');
+    } else {
+      const frm = new FormData();
+      let student: StudentDataInterface;
+      student = {
+        studentId: memberStore.userId,
+        introduce: introduce,
+      };
+      const studentString = JSON.stringify(student);
+      frm.append(
+        'student',
+        new Blob([studentString], { type: 'application/json' }),
+      );
+
+      AXIOS.post('/students/modify', frm, {
+        headers: {
+          'Content-Type': `multipart/form-data`,
+        },
+      })
+        .then(function (response) {
+          alert('정보 수정에 성공하였습니다.');
+          location.reload();
+        })
+        .catch(function (error) {
+          console.log(error);
+          toast.error('정보 수정에 실패하였습니다.');
+        });
+    }
   };
 
   const render = () => {
@@ -54,160 +101,214 @@ const Ranking = () => {
         <div className="ranking" style={{ borderTop: ' #d0d0d0 1px solid' }}>
           <div className="rankingInfo">
             <div className="rankBox">{rankingList[0].rankNum}위</div>
-            <div className="nameBox">{rankingList[0].name}</div>
+            <div className="nameBox">
+              {rankingList[0].name} [{rankingList[0].totalPoint} 퐁퐁]
+            </div>
             <div className="myBio">
-              {rankingList[0].introduce
-                ? rankingList[0].introduce
-                : '자기소개가 없습니다.'}
+              {rankingList[0].studentId === memberStore.userId && isEdit && (
+                <input
+                  style={{
+                    height: '35px',
+                    width: '70%',
+                  }}
+                  value={introduce}
+                  onChange={(e) => onChangeIntroduce(e)}
+                />
+              )}
+
+              {rankingList[0].studentId === memberStore.userId && !isEdit && (
+                <p>
+                  {rankingList[0].introduce
+                    ? rankingList[0].introduce
+                    : '자기소개가 없습니다.'}
+                </p>
+              )}
+              {rankingList[0].studentId !== memberStore.userId && (
+                <p>
+                  {rankingList[0].introduce
+                    ? rankingList[0].introduce
+                    : '자기소개가 없습니다.'}
+                </p>
+              )}
             </div>
           </div>
-          {rankingList[0].studentId === memberStore.userId && (
-            <button>수정하기</button>
-          )}{' '}
-          <button onClick={toggleNotice}>펼치기</button>
+          {rankingList[0].studentId === memberStore.userId && !isEdit && (
+            <button onClick={onClickEdit}>
+              <EditIcon />
+            </button>
+          )}
+          {rankingList[0].studentId === memberStore.userId && isEdit && (
+            <button onClick={onEditIntroduce}>수정</button>
+          )}
+          {rankingList[0].studentId === memberStore.userId && isEdit && (
+            <button onClick={onClickEdit} style={{ color: 'red' }}>
+              취소
+            </button>
+          )}
+          {!visible && (
+            <button onClick={toggleNotice}>
+              <ArrowDropDownIcon />
+            </button>
+          )}
+          {visible && (
+            <button onClick={toggleNotice}>
+              <ArrowDropUpIcon />
+            </button>
+          )}
         </div>
         <div className="rankingLow">
           <div className="rankingInfo">
             <div className="rankBox">{rankingList[1].rankNum}위</div>
-            <div className="nameBox">{rankingList[1].name}</div>
+            <div className="nameBox">
+              {rankingList[1].name} [{rankingList[1].totalPoint} 퐁퐁]
+            </div>
             <div className="myBio">
-              {rankingList[1].introduce
-                ? rankingList[1].introduce
-                : '자기소개가 없습니다.'}
+              {rankingList[1].studentId === memberStore.userId && isEdit && (
+                <input
+                  style={{
+                    height: '35px',
+                    width: '70%',
+                  }}
+                  value={introduce}
+                  onChange={(e) => onChangeIntroduce(e)}
+                />
+              )}
+              {rankingList[1].studentId === memberStore.userId && !isEdit && (
+                <p>
+                  {rankingList[1].introduce
+                    ? rankingList[1].introduce
+                    : '자기소개가 없습니다.'}
+                </p>
+              )}
+              {rankingList[1].studentId !== memberStore.userId && (
+                <p>
+                  {rankingList[1].introduce
+                    ? rankingList[1].introduce
+                    : '자기소개가 없습니다.'}
+                </p>
+              )}
             </div>
           </div>
-          {rankingList[1].studentId === memberStore.userId && (
-            <button>수정하기</button>
+          {rankingList[1].studentId === memberStore.userId && !isEdit && (
+            <button>
+              <EditIcon onClick={onClickEdit} />
+            </button>
+          )}
+          {rankingList[1].studentId === memberStore.userId && isEdit && (
+            <button onClick={onEditIntroduce}>수정</button>
+          )}
+          {rankingList[1].studentId === memberStore.userId && isEdit && (
+            <button onClick={onClickEdit} style={{ color: 'red' }}>
+              취소
+            </button>
           )}
         </div>
-        {visible && (
-          <div className="ranking">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[2].rankNum}위</div>
-              <div className="nameBox">{rankingList[2].name}</div>
-              <div className="myBio">
-                {rankingList[2].introduce
-                  ? rankingList[2].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[2].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
-        {visible && (
-          <div className="rankingLow">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[3].rankNum}위</div>
-              <div className="nameBox">{rankingList[3].name}</div>
-              <div className="myBio">
-                {rankingList[3].introduce
-                  ? rankingList[3].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[3].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
-        {visible && (
-          <div className="ranking">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[4].rankNum}위</div>
-              <div className="nameBox">{rankingList[4].name}</div>
-              <div className="myBio">
-                {rankingList[4].introduce
-                  ? rankingList[4].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[4].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
-        {visible && (
-          <div className="rankingLow">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[5].rankNum}위</div>
-              <div className="nameBox">{rankingList[5].name}</div>
-              <div className="myBio">
-                {rankingList[5].introduce
-                  ? rankingList[5].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[5].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
-        {visible && (
-          <div className="ranking">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[6].rankNum}위</div>
-              <div className="nameBox">{rankingList[6].name}</div>
-              <div className="myBio">
-                {rankingList[6].introduce
-                  ? rankingList[6].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[6].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
-        {visible && (
-          <div className="rankingLow">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[7].rankNum}위</div>
-              <div className="nameBox">{rankingList[7].name}</div>
-              <div className="myBio">
-                {rankingList[7].introduce
-                  ? rankingList[7].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[7].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
-        {visible && (
-          <div className="ranking">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[8].rankNum}위</div>
-              <div className="nameBox">{rankingList[8].name}</div>
-              <div className="myBio">
-                {rankingList[8].introduce
-                  ? rankingList[8].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[8].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
-        {visible && (
-          <div className="rankingLow">
-            <div className="rankingInfo">
-              <div className="rankBox">{rankingList[9].rankNum}위</div>
-              <div className="nameBox">{rankingList[9].name}</div>
-              <div className="myBio">
-                {rankingList[9].introduce
-                  ? rankingList[9].introduce
-                  : '자기소개가 없습니다.'}
-              </div>
-            </div>
-            {rankingList[9].studentId === memberStore.userId && (
-              <button>수정하기</button>
-            )}
-          </div>
-        )}
+        {visible &&
+          rankingList.map((ranking, index) => {
+            if (index >= 2 && index % 2 == 0) {
+              return (
+                <div className="ranking" key={index}>
+                  <div className="rankingInfo">
+                    <div className="rankBox">{ranking.rankNum}위</div>
+                    <div className="nameBox">
+                      {ranking.name} [{ranking.totalPoint} 퐁퐁]
+                    </div>
+                    <div className="myBio">
+                      {ranking.studentId === memberStore.userId && isEdit && (
+                        <input
+                          style={{
+                            height: '35px',
+                            width: '70%',
+                          }}
+                          value={introduce}
+                          onChange={(e) => onChangeIntroduce(e)}
+                        />
+                      )}
+                      {ranking.studentId === memberStore.userId && !isEdit && (
+                        <p>
+                          {ranking.introduce
+                            ? ranking.introduce
+                            : '자기소개가 없습니다.'}
+                        </p>
+                      )}
+                      {ranking.studentId !== memberStore.userId && (
+                        <p>
+                          {ranking.introduce
+                            ? ranking.introduce
+                            : '자기소개가 없습니다.'}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {ranking.studentId === memberStore.userId && !isEdit && (
+                    <button>
+                      <EditIcon onClick={onClickEdit} />
+                    </button>
+                  )}
+                  {ranking.studentId === memberStore.userId && isEdit && (
+                    <button onClick={onEditIntroduce}>수정</button>
+                  )}
+                  {ranking.studentId === memberStore.userId && isEdit && (
+                    <button onClick={onClickEdit} style={{ color: 'red' }}>
+                      취소
+                    </button>
+                  )}
+                </div>
+              );
+            }
+
+            if (index >= 2 && index % 2 == 1) {
+              return (
+                <div className="rankingLow" key={index}>
+                  <div className="rankingInfo">
+                    <div className="rankBox">{ranking.rankNum}위</div>
+                    <div className="nameBox">
+                      {ranking.name} [{ranking.totalPoint} 퐁퐁]
+                    </div>
+                    <div className="myBio">
+                      {ranking.studentId === memberStore.userId && isEdit && (
+                        <input
+                          style={{
+                            height: '35px',
+                            width: '70%',
+                          }}
+                          value={introduce}
+                          onChange={(e) => onChangeIntroduce(e)}
+                        />
+                      )}
+                      {ranking.studentId === memberStore.userId && !isEdit && (
+                        <p>
+                          {ranking.introduce
+                            ? ranking.introduce
+                            : '자기소개가 없습니다.'}
+                        </p>
+                      )}
+                      {ranking.studentId !== memberStore.userId && (
+                        <p>
+                          {ranking.introduce
+                            ? ranking.introduce
+                            : '자기소개가 없습니다.'}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {ranking.studentId === memberStore.userId && !isEdit && (
+                    <button>
+                      <EditIcon onClick={onClickEdit} />
+                    </button>
+                  )}
+                  {ranking.studentId === memberStore.userId && isEdit && (
+                    <button onClick={onEditIntroduce}>수정</button>
+                  )}
+                  {ranking.studentId === memberStore.userId && isEdit && (
+                    <button onClick={onClickEdit} style={{ color: 'red' }}>
+                      취소
+                    </button>
+                  )}
+                </div>
+              );
+            }
+          })}
       </div>
     );
   };
@@ -230,7 +331,7 @@ const totalContainer = css`
   width: inherit;
 
   .rankBox {
-    width: 50px;
+    width: 100px;
   }
   .myBio {
     width: 100%;
@@ -239,7 +340,7 @@ const totalContainer = css`
     justify-content: center;
   }
   .nameBox {
-    width: 100px;
+    width: 300px;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -287,6 +388,11 @@ const totalContainer = css`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border: none;
+  }
+
+  button {
+    background-color: transparent;
     border: none;
   }
 `;
