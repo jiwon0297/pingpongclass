@@ -23,8 +23,6 @@ const Myinfo = () => {
     setLevelImg('/levels/' + memberStore.currentLevel + '.png');
   }, [memberStore]);
 
-  console.log(totalRate);
-
   return (
     <div css={totalContainer}>
       <div

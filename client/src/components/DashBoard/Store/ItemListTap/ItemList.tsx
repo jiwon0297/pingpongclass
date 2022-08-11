@@ -122,11 +122,10 @@ const totalContainer = () => css`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  height: calc(100% - 2rem);
 
   .item-div {
-    width: 25%;
-    height: 100%;
+    width: 120px;
+    height: 120px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -144,14 +143,15 @@ const totalContainer = () => css`
     }
 
     p {
-      font-size: calc(0.8vw);
+      font-size: 10px;
+      font-weight: bold;
       margin-bottom: 0px;
     }
 
     .itemImg {
-      height: calc(100% - 2rem);
+      width: 70px;
     }
-
+  }
 `;
 
 export default ItemList;
