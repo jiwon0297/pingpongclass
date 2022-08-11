@@ -615,7 +615,11 @@ class VideoRoomComponent extends Component {
                   },
                 });
               }
-            } else {
+            } else if (
+              data.randPick !==
+              this.state.localUser.getStreamManager().stream.streamId
+            ) {
+              // this.toggleShieldLoading();
               if (!data.picked) {
                 this.toggleShieldLoading();
               }
@@ -1086,7 +1090,7 @@ class VideoRoomComponent extends Component {
   }
 
   toggleShieldLoading = () => {
-    this.setState({ shieldLoadingDisplay: !this.state.shieldDisplay });
+    this.setState({ shieldLoadingDisplay: !this.state.shieldLoadingDisplay });
     this.updateLayout();
   };
 
@@ -1288,10 +1292,8 @@ class VideoRoomComponent extends Component {
           />
           <ShieldModalLoading
             display={this.state.shieldLoadingDisplay}
-            user={localUser}
-            toggleShield={this.toggleShieldLoading}
-            subscribers={subscribers}
-            timeOut={3}
+            toggleShieldLoading={this.toggleShieldLoading}
+            timeOut={2.5}
             header="방어권 구경"
           />
           <ShieldModal
