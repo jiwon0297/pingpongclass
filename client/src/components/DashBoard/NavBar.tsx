@@ -9,7 +9,9 @@ import { Link } from 'react-router-dom';
 const NavBar = () => {
   return (
     <div css={totalContainer}>
-      <img src={mainLogo} alt="" />
+      <Link to="" className="linkButton">
+        <img src={mainLogo} alt="" />
+      </Link>
       <div className="dashNavButton">
         <DashboardIcon style={{ fontSize: '40px' }} />
         <h4>
