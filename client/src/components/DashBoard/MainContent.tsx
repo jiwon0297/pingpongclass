@@ -10,6 +10,7 @@ import { useAppSelector } from '@src/store/hooks';
 const MainContent = () => {
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
+  console.log(memberStore);
   const [classList, setClassList] = useState([] as any);
   var dt = new Date();
   const loadClassList = async () => {
