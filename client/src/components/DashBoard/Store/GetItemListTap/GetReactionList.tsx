@@ -58,6 +58,7 @@ const totalContainer = () => css`
   justify-content: center;
 
   .item-div {
+    width: 105px;
     background: #ffffff;
     display: flex;
     flex-direction: column;

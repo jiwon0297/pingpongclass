@@ -18,10 +18,12 @@ function Email(props: EmailProps) {
   const [isUse, setUse] = useState(false);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const onChangeEmail1 = (e) => {
+    setUse(false);
     setEmail1(e.target.value);
     setEmail(e.target.value + '@' + email2);
   };
   const onChangeEmail2 = (e) => {
+    setUse(false);
     setEmail2(e.target.value);
     setEmail(email1 + '@' + e.target.value);
   };
@@ -34,6 +36,9 @@ function Email(props: EmailProps) {
   const emailCheck = async () => {
     const mergedEmail = email1 + '@' + email2;
     //유효성검사
+    const regex =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+
     if (email1 == null) {
       alert('이메일을 입력해주세요.');
     } else {
