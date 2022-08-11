@@ -305,6 +305,20 @@ export const NoticeBoardStyle = () => css`
         margin: 0 0.5rem;
         width: 5rem;
       }
+      button.main-btn,
+      button.edit-btn {
+        background-color: pink;
+        text-decoration: none;
+        color: white;
+      }
+      button.sub-btn {
+        background-color: grey;
+        color: black;
+      }
+      button.sub-btn:hover {
+        background-color: grey;
+        color: red;
+      }
 
       button:visited {
         text-decoration: none;
