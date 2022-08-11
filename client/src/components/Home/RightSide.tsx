@@ -109,30 +109,36 @@ function RightSide(props: RightSideProps) {
         만들기 위해 제작했어요.
       </div>
       <div className="buttons-div">
-        <button
-          className="button blue"
-          onClick={(e) => {
-            goLogin('student');
-          }}
+        <div
+          css={css`
+            display: none;
+          `}
         >
-          학생
-        </button>
-        <button
-          className="button blue"
-          onClick={(e) => {
-            goLogin('teacher');
-          }}
-        >
-          선생님
-        </button>
-        <button
-          className="button blue"
-          onClick={(e) => {
-            goLogin('admin');
-          }}
-        >
-          관리자
-        </button>
+          <button
+            className="button blue"
+            onClick={(e) => {
+              goLogin('student');
+            }}
+          >
+            학생
+          </button>
+          <button
+            className="button blue"
+            onClick={(e) => {
+              goLogin('teacher');
+            }}
+          >
+            선생님
+          </button>
+          <button
+            className="button blue"
+            onClick={(e) => {
+              goLogin('admin');
+            }}
+          >
+            관리자
+          </button>
+        </div>
         <button className="button blue" onClick={onClickLogin}>
           로그인
         </button>
