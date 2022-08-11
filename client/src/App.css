@@ -69,6 +69,14 @@
 }
 
 /* 글씨 */
+.pageTitle {
+  text-align: left;
+  font-size: 26px;
+  font-weight: 700;
+  display: inline-block;
+  height: 40px;
+}
+
 .title-div {
   display: flex;
   flex-direction: column;
