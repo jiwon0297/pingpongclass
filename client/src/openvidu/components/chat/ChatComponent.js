@@ -205,7 +205,8 @@ export default class ChatComponent extends Component {
                 id="remoteUsers"
                 className={
                   'message' +
-                  (data.connectionId !== this.props.user.getConnectionId()
+                  (data.connectionId !== this.props.user.getConnectionId() ||
+                  data.nickname === 'System'
                     ? ' left'
                     : ' right') +
                   (data.type === 'chat' ? '' : ' whisper')
