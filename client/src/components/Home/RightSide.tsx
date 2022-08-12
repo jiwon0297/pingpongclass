@@ -110,9 +110,9 @@ function RightSide(props: RightSideProps) {
       </div>
       <div className="buttons-div">
         <div
-          css={css`
-            display: none;
-          `}
+        // css={css`
+        //   display: none;
+        // `}
         >
           <button
             className="button blue"

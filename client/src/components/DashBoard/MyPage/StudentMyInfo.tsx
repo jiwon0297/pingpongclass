@@ -244,7 +244,7 @@ const StudentMyInfo = () => {
               id="password"
               type="password"
               onChange={(e) => onChangePassword(e)}
-              placeholder=" 8자리 이상 16자리 이하, 영문자, 숫자 포함."
+              placeholder=" 8~16자리 영문자, 숫자 포함"
             />
           </div>
           <div className="fieldContainer">
@@ -259,11 +259,15 @@ const StudentMyInfo = () => {
         </div>
       </div>
       <div className="buttonsContainer">
-        <button type="button" className="submit" onClick={onEditMyInfo}>
+        <button
+          type="button"
+          className="button-sm yellow"
+          onClick={onEditMyInfo}
+        >
           수정
         </button>
         <Link to="/student">
-          <button type="button" className="cancel">
+          <button type="button" className="button-sm">
             취소
           </button>
         </Link>
@@ -286,9 +290,7 @@ const ModalCSS = (isMouseOn) => css`
   .infoContainer {
     position: relative;
     width: 80%;
-    height: 60%;
-    min-height: 100px;
-    max-height: 250px;
+    height: 50%;
     display: flex;
     margin-top: 50px;
     flex-direction: row;
@@ -300,8 +302,8 @@ const ModalCSS = (isMouseOn) => css`
 
   .profileContainer {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     box-sizing: border-box;
     border-radius: 200px;
     display: flex;
@@ -313,8 +315,6 @@ const ModalCSS = (isMouseOn) => css`
   .profileContainer .profile-logo {
     position: absolute;
     border-radius: 200px;
-    width: 200px;
-    height: 200px;
     filter: ${isMouseOn ? 'brightness(70%); ' : ''};
   }
 
@@ -360,6 +360,7 @@ const ModalCSS = (isMouseOn) => css`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    gap: 14px;
   }
 
   .infoListContainer {
@@ -403,7 +404,7 @@ const ModalCSS = (isMouseOn) => css`
   }
 
   .fieldContainer {
-    width: 100%;
+    width: 90%;
     font-size: 15pt;
     box-sizing: border-box;
     display: flex;
@@ -415,17 +416,16 @@ const ModalCSS = (isMouseOn) => css`
 
   .fieldContainer input {
     width: 270px;
-    height: 30px;
+    height: 37px;
     background-color: #f9f7e9;
     border: solid 1px #d7d7d7;
-    border-radius: 5px;
+    border-radius: 17px;
     box-sizing: border-box;
     font-family: 'NanumSquareRound';
-    font-size: 15pt;
+    font-size: 13pt;
+    padding: 16px 13px;
   }
-
   .fieldContainer span {
-    width: 30%;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -448,7 +448,7 @@ const ModalCSS = (isMouseOn) => css`
   }
 
   .stuinfoContainer input {
-    width: 30px;
+    width: 48px;
     height: 30px;
     text-align: center;
     background-color: #f9f7e9;

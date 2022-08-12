@@ -4,6 +4,8 @@ import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import App from '@src/App';
 import { store, persistor } from '@store/store';
+import { ThemeProvider } from '@emotion/react';
+import theme from './theme';
 import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(
@@ -13,7 +15,9 @@ root.render(
   <CookiesProvider>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   </CookiesProvider>,

@@ -13,7 +13,7 @@ const NavBar = () => {
         <img src={mainLogo} alt="" />
       </Link>
       <div className="dashNavButton">
-        <DashboardIcon style={{ fontSize: '40px' }} />
+        <DashboardIcon className="nav-div" />
         <h4>
           <Link to="" className="linkButton">
             대시보드
@@ -21,7 +21,7 @@ const NavBar = () => {
         </h4>
       </div>
       <div className="dashNavButton">
-        <CalendarMonthIcon style={{ fontSize: '40px' }} />
+        <CalendarMonthIcon className="nav-div" />
         <h4>
           <Link to="classes" className="linkButton">
             수업목록
@@ -29,7 +29,7 @@ const NavBar = () => {
         </h4>
       </div>
       <div className="dashNavButton">
-        <CampaignIcon style={{ fontSize: '40px' }} />
+        <CampaignIcon className="nav-div" />
         <h4>
           <Link to="notice" className="linkButton">
             공지사항
@@ -37,7 +37,7 @@ const NavBar = () => {
         </h4>
       </div>
       <div className="dashNavButton">
-        <StorefrontIcon style={{ fontSize: '40px' }} />
+        <StorefrontIcon className="nav-div" />
         <h4>
           <Link to="store" className="linkButton">
             상점
@@ -56,13 +56,16 @@ const totalContainer = css`
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  gap: 26px;
+  gap: 19px;
   padding: 30px 10px;
   margin-top: 50px;
   box-shadow: 2px 2px 15px -5px;
+  .nav-div {
+    font-size: 30px;
+  }
 
   .dashNavButton {
-    width: 90%;
+    width: 80%;
     height: 40px;
     display: flex;
     flex-direction: row;
@@ -95,6 +98,7 @@ const totalContainer = css`
 
   img {
     width: 90%;
+    margin: 19px 8px;
   }
 `;
 

@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface EmailProps {
   setTap: Function;
@@ -39,8 +40,8 @@ function Email(props: EmailProps) {
     const regex =
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
-    if (email1 == null) {
-      alert('이메일을 입력해주세요.');
+    if (!regex.test(mergedEmail) || email1 == null) {
+      toast.error('이메일을 올바른 형식으로 입력해주세요.');
     } else {
       InterceptedAxios.get(`/users/email/${mergedEmail}`)
         .then(function () {
@@ -48,10 +49,11 @@ function Email(props: EmailProps) {
           setEmail(email1 + '@' + email2);
           setEmailConfirmed(email);
           setUse(true);
-          alert('사용 가능한 이메일입니다.');
+          toast.success('사용 가능한 이메일입니다.');
         })
         .catch(function (error) {
-          alert('중복된 이메일입니다. 다른 이메일을 입력해주세요.');
+          toast.error('중복된 이메일입니다. 다른 이메일을 입력해주세요.');
+
           setUse(false);
           console.log('중복됨 실패', error);
         });
@@ -64,7 +66,7 @@ function Email(props: EmailProps) {
       setEmailConfirmed(email);
       setTap('passwordSetting');
     } else {
-      alert('이메일 중복체크를 해주세요.');
+      toast.error('이메일 중복체크를 해주세요.');
     }
   };
 

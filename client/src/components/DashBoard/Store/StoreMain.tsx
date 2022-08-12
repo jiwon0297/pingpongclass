@@ -13,6 +13,7 @@ import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
+import ReactTooltip from 'react-tooltip';
 import member, {
   setPoint,
   saveMember,
@@ -141,12 +142,37 @@ const StoreMain = () => {
         <div className="sideContainer">
           <div className="draw">
             <div className="bbobkki">
-              <p>랜덤 뽑기</p>
-              <HelpIcon
-                fontSize="small"
-                color="action"
-                onMouseEnter={onInfoEnter}
-              />
+              <div className="help-div" data-tip data-for="helpIcon">
+                <p>랜덤 뽑기</p>
+                <HelpIcon
+                  fontSize="small"
+                  color="action"
+                  onMouseEnter={onInfoEnter}
+                  css={css`
+                    height: 1.2vw;
+                  `}
+                />
+              </div>
+              <ReactTooltip
+                id="helpIcon"
+                effect="solid"
+                place="top"
+                type="light"
+                textColor="#191919"
+                border
+                borderColor="gray"
+              >
+                <div
+                  css={css`
+                    text-align: center;
+                    padding: 5px;
+                  `}
+                >
+                  퐁퐁이를 모아 아이템을 뽑아 보세요!
+                  <br />
+                  랜덤확률로 아이템을 획득할수 있습니다.
+                </div>
+              </ReactTooltip>
             </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
             <motion.button
@@ -223,16 +249,20 @@ const StoreMain = () => {
 
 const totalContainer = () => css`
   /* 전역 */
-  text-align: center;
-  width: inherit;
+  width: 100%;
   height: 100%;
-  position: relative;
-  overflow: hidden;
-  max-height: inherit;
-  max-width: inherit;
   display: flex;
+  text-align: center;
   flex-direction: column;
-  animation: 0.5s ease-in-out loadEffect1;
+  justify-content: start;
+  gap: 20px;
+  animation: 0.7s ease-in-out loadEffect1;
+
+  .help-div {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10%;
+  }
 
   .bbobkki {
     display: flex;
@@ -248,29 +278,34 @@ const totalContainer = () => css`
   .itemList {
     width: 70%;
     height: 80%;
-    margin-left: 29px;
+    margin-left: 30px;
     border-radius: 20px;
   }
 
   .getItemList {
     width: 55%;
-    height: 23vh;
-    margin: auto;
+    height: 100%;
+    margin: 0;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     border-radius: 20px;
   }
 
   .example {
-    width: 40%;
-    height: 23vh;
-    margin: auto;
+    width: 35%;
+    height: 100%;
+    box-sizing: border-box;
     background-color: gray;
   }
 
   .item-tap {
+    width: 100%;
+    height: 15%;
     display: flex;
     flex-direction: row;
-    justify-content: stretch;
-    height: 2rem;
+    justify-content: start;
     border-bottom: dashed 1px gray;
 
     .store1,
@@ -301,9 +336,9 @@ const totalContainer = () => css`
 
   .item-main {
     background-color: white;
-    height: calc(100% - 2rem);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    width: 100%;
+    height: 85%;
+    border-radius: 0 0 20px 20px;
     text-align: left;
     border-bottom: 1px solid gray;
     border-left: 1px solid gray;
@@ -312,70 +347,84 @@ const totalContainer = () => css`
 
   .pageTitle {
     text-align: left;
-    font-size: calc(0.5rem + 1vw);
+    font-size: 26px;
     font-weight: 700;
+    display: inline-block;
+    height: 40px;
   }
 
   .store-title-div {
+    width: 100%;
     display: flex;
-    align-items: flex-end;
+    flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 15px;
+    align-items: flex-end;
   }
 
   .drawContainer {
-    height: 55%;
-    justify-content: center;
+    width: 100%;
+    height: 380px;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
   }
 
   .sideContainer {
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
-    vertical-align: middle;
-    margin-top: 0.7rem;
     justify-content: center;
+    align-items: center;
     width: 100%;
-    height: 83%;
+    height: 100%;
   }
 
   .myItemContainer {
-    height: 45%;
+    width: 100%;
+    height: 40%;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
   }
 
   hr {
-    margin: 0 auto;
+    width: 100%;
+    margin: 10px 0;
   }
 
   .draw {
-    width: 21%;
+    width: 20%;
     height: 80%;
-    display: inline-flex;
     margin: 0;
+    display: flex;
     justify-content: center;
-    background: #fff1bd;
     flex-direction: column;
     align-items: center;
+    background: #fff1bd;
     border-radius: 20px;
     box-shadow: 0 0 3px 0 lightgray;
 
     p {
       font-weight: 700;
+      font-size: 1.1vw;
       padding-right: 0.2rem;
     }
 
     .bobkkiCapsule {
-      width: 50%;
+      width: 60%;
       height: auto;
     }
   }
 
   .pongCount {
     width: 15%;
-    background-color: white;
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
-    height: 5vh;
-    display: inline-flex;
+    align-items: center;
+    background-color: white;
     border-radius: 5px;
     border: 1px solid lightgray;
     font-weight: 700;
@@ -389,12 +438,12 @@ const totalContainer = () => css`
   }
 
   .bbobkkiBtn {
-    width: 50%;
+    width: 80%;
     background-color: white;
-    height: 4vh;
+    height: 15%;
     border-radius: 5px;
     border: 1px solid lightgray;
-    margin: 16px 0 16px 0;
+    margin-top: 5%;
     font-family: 'NanumSquareRound';
     font-weight: 700;
     box-shadow: 0 0 3px 0 lightgray;
