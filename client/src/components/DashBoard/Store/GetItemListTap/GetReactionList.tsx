@@ -21,6 +21,7 @@ function Item({ item }) {
 
 const GetReactionList = () => {
   const [items, setItems] = useState<Items[]>([allItems]);
+  const [loading, setLoading] = useState(true);
   const memberStore = useAppSelector((state) => state.member);
   const dispatch = useAppDispatch();
 
@@ -30,6 +31,7 @@ const GetReactionList = () => {
       setItems(memberStore.items);
       dispatch(saveMember());
       console.log('-------랜더링 : ', items);
+      setLoading(false);
     });
   }, []);
 
@@ -43,17 +45,16 @@ const GetReactionList = () => {
 
   // console.log(items);
 
-  return (
-    <div css={totalContainer}>
-      {filterItem.map((item, index) => (
-        <Item key={index} item={item} />
-      ))}
-    </div>
-  );
+  const render = () => {
+    return filterItem.map((item, index) => <Item key={index} item={item} />);
+  };
+
+  return <div css={totalContainer}>{loading ? null : render()}</div>;
 };
 
 const totalContainer = () => css`
   width: 100%;
+  height: 100%;
   flex-wrap: wrap;
   display: flex;
   flex-direction: row;
@@ -61,9 +62,9 @@ const totalContainer = () => css`
   padding: 10px;
 
   .item-div {
-    width: 105px;
-    width: 100px;
-    height: 100px;
+    width: calc(75% / 5);
+    height: calc(78% / 2);
+
     background: #ffffff;
     display: flex;
     flex-direction: column;

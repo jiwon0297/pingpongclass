@@ -7,9 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
-import { getCookieToken, removeCookieToken } from '../../storage/Cookie';
-import { DELETE_TOKEN } from '../../store/Auth';
-
 https: interface MyPageModalStyle {
   close: any;
   setToggle: Function;
@@ -61,15 +58,14 @@ const MyPageModal = ({ close, setToggle }: MyPageModalStyle) => {
     }
   };
 
-  const onClickMyPage = () => {
-    location.href = '/teacher/mypage';
+  const onClickOut = () => {
     setToggle('');
   };
 
   return (
     <div css={totalContainer}>
-      <div className="settingContainer">
-        <div className="myPageModal">
+      <div className="settingContainer" onClick={onClickOut}>
+        <div className="myPageModal ">
           <div className="myPageNav">
             <CloseIcon
               fontSize={'small'}
@@ -134,6 +130,7 @@ const totalContainer = css`
     justify-content: start;
     box-shadow: 2px 2px 10px -5px;
     animation: fadeIns 0.4s;
+    z-index: 1;
   }
 
   .myPageModal h3 {
@@ -142,7 +139,7 @@ const totalContainer = css`
 
   .linkButton {
     text-decoration: none;
-    color: black;
+    color: var(--text-dark);
   }
 
   h3 {
