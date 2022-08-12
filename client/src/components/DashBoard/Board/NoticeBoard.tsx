@@ -35,7 +35,6 @@ const NoticeBoard = () => {
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [thisPage, setThisPage] = useState<NoticeProps[]>([]);
   const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
@@ -81,6 +80,7 @@ const NoticeBoard = () => {
     dispatch(getClasses(memberStore.userId)).then(() => {
       setClasses(memberStore.classes);
     });
+
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
@@ -165,73 +165,69 @@ const NoticeBoard = () => {
     setSelected(current);
   };
 
-  const render = () => {
-    return (
-      <div>
-        <div className="upperModalArea">
-          <div className="pageTitle">공지사항</div>
-          <hr />
-          <form onSubmit={search} className="search-div">
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-simple-select-label">수업명</InputLabel>
-              <Select
-                defaultValue="-1"
-                labelId="demo-simple-select-label"
-                id="demo-select-small"
-                label="수업명"
-                onChange={handleSelect}
-                MenuProps={MenuProps}
-              >
-                {classes.map((s) => (
-                  <MenuItem key={s.classId} value={s.classId}>
-                    {s.classTitle}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+  return (
+    <div css={NoticeBoardStyle}>
+      <div className="upperModalArea">
+        <div className="pageTitle">공지사항</div>
+        <hr />
+        <form onSubmit={search} className="search-div">
+          {/* <select onChange={handleSelect}>
+            {classes.map((s) => (
+              <option key={s.classId} value={s.classId}>
+                {s.classTitle}
+              </option>
+            ))}
+          </select> */}
 
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-            />
-            <button type="submit" className="button-sm pink">
-              검색
-            </button>
-          </form>
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-simple-select-label">수업명</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-select-small"
+              label="수업명"
+              onChange={handleSelect}
+              MenuProps={MenuProps}
+            >
+              <MenuItem disabled value="">
+                <em>선택</em>
+              </MenuItem>
+              {classes.map((s) => (
+                <MenuItem key={s.classId} value={s.classId}>
+                  {s.classTitle}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          <button type="submit" className="button-sm pink">
+            검색
+          </button>
+        </form>
+      </div>
+      <div className="tableArea">
+        <div className="row titleRow">
+          <div className="col noticeId">번호</div>
+          <div className="col classTitle">수업명</div>
+          <div className="col noticeTitle">제목</div>
+          <div className="col writer">작성자</div>
+          <div className="col regtime">작성일</div>
         </div>
-        <div className="tableArea">
-          <div className="row titleRow">
-            <div className="col noticeId">번호</div>
-            <div className="col classTitle">수업명</div>
-            <div className="col noticeTitle">제목</div>
-            <div className="col writer">작성자</div>
-            <div className="col regtime">작성일</div>
-          </div>
 
-          <div className="articleArea">
-            {articles.map((article) => {
-              return <Notice key={article.noticeId} article={article} />;
-            })}
-            <div ref={setTarget} className="Loading">
-              {/* {isLoading && 'Loading...'} */}
-            </div>
+        <div className="articleArea">
+          {articles.map((article) => {
+            return <Notice key={article.noticeId} article={article} />;
+          })}
+          <div ref={setTarget} className="Loading">
+            {/* {isLoading && 'Loading...'} */}
           </div>
         </div>
       </div>
-    );
-  };
-  return (
-    <div css={NoticeBoardStyle}>
-      {loading ? (
-        <div className="loadingImgBox">
-          <h1>로딩중...</h1>
-          <img src={loadingImg} alt="" />
-        </div>
-      ) : (
-        render()
-      )}
     </div>
   );
 };

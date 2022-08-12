@@ -66,7 +66,7 @@ public class StoreController {
     public ResponseEntity<?> save(@RequestBody ItemRequest request) throws Exception{
         try{
             itemService.save(request);
-            return new ResponseEntity<String>("아이템 저장 성공",HttpStatus.OK);
+            return new ResponseEntity<List<ItemStudentResponse>>(itemService.findItemById(request.getStudentId()),HttpStatus.OK);
         } catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<String>("아이템 저장 실패",HttpStatus.FORBIDDEN);
