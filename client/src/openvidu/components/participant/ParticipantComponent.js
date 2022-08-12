@@ -73,22 +73,28 @@ export default class ParticipantComponent extends Component {
                 // upPoint={this.props.user.upPoint}
                 // downPoint={this.props.user.downPoint}
               />
+              {this.props.subscribers.map((sub, i) => (
+                <SingleParticipantPanel
+                  key={i}
+                  whoami={this.props.whoami}
+                  user={sub}
+                  isMyself={false}
+                  // myinfo={sub.nickname}
+                  // point={sub.point}
+                  // attendenceTime={sub.attendenceTime}
+                  // isVideoOn={sub.videoActive}
+                  // isAudioOn={sub.audioActive}
+                  // upPoint={sub.upPoint}
+                  // downPoint={sub.downPoint}
+                />
+              ))}
             </div>
-            {this.props.subscribers.map((sub, i) => (
-              <SingleParticipantPanel
-                key={i}
-                whoami={this.props.whoami}
-                user={sub}
-                isMyself={false}
-                // myinfo={sub.nickname}
-                // point={sub.point}
-                // attendenceTime={sub.attendenceTime}
-                // isVideoOn={sub.videoActive}
-                // isAudioOn={sub.audioActive}
-                // upPoint={sub.upPoint}
-                // downPoint={sub.downPoint}
-              />
-            ))}
+            <div>
+              <h3>수업 안온 양야치학생</h3>
+              {this.props.absentStudents.map((elem, i) => (
+                <p key={i}>{elem}</p>
+              ))}
+            </div>
           </div>
         </div>
       </div>
