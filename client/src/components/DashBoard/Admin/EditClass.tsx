@@ -207,7 +207,7 @@ const NewClassList = () => {
     };
     const result = await AXIOS.post('/classes', data);
     console.log(result);
-    navigate('/teacher/classes');
+    navigate('/admin/classes');
   };
 
   return (
