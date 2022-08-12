@@ -30,9 +30,6 @@ function TodaysClass() {
   const [classList, setClassList] = useState([] as any);
   const navigate = useNavigate();
   const dt = new Date();
-  InterceptedAxios.patch(`/student/points/120`, {
-    studentId: 2022000016,
-  });
 
   const loadClassList = async () => {
     const studentId = memberStore.userId;

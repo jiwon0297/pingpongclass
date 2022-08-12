@@ -45,7 +45,16 @@ class VideoRoomComponent extends Component {
     let sessionName = this.props.code;
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName;
-    if (this.props.whoami === 'student') userName = this.props.memberStore.name;
+    // String(time.getMinutes()).padStart(2, '0') +
+    //   ':' +
+    //   String(time.getSeconds()).padStart(2, '0');
+    if (this.props.whoami === 'student')
+      userName = `[${this.props.grade}${String(this.props.classNum).padStart(
+        2,
+        '0',
+      )}${String(this.props.studentNum).padStart(2, '0')}]${
+        this.props.memberStore.name
+      }`;
     if (this.props.whoami === 'teacher')
       userName = '[선생님]' + this.props.memberStore.name;
     // remotes:
