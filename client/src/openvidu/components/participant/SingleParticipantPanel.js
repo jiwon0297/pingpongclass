@@ -49,7 +49,7 @@ const SingleParticipantPanel = (props) => {
           </>
         )}
         {user.nickname.substr(0, 5) !== '[선생님]' && (
-          <span>상점 : {user.point}</span>
+          <span>퐁퐁 : {user.point}</span>
         )}
         <span>출석 : {user.attendenceTime}</span>
         {user.videoActive ? <Videocam /> : <VideocamOff color="secondary" />}
