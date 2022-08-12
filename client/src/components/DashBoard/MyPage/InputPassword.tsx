@@ -14,7 +14,8 @@ const InputPassword = () => {
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
-  const onClickInputPWD = (e) => {
+
+  const onClickInputPWD = () => {
     if (password == null) {
       alert('비밀번호를 입력해주세요.');
     } else {
@@ -34,19 +35,41 @@ const InputPassword = () => {
         });
     }
   };
+  const onKeyPress = (e) => {
+    if (e.key == 'Enter') {
+      onClickInputPWD();
+    }
+  };
 
   return (
     <div css={ModalCSS}>
       <div className="commonModal">
+        <p
+          css={css`
+            font-size: 2.1em;
+            font-weight: bold;
+            margin-bottom: 70px;
+          `}
+        >
+          비밀번호 인증
+        </p>
         <div className="passwordContainer">
-          <p>비밀번호:</p>
           <input
             type="password"
             onChange={(e) => onChangePassword(e)}
-            placeholder="비밀번호를 입력하세요."
+            placeholder="비밀번호를 입력해주세요."
+            onKeyPress={onKeyPress}
+            className="input-yellow"
+            css={css`
+              margin-right: 10px;
+              width: 70%;
+            `}
           />
+
+          <button className="button yellow" onClick={onClickInputPWD}>
+            확인
+          </button>
         </div>
-        <button onClick={onClickInputPWD}>입력</button>
       </div>
       <div className="modalSize">
         <IosModalNew />
@@ -87,35 +110,6 @@ const ModalCSS = css`
 
   .passwordContainer p {
     display: inline-block;
-  }
-
-  .passwordContainer input {
-    width: 70%;
-    height: 50px;
-    margin-left: 20px;
-    padding: 0px 10px;
-    font-size: 20px;
-    background-color: #f9f7e9;
-    border: solid 1px #d7d7d7;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-
-  .commonModal button {
-    text-align: center;
-    background-color: #f6ac55;
-    color: white;
-    border: 0;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-family: 'NanumSquareRound';
-    font-size: 20px;
-    box-shadow: 2px 2px 10px -5px;
-    cursor: pointer;
-  }
-
-  input::placeholder {
-    font-family: 'NanumSquareRound';
   }
 
   .modalSize {

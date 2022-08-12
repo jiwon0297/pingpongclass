@@ -69,6 +69,7 @@ const ItemList = () => {
         <img src={DoublePong} className="itemImg" data-tip data-for="3" />
         <p>더블퐁퐁권</p>
       </div>
+
       <ReactTooltip
         id="3"
         effect="solid"
@@ -84,10 +85,9 @@ const ItemList = () => {
             padding: 5px;
           `}
         >
-          랜덤 발표자로 선정되었을 경우, 발표 프리패스권을 사용해 발표를
-          면제받을 수 있습니다.
-          <br />
-          1회 사용시, 해당 아이템은 사라집니다.
+          해당 수업에서 획득한 퐁퐁이를 2배로 받을 수 있습니다. <br />
+          수업 참여 중 사용이 가능하며 해당 수업이 끝나면, 해당 아이템과 효과는
+          사라집니다.
         </div>
       </ReactTooltip>
       <div className="item-div">
@@ -109,9 +109,10 @@ const ItemList = () => {
             padding: 5px;
           `}
         >
-          해당 수업에서 획득한 퐁퐁이를 2배로 받을 수 있습니다. <br />
-          수업 참여 중 사용이 가능하며 해당 수업이 끝나면, 해당 아이템과 효과는
-          사라집니다.
+          랜덤 발표자로 선정되었을 경우, 발표 프리패스권을 사용해 발표를
+          면제받을 수 있습니다.
+          <br />
+          1회 사용시, 해당 아이템은 사라집니다.
         </div>
       </ReactTooltip>
     </div>

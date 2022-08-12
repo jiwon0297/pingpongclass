@@ -5,9 +5,17 @@ import useIntersectionObserver from '@src/utils/useIntersectionObserver';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
+import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 import Notice from './Notice';
 import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
 
 export interface NoticeProps {
   noticeId: number;
@@ -19,6 +27,7 @@ export interface NoticeProps {
 }
 
 const NoticeBoard = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -28,12 +37,24 @@ const NoticeBoard = () => {
   const [articles, setArticles] = useState<NoticeProps[]>([]);
   const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
-  let totalPage = 0;
+  const [totalPage, setTotalPage] = useState(1);
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
+    if (loading === true) return;
     if (isIntersecting) {
-      if (totalPage >= page) {
+      if (totalPage > page) {
         setPage((prev) => prev + 1);
       }
     }
@@ -41,24 +62,37 @@ const NoticeBoard = () => {
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
+  // 로딩 2번 보는게 신경쓰여서 일단 막고 useLayoutEffect 사용함
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+
+  //   dispatch(saveMember()).then(() => timer);
+  // }, []);
+
+  useLayoutEffect(() => {
+    dispatch(saveMember());
+    getNotice();
+    dispatch(getClasses(memberStore.userId));
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
-    dispatch(getClasses(memberStore.userId)).then(() => {
-      setClasses(memberStore.classes);
-    });
+    setClasses(memberStore.classes);
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
       setIsTeacher(false);
     }
+    getNotice();
   }, []);
 
   useEffect(() => {
-    getNotice();
+    if (totalPage > page) {
+      getNotice();
+    }
   }, [page]);
-
-  useEffect(() => {
-    // console.log(selected);
-  }, [selected]);
 
   const deleteNotice = (key: number) => {
     if (memberStore.isAdmin) {
@@ -76,13 +110,13 @@ const NoticeBoard = () => {
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setArticles([]);
-    setPage(1);
-
+    setTotalPage(0);
+    setPage(0);
     // 검색 로직
     getNotice();
   };
 
-  const getNotice = () => {
+  const getNotice = async () => {
     let word = '';
     if (keyword !== '') {
       word = '&titleSearch=' + keyword;
@@ -90,24 +124,21 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.classId.toString() +
+      selected.classId +
       '&userId=' +
-      memberStore.userId.toString() +
-      '&pageNumber=' +
-      page.toString() +
+      memberStore.userId +
+      '&page=' +
+      (page - 1) +
       word;
 
-    // console.log(searchQuery);
-
-    InterceptedAxios.get(searchQuery).then((response) => {
-      let list = response.data.content;
-      totalPage = response.data.totalPages;
-      if (totalPage >= page) {
-        checkNewNotice(list);
-      } else {
-        console.log('마지막 페이지입니다!');
-      }
-    });
+    const response = await InterceptedAxios.get(searchQuery);
+    setTotalPage(response.data.totalPages);
+    let list = response.data.content;
+    if (keyword !== '' || selected.classId !== -1) {
+      setArticles(list);
+    } else {
+      checkNewNotice(list);
+    }
   };
 
   const checkNewNotice = (value: NoticeProps[]) => {
@@ -122,7 +153,7 @@ const NoticeBoard = () => {
     setArticles([...articles, ...newNotice]);
   };
 
-  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelect = (e) => {
     let classId = parseInt(e.target.value);
     let current = allClass;
     classes.forEach((s) => {
@@ -137,22 +168,43 @@ const NoticeBoard = () => {
     <div css={NoticeBoardStyle}>
       <div className="upperModalArea">
         <div className="pageTitle">공지사항</div>
-        <form onSubmit={search}>
-          <select onChange={handleSelect}>
+        <hr />
+        <form onSubmit={search} className="search-div">
+          {/* <select onChange={handleSelect}>
             {classes.map((s) => (
               <option key={s.classId} value={s.classId}>
                 {s.classTitle}
               </option>
             ))}
-          </select>
-          <input
-            type="search"
-            name=""
-            id=""
+          </select> */}
+
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-simple-select-label">수업명</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-select-small"
+              label="수업명"
+              onChange={handleSelect}
+              MenuProps={MenuProps}
+            >
+              <MenuItem disabled value="">
+                <em>선택</em>
+              </MenuItem>
+              {classes.map((s) => (
+                <MenuItem key={s.classId} value={s.classId}>
+                  {s.classTitle}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <button type="submit" className="main-btn">
+          <button type="submit" className="button-sm pink">
             검색
           </button>
         </form>
@@ -190,15 +242,19 @@ export const NoticeBoardStyle = () => css`
   max-width: inherit;
   animation: 0.5s ease-in-out loadEffect1;
 
+  .pageTitle {
+    width: 100%;
+  }
+
   button:hover {
     cursor: pointer;
   }
 
-  .pageTitle {
-    text-align: left;
-    /* font-size: 2rem; */
-    border-bottom: 0.15rem solid black;
-    width: inherit;
+  .search-div {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   form {
@@ -230,7 +286,7 @@ export const NoticeBoardStyle = () => css`
   /* table 영역 */
   .tableArea {
     border-spacing: 0;
-    width: inherit;
+    width: -webkit-fill-available;
     height: inherit;
     position: absolute;
     /* overflow-y: scroll; */
@@ -259,13 +315,16 @@ export const NoticeBoardStyle = () => css`
   .col {
     overflow: hidden;
     width: 15%;
-    max-width: 30%;
-    height: -webkit-fill-available;
+    line-height: 30px;
   }
   /* 제목 행 */
   .titleRow {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     padding: 0.5rem 0;
     background-color: #c0d2e5;
+    height: 30px;
+    vertical-align: middle;
   }
 
   /* 게시글 항목 영역 */

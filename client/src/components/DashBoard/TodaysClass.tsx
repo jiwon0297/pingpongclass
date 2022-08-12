@@ -25,11 +25,11 @@ interface ClassProps {
   classUrl: string;
 }
 
-function TodaysClass(props) {
-  const classListFromMainContent = props.classList;
+function TodaysClass() {
+  const [loading, setLoading] = useState(true);
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
-  const [classList, setClassList] = useState(classListFromMainContent as any);
+  const [classList, setClassList] = useState([] as any);
   const navigate = useNavigate();
   const dt = new Date();
 
@@ -39,6 +39,7 @@ function TodaysClass(props) {
     const result = await AXIOS.get(`/classes`, {
       params: { id: studentId, day: classDay },
     });
+    setClassList(result.data.content);
 
     // promise.all 처리!
     const promises = result.data.content.map(async (elem, i) => {
@@ -46,7 +47,6 @@ function TodaysClass(props) {
       elem.classUrl = classUrlData.data;
     });
     await Promise.all(promises);
-    setClassList(result.data.content);
   };
 
   const joinClass = async (cls: ClassProps) => {
@@ -61,12 +61,23 @@ function TodaysClass(props) {
     }
   };
 
+  const render = () => {
+    if (!loading) {
+      return classList.map((cls, idx) => (
+        <SwiperSlide key={idx} onClick={() => joinClass(cls)}>
+          <ClassCard clsList={cls} />
+        </SwiperSlide>
+      ));
+    }
+  };
+
   useEffect(() => {
-    loadClassList();
+    loadClassList().then(() => setLoading(false));
   }, []);
 
   return (
     <div css={totalContainer}>
+      {classList.length === 0 && <p>오늘은 수업이 없습니다.</p>}
       <Swiper
         pagination={{
           type: 'progressbar',
@@ -77,14 +88,7 @@ function TodaysClass(props) {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {classList.map((cls, idx) => (
-          <SwiperSlide key={idx} onClick={() => joinClass(cls)}>
-            <ClassCard
-              clsList={{ classTitle: cls.classTitle, classDesc: cls.classDesc }}
-              classUrl={cls.classUrl}
-            />
-          </SwiperSlide>
-        ))}
+        {render()}
       </Swiper>
     </div>
   );
