@@ -4,11 +4,22 @@ import ColorChangeBorder from '../../../../assets/images/colorChange_Border.png'
 import DoublePong from '../../../../assets/images/doublePong.png';
 import FreePassTicket from '../../../../assets/images/freepassTicket.png';
 import ReactTooltip from 'react-tooltip';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 const ItemList = () => {
   return (
     <div css={totalContainer}>
       <div className="item-div">
+        <LocalOfferIcon
+          fontSize="small"
+          sx={{ color: 'gold' }}
+          css={css`
+            z-index: 999;
+            position: absolute;
+            left: 20px;
+            top: 10px;
+          `}
+        />
         <img src={ColorChangeJandi} className="itemImg" data-tip data-for="1" />
         <p>색변경권[잔디]</p>
       </div>
@@ -35,6 +46,16 @@ const ItemList = () => {
         </div>
       </ReactTooltip>
       <div className="item-div">
+        <LocalOfferIcon
+          fontSize="small"
+          sx={{ color: 'gold' }}
+          css={css`
+            z-index: 999;
+            position: absolute;
+            left: 20px;
+            top: 10px;
+          `}
+        />
         <img
           src={ColorChangeBorder}
           className="itemImg"
@@ -66,11 +87,56 @@ const ItemList = () => {
         </div>
       </ReactTooltip>
       <div className="item-div">
+        <LocalOfferIcon
+          fontSize="small"
+          sx={{ color: 'pink' }}
+          css={css`
+            z-index: 999;
+            position: absolute;
+            left: 20px;
+            top: 10px;
+          `}
+        />
         <img src={DoublePong} className="itemImg" data-tip data-for="3" />
         <p>더블퐁퐁권</p>
       </div>
+
       <ReactTooltip
         id="3"
+        effect="solid"
+        place="top"
+        type="light"
+        textColor="#191919"
+        border
+        borderColor="gray"
+      >
+        <div
+          css={css`
+            text-align: center;
+            padding: 5px;
+          `}
+        >
+          해당 수업에서 획득한 퐁퐁이를 2배로 받을 수 있습니다. <br />
+          수업 참여 중 사용이 가능하며 해당 수업이 끝나면, 해당 아이템과 효과는
+          사라집니다.
+        </div>
+      </ReactTooltip>
+      <div className="item-div">
+        <LocalOfferIcon
+          fontSize="small"
+          sx={{ color: 'blueviolet' }}
+          css={css`
+            z-index: 999;
+            position: absolute;
+            left: 20px;
+            top: 10px;
+          `}
+        />
+        <img src={FreePassTicket} className="itemImg" data-tip data-for="4" />
+        <p>발표프리패스권</p>
+      </div>
+      <ReactTooltip
+        id="4"
         effect="solid"
         place="top"
         type="light"
@@ -90,30 +156,6 @@ const ItemList = () => {
           1회 사용시, 해당 아이템은 사라집니다.
         </div>
       </ReactTooltip>
-      <div className="item-div">
-        <img src={FreePassTicket} className="itemImg" data-tip data-for="4" />
-        <p>발표프리패스권</p>
-      </div>
-      <ReactTooltip
-        id="4"
-        effect="solid"
-        place="top"
-        type="light"
-        textColor="#191919"
-        border
-        borderColor="gray"
-      >
-        <div
-          css={css`
-            text-align: center;
-            padding: 5px;
-          `}
-        >
-          해당 수업에서 획득한 퐁퐁이를 2배로 받을 수 있습니다. <br />
-          수업 참여 중 사용이 가능하며 해당 수업이 끝나면, 해당 아이템과 효과는
-          사라집니다.
-        </div>
-      </ReactTooltip>
     </div>
   );
 };
@@ -124,6 +166,7 @@ const totalContainer = () => css`
   justify-content: center;
 
   .item-div {
+    position: relative;
     width: 120px;
     height: 120px;
     background: #ffffff;

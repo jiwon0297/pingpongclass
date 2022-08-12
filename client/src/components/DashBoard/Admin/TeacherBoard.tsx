@@ -325,8 +325,10 @@ const btnBox = () => css`
   justify-content: flex-end;
   align-content: center;
   align-items: center;
-  position: absolute;
-  bottom: 13%;
+  background-color: transparent;
+  margin: 0px;
+  /* position: absolute;
+  bottom: 13%; */
   .Pagination {
     /* margin-right: 11.5rem; */
     justify-content: center;

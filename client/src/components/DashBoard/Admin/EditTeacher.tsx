@@ -32,6 +32,12 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
     if (teacherId !== undefined && teacherId !== 0) {
       InterceptedAxios.get('/teachers/' + teacherId).then((res) => {
         setTeacher(res.data);
+        setPreview(
+          res.data?.profile
+            ? 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' +
+                res.data?.profile
+            : 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
+        );
       });
     }
   };
@@ -131,7 +137,8 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
     InterceptedAxios.post('/teachers/', teacher)
       .then(function (response) {
         alert('회원 추가에 성공했습니다.');
-        location.href = '/admin/teachers';
+        // location.href = '/admin/teachers';
+        navigate('/admin/teachers');
       })
       .catch(function (error) {
         console.log(error);
@@ -202,7 +209,8 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          location.href = '/admin/teachers';
+          navigate('/admin/teachers');
+          // location.href = '/admin/teachers';
         })
         .catch(function (error) {
           console.log(error);
