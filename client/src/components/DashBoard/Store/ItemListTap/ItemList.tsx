@@ -143,13 +143,12 @@ const totalContainer = () => css`
     }
 
     p {
-      font-size: 10px;
-      font-weight: bold;
+      font-size: 0.8vw;
       margin-bottom: 0px;
     }
 
     .itemImg {
-      width: 70px;
+      width: 68%;
     }
   }
 `;

@@ -51,6 +51,12 @@ const Login = (props: LoginProps) => {
     setTap('main');
   };
 
+  const onKeyPress = (e) => {
+    if (e.key == 'Enter') {
+      onClickLogin();
+    }
+  };
+
   const onClickLogin = () => {
     //유효성 검사
     // 아이디.
@@ -153,6 +159,7 @@ const Login = (props: LoginProps) => {
               onChange={(e) => onChangePw(e)}
               type="password"
               value={userPw}
+              onKeyPress={onKeyPress}
               className="input"
               css={css`
                 font-family: 'Courier New', Courier, monospace;

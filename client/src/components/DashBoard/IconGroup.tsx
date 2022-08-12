@@ -9,7 +9,12 @@ import MyPageModal from './MyPageModal';
 const IconGroup = () => {
   const [toggle, setToggle] = useState('');
   const onClickIcon = (icon: string) => {
-    setToggle(icon);
+    // alert(icon + ',' + toggle);
+    if (toggle === icon) {
+      setToggle('');
+    } else {
+      setToggle(icon);
+    }
   };
 
   return (

@@ -4,6 +4,8 @@ import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import App from '@src/App';
 import store from '@store/store';
+import { ThemeProvider } from '@emotion/react';
+import theme from './theme';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -11,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <CookiesProvider>
     <Provider store={store}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </Provider>
   </CookiesProvider>,
 );

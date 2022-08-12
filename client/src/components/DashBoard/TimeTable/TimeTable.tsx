@@ -27,6 +27,8 @@ const TimeTable = () => {
   const array = [1, 2, 3, 4, 5];
   return (
     <div css={totalContainer}>
+      <div className="pageTitle">수업목록</div>
+      <hr />
       <div className="upperpart">
         <div className="blankspace" />
         <div className="classday">

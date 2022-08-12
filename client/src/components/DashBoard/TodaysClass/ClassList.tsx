@@ -60,67 +60,78 @@ const ClassList = () => {
 
   return (
     <div css={totalContainer}>
-      <div className="tabsContainer">
-        <div className="weekTabs">
-          <div
-            className={tab === 1 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(1)}
-          >
-            월
-          </div>
-          <div
-            className={tab === 2 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(2)}
-          >
-            화
-          </div>
-          <div
-            className={tab === 3 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(3)}
-          >
-            수
-          </div>
-          <div
-            className={tab === 4 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(4)}
-          >
-            목
-          </div>
-          <div
-            className={tab === 5 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(5)}
-          >
-            금
+      <div className="pageTitle">수업목록</div>
+      <hr
+        css={css`
+          margin-bottom: 30px;
+        `}
+      />
+      <div className="total-container">
+        <div className="tabsContainer">
+          <div className="weekTabs">
+            <div
+              className={tab === 1 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(1)}
+            >
+              월
+            </div>
+            <div
+              className={tab === 2 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(2)}
+            >
+              화
+            </div>
+            <div
+              className={tab === 3 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(3)}
+            >
+              수
+            </div>
+            <div
+              className={tab === 4 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(4)}
+            >
+              목
+            </div>
+            <div
+              className={tab === 5 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(5)}
+            >
+              금
+            </div>
           </div>
         </div>
+        <Swiper
+          style={{ width: '100%' }}
+          pagination={{
+            type: 'progressbar',
+          }}
+          slidesPerView={1}
+          spaceBetween={0}
+          navigation={true}
+          modules={[Pagination, Navigation]}
+          className="mySwiper"
+        >
+          {renderList()}
+        </Swiper>
       </div>
-      <Swiper
-        style={{ width: '100%' }}
-        pagination={{
-          type: 'progressbar',
-        }}
-        slidesPerView={1}
-        spaceBetween={0}
-        navigation={true}
-        modules={[Pagination, Navigation]}
-        className="mySwiper"
-      >
-        {renderList()}
-      </Swiper>
     </div>
   );
 };
 
 const totalContainer = css`
   width: 100%;
-  background: #fdfcf3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  border-radius: 20px;
-  box-shadow: 2px 2px 15px -5px;
-  animation: 0.5s ease-in-out loadEffect1;
+  .total-container {
+    width: 100%;
+    background: #fdfcf3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    border-radius: 20px;
+    box-shadow: 2px 2px 15px -5px;
+    animation: 0.5s ease-in-out loadEffect1;
+  }
 
   .tabsContainer {
     width: 100%;

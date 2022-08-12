@@ -7,7 +7,7 @@ const ReactionList = () => {
           <img src="../reactions/heart.gif" className="reaction-img" />
         </div>
         <div className="reaction-div">
-          <img src="../reactions/laghing.gif" className="reaction-img" />
+          <img src="../reactions/laughing.gif" className="reaction-img" />
         </div>
         <div className="reaction-div">
           <img src="../reactions/cry.gif" className="reaction-img" />
@@ -43,17 +43,20 @@ const ReactionList = () => {
 const totalContainer = () => css`
   display: flex;
   flex-direction: column;
-  padding: 7px 0px;
+  height: 100%;
+  padding: 10px;
 
   .reaction-div-row {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 4px;
+    height: calc(100% / 2);
+    gap: 10px;
   }
 
   .reaction-div {
     width: calc(86% / 5);
+    height: 80%;
     overflow: hidden;
     background: #ffffff;
     display: -webkit-box;
@@ -78,7 +81,7 @@ const totalContainer = () => css`
       font-size: calc(0.5vw);
     }
     .reaction-img {
-      width: 60%;
+      width: 70%;
     }
   }
 `;

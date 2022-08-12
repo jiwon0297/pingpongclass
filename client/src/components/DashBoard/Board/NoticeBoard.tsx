@@ -8,6 +8,13 @@ import { Link } from 'react-router-dom';
 import Notice from './Notice';
 import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
 
 export interface NoticeProps {
   noticeId: number;
@@ -29,6 +36,17 @@ const NoticeBoard = () => {
   const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -122,7 +140,7 @@ const NoticeBoard = () => {
     setArticles([...articles, ...newNotice]);
   };
 
-  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelect = (e) => {
     let classId = parseInt(e.target.value);
     let current = allClass;
     classes.forEach((s) => {
@@ -137,22 +155,40 @@ const NoticeBoard = () => {
     <div css={NoticeBoardStyle}>
       <div className="upperModalArea">
         <div className="pageTitle">공지사항</div>
-        <form onSubmit={search}>
-          <select onChange={handleSelect}>
+        <hr />
+        <form onSubmit={search} className="search-div">
+          {/* <select onChange={handleSelect}>
             {classes.map((s) => (
               <option key={s.classId} value={s.classId}>
                 {s.classTitle}
               </option>
             ))}
-          </select>
-          <input
-            type="search"
-            name=""
-            id=""
+          </select> */}
+
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-simple-select-label">수업명</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-select-small"
+              label="수업명"
+              onChange={handleSelect}
+              MenuProps={MenuProps}
+            >
+              {classes.map((s) => (
+                <MenuItem key={s.classId} value={s.classId}>
+                  {s.classTitle}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <button type="submit" className="main-btn">
+          <button type="submit" className="button-sm pink">
             검색
           </button>
         </form>
@@ -190,15 +226,19 @@ export const NoticeBoardStyle = () => css`
   max-width: inherit;
   animation: 0.5s ease-in-out loadEffect1;
 
+  .pageTitle {
+    width: 100%;
+  }
+
   button:hover {
     cursor: pointer;
   }
 
-  .pageTitle {
-    text-align: left;
-    /* font-size: 2rem; */
-    border-bottom: 0.15rem solid black;
-    width: inherit;
+  .search-div {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   form {
@@ -259,13 +299,16 @@ export const NoticeBoardStyle = () => css`
   .col {
     overflow: hidden;
     width: 15%;
-    max-width: 30%;
-    height: -webkit-fill-available;
+    line-height: 30px;
   }
   /* 제목 행 */
   .titleRow {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     padding: 0.5rem 0;
     background-color: #c0d2e5;
+    height: 30px;
+    vertical-align: middle;
   }
 
   /* 게시글 항목 영역 */
