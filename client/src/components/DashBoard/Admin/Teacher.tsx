@@ -70,10 +70,10 @@ export const TeacherStyle = () => css`
   /* height: inherit; */
 
   position: relative;
-  width: 10rem;
-  height: 10rem;
+  width: 10vw;
+  height: 15vh;
   border: 0.01rem solid black;
-  margin: 0.1rem;
+  margin: 1rem;
   border-radius: 0.5rem;
   .teacher-preview {
     position: relative;
@@ -109,8 +109,8 @@ export const TeacherStyle = () => css`
     left: 0.01rem;
   }
   img {
-    width: 6rem;
-    height: 6rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: 50%;
   }
   button {

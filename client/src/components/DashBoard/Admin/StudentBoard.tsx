@@ -118,43 +118,23 @@ const StudentBoard = () => {
   };
 
   return (
-    <>
-      <div className="btn-box" css={btnBox}>
-        <button type="button" className="add-btn stu-bottom-btn">
-          <Link to="/admin/studentAdd">개별 추가</Link>
-        </button>
-        <button type="button" className="add-btn stu-bottom-btn">
-          <Link to="/admin/studentAddBulk">일괄 추가</Link>
-        </button>
-        <button
-          type="button"
-          className="del-btn stu-bottom-btn"
-          onClick={deleteSelected}
-        >
-          선택 삭제
-        </button>
-        <button
-          type="button"
-          className="del-btn stu-bottom-btn"
-          onClick={deleteAll}
-        >
-          일괄 삭제
-        </button>
-      </div>
-      <div css={totalContainer}>
-        <div className="upperModalArea">
-          <div className="pageTitle">학생관리</div>
-          <form onSubmit={search}>
+    <div css={totalContainer}>
+      <div className="upperModalArea">
+        <div className="pageTitle">학생관리</div>
+        <form onSubmit={search}>
+          <div style={{ width: '60%', textAlign: 'left' }}>
             학년
             <input
               type="number"
               value={grade || ''}
+              style={{ width: '15px' }}
               onChange={(e) => setGrade(+e.target.value)}
             />
             반
             <input
               type="number"
               value={classNum || ''}
+              style={{ width: '15px' }}
               onChange={(e) => setClassNum(+e.target.value)}
             />
             이름
@@ -166,43 +146,65 @@ const StudentBoard = () => {
             <button type="submit" className="sub-btn">
               검색
             </button>
-          </form>
+          </div>
+          <div className="btn-box" css={btnBox}>
+            <button type="button" className="add-btn stu-bottom-btn">
+              <Link to="/admin/studentAdd">개별 추가</Link>
+            </button>
+            <button type="button" className="add-btn stu-bottom-btn">
+              <Link to="/admin/studentAddBulk">일괄 추가</Link>
+            </button>
+            <button
+              type="button"
+              className="del-btn stu-bottom-btn"
+              onClick={deleteSelected}
+            >
+              선택 삭제
+            </button>
+            <button
+              type="button"
+              className="del-btn stu-bottom-btn"
+              onClick={deleteAll}
+            >
+              일괄 삭제
+            </button>
+          </div>
+        </form>
+      </div>
+      <div className="tableArea">
+        <div className="row titleRow">
+          <div className="col col1">
+            <input
+              type="checkbox"
+              name=""
+              id={`checkAll`}
+              onChange={toggleAll}
+            />
+          </div>
+          <div className="col col4">이름</div>
+          <div className="col col3">학번</div>
+          <div className="col col1">학년</div>
+          <div className="col col1">반</div>
+          <div className="col col1">번호</div>
+          <div className="col col2">이메일</div>
+          <div className="col col1">수정</div>
         </div>
-        <div className="tableArea">
-          <div className="row titleRow">
-            <div className="col col1">
-              <input
-                type="checkbox"
-                name=""
-                id={`checkAll`}
-                onChange={toggleAll}
-              />
-            </div>
-            <div className="col col4">이름</div>
-            <div className="col col3">학번</div>
-            <div className="col col1">학년</div>
-            <div className="col col1">반</div>
-            <div className="col col1">번호</div>
-            <div className="col col2">이메일</div>
-            <div className="col col1">수정</div>
-          </div>
 
-          <div className="articleArea">
-            {students.map((student) => {
-              return (
-                <Student
-                  key={student.studentId}
-                  article={student}
-                  selected={student.isSelected}
-                  toggle={toggle}
-                />
-              );
-            })}
-            {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
-          </div>
+        <div className="articleArea">
+          {students.map((student) => {
+            return (
+              <Student
+                key={student.studentId}
+                article={student}
+                selected={student.isSelected}
+                toggle={toggle}
+              />
+            );
+          })}
+          {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -215,6 +217,7 @@ const totalContainer = () => css`
   /* overflow: hidden; */
   max-height: inherit;
   max-width: inherit;
+  animation: 0.5s ease-in-out loadEffect1;
 
   button:hover {
     cursor: pointer;
@@ -228,7 +231,10 @@ const totalContainer = () => css`
   }
 
   form {
-    margin: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 10px;
     button {
       border: none;
       border-radius: 0.5rem;
@@ -335,24 +341,26 @@ const totalContainer = () => css`
     max-width: 5rem;
   }
   input {
-    margin: 0 1em;
     border-radius: 0.5rem;
     padding: 0.5rem;
+    width: 20%;
+    border: 1px solid gray;
+    margin-left: 10px;
+    margin-right: 15px;
   }
 `;
 
 const btnBox = () => css`
-  position: absolute;
-  z-index: 2;
-  top: 2.85rem;
+  width: 40%;
+  text-align: right;
   .add-btn {
-    background-color: #7063b5;
+    background-color: var(--blue);
   }
   .del-btn {
-    background-color: #e56666;
+    background-color: var(--gray);
   }
   .stu-bottom-btn {
-    margin: 1rem;
+    margin-left: 5px;
     padding: 0.5rem;
     border: none;
     border-radius: 0.5rem;
@@ -364,7 +372,14 @@ const btnBox = () => css`
     background-color: transparent;
     text-decoration: none;
   }
-  position: absolute;
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 export default StudentBoard;

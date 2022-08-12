@@ -53,8 +53,10 @@ const totalContainer = () => css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: end;
     height: 3rem;
     border-bottom: 2px solid #000000;
+    text-align: right;
 
     .circle1,
     .circle2,
@@ -65,7 +67,7 @@ const totalContainer = () => css`
       border-radius: 75px;
       background-color: #000000;
       float: left;
-      margin-left: 0.7rem;
+      margin-right: 0.3rem;
     }
 
     .circle1 {
@@ -74,12 +76,11 @@ const totalContainer = () => css`
 
     .circle2 {
       background-color: #ffe381;
-      margin-left: 0.3rem;
     }
 
     .circle3 {
       background-color: #96ba85;
-      margin-left: 0.3rem;
+      margin-right: 0.6rem;
     }
   }
 `;
