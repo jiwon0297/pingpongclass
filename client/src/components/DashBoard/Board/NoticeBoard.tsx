@@ -63,6 +63,7 @@ const NoticeBoard = () => {
     dispatch(getClasses(memberStore.userId)).then(() => {
       setClasses(memberStore.classes);
     });
+
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
@@ -174,6 +175,9 @@ const NoticeBoard = () => {
               onChange={handleSelect}
               MenuProps={MenuProps}
             >
+              <MenuItem disabled value="">
+                <em>선택</em>
+              </MenuItem>
               {classes.map((s) => (
                 <MenuItem key={s.classId} value={s.classId}>
                   {s.classTitle}

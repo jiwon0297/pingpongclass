@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useTime } from 'framer-motion';
 import React, { PropsWithChildren } from 'react';
 import { motion } from 'framer-motion';
 import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
 import CapsuleBox from '../../../assets/images/capsuleBox.png';
 import ItemBackground from '../../../assets/images/splash2.png';
-import FreePassTicket from '../../../assets/images/freepassTicket.png';
-import { CenterFocusStrong } from '@mui/icons-material';
 import InterceptedAxios from '@utils/iAxios';
 import { useState, useCallback, useEffect } from 'react';
 
@@ -38,10 +37,11 @@ const Animation = ({ onClickOpenModal, getItem }: ModalDefaultType) => {
           console.log('아이템 이름 조회과정에서 에러발생', error);
         });
     }
+    // startmachine();
   }, [getItem]);
-
   return (
     <div css={totalContainer}>
+      <audio src="../sounds/gatcha.mp3" autoPlay />
       <div
         style={{
           position: 'relative',
