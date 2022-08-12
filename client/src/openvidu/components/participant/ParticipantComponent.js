@@ -123,6 +123,12 @@ export default class ParticipantComponent extends Component {
                 <p key={i}>{elem}</p>
               ))}
             </div>
+            <div className="test">
+              {/* <p>{this.props.teacher.nickname}</p>
+              {this.props.students.map((elem, i) => (
+                <p key={i}>{elem.nickname}</p>
+              ))} */}
+            </div>
           </div>
         </div>
       </div>

@@ -72,7 +72,7 @@ class VideoRoomComponent extends Component {
       session: undefined,
       localUser: undefined,
       subscribers: [],
-      teacher: undefined,
+      teacher: { nickname: '' },
       students: [],
       absentStudents: this.props.studentList,
       chatDisplay: 'none',
@@ -166,6 +166,7 @@ class VideoRoomComponent extends Component {
     this.setSpeaker = this.setSpeaker.bind(this);
     // 결석학생 잡기
     this.whoAbsent = this.whoAbsent.bind(this);
+    this.whoTeacherOrStudent = this.whoTeacherOrStudent.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -293,6 +294,7 @@ class VideoRoomComponent extends Component {
       })
       .then(() => {
         this.whoAbsent();
+        this.whoTeacherOrStudent();
       })
       .catch((error) => {
         if (this.props.error) {
@@ -310,6 +312,26 @@ class VideoRoomComponent extends Component {
           error.message,
         );
       });
+  }
+
+  whoTeacherOrStudent() {
+    let updateTeacher;
+    let updateStudents;
+    if (this.props.whoami === 'teacher') updateTeacher = localUser;
+    else
+      updateTeacher = this.remotes.filter(
+        (elem) => elem.nickname.substr(1, 3) === '선생님',
+      );
+
+    if (this.props.whoami === 'teacher') updateStudents = this.remotes;
+    else
+      updateStudents = this.remotes.filter(
+        (elem) => elem.nickname.substr(1, 3) !== '선생님',
+      );
+    this.setState({
+      teacher: updateTeacher,
+      students: updateStudents,
+    });
   }
 
   whoAbsent() {
@@ -394,25 +416,9 @@ class VideoRoomComponent extends Component {
   // updateSubscribers: 자신의 정보를 구독하고 있는(받고 있는) 유저들의 정보를 업데이트
   updateSubscribers() {
     const subscribers = this.remotes;
-    let updateTeacher;
-    let updateStudents;
-    if (this.props.whoami === 'teacher') updateTeacher = this.state.localUser;
-    else
-      updateTeacher = this.remotes.filter(
-        (elem) => elem.nickname.str(1, 3) === '선생님',
-      );
-
-    if (this.props.whoami === 'teacher') updateStudents = this.remotes;
-    else
-      updateStudents = this.remotes.filter(
-        (elem) => elem.nickname.str(1, 3) !== '선생님',
-      );
-
     this.setState(
       {
         subscribers: subscribers,
-        teacher: updateTeacher,
-        students: updateStudents,
       },
       () => {
         if (this.state.localUser) {
@@ -426,6 +432,7 @@ class VideoRoomComponent extends Component {
         }
         this.updateLayout();
         this.whoAbsent();
+        this.whoTeacherOrStudent();
       },
     );
   }
@@ -580,6 +587,7 @@ class VideoRoomComponent extends Component {
       });
     }
     this.whoAbsent();
+    this.whoTeacherOrStudent();
   }
 
   // subscribeToStreamCreated: 새롭게 접속한 사람의 스트림을 구독하는 함수
