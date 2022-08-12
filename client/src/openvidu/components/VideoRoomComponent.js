@@ -44,8 +44,10 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.code;
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
-    let userName = this.props.memberStore.name;
-    if (this.props.whoami === 'teacher') userName += ' (선생님)';
+    let userName;
+    if (this.props.whoami === 'student') userName = this.props.memberStore.name;
+    if (this.props.whoami === 'teacher')
+      userName = '[선생님]' + this.props.memberStore.name;
     // remotes:
     this.remotes = [];
     // localUserAccessAllowed:
@@ -1014,9 +1016,7 @@ class VideoRoomComponent extends Component {
       let studentList = [];
       // 선생님이거나 관리자가 아닌 계정(체크 방식 변경 예정)
       list.forEach((elem) => {
-        if (!elem.nickname.includes('(선생님)')) {
-          studentList.push(elem);
-        }
+        if (!elem.nickname.includes('[선생님]')) studentList.push(elem);
       });
       if (studentList.length > 0) {
         let pickedStudent =
