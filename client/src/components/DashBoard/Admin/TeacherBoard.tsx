@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Teacher from './Teacher';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import axios from 'axios';
@@ -8,6 +8,8 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link, useNavigate } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
 import Pagination from '@mui/material/Pagination';
+import EditTeacher from './EditTeacher';
+import AddTeacherBulk from './AddTeacherBulk';
 
 export interface TeacherProps {
   teacherId?: number;
@@ -18,8 +20,7 @@ export interface TeacherProps {
   manageGrade?: number;
   isAdmin?: number;
   profile?: string;
-  activated?: string;
-  authorities?: Authorities[];
+  profileFullPath?: string;
   isSelected?: boolean;
 }
 interface Authorities {
@@ -39,6 +40,9 @@ const TeacherBoard = () => {
       : Math.floor(teachers.length / 12 + 1); // 마지막 페이지
   const [page, setPage] = useState(1); // 처음 페이지는 1이다.
   const [data, setData] = useState<TeacherProps[]>([]);
+  const [isModal, setIsModal] = useState<boolean>(false);
+  const [isBulkModal, setIsBulkModal] = useState<boolean>(false);
+  const [teacherId, setTeacherId] = useState(0 as number);
 
   useEffect(() => {
     dispatch(saveMember());
@@ -55,6 +59,15 @@ const TeacherBoard = () => {
   useEffect(() => {
     refreshCheck();
   }, [page]);
+
+  const onClickOpenModal = useCallback(() => {
+    setTeacherId(0);
+    setIsModal(!isModal);
+  }, [isModal]);
+
+  const onClickOpenBulkModal = useCallback(() => {
+    setIsBulkModal(!isModal);
+  }, [isBulkModal]);
 
   const handlePage = (event) => {
     const nowPageInt = parseInt(event.target.outerText);
@@ -139,6 +152,15 @@ const TeacherBoard = () => {
   return (
     <>
       <div css={totalContainer}>
+        {isModal && (
+          <EditTeacher
+            onClickOpenModal={onClickOpenModal}
+            teacherId={teacherId}
+          />
+        )}
+        {isBulkModal && (
+          <AddTeacherBulk onClickOpenBulkModal={onClickOpenBulkModal} />
+        )}
         <div className="upperModalArea">
           <div className="pageTitle">선생님 관리</div>
           <form onSubmit={search}>
@@ -164,11 +186,19 @@ const TeacherBoard = () => {
               </button>
             </div>
             <div style={{ marginRight: '10px' }}>
-              <button type="button" className="add-btn stu-bottom-btn">
-                <Link to="/admin/teacherAdd">추가</Link>
+              <button
+                type="button"
+                className="add-btn stu-bottom-btn"
+                onClick={onClickOpenModal}
+              >
+                추가
               </button>
-              <button type="button" className="add-btn stu-bottom-btn">
-                <Link to="/admin/teacherAddBulk">일괄 추가</Link>
+              <button
+                type="button"
+                className="add-btn stu-bottom-btn"
+                onClick={onClickOpenBulkModal}
+              >
+                일괄 추가
               </button>
               <button
                 type="button"

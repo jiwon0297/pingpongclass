@@ -1,127 +1,107 @@
 /** @jsxImportSource @emotion/react */
-import axios from 'axios';
-import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, setParam, selectContent } from '@src/store/content';
+import { css } from '@emotion/react';
+import IosModalNew from '@src/components/Common/IosModalNewAdmin';
 
-interface PostNoticeProps {
-  noticeId?: number;
-  classId: number;
-  content: string;
-  teacherId: number;
-  title: string;
+interface ModalDefaultType {
+  onClickOpenBulkModal: () => void;
 }
 
-const EditNotice = () => {
-  const [notice, setNotice] = useState<PostNoticeProps>();
-  const [tmpTitle, setTmpTitle] = useState('');
-  const [tmpContent, setTmpContent] = useState('');
-  const dispatch = useAppDispatch();
-  const selector = useAppSelector((state) => state.content.param);
-  const InterceptedAxios = setupInterceptorsTo(axios.create());
-  let timer: null | ReturnType<typeof setTimeout> | number;
-  let newPost = false;
-  let noticeId = 0;
-  if (selector === undefined) {
-    newPost = true;
-  } else {
-    newPost = false;
-    noticeId = selector;
-    // console.log('키: ' + selector);
-  }
-
-  useEffect(() => {
-    // 입력값이 없는 경우 제외
-    if (tmpTitle === '' || tmpContent === '') {
-      return;
-    }
-
-    if (noticeId) {
-      changePost();
-    } else {
-      postNew();
-    }
-  }, [notice]);
-
-  const debounce = (func: Function) => {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(func, 300);
-  };
-
-  const titleChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // onChange 이벤트
-    debounce(() => {
-      setTmpTitle(e.target.value);
-    });
-  };
-
-  const contentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    debounce(() => {
-      setTmpContent(e.target.value);
-    });
-  };
-
-  const changePost = () => {
-    InterceptedAxios.patch('/notice/' + noticeId, notice).then((response) => {
-      // console.log(response);
-      // 공지게시판으로 이동
-      // 초기화
-      dispatch(setParam({ param: undefined }));
-      dispatch(setContent({ content: 'notice' }));
-    });
-  };
-
-  const postNew = () => {
-    InterceptedAxios.post('/notice/', notice).then((response) => {
-      dispatch(setContent({ content: 'notice' }));
-    });
-  };
-
-  const submitPost = () => {
-    // 임시로 대충
-    let classId = -1;
-    let teacherId = 5030001;
-
-    setNotice({ title: tmpTitle, content: tmpContent, teacherId, classId });
-    // dispatch(setContent({ content: 'notice' }));
-    // setNotice({ ...notice, teacherId, classId });
-    // setNotice({ ...notice, title: tmpTitle, content: tmpContent });
-  };
-
-  const canclePost = () => {
-    // 공지목록페이지로 이동
-    setTmpTitle('');
-    setTmpContent('');
-    dispatch(setContent({ content: 'notice' }));
-  };
-
+const AddStudentBulk = ({ onClickOpenBulkModal }: ModalDefaultType) => {
   return (
-    <div>
-      제목:{' '}
-      <textarea
-        className="editTitle"
-        defaultValue={tmpTitle}
-        onChange={(e) => titleChanged(e)}
-      ></textarea>
-      내용:{' '}
-      <textarea
-        className="editContent"
-        defaultValue={tmpContent}
-        onChange={(e) => contentChanged(e)}
-      ></textarea>
-      <div className="btn-box">
-        <button className="edit-btn" onClick={() => submitPost()}>
-          작성
-        </button>
-        <button className="del-btn" onClick={() => canclePost()}>
-          취소
-        </button>
+    <div css={ModalCSS}>
+      <div className="commonModal">
+        <IosModalNew />
+      </div>
+      <div className="infoContainer">
+        <div className="downloadContainer">
+          <h2>학생 일괄 등록 양식 다운로드</h2>
+          <hr />
+          <input type="file" />
+        </div>
+        <div className="uploadContainer">
+          <h2>학생 일괄 등록 업로드</h2>
+          <hr />
+          <input type="file" />
+        </div>
+        <div className="buttonContainer">
+          <button className="submit">등록</button>
+          <button className="cancel" onClick={onClickOpenBulkModal}>
+            취소
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default EditNotice;
+const ModalCSS = () => css`
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.409);
+  z-index: 9999;
+
+  .infoContainer {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    min-height: 100px;
+    max-height: 250px;
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    z-index: 3;
+  }
+  .downloadContainer,
+  .uploadContainer {
+    margin: 20px;
+    font-size: 15pt;
+    hr {
+      width: 500px;
+    }
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    button {
+      color: white;
+      border: 0;
+      padding: 10px 30px;
+      border-radius: 20px;
+      font-size: 20px;
+      box-shadow: 2px 2px 10px -5px;
+      box-sizing: border-box;
+      font-family: 'NanumSquareRound';
+      cursor: pointer;
+      margin-right: 15px;
+    }
+  }
+
+  .submit {
+    background-color: var(--blue);
+  }
+
+  .cancel {
+    background-color: var(--gray);
+  }
+
+  .commonModal {
+    position: absolute;
+    width: 800px;
+    height: 60%;
+  }
+`;
+
+export default AddStudentBulk;

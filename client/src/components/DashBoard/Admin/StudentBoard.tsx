@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Student from './Student';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link, useNavigate } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
+import EditStudent from './EditStudent';
+import AddStudentBulk from './AddTeacherBulk';
 
 export interface StudentProps {
   isSelected: boolean;
@@ -27,6 +29,9 @@ const StudentBoard = () => {
   const [grade, setGrade] = useState<number>();
   const [keyword, setKeyword] = useState('');
   const [students, setStudents] = useState<StudentProps[]>([]);
+  const [isModal, setIsModal] = useState<boolean>(false);
+  const [studentId, setStudentId] = useState(0 as number);
+  const [isBulkModal, setIsBulkModal] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(saveMember());
@@ -60,6 +65,15 @@ const StudentBoard = () => {
     //     .catch(() => {});
     // }
   };
+
+  const onClickOpenModal = useCallback(() => {
+    setStudentId(0);
+    setIsModal(!isModal);
+  }, [isModal]);
+
+  const onClickOpenBulkModal = useCallback(() => {
+    setIsBulkModal(!isModal);
+  }, [isBulkModal]);
 
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -119,6 +133,15 @@ const StudentBoard = () => {
 
   return (
     <div css={totalContainer}>
+      {isModal && (
+        <EditStudent
+          onClickOpenModal={onClickOpenModal}
+          studentId={studentId}
+        />
+      )}
+      {isBulkModal && (
+        <AddStudentBulk onClickOpenBulkModal={onClickOpenBulkModal} />
+      )}
       <div className="upperModalArea">
         <div className="pageTitle">학생관리</div>
         <form onSubmit={search}>
@@ -127,14 +150,14 @@ const StudentBoard = () => {
             <input
               type="number"
               value={grade || ''}
-              style={{ width: '15px' }}
+              style={{ width: '30px' }}
               onChange={(e) => setGrade(+e.target.value)}
             />
             반
             <input
               type="number"
               value={classNum || ''}
-              style={{ width: '15px' }}
+              style={{ width: '30px' }}
               onChange={(e) => setClassNum(+e.target.value)}
             />
             이름
@@ -148,11 +171,19 @@ const StudentBoard = () => {
             </button>
           </div>
           <div className="btn-box" css={btnBox}>
-            <button type="button" className="add-btn stu-bottom-btn">
-              <Link to="/admin/studentAdd">개별 추가</Link>
+            <button
+              type="button"
+              className="add-btn stu-bottom-btn"
+              onClick={onClickOpenModal}
+            >
+              개별 추가
             </button>
-            <button type="button" className="add-btn stu-bottom-btn">
-              <Link to="/admin/studentAddBulk">일괄 추가</Link>
+            <button
+              type="button"
+              className="add-btn stu-bottom-btn"
+              onClick={onClickOpenBulkModal}
+            >
+              일괄 추가
             </button>
             <button
               type="button"
@@ -264,7 +295,6 @@ const totalContainer = () => css`
   }
 
   .tableArea div {
-    display: inline-block;
   }
 
   .row,
@@ -276,6 +306,7 @@ const totalContainer = () => css`
     background-color: transparent;
     font-family: 'NanumSquare';
     vertical-align: middle;
+    display: inline-block;
   }
 
   .col {
@@ -283,6 +314,7 @@ const totalContainer = () => css`
     width: 15%;
     max-width: 30%;
     text-align: center;
+    display: inline-block;
   }
   /* 제목 행 */
   .titleRow {

@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TeacherProps } from './TeacherBoard';
-import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import EditIcon from '@mui/icons-material/Edit';
 import ProfilImage from '@assets/images/profile.png';
-import IconButton from '@mui/material/IconButton';
+import EditTeacher from './EditTeacher';
 
 const Teacher = (props: {
   key: number;
@@ -20,6 +19,13 @@ const Teacher = (props: {
       props?.article.profile ||
       'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
   );
+  const [isModal, setIsModal] = useState<boolean>(false);
+  const [teacherId, setTeacherId] = useState(0 as number);
+
+  const onClickOpenModal = useCallback(() => {
+    if (props.article.teacherId) setTeacherId(props.article.teacherId);
+    setIsModal(!isModal);
+  }, [isModal]);
 
   const toggleCheck = () => {
     setChecked(!checked);
@@ -28,14 +34,17 @@ const Teacher = (props: {
 
   return (
     <div className="teacher-box" css={TeacherStyle}>
+      {isModal && (
+        <EditTeacher
+          onClickOpenModal={onClickOpenModal}
+          teacherId={teacherId}
+        />
+      )}
       {/* <button className="row article-btn" onClick={(e) => toggleNotice(e)}> */}
       <div className="teacher-upper">
-        <Link
-          to={`/admin/teacherEdit/${article.teacherId}`}
-          className="teacher-edit"
-        >
+        <button className="teacher-edit" onClick={onClickOpenModal}>
           <EditIcon className="edit-btn" />
-        </Link>
+        </button>
         <input
           type="checkbox"
           className="teacher-select"
@@ -45,7 +54,9 @@ const Teacher = (props: {
       </div>
       <div className="teacher-preview">
         {preview ===
-        'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ? (
+          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+        preview ===
+          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
           <img
             src={ProfilImage}
             alt="기본프로필사진"
