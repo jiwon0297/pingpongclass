@@ -28,6 +28,9 @@ export default class ParticipantComponent extends Component {
       .stream.session.on('signal:point-down', (event) => {
         this.downPointChanged();
       });
+
+    console.log('쌤:', this.props.teacher);
+    console.log('학생:', this.props.students);
   }
 
   // close: 무언가를 닫는 함수
@@ -57,10 +60,35 @@ export default class ParticipantComponent extends Component {
               alt="참여자 목록 닫기"
             />
           </div>
+          {/* 선생님 */}
+          <div className="teacher-box">
+            <SingleParticipantPanel
+              whoami={this.props.whoami}
+              user={this.props.user}
+              isMyself={true}
+              // myinfo={this.props.user.nickname}
+              // point={this.props.user.point}
+              // attendenceTime={this.props.user.attendenceTime}
+              // isVideoOn={this.props.user.videoActive}
+              // isAudioOn={this.props.user.audioActive}
+              // upPoint={this.props.user.upPoint}
+              // downPoint={this.props.user.downPoint}
+            />
+          </div>
+          {/* 디스플레이 요소 체크박스 */}
+          <div className="display-box">
+            <select>
+              <option value="all">전체보기</option>
+              <option value="all">전체보기</option>
+              <option value="all">전체보기</option>
+              <option value="all">전체보기</option>
+            </select>
+          </div>
           {/* 수업 참여 여부 */}
           {/* 참여자 */}
           <div className="participants-wrap" ref={this.participantScroll}>
-            <div>
+            <div className="attendence-students">
+              <h3>접속자</h3>
               <SingleParticipantPanel
                 whoami={this.props.whoami}
                 user={this.props.user}
@@ -89,8 +117,8 @@ export default class ParticipantComponent extends Component {
                 />
               ))}
             </div>
-            <div>
-              <h3>수업 안온 양야치학생</h3>
+            <div className="absent-students">
+              <h3>미접속자</h3>
               {this.props.absentStudents.map((elem, i) => (
                 <p key={i}>{elem}</p>
               ))}

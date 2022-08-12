@@ -72,6 +72,8 @@ class VideoRoomComponent extends Component {
       session: undefined,
       localUser: undefined,
       subscribers: [],
+      teacher: undefined,
+      students: [],
       absentStudents: this.props.studentList,
       chatDisplay: 'none',
       participantDisplay: 'none',
@@ -391,10 +393,26 @@ class VideoRoomComponent extends Component {
 
   // updateSubscribers: 자신의 정보를 구독하고 있는(받고 있는) 유저들의 정보를 업데이트
   updateSubscribers() {
-    var subscribers = this.remotes;
+    const subscribers = this.remotes;
+    let updateTeacher;
+    let updateStudents;
+    if (this.props.whoami === 'teacher') updateTeacher = this.state.localUser;
+    else
+      updateTeacher = this.remotes.filter(
+        (elem) => elem.nickname.str(1, 3) === '선생님',
+      );
+
+    if (this.props.whoami === 'teacher') updateStudents = this.remotes;
+    else
+      updateStudents = this.remotes.filter(
+        (elem) => elem.nickname.str(1, 3) !== '선생님',
+      );
+
     this.setState(
       {
         subscribers: subscribers,
+        teacher: updateTeacher,
+        students: updateStudents,
       },
       () => {
         if (this.state.localUser) {
@@ -1438,6 +1456,8 @@ class VideoRoomComponent extends Component {
                     upPointChanged={this.upPointChanged}
                     downPointChanged={this.downPointChanged}
                     absentStudents={this.state.absentStudents}
+                    teacher={this.state.teacher}
+                    student={this.state.students}
                   />
                 </div>
               )}
