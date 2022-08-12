@@ -1,12 +1,53 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import IosModalNew from '@src/components/Common/IosModalNewAdmin';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 
 interface ModalDefaultType {
   onClickOpenBulkModal: () => void;
 }
 
 const AddTeacherBulk = ({ onClickOpenBulkModal }: ModalDefaultType) => {
+  const [files, setFiles] = useState([]);
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
+
+  const onClickDownload = () => {
+    let filename = '선생님 등록 양식.xlsx';
+    let address =
+      'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' + filename;
+    location.href = address;
+  };
+
+  const onChangeFiles = (e) => {
+    setFiles(e.target.files);
+  };
+
+  const onClickUpload = () => {
+    if (!files) {
+      toast.warning('파일을 넣어주세요.');
+    } else {
+      const frm = new FormData();
+      frm.append('file', files[0]);
+
+      InterceptedAxios.post('/excel/teacher', frm, {
+        headers: {
+          'Content-Type': `multipart/form-data`,
+        },
+      })
+        .then(function (response) {
+          alert('선생님 일괄 등록이 완료되었습니다.');
+          location.href = '/admin/teachers';
+        })
+        .catch(function (error) {
+          console.log(error);
+          toast.error('선생님 일괄 등록이 실패하였습니다.');
+        });
+    }
+  };
+
   return (
     <div css={ModalCSS}>
       <div className="commonModal">
@@ -16,15 +57,23 @@ const AddTeacherBulk = ({ onClickOpenBulkModal }: ModalDefaultType) => {
         <div className="downloadContainer">
           <h2>선생님 일괄 등록 양식 다운로드</h2>
           <hr />
-          <input type="file" />
+          <button className="button-sm blue" onClick={onClickDownload}>
+            엑셀 다운로드
+          </button>
         </div>
         <div className="uploadContainer">
           <h2>선생님 일괄 등록 업로드</h2>
           <hr />
-          <input type="file" />
+          <input
+            type="file"
+            accept=".xlsx, .xls"
+            onChange={(e) => onChangeFiles(e)}
+          />
         </div>
         <div className="buttonContainer">
-          <button className="submit">등록</button>
+          <button className="submit" onClick={onClickUpload}>
+            등록
+          </button>
           <button className="cancel" onClick={onClickOpenBulkModal}>
             취소
           </button>
@@ -95,6 +144,10 @@ const ModalCSS = () => css`
 
   .cancel {
     background-color: var(--gray);
+  }
+
+  input {
+    width: 450px;
   }
 
   .commonModal {

@@ -8,7 +8,7 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link, useNavigate } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
 import EditStudent from './EditStudent';
-import AddStudentBulk from './AddTeacherBulk';
+import AddStudentBulk from './AddStudentBulk';
 
 export interface StudentProps {
   isSelected: boolean;
@@ -72,7 +72,7 @@ const StudentBoard = () => {
   }, [isModal]);
 
   const onClickOpenBulkModal = useCallback(() => {
-    setIsBulkModal(!isModal);
+    setIsBulkModal(!isBulkModal);
   }, [isBulkModal]);
 
   const search = (e: React.FormEvent<HTMLFormElement>) => {

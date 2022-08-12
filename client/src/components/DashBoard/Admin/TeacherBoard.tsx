@@ -66,7 +66,7 @@ const TeacherBoard = () => {
   }, [isModal]);
 
   const onClickOpenBulkModal = useCallback(() => {
-    setIsBulkModal(!isModal);
+    setIsBulkModal(!isBulkModal);
   }, [isBulkModal]);
 
   const handlePage = (event) => {
