@@ -5,8 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import ClassCard from '@components/DashBoard/TodaysClass/ClassCard';
-import axios from 'axios';
-import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import InterceptedAxios from '@src/utils/iAxios';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@src/store/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -27,23 +26,27 @@ interface ClassProps {
 
 function TodaysClass() {
   const [loading, setLoading] = useState(true);
-  const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   const [classList, setClassList] = useState([] as any);
   const navigate = useNavigate();
   const dt = new Date();
+  InterceptedAxios.patch(`/student/points/120`, {
+    studentId: 2022000016,
+  });
 
   const loadClassList = async () => {
     const studentId = memberStore.userId;
     const classDay = dt.getDay();
-    const result = await AXIOS.get(`/classes`, {
+    const result = await InterceptedAxios.get(`/classes`, {
       params: { id: studentId, day: classDay },
     });
     setClassList(result.data.content);
 
     // promise.all 처리!
     const promises = result.data.content.map(async (elem, i) => {
-      const classUrlData = await AXIOS.get(`/classes/isopen/${elem.classId}`);
+      const classUrlData = await InterceptedAxios.get(
+        `/classes/isopen/${elem.classId}`,
+      );
       elem.classUrl = classUrlData.data;
     });
     await Promise.all(promises);

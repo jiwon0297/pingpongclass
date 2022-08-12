@@ -86,6 +86,7 @@ const App = () => {
           navigate={navigate}
           teacherName={state.teacherName}
           classTitle={state.classTitle}
+          userId={memberStore.userId}
         />
       )}
       {tap === 'result' && (

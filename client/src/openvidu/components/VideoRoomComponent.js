@@ -257,6 +257,9 @@ class VideoRoomComponent extends Component {
       String(time.getSeconds()).padStart(2, '0');
     localUser.setAttendenceTime(attTime);
 
+    // uid 저장
+    localUser.setUid(this.props.userId);
+
     // 시작할 때 장치 상태를 localUser에 저장
     localUser.setAudioActive(this.props.setDevices.isAudioOn);
     localUser.setVideoActive(this.props.setDevices.isVideoOn);
