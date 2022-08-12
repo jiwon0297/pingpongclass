@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import InterceptedAxios from '@src/utils/iAxios';
 
 const TeacherResult = ({
   teacherName,
@@ -9,9 +11,20 @@ const TeacherResult = ({
   othersData,
   finTime,
 }) => {
+  console.log(myData);
   const [totalStudentNum, setTotalStudentNum] = useState(0);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
+
+  const applyToDB = async () => {
+    const promises = othersData.map(async (elem) => {
+      InterceptedAxios.patch(
+        `/students/points/${elem.point}?studentId=${elem.uid}`,
+      );
+    });
+    await Promise.all(promises);
+    console.log('DB에 포인트들 저장 완료~');
+  };
 
   useEffect(() => {
     setTotalStudentNum(othersData.length); // 우선 임시로
@@ -62,6 +75,15 @@ const TeacherResult = ({
             <div className="s-point">{other.point}</div>
           </div>
         ))}
+      </div>
+      <div css={OtherThings}>
+        <Link to={`/teacher`}>
+          <div className="btn-items">
+            <button onClick={applyToDB}>
+              로그 저장 후 대시보드로 돌아가기
+            </button>
+          </div>
+        </Link>
       </div>
     </div>
   );
@@ -173,5 +195,7 @@ const TotalResult = css`
     }
   }
 `;
+
+const OtherThings = css``;
 
 export default TeacherResult;

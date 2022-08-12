@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { useLayoutEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const StudentResult = ({
   teacherName,
@@ -30,12 +31,12 @@ const StudentResult = ({
     setTotalSticker(data);
     // 선생님과 학생 데이터 분리
     const teacherData = othersData.filter(
-      (other) => other.nickname.substr(other.nickname.length - 1, 1) === ')',
+      (other) => other.nickname.substr(0, 5) === '[선생님]',
     )[0];
     setTeacherModel(teacherData);
 
     let otherdata = othersData.filter(
-      (other) => other.nickname.substr(other.nickname.length - 1, 1) !== ')',
+      (other) => other.nickname.substr(0, 5) !== '[선생님]',
     );
     otherdata.unshift(myData);
     setOtherModels(otherdata);
@@ -90,6 +91,13 @@ const StudentResult = ({
             <div className="s-point">{other.point}</div>
           </div>
         ))}
+      </div>
+      <div css={OtherThings}>
+        <Link to={`/student`}>
+          <div className="btn-items">
+            <button>대시보드로 돌아가기</button>
+          </div>
+        </Link>
       </div>
     </div>
   );
@@ -205,5 +213,7 @@ const TotalResult = css`
     }
   }
 `;
+
+const OtherThings = css``;
 
 export default StudentResult;

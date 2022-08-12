@@ -32,18 +32,19 @@ const ClassList = () => {
   }, []);
 
   const render = (idx): any => {
+    const clsIdx = idx * 6;
     return (
       <SwiperSlide key={idx}>
         <div className="cardContainer">
           <div className="upCardContainer">
-            <ClassCard clsList={clsList[idx]} />
-            <ClassCard clsList={clsList[idx + 1]} />
-            <ClassCard clsList={clsList[idx + 2]} />
+            <ClassCard clsList={clsList[clsIdx]} />
+            <ClassCard clsList={clsList[clsIdx + 1]} />
+            <ClassCard clsList={clsList[clsIdx + 2]} />
           </div>
           <div className="downCardContainer">
-            <ClassCard clsList={clsList[idx + 3]} />
-            <ClassCard clsList={clsList[idx + 4]} />
-            <ClassCard clsList={clsList[idx + 5]} />
+            <ClassCard clsList={clsList[clsIdx + 3]} />
+            <ClassCard clsList={clsList[clsIdx + 4]} />
+            <ClassCard clsList={clsList[clsIdx + 5]} />
           </div>
         </div>
       </SwiperSlide>
@@ -52,7 +53,7 @@ const ClassList = () => {
 
   const renderList = (): any => {
     let tmp = [] as any;
-    for (let i = 0; i <= clsList.length / 6; i++) {
+    for (let i = 0; i < clsList.length / 6; i++) {
       tmp.push(render(i));
     }
     return tmp;
@@ -60,67 +61,78 @@ const ClassList = () => {
 
   return (
     <div css={totalContainer}>
-      <div className="tabsContainer">
-        <div className="weekTabs">
-          <div
-            className={tab === 1 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(1)}
-          >
-            월
-          </div>
-          <div
-            className={tab === 2 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(2)}
-          >
-            화
-          </div>
-          <div
-            className={tab === 3 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(3)}
-          >
-            수
-          </div>
-          <div
-            className={tab === 4 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(4)}
-          >
-            목
-          </div>
-          <div
-            className={tab === 5 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(5)}
-          >
-            금
+      <div className="pageTitle">수업목록</div>
+      <hr
+        css={css`
+          margin-bottom: 30px;
+        `}
+      />
+      <div className="total-container">
+        <div className="tabsContainer">
+          <div className="weekTabs">
+            <div
+              className={tab === 1 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(1)}
+            >
+              월
+            </div>
+            <div
+              className={tab === 2 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(2)}
+            >
+              화
+            </div>
+            <div
+              className={tab === 3 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(3)}
+            >
+              수
+            </div>
+            <div
+              className={tab === 4 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(4)}
+            >
+              목
+            </div>
+            <div
+              className={tab === 5 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(5)}
+            >
+              금
+            </div>
           </div>
         </div>
+        <Swiper
+          style={{ width: '100%' }}
+          pagination={{
+            type: 'progressbar',
+          }}
+          slidesPerView={1}
+          spaceBetween={0}
+          navigation={true}
+          modules={[Pagination, Navigation]}
+          className="mySwiper"
+        >
+          {renderList()}
+        </Swiper>
       </div>
-      <Swiper
-        style={{ width: '100%' }}
-        pagination={{
-          type: 'progressbar',
-        }}
-        slidesPerView={1}
-        spaceBetween={0}
-        navigation={true}
-        modules={[Pagination, Navigation]}
-        className="mySwiper"
-      >
-        {renderList()}
-      </Swiper>
     </div>
   );
 };
 
 const totalContainer = css`
   width: 100%;
-  background: #fdfcf3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  border-radius: 20px;
-  box-shadow: 2px 2px 15px -5px;
-  animation: 0.5s ease-in-out loadEffect1;
+  .total-container {
+    width: 100%;
+    background: #fdfcf3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 2px 2px 15px -5px;
+    animation: 0.5s ease-in-out loadEffect1;
+  }
 
   .tabsContainer {
     width: 100%;

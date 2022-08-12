@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 interface PasswordProps {
   setTap: Function;
   email: String;
@@ -41,9 +42,15 @@ const PasswordSetting = (props: PasswordProps) => {
     setPassword2(e.target.value);
   };
 
-  const onClickSetting = (e) => {
+  const onKeyPress = (e) => {
+    if (e.key == 'Enter') {
+      onClickSetting();
+    }
+  };
+
+  const onClickSetting = () => {
     if (!nextAvailable) {
-      alert('비밀번호를 확인해주세요.');
+      toast.success('비밀번호를 확인해주세요.');
     } else {
       if (userId.length == 10) {
         //학생, 선생님 나눠서
@@ -52,11 +59,11 @@ const PasswordSetting = (props: PasswordProps) => {
           email: email,
           password: password1,
         })
-          .then(function (response) {
+          .then(function () {
             navigate('/student');
           })
           .catch(function (error) {
-            alert('회원수정 실패.');
+            toast.error('회원수정 실패.');
             console.log('실패', error);
           });
       } else {
@@ -66,11 +73,11 @@ const PasswordSetting = (props: PasswordProps) => {
           password: password1,
         })
           .then(function (response) {
-            alert('로그인 성공');
+            toast.success('로그인 성공');
             navigate('/teacher');
           })
           .catch(function (error) {
-            alert('회원수정 실패.');
+            toast.error('회원수정 실패.');
             console.log('실패', error);
           });
       }
@@ -120,12 +127,15 @@ const PasswordSetting = (props: PasswordProps) => {
               type="password"
               value={password2}
               className="input"
+              onKeyPress={onKeyPress}
               css={css`
                 font-family: 'Courier New', Courier, monospace;
               `}
             />
           </div>
-          <div className="text-small">{emailCheckMsg}</div>
+          <div className={`text-small ${nextAvailable ? 'yes' : 'no'}`}>
+            {emailCheckMsg}
+          </div>
         </div>
       </div>
 
@@ -148,6 +158,16 @@ const totalContainer = css`
   justify-content: center;
   align-items: flex-end;
   padding-right: 7rem;
+
+  .yes {
+    font-weight: bold;
+    color: #356ae4;
+  }
+
+  .no {
+    font-weight: bold;
+    color: #cd4040;
+  }
 
   .title-sub {
     width: 130px;

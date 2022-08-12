@@ -44,8 +44,19 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.code;
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
-    let userName = this.props.memberStore.name;
-    if (this.props.whoami === 'teacher') userName += ' (선생님)';
+    let userName;
+    // String(time.getMinutes()).padStart(2, '0') +
+    //   ':' +
+    //   String(time.getSeconds()).padStart(2, '0');
+    if (this.props.whoami === 'student')
+      userName = `[${this.props.grade}${String(this.props.classNum).padStart(
+        2,
+        '0',
+      )}${String(this.props.studentNum).padStart(2, '0')}]${
+        this.props.memberStore.name
+      }`;
+    if (this.props.whoami === 'teacher')
+      userName = '[선생님]' + this.props.memberStore.name;
     // remotes:
     this.remotes = [];
     // localUserAccessAllowed:
@@ -159,7 +170,7 @@ class VideoRoomComponent extends Component {
     const openViduLayoutOptions = {
       maxRatio: 9 / 16, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
-      fixedRatio: false, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
+      fixedRatio: true, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
       bigClass: 'OV_big', // The class to add to elements that should be sized bigger
       bigPercentage: 0.8, // The maximum percentage of space the big ones should take up
       bigFixedRatio: false, // fixedRatio for the big ones
@@ -256,6 +267,9 @@ class VideoRoomComponent extends Component {
       ':' +
       String(time.getSeconds()).padStart(2, '0');
     localUser.setAttendenceTime(attTime);
+
+    // uid 저장
+    localUser.setUid(this.props.userId);
 
     // 시작할 때 장치 상태를 localUser에 저장
     localUser.setAudioActive(this.props.setDevices.isAudioOn);
@@ -1011,9 +1025,7 @@ class VideoRoomComponent extends Component {
       let studentList = [];
       // 선생님이거나 관리자가 아닌 계정(체크 방식 변경 예정)
       list.forEach((elem) => {
-        if (!elem.nickname.includes('(선생님)')) {
-          studentList.push(elem);
-        }
+        if (!elem.nickname.includes('[선생님]')) studentList.push(elem);
       });
       if (studentList.length > 0) {
         let pickedStudent =

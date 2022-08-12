@@ -9,13 +9,15 @@ import GetReactionList from './GetItemListTap/GetReactionList';
 import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import CircleIcon from '@mui/icons-material/Circle';
-import { yellow } from '@mui/material/colors';
+import GradeIcon from '@mui/icons-material/Grade';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import { green, pink, yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import ReactTooltip from 'react-tooltip';
+import { toast } from 'react-toastify';
 import member, {
-  setPoint,
   saveMember,
   allItems,
   Items,
@@ -33,6 +35,29 @@ const StoreMain = () => {
   const [getItem, setGetItem] = useState<number>(0);
   const dispatch = useAppDispatch();
 
+  //뽑으면 실행
+  async function go() {
+    let myPromise = new Promise(() => {
+      setTimeout(() => {
+        //2.
+        dispatch(saveItem(memberStore.userId)).then(() => {
+          dispatch(saveMember());
+          console.log(memberStore.userId, ',', items, '11111111111111111');
+        });
+      }, 1000);
+    });
+
+    //1
+    console.log('11111111111111111', items);
+
+    //3
+    myPromise.then(() => {
+      setItems(memberStore.items);
+
+      console.log('3333333333333333');
+    });
+  }
+
   useEffect(() => {
     //로딩시 해당 유저의 아이템 불러오기
     dispatch(saveItem(memberStore.userId)).then(() => {
@@ -42,31 +67,31 @@ const StoreMain = () => {
     });
   }, []);
 
-  useEffect(() => {
-    dispatch(saveItem(memberStore.userId)).then(() => {
-      setItems(memberStore.items);
-      dispatch(saveMember());
-      console.log('-------뽑을때 : ', items);
-    });
-  }, [change]);
+  // useEffect(() => {
+  //   dispatch(saveItem(memberStore.userId)).then(() => {
+  //     setItems(memberStore.items);
+  //     dispatch(saveMember());
+  //     console.log('-------뽑을때 : ', items);
+  //   });
+  // }, [memberStore]);
 
   const onClickBtn = () => {
     //사용하시겠습니까? 창
     if (memberStore.point < 15) {
-      alert('보유 퐁퐁이가 부족합니다.');
+      toast.warning('보유 퐁퐁이가 부족합니다.');
     } else {
       const isUse = confirm('퐁퐁이 15개를 사용하여 뽑기를 진행하시겠습니까?');
       if (isUse) {
         let itemId = 0;
         //랜덤 아이템 선택
-        const rarity = Math.floor(Math.random() * 10) + 1; //1~10까지
-        if (rarity > 6) {
+        const rarity = Math.floor(Math.random() * 100) + 1; //1~10까지
+        if (rarity <= 55) {
           //희귀도4
           itemId = Math.floor(Math.random() * 2) + 1;
-        } else if (rarity > 3) {
+        } else if (rarity <= 85) {
           //희귀도3
           itemId = Math.floor(Math.random() * 10) + 5;
-        } else if (rarity > 1) {
+        } else if (rarity <= 95) {
           //희귀도2
           itemId = 4;
         } else {
@@ -83,12 +108,15 @@ const StoreMain = () => {
         })
           .then(() => {
             onClickOpenModal();
-            setChange('change');
+            console.log('-1..........go()전');
+
+            go();
+            // setChange('change');
             //퐁퐁이 개수 줄인 정보 받아오기
             console.log(memberStore);
           })
           .catch(function (error) {
-            alert('뽑기 과정에서 에러 발생');
+            toast.warning('뽑기 과정에서 에러 발생');
             console.log('뽑기 DB저장 실패', error);
           });
       }
@@ -108,8 +136,6 @@ const StoreMain = () => {
     setGetTap(prop);
   };
 
-  const onInfoEnter = () => {};
-
   return (
     <div css={totalContainer}>
       {isOpenBbobkki && (
@@ -119,7 +145,7 @@ const StoreMain = () => {
       <div className="drawContainer">
         <div className="store-title-div">
           <div className="pageTitle">
-            뽑기{' '}
+            뽑기
             <span
               css={css`
                 font-size: 0.5em;
@@ -127,7 +153,6 @@ const StoreMain = () => {
                 margin-left: 10px;
               `}
             >
-              {' '}
               뽑기로 획득 가능한 아이템 리스트
             </span>
           </div>
@@ -147,7 +172,6 @@ const StoreMain = () => {
                 <HelpIcon
                   fontSize="small"
                   color="action"
-                  onMouseEnter={onInfoEnter}
                   css={css`
                     height: 1.2vw;
                   `}
@@ -204,6 +228,118 @@ const StoreMain = () => {
               >
                 리액션
               </div>
+              <div className="rarity-div">
+                <p
+                  css={css`
+                    margin-right: 5px;
+                  `}
+                >
+                  확률
+                </p>
+                <HelpIcon
+                  fontSize="small"
+                  color="action"
+                  css={css`
+                    height: 1.2vw;
+                  `}
+                  data-tip
+                  data-for="rarity"
+                  className="hover"
+                />
+              </div>
+              <ReactTooltip
+                id="rarity"
+                effect="solid"
+                place="top"
+                type="light"
+                textColor="#191919"
+                border
+                borderColor="gray"
+              >
+                <div
+                  css={css`
+                    text-align: start;
+                    padding: 5px;
+                  `}
+                >
+                  <div
+                    css={css`
+                      display: flex;
+                      margin-right: 2px;
+                    `}
+                  >
+                    <div>
+                      <LocalOfferIcon
+                        fontSize="small"
+                        sx={{ color: 'blueviolet' }}
+                        css={css`
+                          margin-right: 5px;
+                        `}
+                      />
+                    </div>
+                    <div>
+                      <b>레전드</b> : 5% 확률로 획득 가능
+                    </div>
+                  </div>{' '}
+                  <div
+                    css={css`
+                      display: flex;
+                      margin-right: 2px;
+                    `}
+                  >
+                    <div>
+                      <LocalOfferIcon
+                        fontSize="small"
+                        sx={{ color: 'pink' }}
+                        css={css`
+                          margin-right: 5px;
+                        `}
+                      />
+                    </div>
+                    <div>
+                      <b>레어</b> : 10% 확률로 획득 가능
+                    </div>
+                  </div>{' '}
+                  <div
+                    css={css`
+                      display: flex;
+                      margin-right: 2px;
+                    `}
+                  >
+                    <div>
+                      <LocalOfferIcon
+                        fontSize="small"
+                        sx={{ color: 'cadetblue' }}
+                        css={css`
+                          margin-right: 5px;
+                        `}
+                      />
+                    </div>
+                    <div>
+                      <b>중급</b> : 35% 확률로 획득 가능
+                    </div>
+                  </div>{' '}
+                  <div
+                    css={css`
+                      display: flex;
+                      margin-right: 2px;
+                    `}
+                  >
+                    <div>
+                      <LocalOfferIcon
+                        fontSize="small"
+                        sx={{ color: 'gold' }}
+                        css={css`
+                          margin-right: 5px;
+                        `}
+                      />
+                    </div>
+                    <div>
+                      <b>일반</b> : 55% 확률로 획득 가능
+                    </div>
+                  </div>{' '}
+                </div>
+              </ReactTooltip>
             </div>
             <div className="item-main">
               {itemtap === 'itemTap' && <ItemList />}
@@ -299,13 +435,18 @@ const totalContainer = () => css`
     box-sizing: border-box;
     background-color: gray;
   }
-
+  .rarity-div {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 50% !important;
+    align-items: center !important;
+  }
   .item-tap {
     width: 100%;
     height: 15%;
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     border-bottom: dashed 1px gray;
 
     .store1,
@@ -447,6 +588,7 @@ const totalContainer = () => css`
     font-family: 'NanumSquareRound';
     font-weight: 700;
     box-shadow: 0 0 3px 0 lightgray;
+    cursor: pointer;
 
     span {
       width: 100%;
