@@ -147,7 +147,7 @@ const totalContainer = css`
   }
 
   .infoContent::-webkit-scrollbar {
-    width: 5px;
+    width: 6.5px;
   }
 
   .infoContent::-webkit-scrollbar-track {
