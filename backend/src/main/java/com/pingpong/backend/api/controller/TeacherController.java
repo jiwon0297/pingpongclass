@@ -184,8 +184,6 @@ public class TeacherController {
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<String> modifyEmailAndPWD(@RequestBody TeacherRequest request) throws IOException {
         try {
-            String id = SecurityUtil.getCurrentUsername();
-            request.setTeacherId(Integer.parseInt(id));
             service.modify(request);
             return new ResponseEntity<String>("선생님 첫 이메일 및 비밀번호 설정 성공.", HttpStatus.OK);
         } catch (Exception e){

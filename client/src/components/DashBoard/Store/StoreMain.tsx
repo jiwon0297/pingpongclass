@@ -13,6 +13,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { green, pink, yellow } from '@mui/material/colors';
 import Animation from './Animation';
+import Animation2 from './Animation2';
 import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import ReactTooltip from 'react-tooltip';
@@ -33,30 +34,10 @@ const StoreMain = () => {
   const [items, setItems] = useState<Items[]>([allItems]);
   const [change, setChange] = useState('');
   const [getItem, setGetItem] = useState<number>(0);
+  const [getColor, setGetColor] = useState<number>(0);
+  const [getColorType, setGetColorType] = useState<number>(0);
+  const [isOpenPick, setIsOpenPick] = useState(false);
   const dispatch = useAppDispatch();
-
-  //뽑으면 실행
-  async function go() {
-    let myPromise = new Promise(() => {
-      setTimeout(() => {
-        //2.
-        dispatch(saveItem(memberStore.userId)).then(() => {
-          dispatch(saveMember());
-          console.log(memberStore.userId, ',', items, '11111111111111111');
-        });
-      }, 1000);
-    });
-
-    //1
-    console.log('11111111111111111', items);
-
-    //3
-    myPromise.then(() => {
-      setItems(memberStore.items);
-
-      console.log('3333333333333333');
-    });
-  }
 
   useEffect(() => {
     //로딩시 해당 유저의 아이템 불러오기
@@ -65,7 +46,7 @@ const StoreMain = () => {
       dispatch(saveMember());
       console.log('-------랜더링 : ', items);
     });
-  }, []);
+  }, [change]);
 
   // useEffect(() => {
   //   dispatch(saveItem(memberStore.userId)).then(() => {
@@ -84,7 +65,7 @@ const StoreMain = () => {
       if (isUse) {
         let itemId = 0;
         //랜덤 아이템 선택
-        const rarity = Math.floor(Math.random() * 100) + 1; //1~10까지
+        const rarity = Math.floor(Math.random() * 100) + 1; //1~100까지
         if (rarity <= 55) {
           //희귀도4
           itemId = Math.floor(Math.random() * 2) + 1;
@@ -108,10 +89,8 @@ const StoreMain = () => {
         })
           .then(() => {
             onClickOpenModal();
-            console.log('-1..........go()전');
 
-            go();
-            // setChange('change');
+            setChange('change');
             //퐁퐁이 개수 줄인 정보 받아오기
             console.log(memberStore);
           })
@@ -127,6 +106,20 @@ const StoreMain = () => {
     setOpenBbobkki(!isOpenBbobkki);
   }, [isOpenBbobkki]);
 
+  const onClickOpenModal2 = useCallback(() => {
+    setIsOpenPick(!isOpenPick);
+  }, [isOpenPick]);
+
+  //보유 아이템 사용 propfunction
+  const highFunction = (color, type) => {
+    //창 보이게
+    setIsOpenPick(!isOpenPick);
+    setGetColor(color);
+    setGetColorType(type);
+    console.log('highFunction : ', color, ',', type);
+    //Animation2로 전달
+  };
+
   // 클릭 이벤트 핸들러
   const onClickTap = (prop: string) => {
     setTap(prop);
@@ -140,6 +133,13 @@ const StoreMain = () => {
     <div css={totalContainer}>
       {isOpenBbobkki && (
         <Animation onClickOpenModal={onClickOpenModal} getItem={getItem} />
+      )}
+      {isOpenPick && (
+        <Animation2
+          onClickOpenModal2={onClickOpenModal2}
+          getColor={getColor}
+          getType={getColorType}
+        />
       )}
 
       <div className="drawContainer">
@@ -373,7 +373,9 @@ const StoreMain = () => {
               </div>
             </div>
             <div className="item-main">
-              {gettap === 'getItemTap' && <GetItemList />}
+              {gettap === 'getItemTap' && (
+                <GetItemList highFunction={highFunction} />
+              )}
               {gettap === 'getReactionTap' && <GetReactionList />}
             </div>
           </div>
@@ -518,6 +520,7 @@ const totalContainer = () => css`
     align-items: center;
     width: 100%;
     height: 100%;
+    margin-bottom: 30px;
   }
 
   .myItemContainer {

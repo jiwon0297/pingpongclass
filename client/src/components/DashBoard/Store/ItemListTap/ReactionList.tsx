@@ -18,6 +18,7 @@ const ReactionList = () => {
           />
           <img src="../reactions/heart.gif" className="reaction-img" />
         </div>
+
         <div className="reaction-div">
           <LocalOfferIcon
             fontSize="small"
@@ -150,7 +151,7 @@ const totalContainer = () => css`
 
   .reaction-div-row {
     display: flex;
-    position: relative;
+
     flex-direction: row;
     justify-content: center;
     height: calc(100% / 2);
@@ -158,6 +159,7 @@ const totalContainer = () => css`
   }
 
   .reaction-div {
+    position: relative;
     width: calc(86% / 5);
     height: 80%;
     overflow: hidden;

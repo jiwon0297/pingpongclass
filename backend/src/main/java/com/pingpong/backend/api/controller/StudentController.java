@@ -166,8 +166,6 @@ public class StudentController {
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<String> modifyEmailAndPWD(@RequestBody StudentRequest request) throws IOException {
         try {
-            String id = SecurityUtil.getCurrentUsername();
-            request.setStudentId(Integer.parseInt(id));
             service.modify(request);
             return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
         } catch (Exception e){

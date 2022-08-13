@@ -54,6 +54,7 @@ const GetReactionList = () => {
 
 const totalContainer = () => css`
   width: 100%;
+  height: 100%;
   flex-wrap: wrap;
   display: flex;
   flex-direction: row;
@@ -61,9 +62,8 @@ const totalContainer = () => css`
   padding: 10px;
 
   .item-div {
-    width: 105px;
-    width: 100px;
-    height: 100px;
+    width: calc(75% / 5);
+    height: calc(78% / 2);
     background: #ffffff;
     display: flex;
     flex-direction: column;
