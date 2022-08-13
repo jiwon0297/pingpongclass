@@ -18,7 +18,7 @@ public class RankingEntity {
     private int rankId;
 
     @OneToOne
-    @JoinColumn( nullable = false)
+    @JoinColumn(name="student_id", nullable = false)
     @OnDelete(action= OnDeleteAction.CASCADE)
     private StudentEntity student;
 
