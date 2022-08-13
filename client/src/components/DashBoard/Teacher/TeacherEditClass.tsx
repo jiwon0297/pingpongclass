@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
-import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
+import StudentEditListTransfer from '@components/DashBoard/Teacher/StudentEditListTransfer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const weeks = [
@@ -156,7 +156,6 @@ const EditClassList = () => {
     setSubjectCode(data);
   };
   const ChangeStudentList = (data) => {
-    console.log(data);
     setStudentList(data);
   };
   const ChangeTimetableId = (data) => {
@@ -184,7 +183,7 @@ const EditClassList = () => {
 
       setPreLoadedList(studentList);
       setTimetableId(classinfo.timetableId);
-      setClassDes(classinfo.classDay);
+      setClassDes(classinfo.classDesc);
     }
     // navigate('/teacher/classes');
   };
@@ -306,7 +305,10 @@ const EditClassList = () => {
           size="small"
           value={classDes}
         />
-        <StudentListTransfer ChangeStudentList={ChangeStudentList} />
+        <StudentEditListTransfer
+          ChangeStudentList={ChangeStudentList}
+          preLoadedList={preLoadedList}
+        />
         <div className="buttonContainer">
           <button className="listButton blue" onClick={() => editClass()}>
             수정

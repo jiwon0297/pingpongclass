@@ -9,6 +9,7 @@ import { useAppSelector } from '@src/store/hooks';
 import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TextFields } from '@mui/icons-material';
+import StudentEditListTransfer from '@components/DashBoard/Teacher/StudentEditListTransfer';
 
 const weeks = [
   {
@@ -185,8 +186,10 @@ const NewClassList = () => {
       setSubjectCode(classinfo.subjectEntity.classSubjectCode);
 
       setPreLoadedList(studentList);
+      console.log(studentList);
+      console.log(preLoadedList);
       setTimetableId(classinfo.timetableId);
-      setClassDes(classinfo.classDay);
+      setClassDes(classinfo.classDesc);
     }
     // navigate('/teacher/classes');
   };
@@ -295,10 +298,14 @@ const NewClassList = () => {
           fullWidth
           size="small"
         />
-        <StudentListTransfer
-          ChangeStudentList={ChangeStudentList}
-          // preloaded={preLoadedList}
-        />
+        {classId ? (
+          <StudentEditListTransfer
+            ChangeStudentList={ChangeStudentList}
+            preLoadedList={preLoadedList}
+          />
+        ) : (
+          <StudentListTransfer ChangeStudentList={ChangeStudentList} />
+        )}
         <div className="buttonContainer">
           {classId ? (
             <button className="listButton blue" onClick={() => editClass()}>
