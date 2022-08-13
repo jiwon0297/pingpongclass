@@ -1,8 +1,12 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const TeacherClassCard = ({ clsList }: any) => {
   const [img, setImg] = useState('');
+  const [isMouseOn, setIsMouseOn] = useState(false);
+
   useEffect(() => {
     if (clsList)
       setImg('/subject/' + clsList.subjectEntity.classSubjectCode + '.jpeg');
@@ -10,7 +14,11 @@ const TeacherClassCard = ({ clsList }: any) => {
 
   if (clsList) {
     return (
-      <div css={TotalContainer}>
+      <div
+        css={TotalContainer}
+        onMouseEnter={() => setIsMouseOn(true)}
+        onMouseLeave={() => setIsMouseOn(false)}
+      >
         <img src={img} className="classImg" alt="수업" />
         <hr />
         <h2>{clsList.classTitle}</h2>
@@ -20,6 +28,16 @@ const TeacherClassCard = ({ clsList }: any) => {
         <p>
           [{clsList.timetableId}교시] {clsList.teacherName} 선생님
         </p>
+        {isMouseOn ? (
+          <div onMouseEnter={() => setIsMouseOn(true)}>
+            <div className="editbtn">
+              <label htmlFor="profile-image">
+                <EditIcon className="edit-icon-btn" />
+              </label>
+            </div>
+            <DeleteIcon className="delete-icon-btn" />
+          </div>
+        ) : null}
       </div>
     );
   } else {

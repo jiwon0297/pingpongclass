@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useState, useEffect } from 'react';
+import MenuItem from '@mui/material/MenuItem';
 
 function not(a: any, b: any) {
   return a.filter((value) => !b.includes(value));
@@ -26,6 +27,21 @@ function intersection(a: any, b: any) {
 function union(a: any, b: any) {
   return [...a, ...not(b, a)];
 }
+
+const info = [
+  {
+    value: 1,
+    label: '1',
+  },
+  {
+    value: 2,
+    label: '2',
+  },
+  {
+    value: 3,
+    label: '3',
+  },
+];
 
 export default function TransferList(props: { ChangeStudentList: Function }) {
   const [checked, setChecked] = useState([] as any);
@@ -181,19 +197,36 @@ export default function TransferList(props: { ChangeStudentList: Function }) {
           onChange={(e) => ChangeStudentGrade(e.target.value)}
           id="outlined-basic"
           label="학년"
+          select
+          fullWidth
           size="small"
-        />
+        >
+          {info.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           onChange={(e) => ChangeStudentClassNum(e.target.value)}
           id="outlined-basic"
           label="반"
+          select
+          fullWidth
           size="small"
-        />
+        >
+          {info.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           onChange={(e) => ChangeStudentName(e.target.value)}
           id="outlined-basic"
           label="이름"
           size="small"
+          fullWidth
         />
         <button
           className="listButton"
