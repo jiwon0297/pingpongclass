@@ -169,9 +169,29 @@ const Myinfo = () => {
           )}
         </div>
         <br />
-        <p style={{ width: '100%', fontWeight: '700' }}>
-          랭킹 Top 10 (매일 오전 8시 기준)
-        </p>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '98%',
+            alignItems: 'flex-end',
+            marginBottom: '2%',
+          }}
+        >
+          <div style={{ width: '100%', fontWeight: 'bold', fontSize: '1.2em' }}>
+            Ranking{' '}
+          </div>
+          <div
+            style={{
+              fontSize: '0.5em',
+              marginLeft: '5%',
+              width: '20%',
+              textAlign: 'end',
+            }}
+          >
+            오전 8:00 기준 랭킹
+          </div>
+        </div>
         <Ranking />
       </div>
     </div>

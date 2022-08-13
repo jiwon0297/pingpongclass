@@ -31,6 +31,17 @@ const Ranking = () => {
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const [introduce, setIntroduce] = useState(memberStore.introduce);
+
+  const level = [
+    'white',
+    'yellow',
+    'green',
+    'blue',
+    'purple',
+    'rainbow',
+    'rainbow',
+  ];
+
   const loadRankingList = async () => {
     await AXIOS.get(`/students/ranking/`)
       .then(function (response) {
@@ -102,6 +113,20 @@ const Ranking = () => {
           <div className="rankingInfo">
             <div className="rankBox">{rankingList[0].rankNum}위</div>
             <div className="nameBox">
+              <img
+                src={
+                  '/levels/' +
+                  level[Math.floor(rankingList[0].totalPoint / 10)] +
+                  '.png'
+                }
+                style={{
+                  height: '60%',
+                  border: 'none',
+                  width: 'auto',
+                  marginRight: '5%',
+                }}
+                alt=""
+              />
               {rankingList[0].name} [{rankingList[0].totalPoint} 퐁퐁]
             </div>
             <div className="myBio">
@@ -162,9 +187,23 @@ const Ranking = () => {
               if (index >= 1 && index % 2 == 0) {
                 return (
                   <div className="ranking" key={index}>
-                    <div className="rankingInfo">
+                    <div className="rankingInfo" style={{ height: '100%' }}>
                       <div className="rankBox">{ranking.rankNum}위</div>
-                      <div className="nameBox">
+                      <div className="nameBox" style={{ height: '100%' }}>
+                        <img
+                          src={
+                            '/levels/' +
+                            level[Math.floor(ranking.totalPoint / 10)] +
+                            '.png'
+                          }
+                          style={{
+                            height: '60%',
+                            border: 'none',
+                            width: 'auto',
+                            marginRight: '5%',
+                          }}
+                          alt=""
+                        />
                         {ranking.name} [{ranking.totalPoint} 퐁퐁]
                       </div>
                       <div className="myBio">
@@ -218,6 +257,20 @@ const Ranking = () => {
                     <div className="rankingInfo">
                       <div className="rankBox">{ranking.rankNum}위</div>
                       <div className="nameBox">
+                        <img
+                          src={
+                            '/levels/' +
+                            level[Math.floor(ranking.totalPoint / 10)] +
+                            '.png'
+                          }
+                          style={{
+                            height: '60%',
+                            border: 'none',
+                            width: 'auto',
+                            marginRight: '5%',
+                          }}
+                          alt=""
+                        />
                         {ranking.name} [{ranking.totalPoint} 퐁퐁]
                       </div>
                       <div className="myBio">
@@ -360,6 +413,8 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     justify-content: end;
+    align-items: center;
+    height: 100%;
   }
 
   .ranking {
@@ -378,7 +433,7 @@ const totalContainer = css`
   .rankingLow {
     width: 100%;
     height: 40px;
-    background-color: #f2f2f2;
+    background-color: #f4f6f8;
     border-top: #d0d0d0 1px solid;
     display: flex;
     flex-direction: row;
@@ -391,6 +446,7 @@ const totalContainer = css`
   }
 
   .rankingInfo {
+    height: 100%;
     width: 80%;
     display: flex;
     flex-direction: row;
