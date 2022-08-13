@@ -94,9 +94,9 @@ const totalContainer = css`
   z-index: 1000;
   animation: fadeIn 0.4s;
 
-h2{
-  margin-top: 30px;
-}
+  h2 {
+    margin-top: 30px;
+  }
   .upperpart,
   .mainPart {
     width: 100%;
@@ -142,7 +142,6 @@ h2{
   }
 
   .timeline {
-    height: 100%
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -158,8 +157,8 @@ h2{
   .day {
     height: 30px;
   }
-  .time{
-    margin-bottom:10px;
+  .time {
+    margin-bottom: 10px;
   }
   @keyframes fadeIn {
     from {
