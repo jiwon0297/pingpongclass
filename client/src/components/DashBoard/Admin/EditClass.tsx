@@ -9,6 +9,7 @@ import { useAppSelector } from '@src/store/hooks';
 import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TextFields } from '@mui/icons-material';
+import StudentEditListTransfer from '@components/DashBoard/Teacher/StudentEditListTransfer';
 
 const weeks = [
   {
@@ -174,9 +175,7 @@ const NewClassList = () => {
     if (classId) {
       const result = await AXIOS.get('/classes/classinfo/' + classId);
       const classinfo = result.data;
-      const studentListData = await AXIOS.get(
-        '/classes/student/{classId}?classId=' + classId,
-      );
+      const studentListData = await AXIOS.get('/classes/student/' + classId);
       const studentList = studentListData.data.participantsList;
       // let studentList: string[] = [];
       // studentListData.data.participantsList.forEach((elem) => {
@@ -187,11 +186,40 @@ const NewClassList = () => {
       setSubjectCode(classinfo.subjectEntity.classSubjectCode);
 
       setPreLoadedList(studentList);
+      console.log(studentList);
+      console.log(preLoadedList);
       setTimetableId(classinfo.timetableId);
-      setClassDes(classinfo.classDay);
-      console.log(classinfo);
+      setClassDes(classinfo.classDesc);
     }
     // navigate('/teacher/classes');
+  };
+
+  const deleteManagedClass = () => {
+    let finalCheck = confirm(
+      '정말로 삭제하시겠습니까? 삭제하시면 수업 기록을 볼 수 없습니다.',
+    );
+    if (finalCheck) {
+      AXIOS.delete('/classes/' + classId)
+        .then(() => {
+          alert('삭제되었습니다.');
+          navigate('/teacher/classes');
+        })
+        .catch(() => {});
+    }
+  };
+
+  const disabledClass = () => {
+    let finalCheck = confirm(
+      '정말로 비활성화하시겠습니까? 다시는 수업을 열 수 없습니다.',
+    );
+    if (finalCheck) {
+      AXIOS.patch('/classes/update/' + classId)
+        .then(() => {
+          alert('비활성화되었습니다.');
+          navigate('/teacher/classes');
+        })
+        .catch(() => {});
+    }
   };
 
   const createClass = async () => {
@@ -236,78 +264,103 @@ const NewClassList = () => {
           id="outlined-basic"
           value={classTitle}
           label="수업명"
+          size="small"
           fullWidth
         />
-        <TextField
-          id="outlined-select-currency"
-          select
-          fullWidth
-          label="요일 선택"
-          value={classDay}
-          onChange={(e) => ChangeDay(e.target.value)}
-          helperText="요일을 선택해주세요"
-        >
-          {weeks.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          id="outlined-select-currency"
-          select
-          fullWidth
-          label="과목 선택"
-          value={subjectCode}
-          onChange={(e) => ChangeCode(e.target.value)}
-          helperText="과목을 선택해주세요"
-        >
-          {subjects.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          id="outlined-select-currency"
-          select
-          fullWidth
-          label="교시 선택"
-          value={timetableId}
-          onChange={(e) => ChangeTimetableId(e.target.value)}
-          helperText="교시를 선택해주세요"
-        >
-          {timetable.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <div className="timeContainer">
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="과목 선택"
+            value={subjectCode}
+            onChange={(e) => ChangeCode(e.target.value)}
+            helperText="과목을 선택해주세요"
+            size="small"
+            fullWidth
+          >
+            {subjects.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="요일 선택"
+            value={classDay}
+            onChange={(e) => ChangeDay(e.target.value)}
+            helperText="요일을 선택해주세요"
+            size="small"
+            fullWidth
+            style={{ paddingLeft: '20px', paddingRight: '20px' }}
+          >
+            {weeks.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="교시 선택"
+            value={timetableId}
+            onChange={(e) => ChangeTimetableId(e.target.value)}
+            helperText="교시를 선택해주세요"
+            size="small"
+            fullWidth
+          >
+            {timetable.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
         <TextField
           onChange={(e) => ChangeClassDes(e.target.value)}
           id="outlined-basic"
           value={classDes}
           label="수업 설명"
           fullWidth
+          size="small"
         />
-        <StudentListTransfer
-          ChangeStudentList={ChangeStudentList}
-          // preloaded={preLoadedList}
-        />
+        {classId ? (
+          <StudentEditListTransfer
+            ChangeStudentList={ChangeStudentList}
+            preLoadedList={preLoadedList}
+          />
+        ) : (
+          <StudentListTransfer ChangeStudentList={ChangeStudentList} />
+        )}
         <div className="buttonContainer">
           {classId ? (
-            <button className="listButton" onClick={() => editClass()}>
+            <button className="listButton blue" onClick={() => editClass()}>
               수정
             </button>
           ) : (
-            <button className="listButton" onClick={() => createClass()}>
+            <button className="listButton blue" onClick={() => createClass()}>
               생성
             </button>
           )}
           <Link to="/admin/classes/">
-            <button className="listButton cancel">취소</button>
+            <button className="listButton gray">취소</button>
           </Link>
         </div>
+        {classId ? (
+          <div className="deleteContainer">
+            <button
+              className="listButton pink"
+              onClick={() => deleteManagedClass()}
+            >
+              삭제
+            </button>
+            <button className="listButton pink" onClick={() => disabledClass()}>
+              비활성화
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -347,7 +400,7 @@ const totalContainer = css`
     width: auto;
     margin: 0;
     padding: 10px 20px;
-    border-radius: 20px;
+    border-radius: 15px;
     color: white;
     border: 0;
     box-shadow: 2px 2px 15px -5px;
@@ -359,13 +412,15 @@ const totalContainer = css`
     white-space: nowrap;
   }
 
-  .cancel {
-    background-color: var(--gray);
-    margin-left: 1rem;
-  }
-
   .listButton:hover {
     transform: scale(1.1);
+  }
+
+  .timeContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .buttonContainer {
@@ -373,9 +428,23 @@ const totalContainer = css`
     flex-direction: row;
   }
 
-  hr {
-    width: 80%;
-    margin: 20px;
+  .gray {
+    background: var(--gray);
+    margin-left: 20px;
+  }
+
+  .pink {
+    background: var(--pink);
+    height: 40px;
+    font-size: 12pt;
+    margin-right: 5px;
+  }
+
+  .deleteContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    width: 100%;
   }
 `;
 

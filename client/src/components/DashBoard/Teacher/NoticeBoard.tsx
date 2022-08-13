@@ -182,7 +182,8 @@ const NoticeBoard = () => {
   return (
     <div css={NoticeBoardStyle}>
       <div className="upperModalArea">
-        <div className="pageTitle">공지사항(선생님)</div>
+        <div className="pageTitle">공지사항</div>
+        <hr />
         <form onSubmit={search} className="search-div">
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="demo-simple-select-label">수업명</InputLabel>
@@ -190,6 +191,7 @@ const NoticeBoard = () => {
               labelId="demo-simple-select-label"
               id="demo-select-small"
               label="수업명"
+              defaultValue={''}
               onChange={handleSelect}
               MenuProps={MenuProps}
             >
