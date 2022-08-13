@@ -6,7 +6,7 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
 import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const weeks = [
   {
@@ -181,68 +181,82 @@ const NewClassList = () => {
   return (
     <div css={totalContainer}>
       <h1>수업 생성</h1>
+      <br />
       <div className="inputContainer">
         <TextField
           onChange={(e) => ChangeTitle(e.target.value)}
           id="outlined-basic"
           label="수업명"
           fullWidth
+          size="small"
         />
-        <TextField
-          id="outlined-select-currency"
-          select
-          fullWidth
-          label="요일 선택"
-          value={classDay}
-          onChange={(e) => ChangeDay(e.target.value)}
-          helperText="요일을 선택해주세요"
-        >
-          {weeks.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          id="outlined-select-currency"
-          select
-          fullWidth
-          label="과목 선택"
-          value={subjectCode}
-          onChange={(e) => ChangeCode(e.target.value)}
-          helperText="과목을 선택해주세요"
-        >
-          {subjects.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          id="outlined-select-currency"
-          select
-          fullWidth
-          label="교시 선택"
-          value={timetableId}
-          onChange={(e) => ChangeTimetableId(e.target.value)}
-          helperText="교시를 선택해주세요"
-        >
-          {timetable.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <div className="timeContainer">
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="과목 선택"
+            value={subjectCode}
+            onChange={(e) => ChangeCode(e.target.value)}
+            helperText="과목을 선택해주세요"
+            size="small"
+            fullWidth
+          >
+            {subjects.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="요일 선택"
+            value={classDay}
+            onChange={(e) => ChangeDay(e.target.value)}
+            helperText="요일을 선택해주세요"
+            size="small"
+            fullWidth
+            style={{ paddingLeft: '20px', paddingRight: '20px' }}
+          >
+            {weeks.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="교시 선택"
+            value={timetableId}
+            onChange={(e) => ChangeTimetableId(e.target.value)}
+            helperText="교시를 선택해주세요"
+            size="small"
+            fullWidth
+          >
+            {timetable.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
         <TextField
           onChange={(e) => ChangeClassDes(e.target.value)}
           id="outlined-basic"
           label="수업 설명"
           fullWidth
+          size="small"
         />
         <StudentListTransfer ChangeStudentList={ChangeStudentList} />
-        <button className="listButton" onClick={() => createClass()}>
-          수업 생성
-        </button>
+        <div className="buttonContainer">
+          <button className="listButton blue" onClick={() => createClass()}>
+            생성
+          </button>
+          <Link to="/teacher/classes">
+            <button className="listButton gray">취소</button>
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -256,7 +270,6 @@ const totalContainer = css`
   align-items: center;
   justify-content: space-around;
   border-radius: 20px;
-  box-shadow: 2px 2px 15px -5px;
   box-sizing: border-box;
 
   .inputContainer {
@@ -283,11 +296,11 @@ const totalContainer = css`
     width: auto;
     margin: 0;
     padding: 10px 20px;
-    border-radius: 20px;
+    border-radius: 15px;
     color: white;
     border: 0;
     box-shadow: 2px 2px 15px -5px;
-    background-color: #5da1ff;
+    background-color: var(--blue);
     box-sizing: border-box;
     transition: all 0.3s ease-in-out;
     font-size: 20px;
@@ -297,6 +310,23 @@ const totalContainer = css`
 
   .listButton:hover {
     transform: scale(1.1);
+  }
+
+  .timeContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .gray {
+    background: var(--gray);
+    margin-left: 20px;
   }
 `;
 

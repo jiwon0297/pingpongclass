@@ -181,16 +181,19 @@ export default function TransferList(props: { ChangeStudentList: Function }) {
           onChange={(e) => ChangeStudentGrade(e.target.value)}
           id="outlined-basic"
           label="학년"
+          size="small"
         />
         <TextField
           onChange={(e) => ChangeStudentClassNum(e.target.value)}
           id="outlined-basic"
           label="반"
+          size="small"
         />
         <TextField
           onChange={(e) => ChangeStudentName(e.target.value)}
           id="outlined-basic"
           label="이름"
+          size="small"
         />
         <button
           className="listButton"
@@ -235,7 +238,8 @@ export default function TransferList(props: { ChangeStudentList: Function }) {
 const totalContainer = css`
   width: 100%;
   .searchList {
-    border-radius: 20px;
-    box-shadow: 2px 2px 12px -5px;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    height: 300px;
   }
 `;

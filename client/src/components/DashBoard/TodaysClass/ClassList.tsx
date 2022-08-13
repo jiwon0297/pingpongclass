@@ -79,8 +79,12 @@ const ClassList = () => {
 
   const renderList = (): any => {
     let tmp = [] as any;
-    for (let i = 0; i < clsList.length / 6; i++) {
-      tmp.push(render(i));
+    if (clsList.length !== 0) {
+      for (let i = 0; i < clsList.length / 6; i++) {
+        tmp.push(render(i));
+      }
+    } else {
+      tmp.push(render(1));
     }
     return tmp;
   };
