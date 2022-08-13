@@ -202,7 +202,36 @@ const EditClassList = () => {
     };
     const result = await AXIOS.patch('/classes/' + classId, data);
     console.log(result);
+    alert('수업이 수정되었습니다.');
     navigate('/teacher/classes');
+  };
+
+  const deleteManagedClass = () => {
+    let finalCheck = confirm(
+      '정말로 삭제하시겠습니까? 삭제하시면 수업 기록을 볼 수 없습니다.',
+    );
+    if (finalCheck) {
+      AXIOS.delete('/classes/' + classId)
+        .then(() => {
+          alert('삭제되었습니다.');
+          navigate('/teacher/classes');
+        })
+        .catch(() => {});
+    }
+  };
+
+  const disabledClass = () => {
+    let finalCheck = confirm(
+      '정말로 비활성화하시겠습니까? 다시는 수업을 열 수 없습니다.',
+    );
+    if (finalCheck) {
+      AXIOS.patch('/classes/update/' + classId)
+        .then(() => {
+          alert('비활성화되었습니다.');
+          navigate('/teacher/classes');
+        })
+        .catch(() => {});
+    }
   };
 
   return (
@@ -286,6 +315,17 @@ const EditClassList = () => {
             <button className="listButton gray">취소</button>
           </Link>
         </div>
+        <div className="deleteContainer">
+          <button
+            className="listButton pink"
+            onClick={() => deleteManagedClass()}
+          >
+            삭제
+          </button>
+          <button className="listButton pink" onClick={() => disabledClass()}>
+            비활성화
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -356,6 +396,20 @@ const totalContainer = css`
   .gray {
     background: var(--gray);
     margin-left: 20px;
+  }
+
+  .pink {
+    background: var(--pink);
+    height: 40px;
+    font-size: 12pt;
+    margin-right: 5px;
+  }
+
+  .deleteContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    width: 100%;
   }
 `;
 

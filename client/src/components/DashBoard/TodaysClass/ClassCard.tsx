@@ -77,7 +77,7 @@ const TotalContainer = (classUrl: string) => css`
 
 const EmptyContainer = () => css`
   width: 233px;
-  height: 210px;
+  height: 215px;
   background: #ffffff;
   border-radius: 20px;
   padding: 10px;
