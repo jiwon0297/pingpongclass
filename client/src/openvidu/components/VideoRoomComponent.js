@@ -997,7 +997,7 @@ class VideoRoomComponent extends Component {
       this.state.subscribers.some((user) => user.isScreenShareActive()) ||
       localUser.isScreenShareActive();
     const openviduLayoutOptions = {
-      maxRatio: 2 / 3,
+      maxRatio: 9 / 16,
       minRatio: 9 / 16,
       fixedRatio: isScreenShared,
       bigClass: 'OV_big',

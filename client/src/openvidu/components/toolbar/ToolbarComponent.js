@@ -138,7 +138,7 @@ export default class ToolbarComponent extends Component {
 
   startStickerEvent() {
     this.props.startStickerEvent();
-    this.lockOutSticker(30);
+    this.lockOutSticker(31);
   }
 
   // name: 한준수
