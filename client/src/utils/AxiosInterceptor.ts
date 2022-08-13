@@ -25,7 +25,7 @@ import { setCookie, getCookie } from './cookie';
 // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
-  config.baseURL = 'http://i7a403.p.ssafy.io/be';
+  config.baseURL = 'http://i7a403.p.ssafy.io:8080/be';
 
   return config;
 };
