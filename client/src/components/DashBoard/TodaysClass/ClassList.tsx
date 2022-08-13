@@ -169,6 +169,8 @@ const ClassList = () => {
 
 const totalContainer = css`
   width: 100%;
+  animation: 0.5s ease-in-out loadEffect1;
+
   .total-container {
     width: 100%;
     display: flex;
@@ -176,7 +178,6 @@ const totalContainer = css`
     align-items: center;
     justify-content: start;
     border-radius: 20px 20px 0 0;
-    animation: 0.5s ease-in-out loadEffect1;
   }
 
   .tabsContainer {
