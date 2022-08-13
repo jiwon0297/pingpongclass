@@ -28,7 +28,7 @@ public class ScheduleService {
 
     //매일 8시마다 실행
 //    @Scheduled(cron="0 0 8 * * *")
-    @Scheduled(cron="0 0 2 21 * *")
+    @Scheduled(cron="0 0 2 23 * *")
     public void everyDay_9_00_RankingJob(){
         System.out.println("8:00 RANKING 디비 갱신 시작!");
         rankingRepository.deleteAll();
