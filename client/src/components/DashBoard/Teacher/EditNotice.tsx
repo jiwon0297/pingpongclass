@@ -57,6 +57,21 @@ const EditNotice = () => {
     }
   }, [notice]);
 
+  useLayoutEffect(() => {
+    getNoticeInfo();
+  }, []);
+
+  const getNoticeInfo = async () => {
+    if (!newPost) {
+      const result = await InterceptedAxios.get('/notice/' + noticeId);
+      const noticeinfo = result.data;
+      setTmpCode(noticeinfo.classEntity.classId);
+      setTmpTitle(noticeinfo.title);
+      setTmpContent(noticeinfo.content);
+    }
+    // navigate('/teacher/classes');
+  };
+
   const titleChanged = (e) => {
     // onChange 이벤트
     setTmpTitle(e.target.value);
@@ -109,6 +124,7 @@ const EditNotice = () => {
         <div className="pageTitle">공지사항 수정</div>
       )}
       <hr />
+      <br />
       <div className="firstContainer">
         <div>
           <TextField
@@ -118,9 +134,10 @@ const EditNotice = () => {
             onChange={(e) => {
               codeChanged(e);
             }}
+            value={tmpCode}
             size="small"
             helperText="수업명을 선택해주세요."
-            variant="filled"
+            variant="outlined"
             fullWidth
           >
             {classes.map((s) => (
@@ -141,7 +158,7 @@ const EditNotice = () => {
             fullWidth
             size="small"
             helperText="제목을 입력해주세요."
-            variant="filled"
+            variant="outlined"
             style={{ width: '750px' }}
           />
         </div>
@@ -153,7 +170,7 @@ const EditNotice = () => {
           helperText="내용을 입력해주세요."
           rows={19}
           multiline
-          variant="filled"
+          variant="outlined"
           fullWidth
           defaultValue={tmpContent}
           onChange={(e) => {
@@ -163,14 +180,25 @@ const EditNotice = () => {
       </div>
       <div className="btn-box">
         {/* <Link to="/admin/notice"> */}
-        <button
-          className="button-sm blue"
-          onClick={() => {
-            submitPost();
-          }}
-        >
-          작성
-        </button>
+        {newPost ? (
+          <button
+            className="button-sm blue"
+            onClick={() => {
+              submitPost();
+            }}
+          >
+            작성
+          </button>
+        ) : (
+          <button
+            className="button-sm blue"
+            onClick={() => {
+              submitPost();
+            }}
+          >
+            수정
+          </button>
+        )}
         {/* </Link> */}
         <Link to="/teacher/notice">
           <button className="button-sm gray">취소</button>
