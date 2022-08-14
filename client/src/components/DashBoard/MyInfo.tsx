@@ -348,11 +348,11 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
   .point-info {
     padding-right: 10px;
     height: 30px;
-    width: 49px;
+    width: 76px;
     font-weight: 600;
     color: var(--text-dark);
     position: absolute;
-    top: -35px;
+    top: -39px;
     right: -28px;
     font-size: 0.9em;
     display: flex;
