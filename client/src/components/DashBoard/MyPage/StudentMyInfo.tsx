@@ -130,7 +130,7 @@ const StudentMyInfo = () => {
       })
         .then(function (response) {
           alert('정보 수정이 완료되었습니다.');
-          location.href = '/student/mypage';
+          location.href = '/student';
         })
         .catch(function (error) {
           console.log(error);
@@ -314,6 +314,8 @@ const ModalCSS = (isMouseOn) => css`
 
   .profileContainer .profile-logo {
     position: absolute;
+    width: 140px;
+    height: 140px;
     border-radius: 200px;
     filter: ${isMouseOn ? 'brightness(70%); ' : ''};
   }

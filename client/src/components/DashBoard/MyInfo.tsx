@@ -259,6 +259,10 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     margin-top: 4%;
   }
 
+  img.profile-logo {
+    width: 80px;
+    height: 80px;
+  }
   .ranking {
     width: 100%;
     height: 40px;
