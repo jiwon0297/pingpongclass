@@ -311,8 +311,11 @@ export const NoticeBoardStyle = () => css`
     background-color: transparent;
     font-family: 'NanumSquare';
     vertical-align: middle;
-    font-size: 13pt;
-    font-weight: 290;
+    font-size: 0.9rem;
+    font-weight: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .col {
@@ -322,14 +325,14 @@ export const NoticeBoardStyle = () => css`
   }
   /* 제목 행 */
   .titleRow {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     padding: 0.5rem 0;
     background-color: #c0d2e5;
-    height: 30px;
+    height: 23px;
     vertical-align: middle;
     font-weight: 400;
-    font-size: 15pt;
+    font-size: 1em;
   }
 
   /* 게시글 항목 영역 */
@@ -340,7 +343,7 @@ export const NoticeBoardStyle = () => css`
 
     /* 제목줄 1줄 */
     .articleRow {
-      padding: 0.5rem 0;
+      padding: 0.2rem 0;
       border-bottom: 1.5px solid gray;
     }
 
@@ -371,7 +374,7 @@ export const NoticeBoardStyle = () => css`
       }
       button.sub-btn {
         background-color: grey;
-        color: black;
+        color: var(--text-dark);
       }
       button.sub-btn:hover {
         background-color: grey;
@@ -437,11 +440,12 @@ export const NoticeBoardStyle = () => css`
   .classTitleIcon {
     display: inline-block;
     border-radius: 0.5rem;
-    background-color: #ffe790;
+    background-color: #f5e7ee;
     align-self: center;
     width: 70%;
     min-width: max-content;
     vertical-align: top;
+    font-weight: 300;
   }
   .noticeTitle {
     white-space: nowrap;
@@ -468,6 +472,7 @@ export const NoticeBoardStyle = () => css`
     background-color: var(--pink);
     color: white;
     font-size: 13pt;
+    font-weight: bold;
     font-family: 'NanumSqaureRound';
   }
 

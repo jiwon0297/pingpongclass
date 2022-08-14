@@ -9,7 +9,8 @@ import GetReactionList from './GetItemListTap/GetReactionList';
 import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import CircleIcon from '@mui/icons-material/Circle';
-import GradeIcon from '@mui/icons-material/Grade';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { green, pink, yellow } from '@mui/material/colors';
 import Animation from './Animation';
@@ -38,6 +39,7 @@ const StoreMain = () => {
   const [getBorder, setGetBorder] = useState<number>(0);
   const [getColorType, setGetColorType] = useState<number>(0);
   const [isOpenPick, setIsOpenPick] = useState(false);
+  const [isCameraOn, setIsCameraOn] = useState(false);
 
   const [showReaction, setShowReaction] = useState('');
 
@@ -58,6 +60,7 @@ const StoreMain = () => {
     //로딩시 해당 유저의 아이템 불러오기
     dispatch(saveItem(memberStore.userId)).then(() => {
       setItems(memberStore.items);
+      setGetBorder(memberStore.borderColor);
       dispatch(saveMember());
       console.log('-------랜더링 : ', items);
     });
@@ -144,7 +147,7 @@ const StoreMain = () => {
   const reactionFunction = (reaction) => {
     //리액션 보이게
     setShowReaction(reaction);
-    setTimeout(() => setShowReaction(''), 2000);
+    setTimeout(() => setShowReaction(''), 3500);
   };
 
   // 클릭 이벤트 핸들러
@@ -376,22 +379,55 @@ const StoreMain = () => {
         </div>
       </div>
       <div className="myItemContainer">
-        <div className="pageTitle">보유 목록</div>
+        <div className="pageTitle">
+          보유 목록
+          <span
+            css={css`
+              font-size: 0.5em;
+              font-weight: 300;
+              margin-left: 10px;
+            `}
+          >
+            아이템을 클릭해 사용해보세요
+          </span>
+        </div>
         <hr />
         <div className="sideContainer">
-          <div
-            className={'border-' + color[getBorder - 1]}
-            style={{
-              borderRadius: '10%',
-              border: '17px solid transparent',
-              backgroundOrigin: 'border-box',
-              backgroundClip: 'content-box, border-box',
-              width: '35%',
-              height: '90%',
-            }}
-          >
-            {showReaction != '' && <img src={showReaction} alt="" />}
-            예시화면
+          <div className="left-side-container">
+            <div className={'image-box border-' + color[getBorder - 1]}>
+              {showReaction != '' && (
+                <img
+                  src={showReaction}
+                  alt=""
+                  style={{
+                    position: 'absolute',
+                    width: '30%',
+                    right: '3%',
+                    bottom: '3%',
+                  }}
+                />
+              )}
+              {!isCameraOn && (
+                <img src="../img/cam.jpg" alt="" className="image-thumbnail" />
+              )}
+            </div>
+            <div className="video-div">
+              {isCameraOn ? (
+                <VideocamIcon
+                  className="video-icon"
+                  onClick={() => {
+                    setIsCameraOn(false);
+                  }}
+                />
+              ) : (
+                <VideocamOffIcon
+                  className="video-icon"
+                  onClick={() => {
+                    setIsCameraOn(true);
+                  }}
+                />
+              )}
+            </div>
           </div>
           <div className="getItemList">
             <div className="item-tap">
@@ -410,6 +446,135 @@ const StoreMain = () => {
                 onClick={() => onClickGetTap('getReactionTap')}
               >
                 리액션
+              </div>
+              <div className="rarity-div">
+                <p
+                  css={css`
+                    margin-right: 5px;
+                  `}
+                >
+                  색상권
+                </p>
+                <HelpIcon
+                  fontSize="small"
+                  color="action"
+                  css={css`
+                    height: 1.2vw;
+                  `}
+                  data-tip
+                  data-for="rarity-color"
+                  className="hover"
+                />
+                <ReactTooltip
+                  id="rarity-color"
+                  effect="solid"
+                  place="top"
+                  type="light"
+                  textColor="#191919"
+                  border
+                  borderColor="gray"
+                >
+                  <div
+                    css={css`
+                      text-align: start;
+                      padding: 5px;
+                    `}
+                  >
+                    <div
+                      css={css`
+                        display: flex;
+                        margin-right: 2px;
+                        flex-direction: column;
+                      `}
+                    >
+                      <div className="div-color">
+                        <div
+                          style={{
+                            marginBottom: '5px',
+                          }}
+                        >
+                          <b>레전드</b> : 1% 확률로 획득 가능
+                        </div>
+                        <div className="div-color-info">
+                          <div className="pong-pingpong div-color-rarity"></div>
+                          pingpong
+                        </div>
+                      </div>
+
+                      <div className="div-color">
+                        <div
+                          style={{
+                            marginBottom: '5px',
+                          }}
+                        >
+                          <b>레어</b> : 9% 확률로 획득 가능
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <div className="div-color-info">
+                            <div className="pong-dia div-color-rarity"></div>
+                            dia
+                          </div>
+                          <div className="div-color-info">
+                            <div className="pong-platinum div-color-rarity"></div>
+                            platinum
+                          </div>
+                        </div>
+                      </div>
+                      <div className="div-color">
+                        <div
+                          style={{
+                            marginBottom: '5px',
+                          }}
+                        >
+                          <b>노멀</b> : 90% 확률로 획득 가능
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginBottom: '5px',
+                          }}
+                        >
+                          <div className="div-color-info">
+                            <div className="pong-black div-color-rarity"></div>
+                            black
+                          </div>
+                          <div className="div-color-info">
+                            <div className="pong-yellow div-color-rarity"></div>
+                            yellow
+                          </div>
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginBottom: '5px',
+                          }}
+                        >
+                          <div className="div-color-info">
+                            <div className="pong-green div-color-rarity"></div>
+                            green
+                          </div>
+                          <div className="div-color-info">
+                            <div className="pong-blue div-color-rarity"></div>
+                            blue
+                          </div>
+                        </div>
+                        <div>
+                          <div className="div-color-info">
+                            <div className="pong-purple div-color-rarity"></div>
+                            purple
+                          </div>
+                        </div>
+                      </div>
+                    </div>{' '}
+                  </div>
+                </ReactTooltip>
               </div>
             </div>
             <div className="item-main">
@@ -438,6 +603,10 @@ const totalContainer = () => css`
   gap: 20px;
   animation: 0.7s ease-in-out loadEffect1;
 
+  .left-side-container {
+    width: 35%;
+    height: 100%;
+  }
   .help-div {
     display: flex;
     align-items: flex-end;
@@ -471,6 +640,20 @@ const totalContainer = () => css`
     flex-direction: column;
     align-items: flex-start;
     border-radius: 20px;
+  }
+
+  .div-color {
+    margin-bottom: 10px;
+  }
+
+  .div-color-info {
+    display: flex;
+    gap: 10px;
+  }
+  .div-color-rarity {
+    border-radius: 100%;
+    width: 18px;
+    height: 18px;
   }
 
   .example {
@@ -572,6 +755,29 @@ const totalContainer = () => css`
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .image-box {
+    position: relative;
+    border-radius: 10%;
+    border: 17px solid transparent;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    width: 90%;
+    height: 75%;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  .video-icon {
+    border-radius: 10px;
+    background-color: #fcc97d;
+    padding: 4px 25px;
+  }
+  .image-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   hr {
