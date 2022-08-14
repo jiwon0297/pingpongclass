@@ -1466,7 +1466,7 @@ class VideoRoomComponent extends Component {
               (this.state.videoLayout === 'bigTeacher' &&
                 localUser.nickname.includes('[선생님]')) ||
               (this.state.videoLayout === 'screenShareOn' &&
-                localUser.isScreenShareActive) ? (
+                localUser.isScreenShareActive()) ? (
                 <div
                   className="OT_root OT_publisher custom-class OV_big"
                   id="localUser"
