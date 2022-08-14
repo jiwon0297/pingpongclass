@@ -97,9 +97,9 @@ const Animation = ({
             src={ItemBackground}
             alt="뽑기배경"
             style={{
-              width: '450px',
-              marginBottom: '60vh',
-              marginRight: '32vw',
+              width: '100%',
+              marginBottom: '20vh',
+              marginRight: '20vw',
             }}
           />
         </motion.div>
