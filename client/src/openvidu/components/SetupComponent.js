@@ -48,11 +48,11 @@ const SetupComponent = (props) => {
 
   useEffect(() => {
     return () => {
-      stream?.getTracks().forEach((track) => {
+      stream.getTracks().forEach((track) => {
         track.stop();
       });
     };
-  }, [stream]);
+  }, []);
 
   useEffect(() => {
     const getMyDevices = async () => {
