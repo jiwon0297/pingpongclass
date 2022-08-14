@@ -43,7 +43,7 @@ const ClassLogList = () => {
 
   const loadLogDate = async () => {
     const studentId = memberStore.userId;
-    await AXIOS.get('/records/log/student' + studentId)
+    await AXIOS.get('/records/log/student/' + studentId)
       .then(function (response) {
         setDateList(response.data);
         console.log(response.data);
