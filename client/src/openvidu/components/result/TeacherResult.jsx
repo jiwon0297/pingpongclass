@@ -23,12 +23,15 @@ const TeacherResult = ({
   othersData,
   finTime,
   classId,
+  studentList,
+  studentInfo,
 }) => {
   console.log(myData);
   console.log(othersData);
-  const [totalStudentNum, setTotalStudentNum] = useState(0);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
+
+  console.log(studentList.length);
 
   const applyToDB = async () => {
     try {
@@ -47,7 +50,6 @@ const TeacherResult = ({
   };
 
   useEffect(() => {
-    setTotalStudentNum(othersData.length); // 우선 임시로
     setAttStudentNum(othersData.length); // 참여자 수
     setTotalSticker(othersData.reduce((acc, cur) => (acc += cur.point), 0)); // 총 부여 스티커 계산식
 
@@ -55,20 +57,10 @@ const TeacherResult = ({
   }, [whoami, myData, othersData, totalSticker]);
 
   // 스크롤 처리 해야함
-  // const data = [
-  //   {
-  //     name: '접속자',
-  //     value: 3,
-  //   },
-  //   {
-  //     name: '미접속자',
-  //     value: 5,
-  //   },
-  // ];
 
   const data = [
-    { name: '참여 학생', value: 5 },
-    { name: '미참여 학생', value: 3 },
+    { name: '참여 학생', value: studentList.length },
+    { name: '미참여 학생', value: attStudentNum },
   ];
 
   const renderCustomizedLabel = ({
