@@ -144,7 +144,7 @@ const StoreMain = () => {
   const reactionFunction = (reaction) => {
     //리액션 보이게
     setShowReaction(reaction);
-    setTimeout(() => setShowReaction(''), 2000);
+    setTimeout(() => setShowReaction(''), 2500);
   };
 
   // 클릭 이벤트 핸들러
@@ -382,6 +382,7 @@ const StoreMain = () => {
           <div
             className={'border-' + color[getBorder - 1]}
             style={{
+              position: 'relative',
               borderRadius: '10%',
               border: '17px solid transparent',
               backgroundOrigin: 'border-box',
@@ -390,7 +391,18 @@ const StoreMain = () => {
               height: '90%',
             }}
           >
-            {showReaction != '' && <img src={showReaction} alt="" />}
+            {showReaction != '' && (
+              <img
+                src={showReaction}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  width: '25%',
+                  right: '3%',
+                  bottom: '3%',
+                }}
+              />
+            )}
             예시화면
           </div>
           <div className="getItemList">
