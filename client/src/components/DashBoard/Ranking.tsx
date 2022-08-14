@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
+import { saveMember } from '@src/store/member';
 
 interface RankingInterface {
   rankNum: number;
@@ -31,6 +32,17 @@ const Ranking = () => {
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const [introduce, setIntroduce] = useState(memberStore.introduce);
+  const dispatch = useAppDispatch();
+  const level = [
+    'white',
+    'yellow',
+    'green',
+    'blue',
+    'purple',
+    'rainbow',
+    'rainbow',
+  ];
+
   const loadRankingList = async () => {
     await AXIOS.get(`/students/ranking/`)
       .then(function (response) {
@@ -63,6 +75,14 @@ const Ranking = () => {
     setIntroduce(e.target.value);
   };
 
+  const loadMember = () => {
+    const timer = setTimeout(() => {
+      loadRankingList();
+      setIsEdit(false);
+    }, 500);
+    dispatch(saveMember()).then(() => timer);
+  };
+
   const onEditIntroduce = (e) => {
     if (introduce == null) {
       toast.warning('자개소개를 입력해주세요.');
@@ -86,7 +106,7 @@ const Ranking = () => {
       })
         .then(function (response) {
           alert('정보 수정에 성공하였습니다.');
-          location.reload();
+          loadMember();
         })
         .catch(function (error) {
           console.log(error);
@@ -102,6 +122,20 @@ const Ranking = () => {
           <div className="rankingInfo">
             <div className="rankBox">{rankingList[0].rankNum}위</div>
             <div className="nameBox">
+              <img
+                src={
+                  '/levels/' +
+                  level[Math.floor(rankingList[0].totalPoint / 10)] +
+                  '.png'
+                }
+                style={{
+                  height: '60%',
+                  border: 'none',
+                  width: 'auto',
+                  marginRight: '5%',
+                }}
+                alt=""
+              />
               {rankingList[0].name} [{rankingList[0].totalPoint} 퐁퐁]
             </div>
             <div className="myBio">
@@ -162,9 +196,23 @@ const Ranking = () => {
               if (index >= 1 && index % 2 == 0) {
                 return (
                   <div className="ranking" key={index}>
-                    <div className="rankingInfo">
+                    <div className="rankingInfo" style={{ height: '100%' }}>
                       <div className="rankBox">{ranking.rankNum}위</div>
-                      <div className="nameBox">
+                      <div className="nameBox" style={{ height: '100%' }}>
+                        <img
+                          src={
+                            '/levels/' +
+                            level[Math.floor(ranking.totalPoint / 10)] +
+                            '.png'
+                          }
+                          style={{
+                            height: '60%',
+                            border: 'none',
+                            width: 'auto',
+                            marginRight: '5%',
+                          }}
+                          alt=""
+                        />
                         {ranking.name} [{ranking.totalPoint} 퐁퐁]
                       </div>
                       <div className="myBio">
@@ -218,6 +266,20 @@ const Ranking = () => {
                     <div className="rankingInfo">
                       <div className="rankBox">{ranking.rankNum}위</div>
                       <div className="nameBox">
+                        <img
+                          src={
+                            '/levels/' +
+                            level[Math.floor(ranking.totalPoint / 10)] +
+                            '.png'
+                          }
+                          style={{
+                            height: '60%',
+                            border: 'none',
+                            width: 'auto',
+                            marginRight: '5%',
+                          }}
+                          alt=""
+                        />
                         {ranking.name} [{ranking.totalPoint} 퐁퐁]
                       </div>
                       <div className="myBio">
@@ -360,6 +422,8 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     justify-content: end;
+    align-items: center;
+    height: 100%;
   }
 
   .ranking {
@@ -378,7 +442,7 @@ const totalContainer = css`
   .rankingLow {
     width: 100%;
     height: 40px;
-    background-color: #f2f2f2;
+    background-color: #f4f6f8;
     border-top: #d0d0d0 1px solid;
     display: flex;
     flex-direction: row;
@@ -391,6 +455,7 @@ const totalContainer = css`
   }
 
   .rankingInfo {
+    height: 100%;
     width: 80%;
     display: flex;
     flex-direction: row;

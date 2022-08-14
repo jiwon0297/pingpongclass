@@ -25,9 +25,13 @@ public class RankingEntity {
     @Column(nullable = false)
     private int rankNum;
 
+    @Column(nullable = false)
+    private int totalPoint;
+
     @Builder
-    public RankingEntity(StudentEntity student, int rankNum){
+    public RankingEntity(StudentEntity student, int rankNum, int totalPoint){
         this.student=student;
         this.rankNum=rankNum;
+        this.totalPoint = totalPoint;
     }
 }

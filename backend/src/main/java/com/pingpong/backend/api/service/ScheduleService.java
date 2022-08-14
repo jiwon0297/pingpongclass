@@ -27,6 +27,7 @@ public class ScheduleService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     //매일 8시마다 실행
+//    @Scheduled(cron="0 39 3 ? * *")
     @Scheduled(cron="0 0 8 * * *")
     public void everyDay_9_00_RankingJob(){
         System.out.println("8:00 RANKING 디비 갱신 시작!");
@@ -43,7 +44,7 @@ public class ScheduleService {
 
         //DB 저장
         for(int i=0; i<10; i++){
-            rankingRepository.save(new RankingEntity(list.get(i), rank[i]));
+            rankingRepository.save(new RankingEntity(list.get(i), rank[i], list.get(i).getTotalPoint()));
         }
 
         //만료된 RefreshToken 삭제

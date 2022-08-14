@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
-import { useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 import Ranking from './Ranking';
 import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { saveMember } from '@src/store/member';
 
 interface StudentDataInterface {
   studentId: number;
@@ -21,6 +22,7 @@ const Myinfo = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [introduce, setIntroduce] = useState(memberStore.introduce);
   const AXIOS = setupInterceptorsTo(axios.create());
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setTotalRate(
@@ -34,7 +36,14 @@ const Myinfo = () => {
     );
 
     setLevelImg('/levels/' + memberStore.currentLevel + '.png');
-  }, [memberStore]);
+  }, []);
+
+  const loadMember = () => {
+    const timer = setTimeout(() => {
+      setIsEdit(false);
+    }, 500);
+    dispatch(saveMember()).then(() => timer);
+  };
 
   const onClickEdit = (e) => {
     setIsEdit(!isEdit);
@@ -67,13 +76,17 @@ const Myinfo = () => {
       })
         .then(function (response) {
           alert('정보 수정에 성공하였습니다.');
-          location.reload();
+          loadMember();
         })
         .catch(function (error) {
           console.log(error);
           toast.error('정보 수정에 실패하였습니다.');
         });
     }
+  };
+
+  const rankingRefresh = () => {
+    return <Ranking />;
   };
 
   return (
@@ -169,10 +182,30 @@ const Myinfo = () => {
           )}
         </div>
         <br />
-        <p style={{ width: '100%', fontWeight: '700' }}>
-          랭킹 Top 10 (매일 오전 8시 기준)
-        </p>
-        <Ranking />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '98%',
+            alignItems: 'flex-end',
+            marginBottom: '2%',
+          }}
+        >
+          <div style={{ width: '100%', fontWeight: 'bold', fontSize: '1.2em' }}>
+            Ranking{' '}
+          </div>
+          <div
+            style={{
+              fontSize: '0.5em',
+              marginLeft: '5%',
+              width: '20%',
+              textAlign: 'end',
+            }}
+          >
+            오전 8:00 기준 랭킹
+          </div>
+        </div>
+        {isEdit ? '자기소개 수정중' : rankingRefresh()}
       </div>
     </div>
   );
