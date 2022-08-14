@@ -67,7 +67,9 @@ const SetupComponent = (props) => {
       if (newSpeakers.length) setSelectedSpeaker(newSpeakers[0].deviceId);
       setSelectedAudioTrack(newAudios[0]);
       setSelectedVideoTrack(newVideos[0]);
-      setStream(createStream(newAudios[0], newVideos[0]));
+      setStream(
+        createStream({ audioTrack: newAudios[0], videoTrack: newVideos[0] }),
+      );
     };
     getMyDevices().then(() => {
       setIsLoading(false);

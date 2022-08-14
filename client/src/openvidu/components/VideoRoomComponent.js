@@ -347,19 +347,18 @@ class VideoRoomComponent extends Component {
 
   // connectWebCam: 웹캠을 연결하는 함수 (실제 WebRTC와 연관된 내부 메서드들과 유사)
   async connectWebCam() {
-    // 현재 연결된 디바이스를 받음
-    var devices = await this.OV.getDevices();
-    // 연결된 디바이스 중에서 비디오 디바이스를 필터링
-    var videoDevices = devices.filter((device) => device.kind === 'videoinput');
+    // // 현재 연결된 디바이스를 받음
+    // var devices = await this.OV.getDevices();
+    // // 연결된 디바이스 중에서 비디오 디바이스를 필터링
+    // var videoDevices = devices.filter((device) => device.kind === 'videoinput');
 
-    console.log('이건 어때', this.state.currentVideoDevice);
     // publisher 초기설정(자기자신)
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: this.state.currentAudioDevice,
-      videoSource: videoDevices[2].deviceId,
+      videoSource: this.state.currentVideoDevice,
       publishAudio: localUser.isAudioActive(),
       publishVideo: localUser.isVideoActive(),
-      resolution: '640x360',
+      resolution: '1280x720',
       frameRate: 30,
       insertMode: 'APPEND',
     });
@@ -486,9 +485,6 @@ class VideoRoomComponent extends Component {
 
     // Empty all properties...
     // 모든 설정들 초기화
-    console.log(this.OV, localUser);
-    this.state.localUser.getStreamManager().stream.hasVideo = false;
-    localUser = null;
 
     this.setState({
       session: undefined,
@@ -539,7 +535,7 @@ class VideoRoomComponent extends Component {
   // camStatusChanged: 캠 설정 변경
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
-    localUser.getStreamManager().publishVideo(localUser.isVideoActive(), true);
+    localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
     this.setState({ localUser: localUser });
   }
@@ -655,11 +651,6 @@ class VideoRoomComponent extends Component {
           }
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
-            if (data.isScreenShareActive) {
-              this.setState({ videoLayout: 'screenShareOn' });
-            } else if (!data.isScreenShareActive) {
-              this.setState({ videoLayout: 'bigTeacher' });
-            }
           }
           if (data.picked !== undefined) {
             user.setPicked(data.picked);
@@ -1046,9 +1037,7 @@ class VideoRoomComponent extends Component {
   smile(event) {
     if (event !== localUser.isSmileActive()) {
       localUser.setSmileActive(!localUser.isSmileActive());
-      localUser
-        .getStreamManager()
-        .publishVideo(localUser.isVideoActive(), true);
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
       this.sendSignalUserChanged({ isSmileActive: localUser.isSmileActive() });
       this.setState({ localUser: localUser });
     }
@@ -1058,9 +1047,7 @@ class VideoRoomComponent extends Component {
   outAngle(event) {
     if (event !== localUser.isOutAngleActive()) {
       localUser.setOutAngleActive(!localUser.isOutAngleActive());
-      localUser
-        .getStreamManager()
-        .publishVideo(localUser.isVideoActive(), true);
+      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
       this.sendSignalUserChanged({
         isOutAngleActive: localUser.isOutAngleActive(),
       });
@@ -1392,10 +1379,8 @@ class VideoRoomComponent extends Component {
           >
             {localUser !== undefined &&
             localUser.getStreamManager() !== undefined ? (
-              (this.state.videoLayout === 'bigTeacher' &&
-                localUser.nickname.includes('[선생님]')) ||
-              (this.state.videoLayout === 'screenShareOn' &&
-                localUser.isScreenShareActive()) ? (
+              this.state.videoLayout === 'bigTeacher' &&
+              localUser.nickname.includes('[선생님]') ? (
                 <div
                   className="OT_root OT_publisher custom-class OV_big"
                   id="localUser"
@@ -1430,10 +1415,8 @@ class VideoRoomComponent extends Component {
               )
             ) : null}
             {this.state.subscribers.map((sub, i) =>
-              (this.state.videoLayout === 'bigTeacher' &&
-                sub.nickname.includes('[선생님]')) ||
-              (this.state.videoLayout === 'screenShareOn' &&
-                sub.isScreenShareActive) ? (
+              this.state.videoLayout === 'bigTeacher' &&
+              sub.nickname.includes('[선생님]') ? (
                 <div
                   key={i}
                   className="OT_root OT_publisher custom-class OV_big"
