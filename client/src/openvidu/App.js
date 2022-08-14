@@ -21,8 +21,8 @@ const App = () => {
   const [selectedVideoTrack, setSelectedVideoTrack] = useState();
   const [selectedAudioTrack, setSelectedAudioTrack] = useState();
   // 비디오를 켜고 들어갈 것인지 끄고 들어갈 것인지
-  const [isVideoOn, setIsVideoOn] = useState(true);
-  const [isAudioOn, setIsAudioOn] = useState(true);
+  const [isVideoOn, setIsVideoOn] = useState(false);
+  const [isAudioOn, setIsAudioOn] = useState(false);
   // 통계를 내기 위한 자료
   const [myData, setMyData] = useState(true);
   const [othersData, setOthersData] = useState(true);
@@ -39,7 +39,6 @@ const App = () => {
 
   const memberStore = useAppSelector((state) => state.member);
   const whoami = whoru(memberStore.userId);
-  console.log(studentList);
 
   useEffect(() => {
     const getStudentList = async () => {

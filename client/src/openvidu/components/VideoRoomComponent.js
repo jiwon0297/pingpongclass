@@ -169,7 +169,6 @@ class VideoRoomComponent extends Component {
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
   componentDidMount() {
-    console.log('-------------', this.props.code);
     // openViduLayoutOptions: 화면 레이아웃 설정
     const openViduLayoutOptions = {
       maxRatio: 9 / 16, // The narrowest ratio that will be used (default 2x3)

@@ -234,9 +234,9 @@ const StudentResult = ({
                   </div>
                 </div>
                 <div css={OtherThings}>
-                  <Link to={`/student`}>
+                  <a href="/student">
                     <button>대시보드로 돌아가기</button>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
