@@ -32,9 +32,6 @@ const StudentResult = ({
     attendenceTime: '',
   });
   const [otherModels, setOtherModels] = useState([]);
-  console.log(otherModels, '저거');
-
-  console.log('ㅇㅁㄻㅇㄻㅇㄹㅇㅁ', studentList.length);
 
   // 학생데이터 상점 받은 순으로 정렬
   otherModels.sort((a, b) => b.point - a.point);
