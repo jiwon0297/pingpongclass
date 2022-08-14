@@ -8,6 +8,7 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { saveMember } from '@src/store/member';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 
 interface StudentDataInterface {
   studentId: number;
@@ -94,49 +95,58 @@ const Myinfo = () => {
       <div
         css={css`
           width: 100%;
+          height: 50%;
         `}
       >
         <div className="infoContainer">
-          {memberStore.profileFullPath ===
-            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
-          memberStore.profileFullPath ===
-            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
-            <img
-              src={defaultProfile}
-              alt="기본프로필사진"
-              className="profile-logo"
-            />
-          ) : (
-            <img
-              src={memberStore.profileFullPath}
-              alt="지정된프로필사진"
-              className="profile-logo"
-            />
-          )}
-          <div className="nameContainer">
-            <h2>{memberStore.name} 학생</h2>
-            <p>
-              [{memberStore.nextLevel}] 까지 {memberStore.levelPoint} 퐁퐁
-              남았어요 !
-            </p>
+          <div className="info-left">
+            {memberStore.profileFullPath ===
+              'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+            memberStore.profileFullPath ===
+              'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
+              <img
+                src={defaultProfile}
+                alt="기본프로필사진"
+                className="profile-logo"
+              />
+            ) : (
+              <img
+                src={memberStore.profileFullPath}
+                alt="지정된프로필사진"
+                className="profile-logo"
+              />
+            )}
+            <div className="nameContainer">
+              <h2>{memberStore.name} 학생</h2>
+              <p style={{ fontSize: '0.95em' }}>
+                <b>{memberStore.nextLevel}</b> 레벨까지 {memberStore.levelPoint}
+                퐁퐁 남았어요!
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="levelContainer">
-          <div className="level-div">
+          <div className="level-div info-right">
             <img src={levelImg} alt="" className="level-img" />
             <div>
               <h2 className="level">{memberStore.currentLevel}</h2>
             </div>
           </div>
+        </div>
+        <div className="levelContainer">
           <div className="stickerContainer">
             <div className="soFarSticker" style={{ width: `${totalRate}%` }}>
-              <span>{memberStore.totalPoint}</span>
+              <div className="point-info">
+                <div>누적 {memberStore.totalPoint}</div>
+                <ArrowDropDownRoundedIcon />
+              </div>
             </div>
             <div
               className="currentSticker"
               style={{ width: `${currentRate}%` }}
             >
-              <span>{memberStore.point}</span>
+              <div className="point-info">
+                <div>현재 {memberStore.point}</div>
+                <ArrowDropDownRoundedIcon />
+              </div>
             </div>
           </div>
         </div>
@@ -186,15 +196,16 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
 
   .infoContainer {
     width: 100%;
-    height: 30%;
+    height: 50%;
+    margin-bottom: 5%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
   }
   .infoContainer img {
     display: inline-block;
-    height: 80px;
+    height: auto;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
@@ -202,8 +213,16 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
   .infoContainer img:hover {
     transform: scale(1.2);
   }
+
+  .info-left {
+    display: flex;
+  }
+
   .nameContainer {
     margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .rankBox {
     width: 100px;
@@ -224,7 +243,7 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
 
   .levelContainer {
     width: 100%;
-    height: 70px;
+    height: 17%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -237,6 +256,7 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     flex-direction: column;
     align-items: center;
     justify-content: start;
+    margin-top: 4%;
   }
 
   .ranking {
@@ -321,12 +341,19 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     animation: barIn 0.6s;
     text-align: right;
   }
-  span {
+  .point-info {
     padding-right: 10px;
     height: 30px;
-    width: 30px;
-    font-weight: 700;
-    color: #701267;
+    width: 49px;
+    font-weight: 600;
+    color: var(--text-dark);
+    position: absolute;
+    top: -35px;
+    right: -28px;
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   img {
@@ -340,6 +367,8 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     display: flex;
     flex-direction: row;
     margin-right: 13px;
+    align-items: flex-end;
+    height: 100%;
   }
 
   .level-img {
