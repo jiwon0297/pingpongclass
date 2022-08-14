@@ -3,6 +3,8 @@ package com.pingpong.backend.api.domain.response;
 import com.pingpong.backend.api.domain.ClassEntity;
 import com.pingpong.backend.api.domain.LogEntity;
 import lombok.Getter;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
