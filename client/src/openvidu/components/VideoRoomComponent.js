@@ -165,6 +165,10 @@ class VideoRoomComponent extends Component {
     // 결석학생 잡기
     this.whoAbsent = this.whoAbsent.bind(this);
     this.whoTeacherOrStudent = this.whoTeacherOrStudent.bind(this);
+    // 이모지
+    this.emoji = this.emoji.bind(this);
+    // 익명질문
+    this.question = this.question.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -1289,6 +1293,20 @@ class VideoRoomComponent extends Component {
     this.updateLayout();
   };
 
+  // name: 오석호
+  // date: 2022/08/15
+  // desc: 이모지창을 여닫는 함수
+  emoji = () => {
+    console.log('이모지 이벤트 핸들러');
+  };
+
+  // name: 오석호
+  // date: 2022/08/15
+  // desc: 익명질문창을 여닫는 함수
+  question = () => {
+    console.log('익명질문 이벤트 핸들러');
+  };
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -1526,6 +1544,8 @@ class VideoRoomComponent extends Component {
               startStickerEvent={this.startStickerEvent}
               videoLayout={this.state.videoLayout}
               toggleVideoLayout={this.toggleVideoLayout}
+              emoji={this.emoji}
+              question={this.question}
             />
           </div>
         </div>

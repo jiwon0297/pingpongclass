@@ -18,8 +18,7 @@ import Videocam from '@mui/icons-material/Videocam';
 import VideocamOff from '@mui/icons-material/VideocamOff';
 
 const SetupComponent = (props) => {
-  const { teacherName, classTitle, setTap, setDevices, stream, setStream } =
-    props;
+  const { teacherName, classTitle, setTap, setDevices } = props;
   const {
     videos,
     setVideos,
@@ -44,6 +43,7 @@ const SetupComponent = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const effectCnt = useRef(0); // 최초 마운트에 특정 useEffect가 동작하지 않게 하기 위한 트릭
   const previewFace = useRef();
+  const [stream, setStream] = useState(new MediaStream());
   const [camLoading, setCamLoading] = useState(false);
   useUpdateStream(previewFace, stream);
   useUpdateSpeaker(previewFace, selectedSpeaker);

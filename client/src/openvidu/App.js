@@ -56,6 +56,9 @@ const App = () => {
       setStudentInfo(studentSets);
     };
     getStudentList();
+    return () => {
+      console.log('오픈비두 종료');
+    };
   }, []);
 
   // 만약 state 없이 한번에 url에 접근하려고 했다면
