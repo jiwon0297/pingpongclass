@@ -77,8 +77,8 @@ const totalContainer = css`
   box-shadow: 2px 2px 10px -5px;
 
   .teacherNavButton {
-    width: 180px;
-    height: 60px;
+    width: 160px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -91,8 +91,8 @@ const totalContainer = css`
   }
 
   .clickButton {
-    width: 180px;
-    height: 60px;
+    width: 160px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
