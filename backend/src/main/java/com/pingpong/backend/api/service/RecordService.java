@@ -128,14 +128,10 @@ public class RecordService {
         List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(classEntity);
         int totalStuNum = classStudentEntityList.size();
         List<LogEntity> logEntities = logRepository.findByRegDateAndClassEntity(regDate, classEntity);
-        return new TeacherLogResponse(totalStuNum, logEntities);
+        return new TeacherLogResponse(totalStuNum, classEntity, logEntities);
     }
 
     public List<Date> findDate(int studentId){
         return logRepository.getDateList(studentId);
     }
-
-
-
-
 }
