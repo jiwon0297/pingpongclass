@@ -174,6 +174,9 @@ class VideoRoomComponent extends Component {
     this.emoji = this.emoji.bind(this);
     // 익명질문
     this.question = this.question.bind(this);
+    // 발표 횟수 체크
+    this.upPresentationCnt = this.upPresentationCnt.bind(this);
+    this.downPresentationCnt = this.downPresentationCnt.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -1158,9 +1161,9 @@ class VideoRoomComponent extends Component {
 
   // name: 한준수
   // date: 2022/08/13
-  // desc: uesItem: 아이템을 사용하는 함수
+  // desc: useItem: 아이템을 사용하는 함수
   // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저가 소지한 아이템을 사용하고, 성공 여부를 boolean값으로 반환하는 함수.
-  uesItem = (itemId) => {
+  useItem = (itemId) => {
     InterceptedAxios.delete(`/items/${this.props.userId}/${itemId}`)
       .then(() => {
         return true;
@@ -1276,14 +1279,9 @@ class VideoRoomComponent extends Component {
 
   toggleQuizStudent = (answer) => {
     if (answer) {
-      console.log(answer);
       this.sendSignalUserChanged({ quizAnswerCreated: answer });
-      this.setState({
-        ...this.state,
-        quiz: { ...this.state.quiz, myAnswer: answer },
-        quizDisplayStudent: !this.state.quizDisplayStudent,
-      });
     }
+    this.setState({ quizDisplayStudent: !this.state.quizDisplayStudent });
   };
 
   popUpQuiz = (newQuiz) => {
@@ -1374,20 +1372,20 @@ class VideoRoomComponent extends Component {
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
-            header="퀴즈"
+            header="Quiz Modal"
             quiz={this.state.quiz}
           />
           <QuizModalStudent
             display={this.state.quizDisplayStudent}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="퀴즈"
+            header="Quiz Modal"
             quiz={this.state.quiz}
           />
           <ShieldModalLoading
             display={this.state.shieldLoadingDisplay}
             toggleShieldLoading={this.toggleShieldLoading}
             timeOut={2.5}
-            header="방어권 구경"
+            header="발표 프리패스 대기중"
           />
           <ShieldModal
             display={this.state.shieldDisplay}
@@ -1395,10 +1393,14 @@ class VideoRoomComponent extends Component {
             toggleShield={this.toggleShield}
             alertToChat={this.alertToChat}
             pickRandomStudent={this.pickRandomStudent}
+            checkUserHasItem={this.checkUserHasItem}
+            useItem={this.useItem}
             tempFrameChange={this.tempFrameChange}
             subscribers={subscribers}
             timeOut={3}
-            header="방어권 사용"
+            header="발표 프리패스 사용"
+            upPresentationCnt={upPresentationCnt}
+            downPresentationCnt={upPresentationCnt}
           />
 
           {/* 다이얼로그 */}

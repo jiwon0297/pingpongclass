@@ -174,6 +174,14 @@ class UserModel {
   downPoint() {
     if (this.point > 0) --this.point;
   }
+
+  upPresentationCnt() {
+    ++this.presentationCnt;
+  }
+
+  downPresentationCnt() {
+    --this.presentationCnt;
+  }
 }
 
 export default UserModel;
