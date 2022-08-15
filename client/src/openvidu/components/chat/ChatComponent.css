@@ -8,7 +8,7 @@
 #chatToolbar {
   position: relative;
   height: 30px;
-  background-color: #3b4d6b;
+  background-color: #3e66aa;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 14px;
@@ -31,7 +31,7 @@
 }
 
 #chatComponent {
-  background-color: #373737;
+  background-color: #cccccc31;
   position: absolute;
   z-index: 99999;
   top: 0;
@@ -229,14 +229,14 @@ span.triangle {
   bottom: 1rem;
   width: 94%;
   height: 60px;
-  background-color: #696969;
+  background-color: #2a364bba;
   text-align: center;
   padding: 10px 0px;
   border-radius: 1rem;
 }
 
 #messageInput textarea {
-  background-color: #696969;
+  background-color: #2a364b00;
   width: 80%;
   height: 100%;
   border: none;
