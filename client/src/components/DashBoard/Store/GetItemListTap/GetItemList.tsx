@@ -59,6 +59,7 @@ const GetItemList = (props: GetItemListProps) => {
         } else {
           color = 1;
         }
+        console.log(rarity + ',' + color);
 
         InterceptedAxios.delete(`/items/${memberStore.userId}/${e.itemId}`)
           .then(() => {

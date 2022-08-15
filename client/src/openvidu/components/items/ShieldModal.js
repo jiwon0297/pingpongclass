@@ -31,7 +31,7 @@ class ShieldModal extends Component {
     console.log('방어권 사용시');
     // itemId:3 발표 프리패스
     console.log(this.props.checkUserHasItem(3));
-    if (this.props.checkUserHasItem(3)) {
+    if (this.props.checkUserHasItem(3) === true) {
       this.props.alertToChat(
         this.props.user.nickname + '님이 발표 프리패스를 사용했습니다!',
       );
@@ -81,8 +81,14 @@ class ShieldModal extends Component {
 
   render() {
     return (
-      <div className={this.state.display ? 'openModal modal' : 'modal'}>
-        {this.state.display ? (
+      <div
+        className={
+          this.state.display && this.props.checkUserHasItem(3) === true
+            ? 'openModal modal'
+            : 'modal'
+        }
+      >
+        {this.state.display && this.props.checkUserHasItem(3) === true ? (
           <section>
             <header>{this.props.header}</header>
             <div>

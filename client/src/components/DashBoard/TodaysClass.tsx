@@ -105,6 +105,7 @@ const totalContainer = css`
   justify-content: center;
   border-radius: 20px;
   box-sizing: border-box;
+  --swiper-theme-color: #fdb878;
 
   .swiper {
     width: 100%;
@@ -140,10 +141,6 @@ const totalContainer = css`
   .swiper-button-next,
   .swiper-button-prev {
     color: #6e6e6e;
-  }
-
-  .swiper-pagination-progressbar-fill {
-    background-color: #d65745;
   }
 `;
 

@@ -33,6 +33,17 @@ const HeatMap = () => {
     loadHeatmapList();
   }, []);
 
+  const color = [
+    'pingpong',
+    'platinum',
+    'dia',
+    'purple',
+    'blue',
+    'yellow',
+    'green',
+    'black',
+  ];
+
   const today = new Date();
 
   function shiftDate(date, numDays) {
@@ -55,7 +66,7 @@ const HeatMap = () => {
     return Array.from({ length: count }, (_, i) => i);
   }
 
-  const randomValues = getRange(240).map((index) => {
+  const randomValues = getRange(290).map((index) => {
     return {
       date: shiftDate(today, -index),
       count: findCount(shiftDate(today, -index)),
@@ -66,14 +77,16 @@ const HeatMap = () => {
     <div css={totalContainer}>
       <div className="container">
         <CalendarHeatmap
-          startDate={shiftDate(today, -240)}
+          startDate={shiftDate(today, -290)}
           endDate={today}
           values={randomValues}
           classForValue={(value) => {
             if (!value) {
               return 'color-empty';
             }
-            return `color-github-${value.count}`;
+            return `color-${color[memberStore.jandiColor - 1]}-${
+              value.count > 4 ? 4 : value.count
+            }`;
           }}
           tooltipDataAttrs={(value: any) => {
             return {
@@ -99,7 +112,7 @@ const totalContainer = css`
   width: 100%;
 
   .container {
-    width: 80%;
+    width: 100%;
     border-radius: 20px;
     display: flex;
     flex-direction: column;

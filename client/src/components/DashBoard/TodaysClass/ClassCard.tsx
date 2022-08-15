@@ -14,11 +14,13 @@ const ClassCard = ({ clsList, classUrl }: any) => {
       <div css={TotalContainer(classUrl)}>
         <img src={img} className="classImg" alt="수업" />
         <hr />
-        <h2>{clsList.classTitle}</h2>
-        <p>{clsList.classDesc}</p>
-        <p>
-          [{clsList.timetableId}교시] {clsList.teacherName} 선생님
-        </p>
+        <div className="class-info">
+          <h2>{clsList.classTitle}</h2>
+          <p>{clsList.classDesc}</p>
+          <p>
+            [{clsList.timetableId}교시] {clsList.teacherName} 선생님
+          </p>
+        </div>
       </div>
     );
   } else {
@@ -71,6 +73,9 @@ const TotalContainer = (classUrl: string) => css`
     background: white;
     border-radius: 10px;
     align-items: center;
+  }
+  .class-info {
+    margin-left: 16px;
   }
 `;
 

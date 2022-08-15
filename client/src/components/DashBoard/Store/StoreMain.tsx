@@ -47,14 +47,14 @@ const StoreMain = () => {
   const dispatch = useAppDispatch();
 
   const color = [
-    'black',
+    'pingpong',
+    'platinum',
+    'dia',
+    'purple',
+    'blue',
     'yellow',
     'green',
-    'blue',
-    'purple',
-    'dia',
-    'platinum',
-    'pingpong',
+    'black',
   ];
 
   const onClickVideoOn = () => {
