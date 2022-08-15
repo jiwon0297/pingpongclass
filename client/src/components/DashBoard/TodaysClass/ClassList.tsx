@@ -245,8 +245,8 @@ const totalContainer = css`
     color: #6e6e6e;
   }
 
-  .swiper-pagination-progressbar-fill {
-    background-color: #029371;
+  .pagination-progressbar-fill {
+    background-color: #fdb878;
   }
 
   .linkButton {
