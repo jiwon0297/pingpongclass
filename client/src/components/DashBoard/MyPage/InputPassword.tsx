@@ -17,7 +17,7 @@ const InputPassword = () => {
 
   const onClickInputPWD = () => {
     if (password == null) {
-      alert('비밀번호를 입력해주세요.');
+      alert('비밀번호 입력');
     } else {
       InterceptedAxios.post('/users/myinfo', {
         password: password,
@@ -66,7 +66,7 @@ const InputPassword = () => {
             `}
           />
 
-          <button className="button yellow" onClick={onClickInputPWD}>
+          <button className="button-sm yellow" onClick={onClickInputPWD}>
             확인
           </button>
         </div>

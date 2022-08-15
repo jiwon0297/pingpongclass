@@ -253,7 +253,7 @@ const EditClassList = () => {
             label="과목 선택"
             value={subjectCode}
             onChange={(e) => ChangeCode(e.target.value)}
-            helperText="과목을 선택해주세요"
+            // helperText="과목을 선택해주세요"
             size="small"
             fullWidth
           >
@@ -269,7 +269,7 @@ const EditClassList = () => {
             label="요일 선택"
             value={classDay}
             onChange={(e) => ChangeDay(e.target.value)}
-            helperText="요일을 선택해주세요"
+            // helperText="요일을 선택해주세요"
             size="small"
             fullWidth
             style={{ paddingLeft: '20px', paddingRight: '20px' }}
@@ -286,7 +286,7 @@ const EditClassList = () => {
             label="교시 선택"
             value={timetableId}
             onChange={(e) => ChangeTimetableId(e.target.value)}
-            helperText="교시를 선택해주세요"
+            // helperText="교시를 선택해주세요"
             size="small"
             fullWidth
           >
