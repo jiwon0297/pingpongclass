@@ -1381,7 +1381,7 @@ class VideoRoomComponent extends Component {
             display={this.state.shieldLoadingDisplay}
             toggleShieldLoading={this.toggleShieldLoading}
             timeOut={2.5}
-            header="방어권 구경"
+            header="발표 프리패스 대기중"
           />
           <ShieldModal
             display={this.state.shieldDisplay}
@@ -1394,7 +1394,7 @@ class VideoRoomComponent extends Component {
             tempFrameChange={this.tempFrameChange}
             subscribers={subscribers}
             timeOut={3}
-            header="방어권 사용"
+            header="발표 프리패스 사용"
           />
 
           {/* 다이얼로그 */}
