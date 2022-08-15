@@ -35,12 +35,11 @@ const Notice = (props: {
       </button>
       <div className={visible ? 'row detailRow' : 'row detailRow hide'}>
         <div className="detailContent">{article.content}</div>
-        <div className="detailWriter">- {article.writer}</div>
         <div className="detailFooter">
           <button className="edit-btn blue">
             <Link to={`/teacher/noticeEdit/${article.noticeId}`}>수정</Link>
           </button>
-          <button className="del-btn pink" onClick={deleteNotice}>
+          <button className="del-btn gray" onClick={deleteNotice}>
             <Link to="/teacher/notice">삭제</Link>
           </button>
         </div>

@@ -19,6 +19,8 @@ import {
 } from '@mui/material';
 import { Rtt } from '@mui/icons-material';
 
+/* 관리자 공지사항 */
+
 export interface NoticeProps {
   noticeId: number;
   writer: string;
@@ -170,36 +172,40 @@ const NoticeBoard = () => {
       <div className="upperModalArea">
         <div className="pageTitle">공지사항 관리</div>
         <hr />
+
         <form onSubmit={search} className="search-div">
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-simple-select-label">수업명</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-select-small"
-              label="수업명"
-              defaultValue={''}
-              onChange={handleSelect}
-              MenuProps={MenuProps}
-            >
-              {classes.map((s) => (
-                <MenuItem key={s.classId} value={s.classId}>
-                  {s.classTitle}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            type="search"
-            id="outlined-basic"
-            variant="outlined"
-            value={keyword || ''}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          <button type="submit" className="button-sm gray">
-            검색
-          </button>
-          <button type="button" className="button-sm blue">
-            <Link to="/admin/noticePost">글 쓰기</Link>
+          <div style={{ width: '10%' }}></div>
+          <div className="search-form-div">
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <InputLabel id="demo-simple-select-label">수업명</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-select-small"
+                label="수업명"
+                defaultValue={''}
+                onChange={handleSelect}
+                MenuProps={MenuProps}
+              >
+                {classes.map((s) => (
+                  <MenuItem key={s.classId} value={s.classId}>
+                    {s.classTitle}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              type="search"
+              id="outlined-basic"
+              variant="outlined"
+              value={keyword || ''}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button type="submit" className="button-xsm blue">
+              검색
+            </button>
+          </div>
+          <button type="button" className="button-xsm pink">
+            <Link to="/admin/noticePost">글쓰기</Link>
           </button>
         </form>
       </div>

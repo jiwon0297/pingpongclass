@@ -185,43 +185,42 @@ const NoticeBoard = () => {
         <div className="pageTitle">공지사항</div>
         <hr />
         <form onSubmit={search} className="search-div">
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-simple-select-label">수업명</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-select-small"
-              label="수업명"
-              defaultValue={''}
-              onChange={handleSelect}
-              MenuProps={MenuProps}
-            >
-              {classes.map((s) => (
-                <MenuItem key={s.classId} value={s.classId}>
-                  {s.classTitle}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            type="search"
-            id="outlined-basic"
-            variant="outlined"
-            value={keyword || ''}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          {isTeacher ? (
-            <>
-              <button type="submit" className="button-sm gray">
-                검색
-              </button>
-              <button type="button" className="button-sm pink">
-                <Link to="/teacher/noticePost">글 쓰기</Link>
-              </button>
-            </>
-          ) : (
-            <button type="submit" className="button-sm gray">
+          <div style={{ width: '10%' }}></div>
+          <div className="search-form-div">
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <InputLabel id="demo-simple-select-label">수업명</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-select-small"
+                label="수업명"
+                defaultValue={''}
+                onChange={handleSelect}
+                MenuProps={MenuProps}
+              >
+                {classes.map((s) => (
+                  <MenuItem key={s.classId} value={s.classId}>
+                    {s.classTitle}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              type="search"
+              id="outlined-basic"
+              variant="outlined"
+              value={keyword || ''}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button type="submit" className="button-xsm blue">
               검색
             </button>
+          </div>
+          {isTeacher && (
+            <div>
+              <button type="button" className="button-xsm pink">
+                <Link to="/teacher/noticePost">글쓰기</Link>
+              </button>
+            </div>
           )}
         </form>
       </div>

@@ -229,7 +229,7 @@ export default function TransferList(props: { ChangeStudentList: Function }) {
           fullWidth
         />
         <button
-          className="listButton"
+          className="listButton blue"
           onClick={() => {
             SearchStudentList();
           }}
@@ -272,6 +272,7 @@ const totalContainer = css`
   width: 100%;
   .searchList {
     border-radius: 10px;
+    height: 1.1px;
     border: 1px solid lightgray;
     height: 300px;
   }

@@ -256,7 +256,11 @@ const NewClassList = () => {
 
   return (
     <div css={totalContainer}>
-      {classId ? <h1>수업 수정</h1> : <h1>수업 생성</h1>}
+      {classId ? (
+        <div className="pageTitle">수업 수정</div>
+      ) : (
+        <div className="pageTitle">수업 생성</div>
+      )}
       <hr />
       <div className="inputContainer">
         <TextField
@@ -271,10 +275,10 @@ const NewClassList = () => {
           <TextField
             id="outlined-select-currency"
             select
-            label="과목 선택"
+            label="과목택"
             value={subjectCode}
             onChange={(e) => ChangeCode(e.target.value)}
-            helperText="과목을 선택해주세요"
+            // helperText="과목을 선택해주세요"
             size="small"
             fullWidth
           >
@@ -290,7 +294,7 @@ const NewClassList = () => {
             label="요일 선택"
             value={classDay}
             onChange={(e) => ChangeDay(e.target.value)}
-            helperText="요일을 선택해주세요"
+            // helperText="요일을 선택해주세요"
             size="small"
             fullWidth
             style={{ paddingLeft: '20px', paddingRight: '20px' }}
@@ -307,7 +311,7 @@ const NewClassList = () => {
             label="교시 선택"
             value={timetableId}
             onChange={(e) => ChangeTimetableId(e.target.value)}
-            helperText="교시를 선택해주세요"
+            // helperText="교시를 선택해주세요"
             size="small"
             fullWidth
           >
@@ -334,33 +338,44 @@ const NewClassList = () => {
         ) : (
           <StudentListTransfer ChangeStudentList={ChangeStudentList} />
         )}
-        <div className="buttonContainer">
+        <div className="button-All">
           {classId ? (
-            <button className="listButton blue" onClick={() => editClass()}>
-              수정
-            </button>
-          ) : (
-            <button className="listButton blue" onClick={() => createClass()}>
-              생성
-            </button>
-          )}
-          <Link to="/admin/classes/">
-            <button className="listButton gray">취소</button>
-          </Link>
-        </div>
-        {classId ? (
-          <div className="deleteContainer">
-            <button
-              className="listButton pink"
-              onClick={() => deleteManagedClass()}
-            >
-              삭제
-            </button>
-            <button className="listButton pink" onClick={() => disabledClass()}>
-              비활성화
-            </button>
+            <div className="buttonContainer">
+              <button
+                className="listButton blue"
+                onClick={() => disabledClass()}
+              >
+                종강
+              </button>
+              <button
+                className="listButton"
+                style={{ backgroundColor: 'var(--pink)', marginLeft: '16px' }}
+                onClick={() => deleteManagedClass()}
+              >
+                삭제
+              </button>
+            </div>
+          ) : null}
+
+          <div className="buttonContainer">
+            {classId ? (
+              <button
+                className="listButton "
+                style={{ backgroundColor: 'var(--pink)' }}
+                onClick={() => editClass()}
+              >
+                수정
+              </button>
+            ) : (
+              <button className="listButton blue" onClick={() => createClass()}>
+                생성
+              </button>
+            )}
+            <Link to="/admin/classes/">
+              <button className="listButton gray">취소</button>
+            </Link>
           </div>
-        ) : null}
+        </div>
       </div>
     </div>
   );
@@ -376,9 +391,13 @@ const totalContainer = css`
   border-radius: 20px;
   box-sizing: border-box;
 
+  .pageTitle {
+    width: 100%;
+  }
   .inputContainer {
     width: 80%;
     display: flex;
+    margin-top: 20px;
     margin-bottom: 50px;
     flex-direction: column;
     align-items: center;
@@ -421,6 +440,16 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  button {
+    font-family: 'NanumSquareRound';
+  }
+
+  .button-All {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .buttonContainer {
