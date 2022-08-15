@@ -571,13 +571,18 @@ class VideoRoomComponent extends Component {
   // 발표 횟수 증가 함수
   upPresentationCnt() {
     this.state.localUser.upPresentationCnt();
-    this.sendSignalUserChanged({ point: localUser.getPresentationCnt() });
+    console.log('잘 작동함: ', this.state.localUser.presentationCnt);
+    this.sendSignalUserChanged({
+      presentationCnt: localUser.getPresentationCnt(),
+    });
     this.setState({ localUser: localUser });
   }
 
   downPresentationCnt() {
     this.state.localUser.downPresentationCnt();
-    this.sendSignalUserChanged({ point: localUser.getPresentationCnt() });
+    this.sendSignalUserChanged({
+      presentationCnt: localUser.getPresentationCnt(),
+    });
     this.setState({ localUser: localUser });
   }
 
@@ -1403,6 +1408,8 @@ class VideoRoomComponent extends Component {
             header="발표 프리패스 사용"
             upPresentationCnt={upPresentationCnt}
             downPresentationCnt={upPresentationCnt}
+            upPresentationCnt={this.upPresentationCnt}
+            downPresentationCnt={this.downPresentationCnt}
           />
 
           {/* 다이얼로그 */}

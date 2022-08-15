@@ -14,7 +14,7 @@ class UserModel {
   frameColor; // 테두리 색깔
   smile; // 현재 웃는 중인지 확인
   outAngle; // 수업 참여 확인
-  attendenceTime; // 접속 시간
+  attendanceTime; // 접속 시간
   profile; // 프로필 이미지 정보
   uid; // 유저 아이디
   levelPng; // 레벨에 맞는 사진 경로
@@ -38,7 +38,7 @@ class UserModel {
     }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
     this.smile = false;
     this.outAngle = false;
-    this.attendenceTime = '00:00:00';
+    this.attendanceTime = '00:00:00';
     this.profile = '';
     this.levelPng = '';
     this.presentationCnt = 0;
@@ -162,8 +162,8 @@ class UserModel {
     this.uid = uid;
   }
 
-  setAttendenceTime(attendenceTime) {
-    this.attendenceTime = attendenceTime;
+  setAttendanceTime(attendanceTime) {
+    this.attendanceTime = attendanceTime;
   }
 
   setLevelPng(levelPng) {
