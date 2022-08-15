@@ -3,9 +3,10 @@ import SetupComponent from './components/SetupComponent';
 import VideoRoomComponent from './components/VideoRoomComponent';
 import ResultComponent from './components/ResultComponent';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppSelector } from '@store/hooks';
 import whoru from '@utils/whoru';
-import InterceptedAxios from '@src/utils/iAxios';
+import InterceptedAxios from '@utils/iAxios';
+import levelFunction from '@utils/levelFunction';
 
 const App = () => {
   const [tap, setTap] = useState('setup');
@@ -29,6 +30,8 @@ const App = () => {
   // 학생리스트
   const [studentList, setStudentList] = useState([]);
   const [studentInfo, setStudentInfo] = useState({});
+  // 내 레벨 확인
+  const [levelPng, setLevelPng] = useState('/levels/rainbow.png');
 
   // 라우팅용
   const navigate = useNavigate();
@@ -38,9 +41,18 @@ const App = () => {
   const { state } = useLocation();
 
   const memberStore = useAppSelector((state) => state.member);
+  console.log(`items/sticker/${memberStore.userId}`);
   const whoami = whoru(memberStore.userId);
 
   useEffect(() => {
+    const getMyLevel = async () => {
+      const myPoint = await InterceptedAxios.get(
+        `/items/sticker/${memberStore.userId}`,
+      );
+      const pngUrl = levelFunction(myPoint);
+      setLevelPng(pngUrl);
+      console.log(pngUrl);
+    };
     const getStudentList = async () => {
       const classStudents = await InterceptedAxios.get(
         `/classes/student/${state.classId}`,
@@ -55,6 +67,7 @@ const App = () => {
       setStudentList(nameList);
       setStudentInfo(studentSets);
     };
+    if (whoami !== 'teacher') getMyLevel();
     getStudentList();
     return () => {
       console.log('오픈비두 종료');
@@ -116,6 +129,7 @@ const App = () => {
           classNum={memberStore.classNum}
           studentNum={memberStore.studentNum}
           studentList={studentList}
+          levelPng={levelPng}
         />
       )}
       {tap === 'result' && (
