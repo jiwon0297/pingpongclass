@@ -135,86 +135,96 @@ const EditNotice = () => {
         <div className="pageTitle">공지사항 수정</div>
       )}
       <hr />
-      <br />
-      <div className="firstContainer">
-        <div>
-          <TextField
-            id="outlined-select-currency"
-            label="수업 선택"
-            select
-            onChange={(e) => {
-              codeChanged(e);
-            }}
-            value={tmpCode}
-            size="small"
-            helperText="수업명을 선택해주세요."
-            variant="outlined"
-            fullWidth
-          >
-            {classes.map((s) => (
-              <MenuItem key={s.classId} value={s.classId}>
-                {s.classTitle}
-              </MenuItem>
-            ))}
-          </TextField>
+      <div className="notice-content">
+        <div className="firstContainer">
+          <div style={{ width: '30%', display: 'flex', alignItems: 'center' }}>
+            <div
+              style={{ width: '100px', fontSize: '1.1em', fontWeight: '600' }}
+            >
+              수업명
+            </div>
+            <TextField
+              id="outlined-select-currency"
+              // label="수업 선택"
+              select
+              onChange={(e) => {
+                codeChanged(e);
+              }}
+              value={tmpCode}
+              size="small"
+              variant="outlined"
+              fullWidth
+              style={{ backgroundColor: 'whitesmoke' }}
+            >
+              {classes.map((s) => (
+                <MenuItem key={s.classId} value={s.classId}>
+                  {s.classTitle}
+                </MenuItem>
+              ))}
+            </TextField>
+          </div>
+          <div style={{ width: '70%', display: 'flex', alignItems: 'center' }}>
+            <div
+              style={{ width: '50px', fontSize: '1.1em', fontWeight: '600' }}
+            >
+              제목
+            </div>
+            <TextField
+              id="outlined-basic"
+              // label="제목"
+              value={tmpTitle}
+              onChange={(e) => {
+                titleChanged(e);
+              }}
+              fullWidth
+              size="small"
+              variant="outlined"
+              style={{ backgroundColor: 'whitesmoke' }}
+            />
+          </div>
         </div>
-        <div>
+
+        <div style={{ marginTop: '15px', height: '60%' }}>
           <TextField
             id="outlined-basic"
-            label="제목"
-            value={tmpTitle}
-            onChange={(e) => {
-              titleChanged(e);
-            }}
-            fullWidth
-            size="small"
-            helperText="제목을 입력해주세요."
+            label="내용"
+            rows={11}
+            multiline
             variant="outlined"
-            style={{ width: '750px' }}
+            fullWidth
+            value={tmpContent}
+            onChange={(e) => {
+              contentChanged(e);
+            }}
+            style={{ backgroundColor: 'whitesmoke' }}
           />
         </div>
-      </div>
-      <br />
-      <div>
-        <TextField
-          id="outlined-basic"
-          label="내용"
-          helperText="내용을 입력해주세요."
-          rows={19}
-          multiline
-          variant="outlined"
-          fullWidth
-          value={tmpContent}
-          onChange={(e) => {
-            contentChanged(e);
-          }}
-        />
-      </div>
-      <div className="btn-box">
-        {/* <Link to="/admin/notice"> */}
-        {newPost ? (
-          <button
-            className="button-sm blue"
-            onClick={() => {
-              submitPost();
-            }}
-          >
-            작성
-          </button>
-        ) : (
-          <button
-            className="button-sm blue"
-            onClick={() => {
-              submitPost();
-            }}
-          >
-            수정
-          </button>
-        )}
-        {/* </Link> */}
-        <Link to="/admin/notice">
-          <button className="button-sm gray">취소</button>
-        </Link>
+        <div className="btn-box">
+          {/* <Link to="/admin/notice"> */}
+          {newPost ? (
+            <button
+              className="button-xsm blue"
+              onClick={() => {
+                submitPost();
+              }}
+            >
+              작성
+            </button>
+          ) : (
+            <button
+              className="button-xsm pink"
+              onClick={() => {
+                submitPost();
+              }}
+            >
+              수정
+            </button>
+          )}
+          {/* </Link> */}
+          <Link to="/teacher/notice">
+            <button className="button-xsm gray">취소</button>
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -227,11 +237,16 @@ const totalContainer = css`
   hr {
     width: 100%;
   }
-
+  .notice-content {
+    padding: 27px 34px;
+    height: 85%;
+  }
   .firstContainer {
+    height: 20%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 3%;
   }
 
   .btn-box {
@@ -239,6 +254,8 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-top: 20px;
+    height: 20%;
   }
 
   .gray {
@@ -246,8 +263,7 @@ const totalContainer = css`
   }
 
   button {
-    border-radius: 18px;
+    border-radius: 13px;
   }
 `;
-
 export default EditNotice;

@@ -53,7 +53,7 @@ const Student = (props: {
       <div className="col col2">{article.email}</div>
       <div className="col col1">
         <button type="button" className="edit-btn" onClick={onClickOpenModal}>
-          <EditIcon />
+          <EditIcon style={{ fontSize: '1.1rem' }} />
         </button>
       </div>
     </div>

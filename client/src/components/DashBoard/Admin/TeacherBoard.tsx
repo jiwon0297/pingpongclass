@@ -10,6 +10,13 @@ import { saveMember } from '@src/store/member';
 import Pagination from '@mui/material/Pagination';
 import EditTeacher from './EditTeacher';
 import AddTeacherBulk from './AddTeacherBulk';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
 
 export interface TeacherProps {
   teacherId?: number;
@@ -164,46 +171,39 @@ const TeacherBoard = () => {
         )}
         <div className="upperModalArea">
           <div className="pageTitle">선생님 관리</div>
-          <form onSubmit={search}>
-            {/* 카테고리
-            <input
-              type="number"
-              value={classId || ''}
-              onChange={(e) => setClassId(+e.target.value)}
-            /> */}
-            <div
-              style={{
-                marginLeft: '10px',
-              }}
-            >
-              이름
-              <input
-                type="search"
+          <hr />
+          <form onSubmit={search} className="form-div">
+            <div className="input-div">
+              <span className="input-name"> 이름</span>
+              <TextField
+                id="outlined-basic"
+                variant="outlined"
                 value={keyword || ''}
                 onChange={(e) => setKeyword(e.target.value)}
+                style={{ width: '50%' }}
               />
-              <button type="submit" className="sub-btn">
+              <button type="submit" className="button-xsm pink">
                 검색
               </button>
             </div>
-            <div style={{ marginRight: '10px' }}>
+            <div className="button-div">
               <button
                 type="button"
-                className="add-btn stu-bottom-btn"
+                className="button-xsm blue"
                 onClick={onClickOpenModal}
               >
                 추가
               </button>
               <button
                 type="button"
-                className="add-btn stu-bottom-btn"
+                className="button-xsm blue"
                 onClick={onClickOpenBulkModal}
               >
                 일괄 추가
               </button>
               <button
                 type="button"
-                className="del-btn stu-bottom-btn"
+                className="button-xsm gray"
                 onClick={deleteSelected}
               >
                 선택 삭제
@@ -250,24 +250,20 @@ const totalContainer = () => css`
   width: -webkit-fill-available;
   height: min-content;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   animation: 0.5s ease-in-out loadEffect1;
-
-  .upperModalArea {
-    background-color: white;
-    display: flex;
-    z-index: 2;
-    /* width: 95%; */
-    align-items: center;
-    justify-content: space-evenly;
-    align-content: center;
-    width: -webkit-fill-available;
-  }
 
   button:hover {
     cursor: pointer;
   }
 
+  .button-xsm {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+  }
   form {
     display: flex;
     flex-direction: row;
@@ -287,8 +283,32 @@ const totalContainer = () => css`
     }
   }
 
+  .input-div {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .input-name {
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+  }
+
   .pageTitle {
-    border-bottom: 0.15rem solid black;
+    width: 100%;
+  }
+
+  .form-div {
+    margin: 47px 10px 22px;
+    display: flex;
+    align-items: center;
+  }
+
+  .button-div {
+    margin-right: 10px;
+    display: flex;
+    gap: 10px;
   }
 
   /* 스크롤 바 숨기기 */
@@ -297,19 +317,20 @@ const totalContainer = () => css`
   }
   .tableArea {
     /* width: 40rem; */
+    height: 100%;
     display: grid;
     grid-template-rows: 3fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
   .teacher-box {
     background-color: white;
+    height: 80%;
   }
 
   input {
     margin: 0 1em;
     border-radius: 0.5rem;
     padding: 0.5rem;
-    border: 1px solid gray;
   }
 
   a,
@@ -317,20 +338,6 @@ const totalContainer = () => css`
     color: white;
     background-color: transparent;
     text-decoration: none;
-  }
-
-  .add-btn {
-    background-color: var(--blue);
-  }
-  .del-btn {
-    background-color: var(--gray);
-  }
-  .stu-bottom-btn {
-    margin-left: 4px;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0.5rem;
-    color: white;
   }
 `;
 
@@ -340,7 +347,6 @@ const btnBox = () => css`
   justify-content: flex-end;
   align-content: center;
   align-items: center;
-  position: absolute;
   bottom: 10%;
   .Pagination {
     /* margin-right: 11.5rem; */
