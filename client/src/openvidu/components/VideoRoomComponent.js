@@ -1199,7 +1199,6 @@ class VideoRoomComponent extends Component {
     let yEnd = this.state.totalHeight - 80 - imgSize * 2;
     const newSticker = {
       key: current,
-      point: 5,
       top: this.between(yStart, yEnd),
       left: this.between(xStart, xEnd),
     };
@@ -1408,7 +1407,6 @@ class VideoRoomComponent extends Component {
             <Sticker
               key={stickerKey.key}
               stikerKey={stickerKey.key}
-              point={stickerKey.point}
               top={stickerKey.top}
               left={stickerKey.left}
               removeSticker={this.removeSticker}
