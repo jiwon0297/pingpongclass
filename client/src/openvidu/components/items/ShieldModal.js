@@ -27,11 +27,13 @@ class ShieldModal extends Component {
   // desc: 지목받은 학생이 방어권을 사용하는 함수
   // todo: 호출 시 현재 수업에 참여 중인 자신을 제외한 학생 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
   useShield = () => {
-    if (this.props.uesItem(3)) {
+    console.log('방어권 사용시');
+    if (this.props.checkUserHasItem(3)) {
       this.props.alertToChat(
         this.props.user.nickname + '님이 발표 프리패스를 사용했습니다!',
       );
       this.props.pickRandomStudent(this.props.subscribers, true);
+      this.props.uesItem(3);
       this.close();
     } else {
       alert('보유한 발표 프리패스가 없습니다!');

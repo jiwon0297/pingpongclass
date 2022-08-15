@@ -1142,11 +1142,13 @@ class VideoRoomComponent extends Component {
   // desc: uesItem: 아이템을 사용하는 함수
   // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저가 소지한 아이템을 사용하고, 성공 여부를 boolean값으로 반환하는 함수.
   uesItem = (itemId) => {
-    InterceptedAxios.delete(`/items/${this.props.userId}/${itemId}`).then(
-      () => {
+    InterceptedAxios.delete(`/items/${this.props.userId}/${itemId}`)
+      .then(() => {
         return true;
-      },
-    );
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     return false;
   };
 
