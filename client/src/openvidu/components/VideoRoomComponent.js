@@ -281,7 +281,7 @@ class VideoRoomComponent extends Component {
       String(time.getMinutes()).padStart(2, '0') +
       ':' +
       String(time.getSeconds()).padStart(2, '0');
-    localUser.setAttendenceTime(attTime);
+    localUser.setAttendanceTime(attTime);
 
     // 레벨 저장
     localUser.setLevelPng(this.props.levelPng);
@@ -297,7 +297,7 @@ class VideoRoomComponent extends Component {
     this.state.session
       .connect(token, {
         clientData: this.state.myUserName,
-        attTime: localUser.attendenceTime,
+        attTime: localUser.attendanceTime,
         randPick: this.state.randPick,
         uid: this.props.userId,
         levelPng: this.props.levelPng,
@@ -444,6 +444,7 @@ class VideoRoomComponent extends Component {
         this.whoTeacherOrStudent();
       },
     );
+    console.log('하ㅔ앟멯ㅇㅎ', subscribers);
   }
 
   // 학생이 자기혼자 나간경우
@@ -609,6 +610,7 @@ class VideoRoomComponent extends Component {
     const userStream = remoteUsers.filter(
       (user) => user.getStreamManager().stream === stream,
     )[0];
+    this.props.setTeacherData(userStream);
     let index = remoteUsers.indexOf(userStream, 0);
     if (index > -1) {
       remoteUsers.splice(index, 1);
@@ -641,7 +643,7 @@ class VideoRoomComponent extends Component {
       newUser.setAudioActive(event.stream.audioActive);
       newUser.setVideoActive(event.stream.videoActive);
 
-      newUser.setAttendenceTime(
+      newUser.setAttendanceTime(
         JSON.parse(event.stream.connection.data).attTime,
       );
       newUser.setLevelPng(JSON.parse(event.stream.connection.data).levelPng);
@@ -705,6 +707,7 @@ class VideoRoomComponent extends Component {
                 this.toggleShield();
               } else {
                 // this.tempFrameChange({ type: "color", value: "Red" });
+                this.upPresentationCnt();
                 this.tempFrameChange({
                   type: 'style',
                   value: {
@@ -1400,14 +1403,10 @@ class VideoRoomComponent extends Component {
             useItem={this.useItem}
             checkUserHasItem={this.checkUserHasItem}
             pickRandomStudent={this.pickRandomStudent}
-            checkUserHasItem={this.checkUserHasItem}
-            useItem={this.useItem}
             tempFrameChange={this.tempFrameChange}
             subscribers={subscribers}
             timeOut={3}
             header="발표 프리패스 사용"
-            upPresentationCnt={upPresentationCnt}
-            downPresentationCnt={upPresentationCnt}
             upPresentationCnt={this.upPresentationCnt}
             downPresentationCnt={this.downPresentationCnt}
           />

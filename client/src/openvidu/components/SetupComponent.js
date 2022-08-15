@@ -76,7 +76,6 @@ const SetupComponent = (props) => {
         stream.current.addTrack(await getVideoTrack(newVideos[0].deviceId));
       stream.current.getTracks().forEach((track) => (track.enabled = false));
       previewFace.current.srcObject = stream.current ?? null;
-      console.log(previewFace, stream);
     };
     getMyDevices().then(() => {
       setIsLoading(false);
