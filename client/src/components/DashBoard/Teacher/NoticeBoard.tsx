@@ -218,7 +218,7 @@ const NoticeBoard = () => {
           {isTeacher && (
             <div>
               <button type="button" className="button-xsm pink">
-                <Link to="/teacher/noticePost">글 쓰기</Link>
+                <Link to="/teacher/noticePost">글쓰기</Link>
               </button>
             </div>
           )}

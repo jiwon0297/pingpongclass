@@ -139,7 +139,7 @@ const EditNotice = () => {
       <hr />
       <div className="notice-content">
         <div className="firstContainer">
-          <div style={{ width: '26%', display: 'flex', alignItems: 'center' }}>
+          <div style={{ width: '30%', display: 'flex', alignItems: 'center' }}>
             <div
               style={{ width: '100px', fontSize: '1.1em', fontWeight: '600' }}
             >
@@ -165,7 +165,7 @@ const EditNotice = () => {
               ))}
             </TextField>
           </div>
-          <div style={{ width: '50%', display: 'flex', alignItems: 'center' }}>
+          <div style={{ width: '70%', display: 'flex', alignItems: 'center' }}>
             <div
               style={{ width: '50px', fontSize: '1.1em', fontWeight: '600' }}
             >
@@ -185,9 +185,8 @@ const EditNotice = () => {
             />
           </div>
         </div>
-        <br />
 
-        <div style={{ marginTop: '15px' }}>
+        <div style={{ marginTop: '15px', height: '60%' }}>
           <TextField
             id="outlined-basic"
             label="내용"
@@ -206,7 +205,7 @@ const EditNotice = () => {
           {/* <Link to="/admin/notice"> */}
           {newPost ? (
             <button
-              className="button-sm blue"
+              className="button-xsm blue"
               onClick={() => {
                 submitPost();
               }}
@@ -215,7 +214,7 @@ const EditNotice = () => {
             </button>
           ) : (
             <button
-              className="button-sm pink"
+              className="button-xsm pink"
               onClick={() => {
                 submitPost();
               }}
@@ -225,7 +224,7 @@ const EditNotice = () => {
           )}
           {/* </Link> */}
           <Link to="/teacher/notice">
-            <button className="button-sm gray">취소</button>
+            <button className="button-xsm gray">취소</button>
           </Link>
         </div>
       </div>
@@ -242,8 +241,10 @@ const totalContainer = css`
   }
   .notice-content {
     padding: 27px 34px;
+    height: 85%;
   }
   .firstContainer {
+    height: 20%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -256,6 +257,7 @@ const totalContainer = css`
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    height: 20%;
   }
 
   .gray {
@@ -263,7 +265,7 @@ const totalContainer = css`
   }
 
   button {
-    border-radius: 18px;
+    border-radius: 13px;
   }
 `;
 

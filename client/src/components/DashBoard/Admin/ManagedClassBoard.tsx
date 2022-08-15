@@ -7,8 +7,9 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
 import ManagedClass from './ManagedClass';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
-import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
+import { getClasses, saveMember } from '@store/member';
 import axios from 'axios';
+import { TextField } from '@mui/material';
 
 export interface ClassBoardProps {
   classDay: number;
@@ -158,29 +159,41 @@ const ClassBoard = () => {
     <div css={totalContainer}>
       <div className="upperModalArea">
         <div className="pageTitle">수업관리(관리자)</div>
+        <hr />
         <form onSubmit={search}>
-          <div>
+          <div style={{ width: '15%' }} className="selected-cnt">
             {selectedCnt !== 0 ? (
               <>
-                <span className="selected-cnt">({selectedCnt}) 개 선택</span>
+                <span>수업 {selectedCnt}개 선택</span>
               </>
             ) : null}
-            <input
-              type="search"
+          </div>
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            className="search-form-div"
+          >
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
               value={keyword || ''}
               onChange={(e) => setKeyword(e.target.value)}
             />
-            <button type="submit" className="sub-btn">
+
+            <button type="submit" className="button-xsm pink">
               검색
             </button>
           </div>
           <div>
-            <button type="button" className="main-btn">
-              <Link to="/admin/classPost">수업 추가</Link>
+            <button type="button" className="button-xsm blue">
+              <Link to="/admin/classPost">추가</Link>
+            </button>
+            <button type="button" className="button-xsm gray">
+              <Link to="">삭제</Link>
             </button>
           </div>
         </form>
       </div>
+
       <div className="tableArea">
         <div className="row titleRow">
           <div className="col">수업번호</div>
@@ -189,7 +202,7 @@ const ClassBoard = () => {
           <div className="col">과목</div>
           <div className="col classTitle">수업 제목</div>
           <div className="col">선생님</div>
-          <div className="col">수정</div>
+          <div className="col">수정/삭제</div>
         </div>
 
         <div className="articleArea">
@@ -248,18 +261,16 @@ const totalContainer = () => css`
   }
   .pageTitle {
     text-align: left;
-    /* font-size: 2rem; */
-    border-bottom: 0.15rem solid black;
-    width: inherit;
+    width: 100%;
   }
 
   form {
-    margin: 0.5rem;
+    margin: 0.5rem 0.5rem 0 0.5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     button {
-      margin: 1rem;
+      margin: 1rem 0 1rem 1rem;
       padding: 0.5rem;
       border: none;
       border-radius: 0.5rem;
@@ -280,7 +291,7 @@ const totalContainer = () => css`
   /* table 영역 */
   .tableArea {
     border-spacing: 0;
-    width: inherit;
+    width: -webkit-fill-available;
     height: inherit;
     position: absolute;
     /* overflow-y: scroll; */
@@ -289,10 +300,6 @@ const totalContainer = () => css`
   /* 스크롤 바 숨기기 */
   .tableArea::-webkit-scrollbar {
     display: none;
-  }
-
-  .tableArea div {
-    display: inline-block;
   }
 
   .row,
@@ -304,37 +311,40 @@ const totalContainer = () => css`
     background-color: transparent;
     font-family: 'NanumSquare';
     vertical-align: middle;
-    font-size: 13pt;
-    font-weight: 290;
+    font-size: 0.9rem;
+    font-weight: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .col {
     overflow: hidden;
-    width: 10%;
-    max-width: 30%;
-    text-align: center;
+    width: 15%;
+    line-height: 30px;
   }
   /* 제목 행 */
   .titleRow {
-    padding: 1rem 0 0.5rem 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0.5rem 0;
     background-color: #c0d2e5;
-    font-size: 15pt;
+    height: 23px;
+    vertical-align: middle;
     font-weight: 400;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    font-size: 1em;
   }
 
   /* 게시글 항목 영역 */
   .articleArea {
-    /* padding: 1% 0; */
     width: -webkit-fill-available;
     max-width: 100%;
+    margin-bottom: 20px;
 
     /* 제목줄 1줄 */
     .articleRow {
-      padding: 0.5rem 0;
+      padding: 0.2rem 0;
       border-bottom: 1.5px solid gray;
-      height: -webkit-fill-available;
     }
 
     /* 하이라이트 */
@@ -354,14 +364,24 @@ const totalContainer = () => css`
     max-width: 30%;
     text-overflow: ellipsis;
   }
-  .selected-cnt {
-    padding-right: 0.5rem;
+  .classTitleIcon {
+    display: inline-block;
+    border-radius: 0.5rem;
+    background-color: #f5e7ee;
+    width: 60%;
   }
-
+  .selected-cnt {
+    color: var(--blue);
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 17px;
+    margin-left: 10px;
+    align-items: flex-end;
+  }
   input {
-    height: 35px;
-    border-radius: 10px;
-    border: 1px solid gray;
+    margin: 0 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
   }
 `;
 

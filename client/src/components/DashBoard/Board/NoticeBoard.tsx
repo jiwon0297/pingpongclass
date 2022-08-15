@@ -169,45 +169,43 @@ const NoticeBoard = () => {
       <div className="upperModalArea">
         <div className="pageTitle">공지사항</div>
         <hr />
-        <form onSubmit={search} className="search-div">
-          {/* <select onChange={handleSelect}>
-            {classes.map((s) => (
-              <option key={s.classId} value={s.classId}>
-                {s.classTitle}
-              </option>
-            ))}
-          </select> */}
-
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-simple-select-label">수업명</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-select-small"
-              label="수업명"
-              defaultValue={''}
-              onChange={handleSelect}
-              MenuProps={MenuProps}
-            >
-              <MenuItem disabled value="">
-                <em>선택</em>
-              </MenuItem>
-              {classes.map((s) => (
-                <MenuItem key={s.classId} value={s.classId}>
-                  {s.classTitle}
+        <form
+          onSubmit={search}
+          className="search-div"
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <div className="search-form-div">
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <InputLabel id="demo-simple-select-label">수업명</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-select-small"
+                label="수업명"
+                defaultValue={''}
+                onChange={handleSelect}
+                MenuProps={MenuProps}
+              >
+                <MenuItem disabled value="">
+                  <em>선택</em>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                {classes.map((s) => (
+                  <MenuItem key={s.classId} value={s.classId}>
+                    {s.classTitle}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <TextField
-            id="outlined-basic"
-            variant="outlined"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          <button type="submit" className="searchbutton">
-            검색
-          </button>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button type="submit" className="searchbutton">
+              검색
+            </button>
+          </div>
         </form>
       </div>
       <div className="tableArea">
@@ -288,6 +286,11 @@ export const NoticeBoardStyle = () => css`
       padding: 0.5rem;
       border-radius: 0.5rem;
     }
+  }
+
+  .input-div {
+    display: flex;
+    align-items: center;
   }
 
   /* table 영역 */

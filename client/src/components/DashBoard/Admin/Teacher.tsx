@@ -43,7 +43,7 @@ const Teacher = (props: {
       {/* <button className="row article-btn" onClick={(e) => toggleNotice(e)}> */}
       <div className="teacher-upper">
         <button className="teacher-edit" onClick={onClickOpenModal}>
-          <EditIcon className="edit-btn" />
+          <EditIcon className="edit-btn" style={{ fontSize: '1.3em' }} />
         </button>
         <input
           type="checkbox"
@@ -66,8 +66,9 @@ const Teacher = (props: {
           <img src={preview} alt={article.name} />
         )}
       </div>
-      <hr></hr>
-      <div className="col col4">{article.name}</div>
+      <div className="col col4">
+        <span className="teacher-name">{article.name}</span>
+      </div>
     </div>
   );
 };
@@ -91,12 +92,13 @@ export const TeacherStyle = () => css`
   border: 0.01rem solid black;
   margin: 1rem;
   border-radius: 0.5rem;
+
   .teacher-preview {
-    position: relative;
+    height: 70%;
   }
   .teacher-upper {
     position: relative;
-    height: 1rem;
+    height: 5%;
   }
   .teacher-edit,
   .teacher-select {
@@ -105,6 +107,12 @@ export const TeacherStyle = () => css`
     top: 1rem;
     width: 1rem;
     height: 1rem;
+  }
+  .teacher-name {
+    background-color: #e4edfa;
+    padding: 6px 50px;
+    color: var(--text-dark);
+    border-radius: 10px;
   }
   .teacher-edit {
     top: 0.5rem;
