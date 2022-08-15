@@ -11,4 +11,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["HTTPS=true",  "npm", "run", "start"]
+CMD ["set", "HTTPS=true",  "npm", "run", "start"]
