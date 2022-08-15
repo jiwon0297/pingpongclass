@@ -101,6 +101,7 @@ class VideoRoomComponent extends Component {
       settingDisplay: false,
       videoLayout: 'bigTeacher',
       levelPng: this.props.levelPng,
+      presentationCnt: 0,
     };
 
     // 메서드 바인딩 과정
@@ -429,6 +430,7 @@ class VideoRoomComponent extends Component {
             isVideoActive: this.state.localUser.isVideoActive(),
             nickname: this.state.localUser.getNickname(),
             point: this.state.localUser.getPoint(),
+            presentationCnt: this.state.localUser.getPresentationCnt(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
           });
         }
@@ -556,6 +558,21 @@ class VideoRoomComponent extends Component {
     localUser.setAudioActive(!localUser.isAudioActive());
     localUser.getStreamManager().publishAudio(localUser.isAudioActive());
     this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
+    this.setState({ localUser: localUser });
+  }
+
+  // name: 오석호
+  // date: 2022/08/15
+  // 발표 횟수 증가 함수
+  upPresentationCnt() {
+    this.state.localUser.upPresentationCnt();
+    this.sendSignalUserChanged({ point: localUser.getPresentationCnt() });
+    this.setState({ localUser: localUser });
+  }
+
+  downPresentationCnt() {
+    this.state.localUser.downPresentationCnt();
+    this.sendSignalUserChanged({ point: localUser.getPresentationCnt() });
     this.setState({ localUser: localUser });
   }
 

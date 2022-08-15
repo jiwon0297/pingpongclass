@@ -18,6 +18,7 @@ class UserModel {
   profile; // 프로필 이미지 정보
   uid; // 유저 아이디
   levelPng; // 레벨에 맞는 사진 경로
+  presentationCnt; // 발표 횟수
 
   constructor() {
     this.connectionId = '';
@@ -37,6 +38,7 @@ class UserModel {
     this.attendenceTime = '00:00:00';
     this.profile = '';
     this.levelPng = '';
+    this.presentationCnt = 0;
   }
   // 추가 함수
   isSmileActive() {
@@ -71,6 +73,11 @@ class UserModel {
   getPoint() {
     return this.point;
   }
+
+  getPresentationCnt() {
+    return this.presentationCnt;
+  }
+
   getEmoji() {
     return this.emoji;
   }
@@ -130,6 +137,11 @@ class UserModel {
   setPoint(point) {
     this.point = point;
   }
+
+  setPresentationCnt(presentationCnt) {
+    this.presentationCnt = presentationCnt;
+  }
+
   setEmoji(emoji) {
     this.emoji = emoji;
   }
