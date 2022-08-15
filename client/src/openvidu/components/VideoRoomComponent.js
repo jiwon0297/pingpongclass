@@ -469,7 +469,9 @@ class VideoRoomComponent extends Component {
       this.props.selfLeaveSession();
     }
 
-    return this.props.navigate('/student');
+    // 우선 임시로 카메라를 꺼뜨리기 위해서..
+    this.props.navigate('/student');
+    window.location.href = '/student';
   }
 
   // leaveSession: 세션을 빠져나가는 함수
@@ -651,6 +653,8 @@ class VideoRoomComponent extends Component {
       const nickname = event.stream.connection.data.split('%')[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
       this.remotes.push(newUser);
+      if (JSON.parse(nickname).clientData.substr(1, 3) === '선생님')
+        this.props.setTeacherData(newUser);
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
         this.whoAbsent();

@@ -241,7 +241,6 @@ const TeacherResult = ({
                 <a href="/teacher">
                   <button onClick={onClickApply}>저장 후 돌아가기</button>
                 </a>
-                <button onClick={logApplyToDB}>테스트</button>
               </div>
             </div>
           </div>

@@ -117,7 +117,9 @@ const StudentResult = ({
                       <div className="t-classname">{classTitle}</div>
                       <div className="t-nickname">{teacherName}</div>
                       <div className="t-attendance-time">
-                        {teacherData.attendanceTime}
+                        {teacherData
+                          ? teacherData.attendanceTime
+                          : '알 수 없음'}
                       </div>
                       <div className="t-fin-time">{finTime}</div>
                       <div className="t-point">{totalSticker}</div>

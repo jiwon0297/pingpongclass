@@ -50,14 +50,6 @@ const SetupComponent = (props) => {
   useUpdateSpeaker(previewFace, selectedSpeaker);
 
   useEffect(() => {
-    return () => {
-      stream.current.getTracks().forEach((track) => {
-        track.stop();
-      });
-    };
-  }, []);
-
-  useEffect(() => {
     const getMyDevices = async () => {
       const newVideos = await getVideos();
       const newAudios = await getAudios();
