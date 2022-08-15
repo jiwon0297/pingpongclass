@@ -250,7 +250,7 @@ const NewClassList = () => {
         />
         <StudentListTransfer ChangeStudentList={ChangeStudentList} />
         <div className="buttonContainer">
-          <button className="listButton blue" onClick={() => createClass()}>
+          <button className="listButton pink" onClick={() => createClass()}>
             생성
           </button>
           <Link to="/teacher/classes">
@@ -293,21 +293,16 @@ const totalContainer = css`
   }
 
   .listButton {
-    width: auto;
-    margin: 0;
-    padding: 10px 20px;
-    border-radius: 15px;
-    color: white;
-    border: 0;
-    box-shadow: 2px 2px 15px -5px;
-    background-color: var(--blue);
-    box-sizing: border-box;
-    transition: all 0.3s ease-in-out;
-    font-size: 20px;
+    vertical-align: middle;
+    min-width: 112px;
+    border-radius: 10px;
+    padding: 10px 16px;
+    border: none;
+    font-weight: 600;
     cursor: pointer;
-    white-space: nowrap;
+    color: #ffffff;
+    font-size: 1.2em;
   }
-
   .listButton:hover {
     transform: scale(1.1);
   }

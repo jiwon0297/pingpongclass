@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
 import EditStudent from './EditStudent';
 import AddStudentBulk from './AddStudentBulk';
+import { Select, MenuItem, TextField } from '@mui/material';
 
 export interface StudentProps {
   isSelected: boolean;
@@ -131,6 +132,10 @@ const StudentBoard = () => {
     setStudents(newList);
   };
 
+  const gradeCnt = [1, 2, 3];
+  const classCnt = [1, 2, 3];
+  const studentNumCnt = [1, 2, 3, 4, 5, 6];
+
   return (
     <div css={totalContainer}>
       {isModal && (
@@ -143,64 +148,99 @@ const StudentBoard = () => {
         <AddStudentBulk onClickOpenBulkModal={onClickOpenBulkModal} />
       )}
       <div className="upperModalArea">
-        <div className="pageTitle">학생관리</div>
+        <div className="pageTitle">학생 관리</div>
+        <hr />
         <form onSubmit={search}>
-          <div style={{ width: '60%', textAlign: 'left' }}>
-            학년
-            <input
-              type="number"
-              value={grade || ''}
-              style={{ width: '30px' }}
+          <div style={{ textAlign: 'left', paddingTop: '17px' }}>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-select-small"
+              defaultValue={gradeCnt[0]}
               onChange={(e) => setGrade(+e.target.value)}
-            />
-            반
-            <input
-              type="number"
-              value={classNum || ''}
-              style={{ width: '30px' }}
+              className="form-custom"
+            >
+              {gradeCnt.map((s) => (
+                <MenuItem key={s} value={s}>
+                  {s}
+                </MenuItem>
+              ))}
+            </Select>
+            <span className="form-label">학년</span>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-select-small"
+              defaultValue={classCnt[0]}
               onChange={(e) => setClassNum(+e.target.value)}
-            />
-            이름
-            <input
+              className="form-custom"
+            >
+              {classCnt.map((s) => (
+                <MenuItem key={s} value={s}>
+                  {s}
+                </MenuItem>
+              ))}
+            </Select>
+            <span className="form-label">반</span>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-select-small"
+              defaultValue={studentNumCnt[0]}
+              onChange={(e) => setClassNum(+e.target.value)}
+              className="form-custom"
+            >
+              {studentNumCnt.map((s) => (
+                <MenuItem key={s} value={s}>
+                  {s}
+                </MenuItem>
+              ))}
+            </Select>
+            <span className="form-label">번</span>
+
+            <span className="form-label" style={{ padding: '8.5px 14px' }}>
+              이름
+            </span>
+            <TextField
               type="search"
+              id="outlined-basic"
+              variant="outlined"
               value={keyword || ''}
               onChange={(e) => setKeyword(e.target.value)}
+              style={{ width: '150px', marginRight: '10px' }}
             />
-            <button type="submit" className="sub-btn">
+            <button type="submit" className="button-xsm pink">
               검색
             </button>
           </div>
-          <div className="btn-box" css={btnBox}>
-            <button
-              type="button"
-              className="add-btn stu-bottom-btn"
-              onClick={onClickOpenModal}
-            >
-              개별 추가
-            </button>
-            <button
-              type="button"
-              className="add-btn stu-bottom-btn"
-              onClick={onClickOpenBulkModal}
-            >
-              일괄 추가
-            </button>
-            <button
-              type="button"
-              className="del-btn stu-bottom-btn"
-              onClick={deleteSelected}
-            >
-              선택 삭제
-            </button>
-            <button
-              type="button"
-              className="del-btn stu-bottom-btn"
-              onClick={deleteAll}
-            >
-              일괄 삭제
-            </button>
-          </div>
         </form>
+      </div>
+      <div className="btn-box" css={btnBox}>
+        <button
+          type="button"
+          className="add-btn stu-bottom-btn"
+          onClick={onClickOpenModal}
+        >
+          개별 추가
+        </button>
+        <button
+          type="button"
+          className="add-btn stu-bottom-btn"
+          onClick={onClickOpenBulkModal}
+        >
+          일괄 추가
+        </button>
+        <button
+          type="button"
+          className="del-btn stu-bottom-btn"
+          onClick={deleteSelected}
+        >
+          선택 삭제
+        </button>
+        <button
+          type="button"
+          className="del-btn stu-bottom-btn"
+          onClick={deleteAll}
+        >
+          일괄 삭제
+        </button>
       </div>
       <div className="tableArea">
         <div className="row titleRow">
@@ -255,10 +295,7 @@ const totalContainer = () => css`
   }
 
   .pageTitle {
-    text-align: left;
-    /* font-size: 2rem; */
-    border-bottom: 0.15rem solid black;
-    width: inherit;
+    width: 100%;
   }
 
   form {
@@ -266,9 +303,12 @@ const totalContainer = () => css`
     flex-direction: row;
     justify-content: space-around;
     margin: 10px;
+    height: 100%;
     button {
       border: none;
       border-radius: 0.5rem;
+      font-family: 'NanumSquareRound';
+      font-size: 1em;
     }
     .main-btn {
       background-color: pink;
@@ -278,6 +318,29 @@ const totalContainer = () => css`
       color: white;
       padding: 0.5rem;
     }
+    select {
+      padding: 17.5px 14px;
+    }
+    input {
+      padding: 8.5px 14px;
+    }
+  }
+
+  .form-custom {
+    width: 60px;
+    height: 70%;
+  }
+  .form-label {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 0px 10px;
+  }
+  .btn-box {
+    width: 100%;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
   }
 
   /* table 영역 */
@@ -299,16 +362,13 @@ const totalContainer = () => css`
 
   .row,
   .article.btn {
-    width: -webkit-fill-available;
-    min-width: inherit;
-    max-width: inherit;
-    border: none;
-    background-color: transparent;
     font-family: 'NanumSquare';
     vertical-align: middle;
-    display: inline-block;
-    font-size: 13pt;
-    font-weight: 290;
+    font-size: 0.9rem;
+    font-weight: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .col {
@@ -320,12 +380,14 @@ const totalContainer = () => css`
   }
   /* 제목 행 */
   .titleRow {
-    padding: 1rem 0 0.5rem 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0.5rem 0;
     background-color: #c0d2e5;
-    font-size: 15pt;
+    height: 23px;
+    vertical-align: middle;
     font-weight: 400;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    font-size: 1em;
   }
 
   /* 게시글 항목 영역 */
@@ -378,14 +440,12 @@ const totalContainer = () => css`
   .col4 {
     max-width: 5rem;
   }
-  input {
-    border-radius: 0.5rem;
+  /* input {
     padding: 0.5rem;
     width: 20%;
-    border: 1px solid gray;
     margin-left: 10px;
     margin-right: 15px;
-  }
+  } */
 `;
 
 const btnBox = () => css`

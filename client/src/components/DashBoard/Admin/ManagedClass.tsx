@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { ClassBoardProps } from './ManagedClassBoard';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
+import { Checkbox } from '@mui/material';
 
 const ManagedClass = (props: {
   key: number;
@@ -25,17 +27,41 @@ const ManagedClass = (props: {
 
   return (
     <div className={visible ? 'row articleRow highlited' : 'row articleRow'}>
-      <button className="row article-btn" onClick={toggleManagedClass}>
-        <div className="col">{article.classId}</div>
+      <button className="row article-btn">
+        {/* <div className="col">{article.classId}</div> */}
+        <div className="col">
+          <Checkbox onClick={toggleManagedClass} />
+          {article.classId}
+        </div>
         <div className="col">{article.timetableId} 교시</div>
         <div className="col">{dayName[article.classDay]}요일</div>
         <div className="col">{article.subjectEntity.name}</div>
-        <div className="col classTitle">{article.classTitle}</div>
+        <div className="col classTitle">
+          <span className=" classTitleIcon">{article.classTitle}</span>
+        </div>
         <div className="col">{article.teacherName}</div>
-        <div className="col">
-          <Link to={`/admin/classEdit/${article.classId}`}>
-            <EditIcon />
+        <div
+          className="col"
+          style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}
+        >
+          <Link
+            to={`/admin/classEdit/${article.classId}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <EditIcon
+              style={{
+                fontSize: '1.2em',
+              }}
+            />
           </Link>
+          <DeleteIcon
+            style={{ fontSize: '1.2em' }}
+            // onClick={deleteManagedClass}
+          />
         </div>
       </button>
       {/* <button className="del-btn pink" onClick={deleteManagedClass}>
