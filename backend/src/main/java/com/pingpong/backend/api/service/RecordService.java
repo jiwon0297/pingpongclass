@@ -134,4 +134,7 @@ public class RecordService {
     public List<Date> findDate(int studentId){
         return logRepository.getDateList(studentId);
     }
+    public List<Date> findClassDate(int classId){
+        return logRepository.getClassDateList(classId);
+    }
 }
