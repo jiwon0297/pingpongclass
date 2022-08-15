@@ -1392,6 +1392,8 @@ class VideoRoomComponent extends Component {
             user={localUser}
             toggleShield={this.toggleShield}
             alertToChat={this.alertToChat}
+            useItem={this.useItem}
+            checkUserHasItem={this.checkUserHasItem}
             pickRandomStudent={this.pickRandomStudent}
             checkUserHasItem={this.checkUserHasItem}
             useItem={this.useItem}

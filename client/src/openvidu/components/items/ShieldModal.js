@@ -28,12 +28,14 @@ class ShieldModal extends Component {
   // todo: 호출 시 현재 수업에 참여 중인 자신을 제외한 학생 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
   useShield = () => {
     console.log('방어권 사용시');
+    // itemId:3 발표 프리패스
+    console.log(this.props.checkUserHasItem(3));
     if (this.props.checkUserHasItem(3)) {
       this.props.alertToChat(
         this.props.user.nickname + '님이 발표 프리패스를 사용했습니다!',
       );
       this.props.pickRandomStudent(this.props.subscribers, true);
-      this.props.uesItem(3);
+      this.props.useItem(3);
       this.close();
     } else {
       alert('보유한 발표 프리패스가 없습니다!');
@@ -73,14 +75,8 @@ class ShieldModal extends Component {
 
   render() {
     return (
-      <div
-        className={
-          this.state.display && this.props.checkUserHasItem(3)
-            ? 'openModal modal'
-            : 'modal'
-        }
-      >
-        {this.state.display && this.props.checkUserHasItem(3) ? (
+      <div className={this.state.display ? 'openModal modal' : 'modal'}>
+        {this.state.display ? (
           <section>
             <header>{this.props.header}</header>
             <div>
