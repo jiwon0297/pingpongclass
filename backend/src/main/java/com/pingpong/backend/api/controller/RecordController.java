@@ -16,6 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -64,11 +65,17 @@ public class RecordController {
         return recordService.fingstudentlog(req.getStudentId(), req.getRegDate());
     }
 
+    @ApiOperation(value = "학생의 강의 로그 날짜 리스트 조회", notes = "학생이 받은 강의 로그 날짜만 조회")
+    @GetMapping("/log/student/{studentId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public List<Date> findStudentLog(@PathVariable int studentId){
+        return recordService.findDate(studentId);
+    }
+
     @ApiOperation(value = "선생님의 강의 로그 조회 - 일자별", notes = "classID -> 일자별 로그객체 ")
     @GetMapping("/teacher/{classId}")
     @PreAuthorize("hasRole('TEACHER')")
-    public List<TeacherLogResponse> findTeacherLog(@PathVariable int classId){
-        return recordService.findteacherlog(classId);
+    public TeacherLogResponse findTeacherLog(@PathVariable int classId, @RequestBody LogdateRequest req){
+        return recordService.findteacherlog(classId, req.getRegDate());
     }
-
 }

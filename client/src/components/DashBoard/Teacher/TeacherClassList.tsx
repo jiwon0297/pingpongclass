@@ -32,21 +32,20 @@ const ClassList = () => {
     }
   }, []);
 
-  // 지금 무조건 첫수업으로 가게 해둠
   const render = (idx): any => {
     const clsIdx = idx * 6;
     return (
       <SwiperSlide key={idx}>
         <div className="cardContainer">
           <div className="upCardContainer">
-            <ClassCard clsList={clsList[clsIdx]} />
-            <ClassCard clsList={clsList[clsIdx + 1]} />
-            <ClassCard clsList={clsList[clsIdx + 2]} />
+            <ClassCard clsList={clsList[clsIdx]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 1]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 2]} classUrl={true} />
           </div>
           <div className="downCardContainer">
-            <ClassCard clsList={clsList[clsIdx + 3]} />
-            <ClassCard clsList={clsList[clsIdx + 4]} />
-            <ClassCard clsList={clsList[clsIdx + 5]} />
+            <ClassCard clsList={clsList[clsIdx + 3]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 4]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 5]} classUrl={true} />
           </div>
         </div>
       </SwiperSlide>
@@ -76,40 +75,44 @@ const ClassList = () => {
       <div className="total-container">
         <div className="tabsContainer">
           <div className="weekTabs">
-            <div
-              className={tab === 1 ? 'active tabs' : 'tabs'}
-              onClick={() => loadClassList(1)}
-            >
-              월
+            <div className="weekdays-tabs">
+              <div
+                className={tab === 1 ? 'active tabs' : 'tabs'}
+                onClick={() => loadClassList(1)}
+              >
+                월
+              </div>
+              <div
+                className={tab === 2 ? 'active tabs' : 'tabs'}
+                onClick={() => loadClassList(2)}
+              >
+                화
+              </div>
+              <div
+                className={tab === 3 ? 'active tabs' : 'tabs'}
+                onClick={() => loadClassList(3)}
+              >
+                수
+              </div>
+              <div
+                className={tab === 4 ? 'active tabs' : 'tabs'}
+                onClick={() => loadClassList(4)}
+              >
+                목
+              </div>
+              <div
+                className={tab === 5 ? 'active tabs' : 'tabs'}
+                onClick={() => loadClassList(5)}
+              >
+                금
+              </div>
             </div>
-            <div
-              className={tab === 2 ? 'active tabs' : 'tabs'}
-              onClick={() => loadClassList(2)}
-            >
-              화
-            </div>
-            <div
-              className={tab === 3 ? 'active tabs' : 'tabs'}
-              onClick={() => loadClassList(3)}
-            >
-              수
-            </div>
-            <div
-              className={tab === 4 ? 'active tabs' : 'tabs'}
-              onClick={() => loadClassList(4)}
-            >
-              목
-            </div>
-            <div
-              className={tab === 5 ? 'active tabs' : 'tabs'}
-              onClick={() => loadClassList(5)}
-            >
-              금
-            </div>
-            <div className="createTab">
-              <Link to="/teacher/create" className="linkButton">
-                수업 열기
-              </Link>
+            <div style={{ height: '100%' }}>
+              <div className="createTab">
+                <Link to="/teacher/create" className="linkButton">
+                  수업 열기
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -213,8 +216,14 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
     border-bottom: dashed 1px gray;
+  }
+
+  .weekdays-tabs {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
   }
 
   .cardContainer {

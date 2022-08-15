@@ -10,6 +10,7 @@ import {
   getVideos,
   getAudios,
   getSpeakers,
+  initStream,
 } from './utils/customUseDevice';
 import Mic from '@mui/icons-material/Mic';
 import MicOff from '@mui/icons-material/MicOff';
@@ -40,19 +41,20 @@ const SetupComponent = (props) => {
   } = setDevices;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [stream, setStream] = useState(new MediaStream());
   const effectCnt = useRef(0); // 최초 마운트에 특정 useEffect가 동작하지 않게 하기 위한 트릭
   const previewFace = useRef();
+  const [stream, setStream] = useState(new MediaStream());
+  const [camLoading, setCamLoading] = useState(false);
   useUpdateStream(previewFace, stream);
   useUpdateSpeaker(previewFace, selectedSpeaker);
 
   useEffect(() => {
     return () => {
-      stream?.getTracks().forEach((track) => {
+      stream.getTracks().forEach((track) => {
         track.stop();
       });
     };
-  }, [stream]);
+  }, []);
 
   useEffect(() => {
     const getMyDevices = async () => {
@@ -67,7 +69,11 @@ const SetupComponent = (props) => {
       if (newSpeakers.length) setSelectedSpeaker(newSpeakers[0].deviceId);
       setSelectedAudioTrack(newAudios[0]);
       setSelectedVideoTrack(newVideos[0]);
-      setStream(createStream(newAudios[0], newVideos[0]));
+      const newStream = await createStream({
+        audioTrack: newAudios[0],
+        videoTrack: newVideos[0],
+      });
+      setStream(newStream);
     };
     getMyDevices().then(() => {
       setIsLoading(false);
@@ -111,12 +117,11 @@ const SetupComponent = (props) => {
           stream.addTrack(audioTrack);
           stream
             .getAudioTracks()
-            .forEach((track) => (track.enabled = isVideoOn));
+            .forEach((track) => (track.enabled = isAudioOn));
         }
       }
       if (effectCnt.current >= 2) setStream(stream);
       else ++effectCnt.current;
-      console.log(stream.getAudioTracks());
     };
     changeStream();
   }, [selectedAudio]);
@@ -135,7 +140,6 @@ const SetupComponent = (props) => {
   };
 
   const toggleVideo = (e) => {
-    console.log(stream.getVideoTracks());
     setIsVideoOn(!isVideoOn);
     stream.getVideoTracks().forEach((track) => (track.enabled = !isVideoOn));
   };
