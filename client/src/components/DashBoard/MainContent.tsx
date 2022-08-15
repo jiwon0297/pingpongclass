@@ -9,12 +9,13 @@ const MainContent = () => {
       <div className="myInfo">
         <MyInfo />
       </div>
-      <h2>오늘의 수업</h2>
+      <h2 style={{ marginTop: '3%' }}>오늘의 수업</h2>
       <hr />
       <div className="todaysClass">
         <TodaysClass />
       </div>
-      <h2>나의 참여도</h2>
+      <h2 style={{ marginTop: '3%' }}>퐁퐁이 기록</h2>
+      <hr />
       <div className="attandance">
         <HeatMap />
       </div>

@@ -21,14 +21,14 @@ const Animation = ({
   getType,
 }: ModalDefaultType) => {
   const color = [
-    'black',
+    'pingpong',
+    'platinum',
+    'dia',
+    'purple',
+    'blue',
     'yellow',
     'green',
-    'blue',
-    'purple',
-    'dia',
-    'platinum',
-    'pingpong',
+    'black',
   ];
   useEffect(() => {
     console.log('Animation2 : ', getColor + ',', color[getColor], ',', getType);
