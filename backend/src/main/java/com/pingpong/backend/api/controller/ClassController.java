@@ -99,7 +99,7 @@ public class ClassController {
     @ApiOperation(value = "전체 수업 목록 조회")
     @GetMapping("/{userId}")
     @PreAuthorize("hasRole('STUDENT')")
-    public Page<ClassResponse> findClassById(@PageableDefault(size=5) @PathVariable final int userId, @RequestParam(value="title", required = false) String classTitle, Pageable pageable ){
+    public Page<ClassResponse> findClassById(@PageableDefault(size=12) @PathVariable final int userId, @RequestParam(value="title", required = false) String classTitle, Pageable pageable ){
         return classService.findClassesById(userId, classTitle, pageable);
     }
 
