@@ -195,10 +195,10 @@ const NoticeBoard = () => {
             value={keyword || ''}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <button type="submit" className="button-sm gray">
+          <button type="submit" className="button-xsm gray">
             검색
           </button>
-          <button type="button" className="button-sm blue">
+          <button type="button" className="button-xsm blue">
             <Link to="/admin/noticePost">글 쓰기</Link>
           </button>
         </form>

@@ -255,6 +255,12 @@ export const NoticeBoardStyle = () => css`
     gap: 10px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+  }
+  .search-form-div {
+    display: flex;
+    align-items: center;
+    width: 80%;
     justify-content: center;
   }
 
@@ -340,6 +346,7 @@ export const NoticeBoardStyle = () => css`
     /* padding: 1% 0; */
     width: -webkit-fill-available;
     max-width: 100%;
+    margin-bottom: 20px;
 
     /* 제목줄 1줄 */
     .articleRow {
@@ -358,18 +365,16 @@ export const NoticeBoardStyle = () => css`
     /* 아코디언 내용 */
     .detailRow {
       display: block;
-      padding: 0.5rem 0;
-
+      padding: 1.7rem 4rem;
       margin: 0.5rem 0 -0.5rem 0;
       background-color: #f9f9f9;
       height: -webkit-max-content;
       button {
-        border-radius: 3rem;
+        border-radius: 6px;
         color: white;
         border: none;
         width: max-content;
         padding: 0.5rem;
-        margin: 0 0.5rem;
         width: 5rem;
       }
       button.sub-btn {
@@ -394,14 +399,9 @@ export const NoticeBoardStyle = () => css`
       display: none;
     }
 
-    /*  */
-    .detailRow div {
-      display: block;
-    }
-
     /* 토글 내용 본문 영역 */
     .detailContent {
-      padding: 0 2%;
+      padding: 1% 2%;
       text-align: left;
       width: inherit;
       word-wrap: break-word;
@@ -409,11 +409,10 @@ export const NoticeBoardStyle = () => css`
 
     /* 토글 내용 바닥 영역 */
     .detailFooter {
-      background-color: #f9f9f9;
-      padding: 1% 0;
-      position: relative;
-      left: 76%;
-      width: max-content;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 25px;
+      gap: 10px;
     }
 
     .detailWriter {
