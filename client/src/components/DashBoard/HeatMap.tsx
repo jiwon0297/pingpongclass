@@ -89,9 +89,11 @@ const HeatMap = () => {
             if (!value) {
               return 'color-empty';
             }
-            return `color-${color[memberStore.jandiColor - 1]}-${
-              value.count > 4 ? 4 : value.count
-            }`;
+            return `color-${
+              memberStore.jandiColor === 0
+                ? 'gitlab'
+                : color[memberStore.jandiColor - 1]
+            }-${value.count > 4 ? 4 : value.count}`;
           }}
           tooltipDataAttrs={(value: any) => {
             return {
