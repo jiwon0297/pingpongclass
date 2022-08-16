@@ -168,10 +168,9 @@ const SetupComponent = (props) => {
           <hr />
           <div className="sideContainer">
             <div className="main">
-              <div className="RoomName">
-                <h2>
-                  {classTitle} - {teacherName}
-                </h2>
+              <div className="RoomName title">
+                [{classTitle} 수업]{' '}
+                <span className="teacher-span">{teacherName}선생님</span>
               </div>
               <div className="preview">
                 <video
@@ -199,7 +198,7 @@ const SetupComponent = (props) => {
                     style={{
                       border: 'none',
                       borderRadius: '5px',
-                      background: 'var(--gray)',
+                      background: 'var(--yellow)',
                     }}
                   >
                     {isVideoOn ? <Videocam /> : <VideocamOff />}
@@ -219,7 +218,7 @@ const SetupComponent = (props) => {
                     style={{
                       border: 'none',
                       borderRadius: '5px',
-                      background: 'var(--gray)',
+                      background: 'var(--yellow)',
                     }}
                   >
                     {isAudioOn ? <Mic /> : <MicOff />}

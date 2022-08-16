@@ -117,13 +117,9 @@ hr {
   margin-right: 1rem;
 }
 
-.preview {
-  width: 640px;
-  height: 360px;
-}
-
 .next {
   border-radius: 29px;
+  height: 10%;
 }
 
 .nextBtn {
@@ -171,9 +167,7 @@ hr {
   display: flex;
   flex-direction: row;
   height: 30px;
-  margin-top: 1rem;
   align-items: center;
-  /* align-items: center; */
 }
 
 select {
@@ -190,4 +184,24 @@ select {
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
+}
+
+.teacher-span {
+  font-size: 0.5em;
+}
+
+.RoomName {
+  height: 10%;
+  /* text-align: end; */
+}
+.preview {
+  /* width: 449px; */
+  height: 50%;
+}
+.settingSection {
+  display: flex;
+  height: 25%;
+  flex-direction: column;
+  gap: 7%;
+  justify-content: center;
 }

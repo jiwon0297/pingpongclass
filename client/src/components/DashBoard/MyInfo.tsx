@@ -8,7 +8,7 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { saveMember } from '@src/store/member';
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import PlayArrow from '@mui/icons-material/PlayArrow';
 
 interface StudentDataInterface {
   studentId: number;
@@ -36,7 +36,9 @@ const Myinfo = () => {
         100,
     );
 
-    setLevelImg('/levels/' + memberStore.currentLevel + '.png');
+    setLevelImg(
+      '/levels/' + (memberStore.currentLevel + '').toLowerCase() + '.png',
+    );
   }, []);
 
   const loadMember = () => {
@@ -136,7 +138,7 @@ const Myinfo = () => {
             <div className="soFarSticker" style={{ width: `${totalRate}%` }}>
               <div className="point-info">
                 <div>누적 {memberStore.totalPoint}</div>
-                <ArrowDropDownRoundedIcon />
+                <PlayArrow className="arrow-icon" />
               </div>
             </div>
             <div
@@ -145,7 +147,7 @@ const Myinfo = () => {
             >
               <div className="point-info">
                 <div>현재 {memberStore.point}</div>
-                <ArrowDropDownRoundedIcon />
+                <PlayArrow className="arrow-icon" />
               </div>
             </div>
           </div>
@@ -256,7 +258,7 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    margin-top: 4%;
+    margin-top: 2%;
   }
 
   img.profile-logo {
@@ -346,7 +348,6 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     text-align: right;
   }
   .point-info {
-    padding-right: 10px;
     height: 30px;
     width: 76px;
     font-weight: 600;
@@ -358,6 +359,11 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .arrow-icon {
+    font-size: 1.2em;
+    transform: rotate(90deg);
   }
 
   img {

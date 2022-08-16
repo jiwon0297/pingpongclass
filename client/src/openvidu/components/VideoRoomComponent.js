@@ -28,7 +28,8 @@ var localUser = new UserModel();
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.levelPng);
+    console.log(this.props);
+    console.log(this.props.memberStore.borderColor);
     // OPENVIDU_SERVER_URL: 오픈비두 서버쪽 URL (포트번호는 변경될 수 있음)
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //     ? this.props.openviduServerUrl
@@ -60,6 +61,7 @@ class VideoRoomComponent extends Component {
       }`;
     if (this.props.whoami === 'teacher')
       userName = '[선생님]' + this.props.memberStore.name;
+
     // remotes:
     this.remotes = [];
     // localUserAccessAllowed:
@@ -101,6 +103,7 @@ class VideoRoomComponent extends Component {
       totalWidth: 0,
       stickers: [],
       quiz: {},
+      quizHistory: [],
       settingDisplay: false,
       videoLayout: 'bigTeacher',
       levelPng: this.props.levelPng,
@@ -302,6 +305,126 @@ class VideoRoomComponent extends Component {
     localUser.setAudioActive(this.props.setDevices.isAudioOn);
     localUser.setVideoActive(this.props.setDevices.isVideoOn);
 
+    if (this.props.memberStore.borderColor === 1) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #ebacff, #9899dd, #abe8f0)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
+    if (this.props.memberStore.borderColor === 2) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #f87f93, #eba448, #f2e286)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
+    if (this.props.memberStore.borderColor === 3) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #bfd596, #52deea, #a687e3)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
+    if (this.props.memberStore.borderColor === 4) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #573dd5, #9b5aeb)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
+    if (this.props.memberStore.borderColor === 5) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #79c3d6, #5a94eb)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
+    if (this.props.memberStore.borderColor === 6) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #cbce67, #de9931)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
+    if (this.props.memberStore.borderColor === 7) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #43c8c7, #3fb15d)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
+    if (this.props.memberStore.borderColor === 8) {
+      const frameColor = {
+        type: 'style',
+        value: {
+          border: '10px solid transparent',
+          borderRadius: '15px',
+          backgroundImage:
+            'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #464646, #14002c)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'content-box, border-box',
+        },
+      };
+      localUser.setFrameColor(frameColor);
+    }
+
     // 유저끼리 데이터 교환
     this.state.session
       .connect(token, {
@@ -310,6 +433,7 @@ class VideoRoomComponent extends Component {
         randPick: this.state.randPick,
         uid: this.props.userId,
         levelPng: this.props.levelPng,
+        frameColor: localUser.frameColor,
       })
       .then(() => {
         this.connectWebCam();
@@ -446,6 +570,7 @@ class VideoRoomComponent extends Component {
             point: this.state.localUser.getPoint(),
             presentationCnt: this.state.localUser.getPresentationCnt(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
+            frameColor: this.state.localUser.getFrameColor(),
           });
         }
         this.updateLayout();
@@ -1343,7 +1468,10 @@ class VideoRoomComponent extends Component {
   toggleQuiz = (quiz) => {
     if (quiz) {
       this.sendSignalUserChanged({ quizCreated: quiz });
-      this.setState({ quiz: quiz });
+      this.setState({
+        quiz: quiz,
+        quizHistory: [...this.state.quizHistory, quiz],
+      });
     } else {
       this.setState({ quizDisplay: !this.state.quizDisplay });
     }
@@ -1358,7 +1486,10 @@ class VideoRoomComponent extends Component {
 
   popUpQuiz = (newQuiz) => {
     if (newQuiz) {
-      this.setState({ quiz: newQuiz, quizDisplayStudent: true });
+      this.setState({
+        quiz: newQuiz,
+        quizDisplayStudent: true,
+      });
     }
   };
 
@@ -1454,13 +1585,15 @@ class VideoRoomComponent extends Component {
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
-            header="Quiz Modal"
+            toggleQuizStudent={this.toggleQuizStudent}
+            header="퀴즈"
             quiz={this.state.quiz}
+            quizHistory={this.state.quizHistory}
           />
           <QuizModalStudent
             display={this.state.quizDisplayStudent}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="Quiz Modal"
+            header="퀴즈"
             quiz={this.state.quiz}
           />
           <ShieldModalLoading
@@ -1789,4 +1922,5 @@ class VideoRoomComponent extends Component {
     });
   }
 }
+
 export default VideoRoomComponent;
