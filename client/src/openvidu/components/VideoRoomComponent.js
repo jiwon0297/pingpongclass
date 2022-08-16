@@ -1385,7 +1385,7 @@ class VideoRoomComponent extends Component {
     const subscribers = this.state.subscribers;
     const chatDisplay = { display: this.state.chatDisplay };
     const participantDisplay = { display: this.state.participantDisplay };
-    console.log(this.props.type);
+    console.log(this.props);
 
     return (
       <>
@@ -1411,6 +1411,7 @@ class VideoRoomComponent extends Component {
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
+            toggleQuizStudent={this.toggleQuizStudent}
             header="Quiz Modal"
             quiz={this.state.quiz}
           />

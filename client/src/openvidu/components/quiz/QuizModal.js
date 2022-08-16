@@ -29,9 +29,11 @@ class QuizModal extends Component {
   };
 
   sendResult = () => {
-    const quizResult = { ...this.props.quiz, type: 'results' };
-    this.setState({ quiz: quizResult });
+    console.log(this.props.quiz);
+    const quizResult = { ...this.props.quiz, result: true };
     this.props.toggleQuiz(quizResult);
+    this.setState({ quiz: quizResult });
+    console.log(quizResult);
   };
 
   quizCreate = (quiz) => {
@@ -50,9 +52,7 @@ class QuizModal extends Component {
           <section>
             <header>
               {this.props.header}
-              <button className="close" onClick={() => this.close}>
-                &times;
-              </button>
+              <button onClick={() => this.close}>&times;</button>
             </header>
             <div className="quizSection">
               {
@@ -85,10 +85,8 @@ class QuizModal extends Component {
               <button onClick={() => this.contentChange('list')}>
                 퀴즈 목록
               </button>
-              <button className="close" onClick={() => this.sendResult}>
-                퀴즈결과 보여주기
-              </button>
-              <button className="sendResult" onClick={() => this.close}>
+              <button onClick={this.sendResult}>퀴즈결과 보여주기</button>
+              <button className="sendResult" onClick={this.close}>
                 닫기
               </button>
             </footer>
