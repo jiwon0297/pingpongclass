@@ -8,6 +8,7 @@ import StreamComponent from './stream/StreamComponent';
 import DialogExtensionComponent from './dialog-extension/DialogExtension';
 import ChatComponent from './chat/ChatComponent';
 import ParticipantComponent from './participant/ParticipantComponent';
+import QuestionComponent from './question/QuestionComponent';
 import FaceDetection from '../FaceDetection';
 import EmojiFilter from './items/EmojiFilter';
 import QuizModal from './quiz/QuizModal';
@@ -79,6 +80,7 @@ class VideoRoomComponent extends Component {
       absentStudents: this.props.studentList,
       chatDisplay: 'none',
       participantDisplay: 'none',
+      questionDisplay: 'none',
       quizDisplay: false,
       quizDisplayStudent: false,
       shieldDisplay: false,
@@ -138,10 +140,13 @@ class VideoRoomComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     // toggleParticipant: 참가자 목록 토글 버튼 함수
     this.toggleParticipant = this.toggleParticipant.bind(this);
+    // toggleQuestion: 질문 토글 버튼 함수
+    this.toggleQuestion = this.toggleQuestion.bind(this);
     // toggleSetting: 설정 토글 버튼 함수
     this.toggleSetting = this.toggleSetting.bind(this);
     // checkNotification: 알림 확인 함수
     this.checkNotification = this.checkNotification.bind(this);
+    this.checkQuestionNotification = this.checkQuestionNotification.bind(this);
     // checkSize: 화면 크기 체크 함수
     this.checkSize = this.checkSize.bind(this);
     // smile: 웃는 이모지 체크 함수
@@ -1017,9 +1022,14 @@ class VideoRoomComponent extends Component {
     if (display === undefined) {
       display = this.state.chatDisplay === 'none' ? 'block' : 'none';
     }
+
     if (display === 'block') {
       // notify도 여기서 관리
-      this.setState({ chatDisplay: display, messageReceived: false });
+      this.setState({
+        chatDisplay: display,
+        questionDisplay: 'none',
+        messageReceived: false,
+      });
     } else {
       this.setState({ chatDisplay: display });
     }
@@ -1036,7 +1046,33 @@ class VideoRoomComponent extends Component {
     if (display === undefined) {
       display = this.state.participantDisplay === 'none' ? 'block' : 'none';
     }
-    this.setState({ participantDisplay: display });
+
+    if (display === 'block')
+      this.setState({ participantDisplay: display, questionDisplay: 'none' });
+    else this.setState({ participantDisplay: display });
+
+    this.updateLayout();
+  }
+
+  toggleQuestion(property) {
+    let display = property;
+
+    if (display === undefined) {
+      display = this.state.questionDisplay === 'none' ? 'block' : 'none';
+    }
+
+    if (display === 'block') {
+      // notify도 여기서 관리
+      this.setState({
+        participantDisplay: 'none',
+        chatDisplay: 'none',
+        questionDisplay: display,
+        questionReceived: false,
+      });
+    } else {
+      this.setState({ questionDisplay: display });
+    }
+
     this.updateLayout();
   }
 
@@ -1044,6 +1080,13 @@ class VideoRoomComponent extends Component {
   checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === 'none',
+    });
+  }
+
+  // checkQuestionNotification: 질문 안내 확인
+  checkQuestionNotification(event) {
+    this.setState({
+      questionReceived: this.state.questionDisplay === 'none',
     });
   }
 
@@ -1385,7 +1428,7 @@ class VideoRoomComponent extends Component {
     const subscribers = this.state.subscribers;
     const chatDisplay = { display: this.state.chatDisplay };
     const participantDisplay = { display: this.state.participantDisplay };
-    console.log(this.props.type);
+    const questionDisplay = { display: this.state.questionDisplay };
 
     return (
       <>
@@ -1465,7 +1508,8 @@ class VideoRoomComponent extends Component {
             id="layout"
             className={
               this.state.chatDisplay === 'block' ||
-              this.state.participantDisplay === 'block'
+              this.state.participantDisplay === 'block' ||
+              this.state.questionDisplay === 'block'
                 ? 'sth_on_bounds'
                 : 'bounds'
             }
@@ -1546,11 +1590,28 @@ class VideoRoomComponent extends Component {
             className={
               'sth_component ' +
               (this.state.chatDisplay === 'none' &&
-              this.state.participantDisplay === 'none'
+              this.state.participantDisplay === 'none' &&
+              this.state.questionDisplay === 'none'
                 ? 'display_none'
                 : '')
             }
           >
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className="OT_root custom-class quest"
+                  style={questionDisplay}
+                >
+                  <QuestionComponent
+                    user={localUser}
+                    subscribers={subscribers}
+                    questionDisplay={this.state.questionDisplay}
+                    close={this.toggleQuestion}
+                    messageReceived={this.checkQuestionNotification}
+                    whoami={this.props.whoami}
+                  />
+                </div>
+              )}
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
                 <div
@@ -1611,6 +1672,7 @@ class VideoRoomComponent extends Component {
               sessionId={mySessionId}
               user={localUser}
               showNotification={this.state.messageReceived}
+              showQuestionNotification={this.state.questionReceived}
               camStatusChanged={this.camStatusChanged}
               micStatusChanged={this.micStatusChanged}
               pickRandomStudent={this.pickRandomStudent}
@@ -1622,13 +1684,13 @@ class VideoRoomComponent extends Component {
               selfLeaveSession={this.selfLeaveSession}
               toggleChat={this.toggleChat}
               toggleParticipant={this.toggleParticipant}
+              toggleQuestion={this.toggleQuestion}
               toggleQuiz={this.toggleQuiz}
               toggleSetting={this.toggleSetting}
               startStickerEvent={this.startStickerEvent}
               videoLayout={this.state.videoLayout}
               toggleVideoLayout={this.toggleVideoLayout}
               emoji={this.emoji}
-              question={this.question}
             />
           </div>
         </div>
