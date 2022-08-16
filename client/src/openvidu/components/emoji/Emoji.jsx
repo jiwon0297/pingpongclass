@@ -46,7 +46,11 @@ const Emoji = (props) => {
   }, [display]);
 
   return (
-    <div className={display ? 'openModal modal setting-container' : 'modal'}>
+    <div
+      className={
+        display ? 'openModal reaction-modal setting-container' : 'modal'
+      }
+    >
       {emotions.map((e, index) => {
         return (
           <img
