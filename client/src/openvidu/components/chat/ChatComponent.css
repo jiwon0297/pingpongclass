@@ -73,6 +73,12 @@
   top: 15px;
 }
 
+.level-png {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.5rem;
+}
+
 .msg-detail {
   width: calc(100% - 65px);
   display: inline-block;

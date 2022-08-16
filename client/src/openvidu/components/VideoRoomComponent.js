@@ -1659,6 +1659,7 @@ class VideoRoomComponent extends Component {
                     close={this.toggleChat}
                     messageReceived={this.checkNotification}
                     levelPng={this.props.levelPng}
+                    profile={this.props.memberStore.profileFullPath}
                   />
                 </div>
               )}
