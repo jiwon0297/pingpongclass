@@ -48,19 +48,20 @@ export default class ParticipantComponent extends Component {
   }
 
   partsSortChange(e) {
-    console.log(e.target.value);
     this.props.partsSortChange(e.target.value);
   }
 
   // render: 렌더링을 담당하는 함수
   render() {
-    const participants = this.props.subscribers;
+    const participants = this.props.subscribers.slice();
     participants.push(this.props.user);
-    const joinParts = participants.sort(
-      (a, b) => a.attendanceTime - b.attendanceTime,
-    );
-    const pongpongParts = participants.sort((a, b) => b.point - a.point);
-    const numberParts = participants.sort((a, b) => a.point - b.point);
+    if (this.props.type === 'join')
+      participants.sort((a, b) => {
+        if (a.attendanceTime > b.attendanceTime) return 1;
+        else return 0;
+      });
+    else if (this.props.type === 'pongpong')
+      participants.sort((a, b) => b.point - a.point);
     return (
       <div id="participantContainer">
         <div id="participantComponent">
