@@ -245,6 +245,8 @@ const totalContainer = css`
     color: #6e6e6e;
   }
 
+  --swiper-theme-color: #fcc97d;
+
   .pagination-progressbar-fill {
     background-color: #fdb878;
   }
