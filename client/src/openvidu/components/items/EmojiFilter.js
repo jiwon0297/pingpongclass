@@ -12,6 +12,9 @@ export default class EmojiFilter extends Component {
       <div style={{ position: 'relative', height: '100%' }}>
         {!this.state.user.screenShareActive && this.state.user.videoActive ? (
           <div>
+            {this.state.user.emoji !== '' && (
+              <img src={'../reactions/' + this.state.user.emoji + '.gif'}></img>
+            )}
             <h3
               style={{
                 position: 'absolute',

@@ -581,7 +581,7 @@ class VideoRoomComponent extends Component {
         this.whoTeacherOrStudent();
       },
     );
-    console.log('하ㅔ앟멯ㅇㅎ', subscribers);
+    // console.log('하ㅔ앟멯ㅇㅎ', subscribers);
   }
 
   // 학생이 자기혼자 나간경우
@@ -891,6 +891,9 @@ class VideoRoomComponent extends Component {
           }
           if (data.quizAnswerCreated !== undefined) {
             this.answerUpdate(data.quizAnswerCreated);
+          }
+          if (data.emojiUsed !== undefined) {
+            user.setEmoji(data.emojiUsed);
           }
         }
       });
@@ -1555,6 +1558,15 @@ class VideoRoomComponent extends Component {
       sortType: value,
     });
   };
+  // name: 오석호
+  // date: 2022/08/15
+  // desc: 이모지창을 여닫는 함수
+  sendEmoji = (e) => {
+    this.setState({ emoji: e });
+    localUser.setEmoji(e);
+    this.sendSignalUserChanged({ emojiUsed: e });
+    console.log('이모지 이벤트 핸들러');
+  };
 
   // render: 렌더링을 담당하는 함수
   render() {
@@ -1589,6 +1601,7 @@ class VideoRoomComponent extends Component {
           <Emoji
             display={this.state.emojiDisplay}
             toggleEmoji={this.emoji}
+            sendEmoji={this.sendEmoji}
             header="Emoji"
             emoji={this.state.emoji}
             whoami={this.props.whoami}
@@ -1696,6 +1709,7 @@ class VideoRoomComponent extends Component {
                     smile={this.smile}
                     outAngle={this.outAngle}
                   />
+                  {/* {<img></img>} */}
                 </div>
               )
             ) : null}

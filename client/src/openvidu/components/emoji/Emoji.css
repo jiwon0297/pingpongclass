@@ -8,13 +8,17 @@
   z-index: 100;
 }
 
+img {
+  width: 100px;
+}
+
 .temp {
   background-color: white;
 }
 
 .modal {
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(129, 86, 86, 0.6);
 }
 .modal > section {
   width: 100%;

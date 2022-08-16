@@ -4,9 +4,16 @@ import InterceptedAxios from '@utils/iAxios';
 import './Emoji.css';
 
 const Emoji = (props) => {
-  const { display, toggleEmoji, header, emoji, whoami, id } = props;
+  const { display, toggleEmoji, sendEmoji, header, emoji, whoami, id } = props;
 
-  const emotions = [];
+  // let emotions = [];
+  const [emotions, setEmotions] = useState([]);
+
+  const onClickEmotion = (e) => {
+    alert(e);
+    toggleEmoji();
+    sendEmoji(e);
+  };
 
   useEffect(() => {
     if (display) {
@@ -15,11 +22,11 @@ const Emoji = (props) => {
         alert('teacher');
       } else {
         //학생이면 보유리액션
-        alert('student');
+        console.log('student');
         InterceptedAxios.get(`/items/reaction/${id}`)
           .then(function (response) {
-            alert(id);
-            console.log('???', response);
+            setEmotions(response.data);
+            console.log(emotions);
           })
           .catch(function (error) {
             console.log(error);
@@ -29,9 +36,19 @@ const Emoji = (props) => {
   }, [display]);
 
   return (
-    <div className={display ? 'openModal modal' : 'modal'}>
+    <div className={display ? 'openModal modal setting-container' : 'modal'}>
       <div className="temp">
-        <h1>{id}</h1>
+        {emotions.map((e, index) => {
+          return (
+            <img
+              key={index}
+              src={'../reactions/' + e + '.gif'}
+              onClick={() => {
+                onClickEmotion(e);
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
