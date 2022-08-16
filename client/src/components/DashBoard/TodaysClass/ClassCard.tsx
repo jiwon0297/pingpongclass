@@ -74,8 +74,13 @@ const TotalContainer = (classUrl: string) => css`
     border-radius: 10px;
     align-items: center;
   }
+
   .class-info {
     margin-left: 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
 

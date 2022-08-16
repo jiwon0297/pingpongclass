@@ -6,6 +6,7 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@src/store/hooks';
+import { saveMember } from '@src/store/member';
 
 interface HeatMapInterface {
   point: number;
@@ -18,6 +19,9 @@ const HeatMap = () => {
   const [countList, setCountList] = useState<HeatMapInterface[]>([]);
 
   const loadHeatmapList = async () => {
+    console.log(memberStore, '///////////');
+    console.log(color[memberStore.jandiColor - 1]);
+
     const studentId = memberStore.userId;
     await AXIOS.get(`/students/points/` + studentId)
       .then(function (response) {
@@ -30,6 +34,7 @@ const HeatMap = () => {
   };
 
   useEffect(() => {
+    saveMember();
     loadHeatmapList();
   }, []);
 
