@@ -22,20 +22,16 @@ const removeAlarm = (idx, card, alarmUpdate) => {
 
 const alarms = localStorage.getItem('alarms') as any;
 const parsing = JSON.parse(alarms);
-console.log(parsing);
 
-const nthChildCard = ({ offset = 0, multiplier = 220 }) => {
+const nthChildCard = ({ offset = 65, multiplier = 220 }) => {
   const styles = {};
-  styles[`&:first-of-type`] = {
-    top: `${offset}px`,
-  };
   styles[`&:last-of-type`] = {
     top: `${offset + (parsing.length - 1) * multiplier}px`,
   };
   if (parsing) {
     parsing.forEach((_, index) => {
       if (index !== 0) {
-        styles[`&:nth-of-type(${index})`] = {
+        styles[`&:nth-of-type(${index + 1})`] = {
           top: `${offset + (index - 1) * multiplier}px`,
         };
       }
@@ -160,14 +156,14 @@ const totalContainer = css`
   .alarmCard {
     width: 360px;
     height: 200px;
+    min-height: 200px;
     padding: 20px;
     box-sizing: border-box;
     border-radius: 20px;
     background-color: #eaf1fb;
     box-shadow: 2px 2px 10px -5px;
     margin-bottom: 20px;
-    position: absolute;
-    ${nthChildCard({ offset: 20, multiplier: 220 })};
+    ${nthChildCard({ offset: 65, multiplier: 220 })};
   }
 
   /* .alarmCard:first-of-type {
