@@ -19,7 +19,7 @@ public interface ItemService {
     int usePoint(int studentId) throws Exception;
 
     //리액션 목록 조회
-    List<ItemStudentResponse> findReaction(int studentId) throws Exception;
+    List<Integer> findReaction(int studentId) throws Exception;
 
     //아이템명 조회
     String findItemName(int itemId) throws Exception;

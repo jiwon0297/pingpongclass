@@ -12,4 +12,6 @@ public interface ItemStudentRepository extends JpaRepository<ItemStudentEntity, 
     int countByStudentEntityAndItemEntity(StudentEntity studentEntity, ItemEntity itemEntity);
 
     ItemStudentEntity findFirstByStudentEntityAndItemEntity(StudentEntity studentEntity, ItemEntity itemEntity);
+
+    List<ItemStudentEntity> findAllByStudentEntity(StudentEntity student);
 }

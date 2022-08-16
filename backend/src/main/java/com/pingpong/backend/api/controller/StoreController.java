@@ -38,7 +38,7 @@ public class StoreController {
 
     @ApiOperation(value = "보유 리액션 목록 조회", notes = "학생이 보유한 리액션의 목록을 조회한다.")
     @GetMapping("/reaction/{studentId}")
-    public List<ItemStudentResponse> findReaction(@PathVariable final int studentId) throws Exception {
+    public List<Integer> findReaction(@PathVariable final int studentId) throws Exception {
         return itemService.findReaction(studentId);
     }
 

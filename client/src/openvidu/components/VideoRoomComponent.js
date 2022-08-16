@@ -20,14 +20,15 @@ import OpenViduLayout from '../layout/openvidu-layout';
 import UserModel from '../models/user-model';
 import ToolbarComponent from './toolbar/ToolbarComponent';
 import Setting from './settings/Setting';
+import Emoji from './emoji/Emoji';
 
 var localUser = new UserModel();
 
 // VideoRoomComponent: 비디오룸 전체를 담당하는 컴포넌트
 class VideoRoomComponent extends Component {
   constructor(props) {
+    console.log('component----------', props);
     super(props);
-    console.log(this.props.levelPng);
     // OPENVIDU_SERVER_URL: 오픈비두 서버쪽 URL (포트번호는 변경될 수 있음)
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //     ? this.props.openviduServerUrl
@@ -104,6 +105,8 @@ class VideoRoomComponent extends Component {
       levelPng: this.props.levelPng,
       presentationCnt: 0,
       sortType: 'all',
+      emoji: '',
+      emojiDisplay: false,
     };
 
     // 메서드 바인딩 과정
@@ -1359,6 +1362,7 @@ class VideoRoomComponent extends Component {
   // date: 2022/08/15
   // desc: 이모지창을 여닫는 함수
   emoji = () => {
+    this.setState({ emojiDisplay: !this.state.emojiDisplay });
     console.log('이모지 이벤트 핸들러');
   };
 
@@ -1406,6 +1410,15 @@ class VideoRoomComponent extends Component {
             currentVideoDeviceId={this.state.currentVideoDeviceId}
             currentAudioDeviceId={this.state.currentAudioDeviceId}
             currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+          />
+          {/* 작업중*/}
+          <Emoji
+            display={this.state.emojiDisplay}
+            toggleEmoji={this.emoji}
+            header="Emoji"
+            emoji={this.state.emoji}
+            whoami={this.props.whoami}
+            id={this.props.userId}
           />
 
           <QuizModal
