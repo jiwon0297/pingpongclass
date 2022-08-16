@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './QuizModal.css';
+import QuizResult from './QuizResult';
 import QuizComponent from './QuizComponent';
 import QuizComponent2 from './QuizComponent2';
 
@@ -34,11 +35,22 @@ class QuizModalStudent extends Component {
                 &times;
               </button>
             </header>
-            {this.state.quiz.type ? (
+            {
+              {
+                two: (
+                  <QuizComponent2 submit={this.submit} quiz={this.state.quiz} />
+                ),
+                four: (
+                  <QuizComponent submit={this.submit} quiz={this.state.quiz} />
+                ),
+                results: <QuizResult quiz={this.state.quiz} />,
+              }[this.state.quiz.type]
+            }
+            {/* {this.state.quiz.type ? (
               <QuizComponent submit={this.submit} quiz={this.state.quiz} />
             ) : (
               <QuizComponent2 submit={this.submit} quiz={this.state.quiz} />
-            )}
+            )} */}
             <footer>
               <button className="close" onClick={this.close}>
                 닫기
