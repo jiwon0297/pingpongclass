@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -109,17 +110,14 @@ public class ItemServiceImpl implements ItemService{
 
     //보유 리액션 목록조회
     @Override
-    public List<Integer> findReaction(final int studentId) throws Exception {
+    public HashSet<String> findReaction(final int studentId) throws Exception {
         StudentEntity student = studentRepository.getOne(studentId);
         List<ItemStudentEntity> haveItemlist = itemStudentRepository.findAllByStudentEntity(student);
-        List<Integer> result = new ArrayList<>();
+        HashSet<String> result = new HashSet<>();
         for(ItemStudentEntity itemlist : haveItemlist){
-//            System.out.println(itemlist.getItemEntity().getCategory());
-//            System.out.println(itemlist.getItemEntity().getCategory().equals("REACTION"));
-//            System.out.println(itemlist.getItemEntity().getItemId()>4);
             if(itemlist.getItemEntity().getItemId()>4) {
 //                System.out.println(itemlist.getItemEntity().getItemId()+"!!!");
-                result.add(itemlist.getItemEntity().getItemId());
+                result.add(itemlist.getItemEntity().getName());
             }
         }
         return result;

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Api(value = "상점 API", tags={"상점"})
@@ -38,7 +39,7 @@ public class StoreController {
 
     @ApiOperation(value = "보유 리액션 목록 조회", notes = "학생이 보유한 리액션의 목록을 조회한다.")
     @GetMapping("/reaction/{studentId}")
-    public List<Integer> findReaction(@PathVariable final int studentId) throws Exception {
+    public HashSet<String> findReaction(@PathVariable final int studentId) throws Exception {
         return itemService.findReaction(studentId);
     }
 
