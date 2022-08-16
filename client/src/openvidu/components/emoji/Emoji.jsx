@@ -4,22 +4,39 @@ import InterceptedAxios from '@utils/iAxios';
 import './Emoji.css';
 
 const Emoji = (props) => {
-  const { display, toggleEmoji, header, emoji, whoami, id } = props;
+  const { display, toggleEmoji, sendEmoji, header, emoji, whoami, id } = props;
 
-  const emotions = [];
+  // let emotions = [];
+  const [emotions, setEmotions] = useState([]);
+
+  const onClickEmotion = (emoji) => {
+    toggleEmoji();
+    sendEmoji(emoji);
+  };
 
   useEffect(() => {
     if (display) {
       if (whoami === 'teacher') {
         //선생님이면 모든 리액션
-        alert('teacher');
+        emotions = [
+          'heart',
+          'clap',
+          'cry',
+          'sweat',
+          'lauping',
+          'good',
+          'fire',
+          '100',
+          'disappointed',
+          'question',
+        ];
       } else {
         //학생이면 보유리액션
-        alert('student');
+        console.log('student');
         InterceptedAxios.get(`/items/reaction/${id}`)
           .then(function (response) {
-            alert(id);
-            console.log('???', response);
+            setEmotions(response.data);
+            console.log(emotions);
           })
           .catch(function (error) {
             console.log(error);
@@ -29,10 +46,18 @@ const Emoji = (props) => {
   }, [display]);
 
   return (
-    <div className={display ? 'openModal modal' : 'modal'}>
-      <div className="temp">
-        <h1>{id}</h1>
-      </div>
+    <div className={display ? 'openModal modal setting-container' : 'modal'}>
+      {emotions.map((e, index) => {
+        return (
+          <img
+            key={index}
+            src={'../reactions/' + e + '.gif'}
+            onClick={() => {
+              onClickEmotion(e);
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

@@ -23,7 +23,8 @@ import ToolbarComponent from './toolbar/ToolbarComponent';
 import Setting from './settings/Setting';
 import Emoji from './emoji/Emoji';
 
-var localUser = new UserModel();
+let localUser = new UserModel();
+let timeout;
 
 // VideoRoomComponent: 비디오룸 전체를 담당하는 컴포넌트
 class VideoRoomComponent extends Component {
@@ -112,6 +113,7 @@ class VideoRoomComponent extends Component {
       sortType: 'all',
       emoji: '',
       emojiDisplay: false,
+      isEmojiOn: false,
     };
 
     // 메서드 바인딩 과정
@@ -165,7 +167,7 @@ class VideoRoomComponent extends Component {
     this.toggleQuiz = this.toggleQuiz.bind(this);
     // toggleQuizStudent: 내정답 저장
     this.toggleQuizStudent = this.toggleQuizStudent.bind(this);
-    // toggleShield: 방어권창 토글 버튼 함수
+    // toggleShield: 방어권창 토글 sendEmoji버튼 함수
     this.toggleShield = this.toggleShield.bind(this);
     // checkUserHasItem: 유저의 아이템 정보 체크 함수
     this.checkUserHasItem = this.checkUserHasItem.bind(this);
@@ -184,7 +186,7 @@ class VideoRoomComponent extends Component {
     this.whoAbsent = this.whoAbsent.bind(this);
     this.whoTeacherOrStudent = this.whoTeacherOrStudent.bind(this);
     // 이모지
-    this.emoji = this.emoji.bind(this);
+    this.toggleEmoji = this.toggleEmoji.bind(this);
     // 익명질문
     this.question = this.question.bind(this);
     // 발표 횟수 체크
@@ -574,6 +576,7 @@ class VideoRoomComponent extends Component {
             presentationCnt: this.state.localUser.getPresentationCnt(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
             frameColor: this.state.localUser.getFrameColor(),
+            emojiUsed: this.state.localUser.getEmoji(),
           });
         }
         this.updateLayout();
@@ -581,7 +584,7 @@ class VideoRoomComponent extends Component {
         this.whoTeacherOrStudent();
       },
     );
-    console.log('하ㅔ앟멯ㅇㅎ', subscribers);
+    // console.log('하ㅔ앟멯ㅇㅎ', subscribers);
   }
 
   // 학생이 자기혼자 나간경우
@@ -891,6 +894,9 @@ class VideoRoomComponent extends Component {
           }
           if (data.quizAnswerCreated !== undefined) {
             this.answerUpdate(data.quizAnswerCreated);
+          }
+          if (data.emojiUsed !== undefined) {
+            user.setEmoji(data.emojiUsed);
           }
         }
       });
@@ -1535,10 +1541,10 @@ class VideoRoomComponent extends Component {
   // name: 오석호
   // date: 2022/08/15
   // desc: 이모지창을 여닫는 함수
-  emoji = () => {
+  toggleEmoji() {
     this.setState({ emojiDisplay: !this.state.emojiDisplay });
     console.log('이모지 이벤트 핸들러');
-  };
+  }
 
   // name: 오석호
   // date: 2022/08/15
@@ -1554,6 +1560,22 @@ class VideoRoomComponent extends Component {
     this.setState({
       sortType: value,
     });
+  };
+  // name: 오석호
+  // date: 2022/08/15
+  // desc: 이모지창을 여닫는 함수
+  sendEmoji = (emoji) => {
+    if (timeout) clearTimeout(timeout); // 쓰로틀링을 사용했습니다.
+    localUser.setEmoji(emoji);
+    this.setState({ emoji: emoji });
+
+    // localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+    this.sendSignalUserChanged({ emojiUsed: emoji });
+    timeout = setTimeout(() => {
+      localUser.setEmoji('');
+      this.setState({ emoji: '' });
+      this.sendSignalUserChanged({ emojiUsed: '' });
+    }, 3000);
   };
 
   // render: 렌더링을 담당하는 함수
@@ -1588,7 +1610,8 @@ class VideoRoomComponent extends Component {
           {/* 작업중*/}
           <Emoji
             display={this.state.emojiDisplay}
-            toggleEmoji={this.emoji}
+            toggleEmoji={this.toggleEmoji}
+            sendEmoji={this.sendEmoji}
             header="Emoji"
             emoji={this.state.emoji}
             whoami={this.props.whoami}
@@ -1671,8 +1694,10 @@ class VideoRoomComponent extends Component {
                   id="localUser"
                 >
                   <StreamComponent
-                    user={localUser}
+                    user={this.state.localUser}
                     currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                    toggleEmoji={this.toggleEmoji}
+                    emoji={this.state.emoji}
                   />
                   <FaceDetection
                     autoPlay={localUser.isScreenShareActive() ? false : true}
@@ -1687,8 +1712,10 @@ class VideoRoomComponent extends Component {
                   id="localUser"
                 >
                   <StreamComponent
-                    user={localUser}
+                    user={this.state.localUser}
                     currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                    toggleEmoji={this.toggleEmoji}
+                    emoji={this.state.emoji}
                   />
                   <FaceDetection
                     autoPlay={localUser.isScreenShareActive() ? false : true}
@@ -1696,6 +1723,7 @@ class VideoRoomComponent extends Component {
                     smile={this.smile}
                     outAngle={this.outAngle}
                   />
+                  {/* {<img></img>} */}
                 </div>
               )
             ) : null}
@@ -1713,6 +1741,8 @@ class VideoRoomComponent extends Component {
                     user={sub}
                     streamId={sub.streamManager.stream.streamId}
                     currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                    toggleEmoji={this.toggleEmoji}
+                    emoji={this.state.emoji}
                   />
                   <EmojiFilter user={sub} />
                 </div>
@@ -1726,6 +1756,8 @@ class VideoRoomComponent extends Component {
                     user={sub}
                     streamId={sub.streamManager.stream.streamId}
                     currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                    toggleEmoji={this.toggleEmoji}
+                    emoji={this.state.emoji}
                   />
                   <EmojiFilter user={sub} />
                 </div>
@@ -1837,7 +1869,7 @@ class VideoRoomComponent extends Component {
               startStickerEvent={this.startStickerEvent}
               videoLayout={this.state.videoLayout}
               toggleVideoLayout={this.toggleVideoLayout}
-              emoji={this.emoji}
+              toggleEmoji={this.toggleEmoji}
             />
           </div>
         </div>

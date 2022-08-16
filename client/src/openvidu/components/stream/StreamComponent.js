@@ -21,11 +21,17 @@ export default class StreamComponent extends Component {
     };
     this.handlePressKey = this.handlePressKey.bind(this);
     this.toggleSound = this.toggleSound.bind(this);
+    this.toggleEmoji = this.toggleEmoji.bind(this);
+    console.log('나', this.props.user);
   }
 
   // toggleSound: 사운드를 뮤트하거나 풀 수 있는 토글 버튼 함수
   toggleSound() {
     this.setState({ mutedSound: !this.state.mutedSound });
+  }
+
+  toggleEmoji() {
+    this.props.toggleEmoji();
   }
 
   // handlePressKey: 키를 눌렀을 때 동작하는 이벤트핸들러
@@ -57,13 +63,18 @@ export default class StreamComponent extends Component {
   render() {
     return (
       <div className="OT_widget-container" style={this.state.frameColor.value}>
+        {this.props.user.getEmoji() ? (
+          <img
+            className="reaction-img"
+            src={'../reactions/' + this.props.user.getEmoji() + '.gif'}
+          />
+        ) : null}
         {/* 닉네임창 */}
         <div className="nickname">
           <div>
             <span id="nickname">{this.props.user.getNickname()}</span>
           </div>
         </div>
-
         {/* 영상 출력 부분 */}
         {this.props.user !== undefined &&
         this.props.user.getStreamManager() !== undefined ? (

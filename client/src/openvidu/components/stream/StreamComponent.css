@@ -51,7 +51,7 @@ video {
 }
 
 #statusIcons {
-  bottom: 0;
+  bottom: 40px;
   background: #c71100;
   width: 40px;
   height: fit-content;
@@ -75,8 +75,8 @@ video {
 #volumeButton {
   background-color: #000000c4;
   position: absolute;
-  bottom: 45px;
-  right: 1px;
+  bottom: 0;
+  left: 0;
   z-index: 1000;
   color: #ffffff;
 }
@@ -91,4 +91,14 @@ video {
 #input,
 #label {
   color: white;
+}
+
+.reaction-img {
+  position: absolute;
+  background-color: transparent;
+  width: 8rem;
+  /* background-color: red; */
+  z-index: 1000;
+  bottom: 0;
+  right: 0;
 }
