@@ -101,6 +101,7 @@ class VideoRoomComponent extends Component {
       totalWidth: 0,
       stickers: [],
       quiz: {},
+      quizHistory: [],
       settingDisplay: false,
       videoLayout: 'bigTeacher',
       levelPng: this.props.levelPng,
@@ -1440,7 +1441,10 @@ class VideoRoomComponent extends Component {
   toggleQuiz = (quiz) => {
     if (quiz) {
       this.sendSignalUserChanged({ quizCreated: quiz });
-      this.setState({ quiz: quiz });
+      this.setState({
+        quiz: quiz,
+        quizHistory: [...this.state.quizHistory, quiz],
+      });
     } else {
       this.setState({ quizDisplay: !this.state.quizDisplay });
     }
@@ -1455,7 +1459,10 @@ class VideoRoomComponent extends Component {
 
   popUpQuiz = (newQuiz) => {
     if (newQuiz) {
-      this.setState({ quiz: newQuiz, quizDisplayStudent: true });
+      this.setState({
+        quiz: newQuiz,
+        quizDisplayStudent: true,
+      });
     }
   };
 
@@ -1552,13 +1559,14 @@ class VideoRoomComponent extends Component {
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="Quiz Modal"
+            header="퀴즈"
             quiz={this.state.quiz}
+            quizHistory={this.state.quizHistory}
           />
           <QuizModalStudent
             display={this.state.quizDisplayStudent}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="Quiz Modal"
+            header="퀴즈"
             quiz={this.state.quiz}
           />
           <ShieldModalLoading

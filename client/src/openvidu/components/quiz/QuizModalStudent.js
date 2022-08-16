@@ -26,15 +26,18 @@ class QuizModalStudent extends Component {
 
   submit = (answer) => {
     this.props.toggleQuizStudent(answer);
-    if (this.state.quiz.type === false) {
-      if (answer === 'a1') {
-        this.setState({ answer: 'O' });
-      } else {
-        this.setState({ answer: 'X' });
-      }
-    } else {
-      this.setState({ answer: answer });
+    let answerText = '';
+    if (answer === 'a1') {
+      answerText = this.props.quiz.A1;
+    } else if (answer === 'a2') {
+      answerText = this.props.quiz.A2;
+    } else if (answer === 'a3') {
+      answerText = this.props.quiz.A3;
+    } else if (answer === 'a4') {
+      answerText = this.props.quiz.A4;
     }
+
+    this.setState({ answer: answerText });
   };
 
   render() {

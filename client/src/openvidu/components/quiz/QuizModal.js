@@ -12,6 +12,7 @@ class QuizModal extends Component {
       display: this.props.display,
       content: 'two',
       quiz: this.props.quiz,
+      idx: 0,
     };
   }
 
@@ -29,11 +30,9 @@ class QuizModal extends Component {
   };
 
   sendResult = () => {
-    console.log(this.props.quiz);
     const quizResult = { ...this.props.quiz, result: true };
     this.props.toggleQuiz(quizResult);
     this.setState({ quiz: quizResult });
-    console.log(quizResult);
   };
 
   quizCreate = (quiz) => {
@@ -43,6 +42,10 @@ class QuizModal extends Component {
 
   contentChange = (e) => {
     this.setState({ content: e });
+  };
+
+  loadHistory = (index, e) => {
+    this.setState({ idx: index, content: e });
   };
 
   render() {
@@ -59,13 +62,20 @@ class QuizModal extends Component {
                 {
                   two: <QuizForm2 quizCreate={this.quizCreate} />,
                   four: <QuizForm quizCreate={this.quizCreate} />,
-                  list: (
-                    <QuizListCard
-                      quiz={this.state.quiz}
-                      contentChange={this.contentChange}
-                    />
-                  ),
+                  list: this.props.quizHistory.map((q, index) => {
+                    return (
+                      <QuizListCard
+                        key={index}
+                        historyKey={index}
+                        quiz={q}
+                        loadHistory={this.loadHistory}
+                      />
+                    );
+                  }),
                   results: <QuizResult quiz={this.state.quiz} />,
+                  history: (
+                    <QuizResult quiz={this.props.quizHistory[this.state.idx]} />
+                  ),
                 }[this.state.content]
               }
             </div>
