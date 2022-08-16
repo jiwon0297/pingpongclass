@@ -113,7 +113,6 @@ const totalContainer = css`
   .alarmModal {
     min-width: 400px;
     width: 400px;
-    /* width: max-content; */
     height: 85%;
     padding: 20px;
     margin-top: 50px;
@@ -165,10 +164,6 @@ const totalContainer = css`
     margin-bottom: 20px;
     ${nthChildCard({ offset: 65, multiplier: 220 })};
   }
-
-  /* .alarmCard:first-of-type {
-    top: 65px;
-  } */
 `;
 
 export default AlarmModal;
