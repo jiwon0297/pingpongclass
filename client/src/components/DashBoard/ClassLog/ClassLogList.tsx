@@ -148,7 +148,7 @@ const totalContainer = css`
   }
 
   .logContainer {
-    width: 60%;
+    width: 66%;
     height: 100%;
     align-items: center;
     justify-content: center;
@@ -156,6 +156,7 @@ const totalContainer = css`
     flex-direction: column;
     border-radius: 20px;
     border: 1px solid gray;
+    overflow-y: auto;
   }
 
   .react-calendar {

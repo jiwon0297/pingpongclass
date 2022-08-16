@@ -70,7 +70,7 @@ const Ranking = () => {
     setVisible(!visible);
   };
 
-  const onClickEdit = (e) => {
+  const onClickEdit = () => {
     setIsEdit(!isEdit);
   };
 
@@ -151,8 +151,8 @@ const Ranking = () => {
                 <TextField
                   id="standard-basic"
                   variant="standard"
-                  value={myRanking?.introduce}
-                  onChange={(e) => onChangeIntroduce(e)}
+                  value={introduce}
+                  onChange={onChangeIntroduce}
                   style={{
                     height: '35px',
                     width: '70%',
