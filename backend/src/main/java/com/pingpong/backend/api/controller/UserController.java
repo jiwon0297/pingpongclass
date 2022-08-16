@@ -28,7 +28,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Map;
 
-@Api(value = "유저 API", tags={"Users(학생, 선생님) 비밀번호 찾기"})
+@Api(value = "유저 API", tags={"유저 컨트롤러"})
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/be/users")
@@ -119,7 +119,7 @@ public class UserController {
 
     @GetMapping("/info")
     @PreAuthorize("hasRole('STUDENT')")
-    @ApiOperation(value = "유저 정보 제공!!!", notes = "")
+    @ApiOperation(value = "token 유저 정보 제공", notes = "전달받은 access token으로 유저정보 반환")
     public ResponseEntity<?> getUserInfo() {
         String id = SecurityUtil.getCurrentUsername();
         if(id == null) return new ResponseEntity<String>("로그인된 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);

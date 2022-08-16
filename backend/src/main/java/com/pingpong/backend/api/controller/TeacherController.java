@@ -116,11 +116,10 @@ public class TeacherController {
         }
     }
 
-    //링크로 비밀번호 수정하러 들어올 때, teacher 권한 줘야할듯
     @ApiOperation(value = "비밀번호 수정", notes = "비밀번호 수정")
     @PatchMapping("/password")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> modifyPassword(@RequestBody TeacherEntity teacher){
+    public ResponseEntity<?> modifyPassword(@RequestBody TeacherRequest teacher){
         try{
             service.modifyPassword(teacher.getTeacherId(),teacher.getPassword());
             return new ResponseEntity<String>("선생님 비밀번호 수정 성공", HttpStatus.OK);
@@ -132,7 +131,7 @@ public class TeacherController {
     @ApiOperation(value = "이메일 수정", notes = "이메일 수정")
     @PatchMapping("/email")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> modifyEmail(@RequestBody TeacherEntity teacher){
+    public ResponseEntity<?> modifyEmail(@RequestBody TeacherRequest teacher){
         try {
             service.modifyEmail(teacher.getTeacherId(), teacher.getEmail());
             System.out.println(teacher.getTeacherId()+","+ teacher.getEmail());
