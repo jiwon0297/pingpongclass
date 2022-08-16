@@ -324,7 +324,7 @@ const totalContainer = () => css`
   }
   .teacher-box {
     background-color: white;
-    height: 80%;
+    height: 93%;
   }
 
   input {

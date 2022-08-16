@@ -3,6 +3,7 @@ package com.pingpong.backend.api.service;
 import com.pingpong.backend.api.domain.ItemEntity;
 import com.pingpong.backend.api.domain.response.ItemStudentResponse;
 
+import java.util.HashSet;
 import java.util.List;
 
 public interface ItemService {
@@ -19,7 +20,7 @@ public interface ItemService {
     int usePoint(int studentId) throws Exception;
 
     //리액션 목록 조회
-    List<ItemStudentResponse> findReaction(int studentId) throws Exception;
+    HashSet<String> findReaction(int studentId) throws Exception;
 
     //아이템명 조회
     String findItemName(int itemId) throws Exception;

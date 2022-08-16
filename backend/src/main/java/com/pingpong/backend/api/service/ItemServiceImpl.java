@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -108,13 +110,14 @@ public class ItemServiceImpl implements ItemService{
 
     //보유 리액션 목록조회
     @Override
-    public List<ItemStudentResponse> findReaction(int studentId) throws Exception {
+    public HashSet<String> findReaction(final int studentId) throws Exception {
         StudentEntity student = studentRepository.getOne(studentId);
-        List<ItemEntity> haveItemlist = itemRepository.findAll();
-        List<ItemStudentResponse> result = new ArrayList<>();
-        for(ItemEntity itemlist : haveItemlist){
-            if(itemlist.getCategory().equals("REACTION")) {
-                result.add(new ItemStudentResponse(itemlist, itemStudentRepository.countByStudentEntityAndItemEntity(student, itemlist)));
+        List<ItemStudentEntity> haveItemlist = itemStudentRepository.findAllByStudentEntity(student);
+        HashSet<String> result = new HashSet<>();
+        for(ItemStudentEntity itemlist : haveItemlist){
+            if(itemlist.getItemEntity().getItemId()>4) {
+//                System.out.println(itemlist.getItemEntity().getItemId()+"!!!");
+                result.add(itemlist.getItemEntity().getName());
             }
         }
         return result;

@@ -70,7 +70,7 @@ const Ranking = () => {
     setVisible(!visible);
   };
 
-  const onClickEdit = (e) => {
+  const onClickEdit = () => {
     setIsEdit(!isEdit);
   };
 
