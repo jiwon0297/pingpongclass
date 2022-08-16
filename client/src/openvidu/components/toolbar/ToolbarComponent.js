@@ -49,7 +49,7 @@ export default class ToolbarComponent extends Component {
     this.toggleSetting = this.toggleSetting.bind(this);
     this.selfLeaveSession = this.selfLeaveSession.bind(this);
     this.toggleVideoLayout = this.toggleVideoLayout.bind(this);
-    this.emoji = this.emoji.bind(this);
+    this.toggleEmoji = this.toggleEmoji.bind(this);
     this.toggleQuestion = this.toggleQuestion.bind(this);
   }
 
@@ -102,8 +102,8 @@ export default class ToolbarComponent extends Component {
     this.props.toggleParticipant();
   }
 
-  emoji() {
-    this.props.emoji();
+  toggleEmoji() {
+    this.props.toggleEmoji();
   }
 
   toggleQuestion() {
@@ -398,7 +398,7 @@ export default class ToolbarComponent extends Component {
 
             <IconButton
               color="inherit"
-              onClick={this.emoji}
+              onClick={this.toggleEmoji}
               className="navButton"
               id="navEmoji"
             >

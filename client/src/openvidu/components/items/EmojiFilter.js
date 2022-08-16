@@ -4,7 +4,7 @@ export default class EmojiFilter extends Component {
   constructor(props) {
     super(props);
     this.state = { user: this.props.user };
-    console.log(this.state.user);
+    console.log('---------------EmojiFilter', this.state.user);
   }
 
   render() {

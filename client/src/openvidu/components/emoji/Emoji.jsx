@@ -9,17 +9,27 @@ const Emoji = (props) => {
   // let emotions = [];
   const [emotions, setEmotions] = useState([]);
 
-  const onClickEmotion = (e) => {
-    alert(e);
+  const onClickEmotion = (emoji) => {
     toggleEmoji();
-    sendEmoji(e);
+    sendEmoji(emoji);
   };
 
   useEffect(() => {
     if (display) {
       if (whoami === 'teacher') {
         //선생님이면 모든 리액션
-        alert('teacher');
+        emotions = [
+          'heart',
+          'clap',
+          'cry',
+          'sweat',
+          'lauping',
+          'good',
+          'fire',
+          '100',
+          'disappointed',
+          'question',
+        ];
       } else {
         //학생이면 보유리액션
         console.log('student');
@@ -37,19 +47,17 @@ const Emoji = (props) => {
 
   return (
     <div className={display ? 'openModal modal setting-container' : 'modal'}>
-      <div className="temp">
-        {emotions.map((e, index) => {
-          return (
-            <img
-              key={index}
-              src={'../reactions/' + e + '.gif'}
-              onClick={() => {
-                onClickEmotion(e);
-              }}
-            />
-          );
-        })}
-      </div>
+      {emotions.map((e, index) => {
+        return (
+          <img
+            key={index}
+            src={'../reactions/' + e + '.gif'}
+            onClick={() => {
+              onClickEmotion(e);
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

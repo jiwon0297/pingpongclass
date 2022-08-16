@@ -1,24 +1,16 @@
 .setting-container {
+  width: 30%;
+  height: 20%;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  justify-items: center;
   align-items: center;
-  margin: 0px;
-  z-index: 100;
 }
 
 img {
-  width: 100px;
+  width: 50px;
 }
-
-.temp {
-  background-color: white;
-}
-
 .modal {
   z-index: 9999;
-  background-color: rgba(129, 86, 86, 0.6);
+  background-color: rgba(152, 145, 145, 0.6);
 }
 .modal > section {
   width: 100%;
