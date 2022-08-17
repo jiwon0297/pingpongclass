@@ -852,6 +852,7 @@ class VideoRoomComponent extends Component {
             } else if (!data.isScreenShareActive) {
               this.setState({ videoLayout: 'bigTeacher' });
             }
+            this.updateLayout();
           }
           if (data.picked !== undefined) {
             user.setPicked(data.picked);
@@ -1141,6 +1142,11 @@ class VideoRoomComponent extends Component {
     isScreenShared =
       this.state.subscribers.some((user) => user.isScreenShareActive()) ||
       localUser.isScreenShareActive();
+    if (isScreenShared) {
+      this.setState({ videoLayout: 'screenShareOn' });
+    } else {
+      this.setState({ videoLayout: 'bigTeacher' });
+    }
     const openviduLayoutOptions = {
       maxRatio: 9 / 16,
       minRatio: 9 / 16,
@@ -1341,7 +1347,7 @@ class VideoRoomComponent extends Component {
   };
 
   // name: 한준수
-  // date: 2022/08/13
+  // date: 2022/08/17
   // desc: checkUserHasItem: 아이템 소지 여부를 체크하는 함수
   // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저의 아이템 소지여부를 확인해서 boolean값으로 반환하는 함수
   async checkUserHasItem(itemId) {
@@ -1355,17 +1361,18 @@ class VideoRoomComponent extends Component {
         // 2안 memberStore에 저장된 정보 가져오기
         // const list = this.props.memberStore.items;
         // console.log(list);
+        let cnt = 0;
         list.forEach((elem) => {
           if (elem.itemId === itemId && elem.cnt !== 0) {
             console.log('보유 갯수: ' + elem.cnt);
-            return true;
+            cnt = elem.cnt;
           }
         });
         // 아이템이 없는 경우
-        return false;
+        return cnt;
       } else {
         // 잘못된 itemId값 입력
-        return false;
+        return 0;
       }
     }
   }
@@ -1403,6 +1410,7 @@ class VideoRoomComponent extends Component {
     for (let i = 1; i <= multiple; i++) {
       this.addNewSticker(i);
     }
+    this.setState({ stickers: this.state.stickers });
     // console.log(this.state.stickers);
     // this.setState({ stickers: this.state.stickers });
     setTimeout(() => {
@@ -1428,7 +1436,6 @@ class VideoRoomComponent extends Component {
     };
 
     this.state.stickers.push(newSticker);
-    this.setState({ stickers: this.state.stickers });
   };
 
   // removeAllStickers: 호출 시 현재 화면에 생성된 모든 칭찬스티커를 제거하는 함수
@@ -1438,7 +1445,6 @@ class VideoRoomComponent extends Component {
 
   // removeSticker: 호출 시 int값으로 주어진 current을 키값으로 가지는 칭찬스티커를 제거하는 함수
   removeSticker = (current) => {
-    console.log('제거중' + current);
     this.setState({
       stickers: this.state.stickers.filter(
         (sticker) => sticker.key !== current,
@@ -1535,7 +1541,7 @@ class VideoRoomComponent extends Component {
   };
 
   // name: 한준수
-  // date: 2022/08/13
+  // date: 2022/08/17
   // desc: 영상 레이아웃 토글 변경 함수
   toggleVideoLayout = () => {
     if (this.state.videoLayout === 'bigTeacher') {
@@ -1693,84 +1699,54 @@ class VideoRoomComponent extends Component {
           >
             {localUser !== undefined &&
             localUser.getStreamManager() !== undefined ? (
-              (this.state.videoLayout === 'bigTeacher' &&
-                localUser.nickname.includes('[선생님]')) ||
-              (this.state.videoLayout === 'screenShareOn' &&
-                localUser.isScreenShareActive()) ? (
-                <div
-                  className="OT_root OT_publisher custom-class OV_big"
-                  id="localUser"
-                >
-                  <StreamComponent
-                    user={this.state.localUser}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <FaceDetection
-                    autoPlay={localUser.isScreenShareActive() ? false : true}
-                    camera={localUser.isVideoActive() ? false : true}
-                    smile={this.smile}
-                    outAngle={this.outAngle}
-                  />
-                </div>
-              ) : (
-                <div
-                  className="OT_root OT_publisher custom-class"
-                  id="localUser"
-                >
-                  <StreamComponent
-                    user={this.state.localUser}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <FaceDetection
-                    autoPlay={localUser.isScreenShareActive() ? false : true}
-                    camera={localUser.isVideoActive() ? false : true}
-                    smile={this.smile}
-                    outAngle={this.outAngle}
-                  />
-                  {/* {<img></img>} */}
-                </div>
-              )
+              <div
+                className={
+                  (this.state.videoLayout === 'bigTeacher' &&
+                    localUser.nickname.includes('[선생님]')) ||
+                  (this.state.videoLayout === 'screenShareOn' &&
+                    localUser.isScreenShareActive() === true)
+                    ? 'OT_root OT_publisher custom-class OV_big'
+                    : 'OT_root OT_publisher custom-class'
+                }
+                id="localUser"
+              >
+                <StreamComponent
+                  user={this.state.localUser}
+                  currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                  toggleEmoji={this.toggleEmoji}
+                  emoji={this.state.emoji}
+                />
+                <FaceDetection
+                  autoPlay={localUser.isScreenShareActive() ? false : true}
+                  camera={localUser.isVideoActive() ? false : true}
+                  smile={this.smile}
+                  outAngle={this.outAngle}
+                />
+              </div>
             ) : null}
-            {this.state.subscribers.map((sub, i) =>
-              (this.state.videoLayout === 'bigTeacher' &&
-                sub.nickname.includes('[선생님]')) ||
-              (this.state.videoLayout === 'screenShareOn' &&
-                sub.isScreenShareActive) ? (
-                <div
-                  key={i}
-                  className="OT_root OT_publisher custom-class OV_big"
-                  id="remoteUsers"
-                >
-                  <StreamComponent
-                    user={sub}
-                    streamId={sub.streamManager.stream.streamId}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <EmojiFilter user={sub} />
-                </div>
-              ) : (
-                <div
-                  key={i}
-                  className="OT_root OT_publisher custom-class"
-                  id="remoteUsers"
-                >
-                  <StreamComponent
-                    user={sub}
-                    streamId={sub.streamManager.stream.streamId}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <EmojiFilter user={sub} />
-                </div>
-              ),
-            )}
+            {this.state.subscribers.map((sub, i) => (
+              <div
+                key={i}
+                className={
+                  (this.state.videoLayout === 'bigTeacher' &&
+                    sub.nickname.includes('[선생님]')) ||
+                  (this.state.videoLayout === 'screenShareOn' &&
+                    sub.isScreenShareActive() === true)
+                    ? 'OT_root OT_publisher custom-class OV_big'
+                    : 'OT_root OT_publisher custom-class'
+                }
+                id="remoteUsers"
+              >
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                  currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                  toggleEmoji={this.toggleEmoji}
+                  emoji={this.state.emoji}
+                />
+                <EmojiFilter user={sub} />
+              </div>
+            ))}
           </div>
           <div
             className={
