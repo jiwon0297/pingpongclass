@@ -29,7 +29,6 @@ let timeout;
 // VideoRoomComponent: 비디오룸 전체를 담당하는 컴포넌트
 class VideoRoomComponent extends Component {
   constructor(props) {
-    console.log('component----------', props);
     super(props);
 
     // OPENVIDU_SERVER_URL: 오픈비두 서버쪽 URL (포트번호는 변경될 수 있음)
@@ -637,7 +636,6 @@ class VideoRoomComponent extends Component {
             classId: this.props.classId,
           },
         );
-        console.log('수업이 종료되었습니다.', result);
       } catch (e) {
         console.error(e);
       }
@@ -721,7 +719,6 @@ class VideoRoomComponent extends Component {
   // 발표 횟수 증가 함수
   upPresentationCnt() {
     this.state.localUser.upPresentationCnt();
-    console.log('잘 작동함: ', this.state.localUser.presentationCnt);
     this.sendSignalUserChanged({
       presentationCnt: localUser.getPresentationCnt(),
     });
@@ -1370,7 +1367,6 @@ class VideoRoomComponent extends Component {
         let cnt = 0;
         list.forEach((elem) => {
           if (elem.itemId === itemId && elem.cnt !== 0) {
-            console.log('보유 갯수: ' + elem.cnt);
             cnt = elem.cnt;
           }
         });
@@ -1403,11 +1399,12 @@ class VideoRoomComponent extends Component {
   // desc: startStickerEvent: 칭찬스티커 클릭이벤트를 발생시키는 함수
   // todo: subscribers에게 sendSignalUserChanged를 통해 클릭이벤트를 발생시키는 함수
   startStickerEvent = () => {
-    this.state.subscribers.forEach((subs) => {
-      this.sendSignalUserChanged({
-        clickEvent: 3,
-      });
+    this.sendSignalUserChanged({
+      clickEvent: 5,
+      // clickEvent: 3,
     });
+    // this.state.subscribers.forEach((subs) => {
+    // });
   };
 
   // addNewStickers: 호출 시 int값으로 주어진 multiple개 만큼의 칭찬스티커를 전체 화면에 생성하는 함수
@@ -1597,13 +1594,13 @@ class VideoRoomComponent extends Component {
   // desc: 이모지창을 여닫는 함수
   sendEmoji = (emoji) => {
     if (timeout) clearTimeout(timeout); // 쓰로틀링을 사용했습니다.
-    // localUser.setEmoji(emoji);
+    localUser.setEmoji(emoji);
     this.setState({ emoji: emoji });
 
     // localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ emojiUsed: emoji });
     timeout = setTimeout(() => {
-      // localUser.setEmoji('');
+      localUser.setEmoji('');
       this.setState({ emoji: '' });
       this.sendSignalUserChanged({ emojiUsed: '' });
     }, 3 * 1000);
@@ -1611,7 +1608,6 @@ class VideoRoomComponent extends Component {
 
   toggleTeacherMenu() {
     this.setState({ teacherMenuDisplay: !this.state.teacherMenuDisplay });
-    console.log(this.state.teacherMenuDisplay);
   }
 
   // render: 렌더링을 담당하는 함수
