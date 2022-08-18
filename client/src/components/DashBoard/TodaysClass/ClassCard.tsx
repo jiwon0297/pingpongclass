@@ -73,8 +73,8 @@ const TotalContainer = (classUrl: string) => css`
   }
 
   .class-info {
-    margin-left: 16px;
     width: 100%;
+    height: 66px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
