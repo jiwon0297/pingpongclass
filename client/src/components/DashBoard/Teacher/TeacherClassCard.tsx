@@ -164,8 +164,8 @@ const TotalContainer = (isMouseOn) => css`
     color: white;
     cursor: pointer;
     position: absolute;
-    top: 11rem;
-    left: 11.5rem;
+    bottom: 1.25rem;
+    right: 0.5rem;
   }
 `;
 
