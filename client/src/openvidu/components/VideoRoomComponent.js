@@ -1598,13 +1598,13 @@ class VideoRoomComponent extends Component {
   // desc: 이모지창을 여닫는 함수
   sendEmoji = (emoji) => {
     if (timeout) clearTimeout(timeout); // 쓰로틀링을 사용했습니다.
-    // localUser.setEmoji(emoji);
+    localUser.setEmoji(emoji);
     this.setState({ emoji: emoji });
 
     // localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ emojiUsed: emoji });
     timeout = setTimeout(() => {
-      // localUser.setEmoji('');
+      localUser.setEmoji('');
       this.setState({ emoji: '' });
       this.sendSignalUserChanged({ emojiUsed: '' });
     }, 3 * 1000);
