@@ -255,7 +255,7 @@ const TeacherResult = ({
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="퐁퐁" stackId="a" fill="#a589cd" />
+                        <Bar dataKey="퐁퐁이" stackId="a" fill="#a589cd" />
                         <Bar dataKey="발표횟수" stackId="a" fill="#f3ca7e" />
                       </BarChart>
                     </ResponsiveContainer>
