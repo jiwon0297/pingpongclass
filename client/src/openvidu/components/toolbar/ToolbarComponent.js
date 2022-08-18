@@ -264,8 +264,8 @@ export default class ToolbarComponent extends Component {
               <div className="teacher-toolbar">
                 <TeachersToolbar
                   display={this.props.teacherMenuDisplay}
-                  randAvailable={this.props.randAvailable}
-                  stickerAvailable={this.props.stickerAvailable}
+                  randAvailable={this.state.randAvailable}
+                  stickerAvailable={this.state.stickerAvailable}
                   pickRandomStudent={this.pickRandomStudent}
                   startStickerEvent={this.startStickerEvent}
                   toggleQuiz={this.toggleQuiz}

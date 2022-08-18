@@ -1855,8 +1855,6 @@ class VideoRoomComponent extends Component {
               toggleEmoji={this.toggleEmoji}
               toggleTeacherMenu={this.toggleTeacherMenu}
               teacherMenuDisplay={this.state.teacherMenuDisplay}
-              randAvailable={this.state.randAvailable}
-              stickerAvailable={this.state.stickerAvailable}
             />
           </div>
         </div>

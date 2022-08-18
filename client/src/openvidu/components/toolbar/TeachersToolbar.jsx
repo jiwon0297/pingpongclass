@@ -13,7 +13,6 @@ const TeachersToolbar = ({
   toggleQuiz,
   toggleTeacherMenu,
 }) => {
-  console.log('이거', display);
   const onClickRandomPick = () => {
     pickRandomStudent();
     toggleTeacherMenu();
