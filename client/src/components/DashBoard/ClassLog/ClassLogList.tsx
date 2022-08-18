@@ -34,7 +34,6 @@ const ClassLogList = () => {
     })
       .then(function (response) {
         setLogList(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log('실패', error);
@@ -45,7 +44,6 @@ const ClassLogList = () => {
     await AXIOS.get('/records/log/student/' + memberStore.userId)
       .then(function (response) {
         setDateList(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log('실패', error);
