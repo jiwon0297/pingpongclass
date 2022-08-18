@@ -541,7 +541,7 @@ const TotalResult = css`
     }
 
     .student-result-data {
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     .student-result-data::-webkit-scrollbar {

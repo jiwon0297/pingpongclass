@@ -546,7 +546,7 @@ const totalContainer = css`
   .tableArea {
     width: 100%;
     height: 35%;
-    overflow-y: scroll;
+    overflow-y: auto;
     text-align: center;
   }
 

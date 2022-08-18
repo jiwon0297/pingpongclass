@@ -283,7 +283,7 @@ const totalContainer = css`
     height: 85%;
     /* overflow-y: scroll; */
     text-align: center;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   /* 스크롤 바 숨기기 */
