@@ -199,20 +199,6 @@ const SetupComponent = (props) => {
                 [{classTitle} 수업]{' '}
                 <span className="teacher-span">{teacherName}선생님</span>
               </div>
-              {canUseDoublePongpong && (
-                <div className="double-pongpong-toggle">
-                  {isUsedDoublePongpong ? (
-                    <span>더블퐁퐁권 사용O</span>
-                  ) : (
-                    <span>더블퐁퐁권 사용X</span>
-                  )}
-                  <Switch
-                    checked={isUsedDoublePongpong}
-                    onClick={onClickDoublePongpong}
-                    color="error"
-                  />
-                </div>
-              )}
 
               <div className="preview">
                 <video
@@ -277,6 +263,20 @@ const SetupComponent = (props) => {
                   </select>
                 </div>
               </div>
+              {canUseDoublePongpong && (
+                <div className="double-pongpong-toggle">
+                  {isUsedDoublePongpong ? (
+                    <span>더블퐁퐁권 사용O</span>
+                  ) : (
+                    <span>더블퐁퐁권 사용X</span>
+                  )}
+                  <Switch
+                    checked={isUsedDoublePongpong}
+                    onClick={onClickDoublePongpong}
+                    color="error"
+                  />
+                </div>
+              )}
               <div className="next">
                 <button className="nextBtn" onClick={goNext}>
                   입장하기
