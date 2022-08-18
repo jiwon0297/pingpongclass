@@ -1404,7 +1404,7 @@ class VideoRoomComponent extends Component {
   // todo: subscribers에게 sendSignalUserChanged를 통해 클릭이벤트를 발생시키는 함수
   startStickerEvent = () => {
     this.sendSignalUserChanged({
-      clickEvent: 20,
+      clickEvent: 5,
       // clickEvent: 3,
     });
     // this.state.subscribers.forEach((subs) => {
