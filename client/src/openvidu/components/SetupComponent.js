@@ -22,6 +22,7 @@ const SetupComponent = (props) => {
   const {
     teacherName,
     classTitle,
+    classId,
     setTap,
     setDevices,
     whoami,
@@ -170,7 +171,20 @@ const SetupComponent = (props) => {
     setTap('class');
   };
 
-  const goBack = () => {
+  const goBack = async () => {
+    if (whoami === 'teacher') {
+      try {
+        const result = await InterceptedAxios.patch(
+          `/classes/${classId}/close`,
+          {
+            classId: classId,
+          },
+        );
+        console.log('수업이 종료되었습니다.', result);
+      } catch (e) {
+        console.error(e);
+      }
+    }
     window.location.href = `/${whoami}`;
   };
 
