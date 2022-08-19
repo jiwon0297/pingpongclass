@@ -138,7 +138,7 @@
 <thead>
   <tr>
     <td align="center"><strong>소개 영상</strong></th>
-    <td align="center"><strong>시연 영상 (추후 업로드)</strong></th>
+    <td align="center"><strong>시연 영상</strong></th>
   </tr>
   </thead>
   <tbody>
