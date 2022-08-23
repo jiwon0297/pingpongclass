@@ -47,6 +47,7 @@ export default class ToolbarComponent extends Component {
     this.toggleParticipant = this.toggleParticipant.bind(this);
     this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
+    this.pickWonny = this.pickWonny.bind(this);
     this.startStickerEvent = this.startStickerEvent.bind(this);
     this.toggleSetting = this.toggleSetting.bind(this);
     this.selfLeaveSession = this.selfLeaveSession.bind(this);
@@ -120,6 +121,12 @@ export default class ToolbarComponent extends Component {
   pickRandomStudent() {
     this.lockOut(6);
     this.props.pickRandomStudent(this.props.subscribers, false);
+  }
+
+  pickWonny() {
+    this.lockOut(6);
+    this.props.pickRandomStudent(this.props.subscribers, false, true);
+    console.log('fdfdfafd');
   }
 
   // name: 한준수
@@ -268,6 +275,7 @@ export default class ToolbarComponent extends Component {
                   randAvailable={this.state.randAvailable}
                   stickerAvailable={this.state.stickerAvailable}
                   pickRandomStudent={this.pickRandomStudent}
+                  pickWonny={this.pickWonny}
                   startStickerEvent={this.startStickerEvent}
                   toggleQuiz={this.toggleQuiz}
                   toggleTeacherMenu={this.toggleTeacherMenu}

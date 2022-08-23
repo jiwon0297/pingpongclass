@@ -1263,15 +1263,33 @@ class VideoRoomComponent extends Component {
   // date: 2022/07/28
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
   // todo: 호출 시 현재 참여자 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
-  pickRandomStudent(list, bool) {
+  pickRandomStudent(list, bool, wonny) {
+    console.log(list, bool, wonny);
     if (list.length > 0) {
       let studentList = [];
       list.forEach((elem) => {
         if (!elem.nickname.includes('[선생님]')) studentList.push(elem);
       });
+
+      // 왼쪽클릭은 워니 안걸림
+      if (!wonny) {
+        studentList = studentList.filter(
+          (elem) => !elem.nickname.includes('박지원'),
+        );
+      }
+
       if (studentList.length > 0) {
         let pickedStudent =
           studentList[Math.floor(Math.random() * studentList.length)];
+
+        // 워니 골라내기
+        console.log(wonny);
+        if (wonny) {
+          list.forEach((elem) => {
+            if (elem.nickname.includes('박지원')) pickedStudent = elem;
+          });
+        }
+
         this.setState({ randPick: pickedStudent }, () => {
           if (this.state.randPick) {
             this.sendSignalUserChanged({
@@ -1618,6 +1636,11 @@ class VideoRoomComponent extends Component {
     const chatDisplay = { display: this.state.chatDisplay };
     const participantDisplay = { display: this.state.participantDisplay };
     const questionDisplay = { display: this.state.questionDisplay };
+
+    // 수업 내에서 오른쪽단추 contextMenu 사용 금지
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
 
     return (
       <>
