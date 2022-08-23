@@ -108,11 +108,7 @@ function RightSide(props: RightSideProps) {
         만들기 위해 제작했어요.
       </div>
       <div className="buttons-div">
-        <div
-        // css={css`
-        //   display: none;
-        // `}
-        >
+        <div>
           <button
             className="button blue"
             onClick={(e) => {
