@@ -47,9 +47,9 @@ const Emoji = (props) => {
     <div className="openModal reaction-wrapper">
       <div
         className={
-          display
+          (display
             ? 'openModal reaction-modal reaction-setting-container'
-            : 'modal'
+            : 'modal') + (whoami === 'teacher' ? ' teacher-reaction-modal' : '')
         }
       >
         {emotions.map((e, index) => {

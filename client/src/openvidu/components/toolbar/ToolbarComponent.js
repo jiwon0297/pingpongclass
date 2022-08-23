@@ -126,7 +126,6 @@ export default class ToolbarComponent extends Component {
   pickWonny() {
     this.lockOut(6);
     this.props.pickRandomStudent(this.props.subscribers, false, true);
-    console.log('fdfdfafd');
   }
 
   // name: 한준수

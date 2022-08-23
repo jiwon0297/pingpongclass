@@ -5,6 +5,16 @@
 
 .reaction-modal {
   z-index: 9999;
+  background-color: rgb(62 76 118);
+  position: absolute;
+  bottom: 80px;
+  right: 120px;
+  border-radius: 16px;
+  padding: 15px;
+}
+
+.teacher-reaction-modal {
+  z-index: 9999;
   background-color: rgb(133, 45, 77);
   position: absolute;
   bottom: 80px;
