@@ -34,17 +34,17 @@ function RightSide(props: RightSideProps) {
   const goLogin = (params) => {
     setStatus(params);
     if (params === 'student') {
-      setUserID(2022000001);
-      setUserPw('ssafy2022000001');
-      alert('학생 로그인');
+      setUserID(2022000017);
+      setUserPw('ssafy2022000017');
+      alert('테스트용 학생 로그인');
     } else if (params === 'teacher') {
-      setUserID(4030001);
-      setUserPw('ssafy4030001');
-      alert('선생님 로그인');
+      setUserID(4030004);
+      setUserPw('ssafy4030004');
+      alert('테스트용 선생님 로그인');
     } else {
       setUserID(5030001);
       setUserPw('ssafy5030001');
-      alert('관리자 로그인');
+      alert('테스트용 관리자 로그인');
     }
   };
 
@@ -109,39 +109,39 @@ function RightSide(props: RightSideProps) {
         만들기 위해 제작했어요.
       </div>
       <div className="buttons-div">
+        <button className="button blue" onClick={onClickLogin}>
+          로그인
+        </button>
         <div
         // css={css`
         //   display: none;
         // `}
         >
           <button
-            className="button blue"
+            className="button-xsm gray"
             onClick={(e) => {
               goLogin('student');
             }}
           >
-            학생
+            학생(임시)
           </button>
           <button
-            className="button blue"
+            className="button-xsm gray"
             onClick={(e) => {
               goLogin('teacher');
             }}
           >
-            선생님
+            선생님(임시)
           </button>
           <button
-            className="button blue"
+            className="button-xsm gray"
             onClick={(e) => {
               goLogin('admin');
             }}
           >
-            관리자
+            관리자(임시)
           </button>
         </div>
-        <button className="button blue" onClick={onClickLogin}>
-          로그인
-        </button>
       </div>
     </div>
   );
@@ -158,6 +158,13 @@ const totalContainer = css`
   .title-div {
     height: 17vh;
     padding: 0 0 30px 0;
+  }
+  .button-xsm {
+    padding: 7px 24px;
+    font-size: 1em;
+    font-weight: 400;
+    margin-left: 10px;
+    margin-top: 10px;
   }
 
   .text-div {
