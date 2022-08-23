@@ -222,7 +222,7 @@ export default class ToolbarComponent extends Component {
                 </div>
               ) : (
                 <div className="buttonStyle">
-                  <MicOff color="secondary" />
+                  <MicOff color="error" />
                   <p>음소거 해제</p>
                 </div>
               )}
@@ -241,7 +241,7 @@ export default class ToolbarComponent extends Component {
                 </div>
               ) : (
                 <div className="buttonStyle">
-                  <VideocamOff color="secondary" />
+                  <VideocamOff color="error" />
                   <p>비디오 시작</p>
                 </div>
               )}
@@ -360,7 +360,7 @@ export default class ToolbarComponent extends Component {
 
             {this.props.whoami !== 'teacher' ? (
               <IconButton
-                color="secondary"
+                color="error"
                 className="navButton"
                 onClick={this.selfLeaveSession}
                 id="navLeaveButton"
@@ -372,7 +372,7 @@ export default class ToolbarComponent extends Component {
               </IconButton>
             ) : (
               <IconButton
-                color="secondary"
+                color="error"
                 className="navButton"
                 onClick={this.leaveSession}
                 id="navLeaveButton"

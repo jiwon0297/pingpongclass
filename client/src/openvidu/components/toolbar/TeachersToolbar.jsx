@@ -95,13 +95,13 @@ const TotalComponent = css`
 
   .openModal {
     z-index: 9999;
-    background-color: rgb(62 76 118);
+    background-color: #69214b;
     border-radius: 20px;
     padding-left: 10px;
     animation: modal-bg-show 0.3s;
 
     .buttonContents {
-      background-color: rgb(62 76 118);
+      background-color: #69214b;
       display: grid;
       grid-template-rows: 1fr 1fr 1fr;
       grid-template-columns: 1fr;
