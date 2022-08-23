@@ -65,7 +65,7 @@ const TeachersToolbar = ({
               ) : (
                 <AccessTime
                   color="secondary"
-                  style={{ animation: 'cooldown 30s linear 1' }}
+                  style={{ animation: 'cooldown 4s linear 1' }}
                 />
               )}
               <p>집중 퐁퐁이</p>

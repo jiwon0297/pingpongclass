@@ -147,7 +147,7 @@ export default class ToolbarComponent extends Component {
 
   startStickerEvent() {
     this.props.startStickerEvent();
-    this.lockOutSticker(31);
+    this.lockOutSticker(4);
   }
 
   toggleTeacherMenu() {
