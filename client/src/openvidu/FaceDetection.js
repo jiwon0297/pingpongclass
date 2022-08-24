@@ -120,8 +120,8 @@ export default class FaceDetection extends Component {
             <h1
               style={{
                 position: 'absolute',
-                top: '5%',
-                right: '2.5%',
+                bottom: '5%',
+                left: '2.5%',
                 fontSize: '500%',
               }}
             >
@@ -133,8 +133,8 @@ export default class FaceDetection extends Component {
                     width: '20%',
                     minHeight: '8rem',
                     height: '20%',
-                    top: '5%',
-                    right: '2.5%',
+                    bottom: '5%',
+                    left: '2.5%',
                   }}
                   src={Smile}
                   alt={'HI'}
@@ -146,8 +146,8 @@ export default class FaceDetection extends Component {
             <h1
               style={{
                 position: 'absolute',
-                top: '5%',
-                right: '2.5%',
+                bottom: '5%',
+                left: '2.5%',
                 fontSize: '500%',
               }}
             >
