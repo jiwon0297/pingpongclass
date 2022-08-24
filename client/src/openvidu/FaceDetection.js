@@ -100,11 +100,18 @@ export default class FaceDetection extends Component {
       this.props.outAngle(false);
       this.setState(() => ({ smile: smile, normal: normal }));
     } else {
-      const lv = this.state.face + 1;
-      this.props.smile(false);
-      this.setState(() => ({ smile: 0, normal: 0, expressions: 0, face: lv }));
-      if (lv === 6) {
-        this.props.outAngle(true);
+      if (this.props.angleCheck) {
+        const lv = this.state.face + 1;
+        this.props.smile(false);
+        this.setState(() => ({
+          smile: 0,
+          normal: 0,
+          expressions: 0,
+          face: lv,
+        }));
+        if (lv === 6) {
+          this.props.outAngle(true);
+        }
       }
     }
     setTimeout(() => this.onPlay(), 1000);
