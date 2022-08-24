@@ -72,11 +72,21 @@ const SetupComponent = (props) => {
       if (newSpeakers.length) setSelectedSpeaker(newSpeakers[0].deviceId);
       setSelectedAudioTrack(newAudios[0]);
       setSelectedVideoTrack(newVideos[0]);
-      if (newAudios[0])
-        stream.current.addTrack(await getAudioTrack(newAudios[0].deviceId));
-      if (newVideos[0])
-        stream.current.addTrack(await getVideoTrack(newVideos[0].deviceId));
-      stream.current.getTracks().forEach((track) => (track.enabled = false));
+      // 미리 사운드 enabled를 끄고 들어가면 된다
+      let audioTrack;
+      let videoTrack;
+      if (newAudios[0]) {
+        audioTrack = await getAudioTrack(newAudios[0].deviceId);
+        audioTrack.enabled = false;
+        stream.current.addTrack(audioTrack);
+      }
+
+      // 비디오도 같이 적용하기
+      if (newVideos[0]) {
+        videoTrack = await getVideoTrack(newVideos[0].deviceId);
+        videoTrack.enabled = false;
+        stream.current.addTrack(videoTrack);
+      }
       previewFace.current.srcObject = stream.current ?? null;
     };
     getMyDevices().then(() => {
