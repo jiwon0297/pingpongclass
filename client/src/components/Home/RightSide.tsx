@@ -34,12 +34,12 @@ function RightSide(props: RightSideProps) {
   const goLogin = (params) => {
     setStatus(params);
     if (params === 'student') {
-      setUserID(2022000017);
-      setUserPw('ssafy2022000017');
+      setUserID(2022000001);
+      setUserPw('ssafy2022000001');
       alert('테스트용 학생 로그인');
     } else if (params === 'teacher') {
-      setUserID(4030004);
-      setUserPw('ssafy4030004');
+      setUserID(4030001);
+      setUserPw('ssafy4030001');
       alert('테스트용 선생님 로그인');
     } else {
       setUserID(5030001);
@@ -111,7 +111,7 @@ function RightSide(props: RightSideProps) {
         <button className="button blue" onClick={onClickLogin}>
           로그인
         </button>
-        {/* <div
+        <div
         // css={css`
         //   display: none;
         // `}
@@ -140,7 +140,7 @@ function RightSide(props: RightSideProps) {
           >
             관리자(임시)
           </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );
