@@ -43,7 +43,6 @@ export default class FaceDetection extends Component {
   };
 
   run = async () => {
-    this.log('run started');
     try {
       await faceApi.nets.tinyFaceDetector.load('/models');
       await faceApi.loadFaceExpressionModel(`/models`);
@@ -121,8 +120,8 @@ export default class FaceDetection extends Component {
             <h1
               style={{
                 position: 'absolute',
-                bottom: '5%',
-                left: '2.5%',
+                top: '5%',
+                right: '2.5%',
                 fontSize: '500%',
               }}
             >
@@ -134,8 +133,8 @@ export default class FaceDetection extends Component {
                     width: '20%',
                     minHeight: '8rem',
                     height: '20%',
-                    bottom: '5%',
-                    left: '2.5%',
+                    top: '5%',
+                    right: '2.5%',
                   }}
                   src={Smile}
                   alt={'HI'}
@@ -147,12 +146,13 @@ export default class FaceDetection extends Component {
             <h1
               style={{
                 position: 'absolute',
-                bottom: '5%',
-                left: '2.5%',
+                top: '5%',
+                right: '2.5%',
                 fontSize: '500%',
               }}
             >
-              {this.state.face < 3 ? null : this.state.face > 5 ? (
+              {this.state.face < 3 ||
+              this.props.whoami === 'teacher' ? null : this.state.face > 5 ? (
                 <p
                   style={{
                     width: '10%',

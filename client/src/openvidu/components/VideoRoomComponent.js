@@ -1761,6 +1761,7 @@ class VideoRoomComponent extends Component {
                   camera={localUser.isVideoActive() ? false : true}
                   smile={this.smile}
                   outAngle={this.outAngle}
+                  whoami={this.props.whoami}
                 />
               </div>
             ) : null}
