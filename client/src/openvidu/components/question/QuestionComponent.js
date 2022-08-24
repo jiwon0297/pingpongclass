@@ -28,7 +28,6 @@ export default class QuestionComponent extends Component {
       .getStreamManager()
       .stream.session.on('signal:question', (event) => {
         const data = JSON.parse(event.data);
-        console.log(data);
         let questionList = this.state.questionList;
         questionList.push({
           connectionId: event.from.connectionId,

@@ -47,6 +47,7 @@ export default class ToolbarComponent extends Component {
     this.toggleParticipant = this.toggleParticipant.bind(this);
     this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
+    this.pickWonny = this.pickWonny.bind(this);
     this.startStickerEvent = this.startStickerEvent.bind(this);
     this.toggleSetting = this.toggleSetting.bind(this);
     this.selfLeaveSession = this.selfLeaveSession.bind(this);
@@ -122,6 +123,11 @@ export default class ToolbarComponent extends Component {
     this.props.pickRandomStudent(this.props.subscribers, false);
   }
 
+  pickWonny() {
+    this.lockOut(6);
+    this.props.pickRandomStudent(this.props.subscribers, false, true);
+  }
+
   // name: 한준수
   // date: 2022/07/27
   // desc: 랜덤 지목 버튼을 일정 시간동안 비활성화 시켜주는 함수
@@ -147,7 +153,7 @@ export default class ToolbarComponent extends Component {
 
   startStickerEvent() {
     this.props.startStickerEvent();
-    this.lockOutSticker(31);
+    this.lockOutSticker(4);
   }
 
   toggleTeacherMenu() {
@@ -222,7 +228,7 @@ export default class ToolbarComponent extends Component {
                 </div>
               ) : (
                 <div className="buttonStyle">
-                  <MicOff color="secondary" />
+                  <MicOff color="error" />
                   <p>음소거 해제</p>
                 </div>
               )}
@@ -241,7 +247,7 @@ export default class ToolbarComponent extends Component {
                 </div>
               ) : (
                 <div className="buttonStyle">
-                  <VideocamOff color="secondary" />
+                  <VideocamOff color="error" />
                   <p>비디오 시작</p>
                 </div>
               )}
@@ -268,6 +274,7 @@ export default class ToolbarComponent extends Component {
                   randAvailable={this.state.randAvailable}
                   stickerAvailable={this.state.stickerAvailable}
                   pickRandomStudent={this.pickRandomStudent}
+                  pickWonny={this.pickWonny}
                   startStickerEvent={this.startStickerEvent}
                   toggleQuiz={this.toggleQuiz}
                   toggleTeacherMenu={this.toggleTeacherMenu}
@@ -360,7 +367,7 @@ export default class ToolbarComponent extends Component {
 
             {this.props.whoami !== 'teacher' ? (
               <IconButton
-                color="secondary"
+                color="error"
                 className="navButton"
                 onClick={this.selfLeaveSession}
                 id="navLeaveButton"
@@ -372,7 +379,7 @@ export default class ToolbarComponent extends Component {
               </IconButton>
             ) : (
               <IconButton
-                color="secondary"
+                color="error"
                 className="navButton"
                 onClick={this.leaveSession}
                 id="navLeaveButton"

@@ -7,12 +7,20 @@ import IconButton from '@mui/material/IconButton';
 const TeachersToolbar = ({
   display,
   pickRandomStudent,
+  pickWonny,
   randAvailable,
   startStickerEvent,
   stickerAvailable,
   toggleQuiz,
   toggleTeacherMenu,
 }) => {
+  const onRightClickRandomPick = (e) => {
+    if (e.button === 2 || e.which === 3) {
+      pickWonny();
+      toggleTeacherMenu();
+    }
+  };
+
   const onClickRandomPick = () => {
     pickRandomStudent();
     toggleTeacherMenu();
@@ -36,7 +44,9 @@ const TeachersToolbar = ({
             color="inherit"
             className="navButton"
             id="navRandButton"
+            onContextMenu={(e) => e.preventDefault()}
             onClick={onClickRandomPick}
+            onMouseDown={(e) => onRightClickRandomPick(e)}
             disabled={!randAvailable}
           >
             <div className="buttonStyle">
@@ -45,7 +55,7 @@ const TeachersToolbar = ({
               ) : (
                 <Shuffle
                   color="secondary"
-                  style={{ animation: 'cooldown 5s linear 1' }}
+                  style={{ animation: 'cooldown 6s linear 1' }}
                 />
               )}
               <p>랜덤 학생 뽑기</p>
@@ -65,7 +75,7 @@ const TeachersToolbar = ({
               ) : (
                 <AccessTime
                   color="secondary"
-                  style={{ animation: 'cooldown 30s linear 1' }}
+                  style={{ animation: 'cooldown 4s linear 1' }}
                 />
               )}
               <p>집중 퐁퐁이</p>
@@ -95,13 +105,13 @@ const TotalComponent = css`
 
   .openModal {
     z-index: 9999;
-    background-color: rgb(62 76 118);
+    background-color: #69214b;
     border-radius: 20px;
     padding-left: 10px;
     animation: modal-bg-show 0.3s;
 
     .buttonContents {
-      background-color: rgb(62 76 118);
+      background-color: #69214b;
       display: grid;
       grid-template-rows: 1fr 1fr 1fr;
       grid-template-columns: 1fr;

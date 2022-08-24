@@ -249,7 +249,7 @@ const TeacherClassLogList = () => {
               <div className="col totalNum">전체</div>
               <div className="col attendNum">출석</div>
               <div className="col notattendNum">결석</div>
-              <div className="col totalPoint">부여한 총 퐁퐁</div>
+              <div className="col totalPoint">부여한 총 퐁퐁이</div>
               <div className="col totalPresentCnt">총 발표횟수</div>
             </div>
 
@@ -273,7 +273,7 @@ const TeacherClassLogList = () => {
             <div className="row titleRow">
               <div className="col studentInfo">학생</div>
               <div className="col attendance">출석여부</div>
-              <div className="col point">얻은 퐁퐁</div>
+              <div className="col point">얻은 퐁퐁이</div>
               <div className="col presentCnt">발표횟수</div>
             </div>
 
