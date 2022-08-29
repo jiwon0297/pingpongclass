@@ -1,9 +1,7 @@
 <div>
   <img align="left" src="https://user-images.githubusercontent.com/14370441/185441237-c5f21d48-661c-45bd-9d5b-ccceefe242e1.png" width="280" />
   <div align="right">
-    <a align="right" href="https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A403">
       <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Flab.ssafy.com%2Fs07-webmobile1-sub2%2FS07P12A403&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
-    </a>
     <h1 align="right">
       <font align="left" size="6" color="#006937"> 🏓 PingpongClass</font>
     </h1>
@@ -111,9 +109,7 @@
   <tr>
     <td align="center"><strong>배포</strong></td>
     <td>
-      <a href="https://i7a403.p.ssafy.io/">
-        👉 사이트 체험하러가기
-      </a>
+        ❌ 비용 문제로 현재 일시 중단
     </td>
   </tr>
   <tr>
@@ -294,13 +290,6 @@
 ## 🔗 링크
 
 <table align="center">
-<thead>
-  <tr>
-    <td align="center" colspan=5>
-      <a href="https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A403">:house: GitLab Main Page</a>
-    </td>
-  </tr>
-</thead>
 <tbody>
   <tr>
     <td align="center">
