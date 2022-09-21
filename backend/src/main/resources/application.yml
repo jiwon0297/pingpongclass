@@ -44,8 +44,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      password: pingpong403
-      username: pong
+      password:
+      username:
     url: jdbc:mysql://mysql-pingpong:3306/pingpong?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
 
   devtools:
@@ -69,8 +69,8 @@ spring:
             enable: 'true'
           auth: 'true'
     host: smtp.gmail.com
-    username: ppclass403@gmail.com
-    password: szjrjxvsxiggnvke
+    username: 
+    password: 
     port: '587'
 
 build:
